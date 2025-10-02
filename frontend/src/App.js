@@ -1,0 +1,87 @@
+// // src/App.js
+// import React from 'react';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+// import HomePage from './pages/HomePage';
+// import SignInPage from './pages/SignInPage';
+// import RecommendationsPage from './pages/RecommendationsPage';
+// import BestRecommendationPage from './pages/BestRecommendationPage'; // Import the new component
+// import Header from './components/Header';
+// import Footer from './components/Footer';
+
+// function App() {
+//   return (
+//     <Router>
+//       <Header />
+//       <Routes>
+//         <Route path="/" element={<HomePage />} />
+//         <Route path="/signin" element={<SignInPage />} />
+//         <Route path="/recommendations" element={<RecommendationsPage />} />
+//         {/* Add the new route for the best recommendation page */}
+//         <Route path="/best-recommendation" element={<BestRecommendationPage />} />
+//       </Routes>
+//       <Footer />
+//     </Router>
+//   );
+// }
+
+// export default App;
+// src/App.js
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import SignInPage from './pages/SignInPage';
+import KeywordsPage from './pages/KeywordsPage'; // Import the new component
+import RecommendationsPage from './pages/RecommendationsPage';
+import BestRecommendationPage from './pages/BestRecommendationPage';
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+import AddReview from './pages/AddReview';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/Signin';
+import ProfileAll from './pages/ProfileAll';
+
+function AppContent() {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
+  useEffect(() => {
+    if (isHomePage) {
+      document.body.classList.add('homepage');
+      document.body.classList.remove('non-homepage');
+    } else {
+      document.body.classList.remove('homepage');
+      document.body.classList.add('non-homepage');
+    }
+  }, [isHomePage]);
+
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/keywords" element={<KeywordsPage />} /> {/* New route */}
+        <Route path="/recommendations" element={<RecommendationsPage />} />
+        <Route path="/best-recommendation" element={<BestRecommendationPage />} />
+ 
+        <Route path="/addReview" element={<AddReview />} />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/signInNew" element={<SignIn />} />
+        <Route path="/all" element={<ProfileAll />} />
+
+      </Routes>
+      <Footer />
+    </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
+
+export default App;

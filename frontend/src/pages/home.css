@@ -1,0 +1,660 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+  }
+  
+  #main-topic {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+    color: #333; /* Dark text for white background */
+  }
+  
+  /* Styling for the images */
+  #home-img-main1,
+  #home-img-main2,
+  #home-img-main3,
+  #home-img-main4,
+  #background-image {
+    width: 300px;
+    height: 200px;
+    margin: 10px;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  #home-img-main1:hover,
+  #home-img-main2:hover,
+  #home-img-main3:hover,
+  #home-img-main4:hover,
+  #background-image:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Additional styling for other content on the page */
+  /* Add your styles for other elements on the page as needed */
+  /* Styling for the attractive images */
+#attractive-img1,
+#attractive-img2,
+#attractive-img3,
+#attractive-img4,
+#attractive-img5,
+#attractive-img6,
+#attractive-img7 {
+  width: 300px;
+  height: 200px;
+  margin: 10px;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Styling for the details paragraphs */
+#attractive-img1-details,
+#attractive-img2-details,
+#attractive-img3-details,
+#attractive-img4-details,
+#attractive-img5-details,
+#attractive-img6-details,
+#attractive-img7-details {
+  display: none;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+
+/* Show details on hover */
+#attractive-img1:hover + #attractive-img1-details,
+#attractive-img2:hover + #attractive-img2-details,
+#attractive-img3:hover + #attractive-img3-details,
+#attractive-img4:hover + #attractive-img4-details,
+#attractive-img5:hover + #attractive-img5-details,
+#attractive-img6:hover + #attractive-img6-details,
+#attractive-img7:hover + #attractive-img7-details {
+  display: block;
+}
+
+/* Scaling effect on hover for attractive images */
+#attractive-img1:hover,
+#attractive-img2:hover,
+#attractive-img3:hover,
+#attractive-img4:hover,
+#attractive-img5:hover,
+#attractive-img6:hover,
+#attractive-img7:hover {
+  transform: scale(1.1);
+}
+
+/* Additional styling for other content on the page */
+/* Add your styles for other elements on the page as needed */
+
+
+/* General styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+  }
+  
+  /* Navigation styling */
+  nav {
+    background-color: #3498db;
+    padding: 15px;
+    text-align: center;
+  }
+  
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 18px;
+  }
+  
+  /* Main topic styling */
+  #main-topic {
+    color: #3498db;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  /* Home images styling */
+  #home-img-main1,
+  #home-img-main2,
+  #home-img-main3,
+  #home-img-main4,
+  #background-image {
+    width: 300px;
+    height: 200px;
+    margin: 10px;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  #background-image {
+    width: 100%; /* Full width for background image */
+    height: auto;
+  }
+  
+  /* Attractive images styling */
+  #atrractive-img {
+    text-align: center;
+    color: #e74c3c;
+    margin-top: 20px;
+  }
+  
+  #attractive-img1,
+  #attractive-img2,
+  #attractive-img3,
+  #attractive-img4,
+  #attractive-img5,
+  #attractive-img6,
+  #attractive-img7 {
+   
+    width: 300px;
+    height: 200px;
+    margin: 10px;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  /* Attractive image details styling */
+  #attractive-img1-details,
+  #attractive-img2-details,
+  #attractive-img3-details,
+  #attractive-img4-details,
+  #attractive-img5-details,
+  #attractive-img6-details,
+  #attractive-img7-details {
+  display: none;
+    padding: 10px;
+    background-color: rgba(52, 152, 219, 0.8);
+    color: #fff;
+  }
+  
+  
+  
+  
+  
+  /* About section styling */
+  #about-name {
+    text-align: center;
+    color: #48a2dd;
+    font-size: 36px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-shadow: 1px 1px 2px rgba(52, 152, 219, 0.3);
+  }
+  
+  #about-details {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #191513;
+    text-align: justify;
+    margin-bottom: 40px;
+  }
+  
+  
+  /* More details table styling */
+  #more-details {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  #more-details th {
+    background-color: #3498db;
+    color: #fff;
+    font-size: 24px;
+    padding: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  #more-details td {
+    padding: 15px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #more-details h4 {
+    color: #3498db;
+  }
+  
+  #more-details td:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  /* About web page table styling */
+  #about-web-page {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  #about-web-page th, #about-web-page td {
+    padding: 15px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  #about-web-page th {
+    background-color: #3498db;
+    color: #fff;
+    font-size: 24px;
+    padding: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  #about-web-page td:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+  
+  #about-web-page td:last-child {
+    font-weight: bold;
+  }
+  
+  #about-web-page td a {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  #about-web-page td a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Footer styling */
+  footer {
+    background-color: #34495e;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  #main-topic {
+    text-align: center;
+    color: #3498db;
+    font-size: 36px;
+    margin: 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(52, 152, 219, 0.5);
+  }
+  #atrractive-img {
+    text-align: center;
+    color: #3ce7e7;
+    font-size: 28px;
+    margin: 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(231, 76, 60, 0.3);
+  }
+
+  /* Professional Header Animations */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0) translateX(-50%);
+    }
+    40% {
+      transform: translateY(-10px) translateX(-50%);
+    }
+    60% {
+      transform: translateY(-5px) translateX(-50%);
+    }
+  }
+
+  @keyframes scroll {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(0);
+    }
+    10%, 90% {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-50%) translateY(15px);
+    }
+  }
+
+  /* Responsive Design for Header */
+  @media (max-width: 768px) {
+    .hero-header {
+      min-height: 100vh !important;
+      padding: 2rem 0;
+    }
+    
+    .header-left {
+      height: auto !important;
+      text-align: center;
+      padding-right: 0 !important;
+    }
+    
+    .stats-bar {
+      justify-content: center !important;
+      gap: 1rem !important;
+    }
+    
+    .display-4 {
+      font-size: 2.5rem !important;
+    }
+  }
+
+  /* Smooth Scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Button Hover Effects */
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3) !important;
+  }
+
+  /* Professional Typography */
+  .homepage-container {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .hero-header h1 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-header .lead {
+    font-weight: 400;
+    line-height: 1.6;
+  }
+
+  /* Header Styles */
+  .navbar-nav .nav-link:hover {
+    color: #ffd700 !important;
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+  }
+
+  .navbar-brand:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
+
+  /* Fixed Header Padding for Homepage */
+  .homepage-container .hero-header {
+    padding-top: 0;
+  }
+
+  /* Content Spacing for Non-Homepage */
+  body.non-homepage {
+    padding-top: 0 !important;
+  }
+
+  /* Ensure all non-homepage content starts below fixed header */
+  body.non-homepage .container:first-child,
+  body.non-homepage main,
+  body.non-homepage > div > div:not(.homepage-container) {
+    padding-top: 80px !important;
+  }
+
+  /* Specific fix for pages with mt-5 class */
+  body.non-homepage .container.mt-5 {
+    margin-top: 0 !important;
+    padding-top: 100px !important;
+  }
+
+  /* Ensure card content is visible */
+  body.non-homepage .card {
+    margin-top: 20px !important;
+  }
+
+  /* Ensure card title is visible */
+  body.non-homepage .card-title {
+    padding-top: 10px !important;
+  }
+
+  /* Ensure content starts below fixed header on homepage */
+  .hero-header + .container {
+    margin-top: 0;
+  }
+
+  /* Reset padding for homepage */
+  body.homepage {
+    padding-top: 0 !important;
+  }
+
+  /* Make navbar more compact */
+  .navbar {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  /* Reduce navbar brand and links padding */
+  .navbar-brand {
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+  }
+
+  .navbar-nav .nav-link {
+    padding-top: 0.375rem !important;
+    padding-bottom: 0.375rem !important;
+  }
+
+  /* Make navbar extra compact on non-homepage pages only */
+  body.non-homepage .navbar {
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+    min-height: auto !important;
+  }
+
+  body.non-homepage .navbar-brand {
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+    margin-bottom: 0 !important;
+  }
+
+  body.non-homepage .navbar-nav .nav-link {
+    padding-top: 0.2rem !important;
+    padding-bottom: 0.2rem !important;
+  }
+
+  body.non-homepage .navbar .btn {
+    padding: 0.2rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  body.non-homepage .navbar-toggler {
+    padding: 0.1rem 0.4rem !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* Floating Cards Hover Effect */
+  .floating-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    background: rgba(255,255,255,0.3) !important;
+    transition: all 0.3s ease;
+  }
+
+  /* Professional Gradient Text */
+  .gradient-text {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+  }
+
+  /* ===== FOOTER STYLES ===== */
+  .professional-footer {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 60px 0 30px 0;
+    margin-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .professional-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    z-index: 1;
+  }
+
+  .professional-footer .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .footer-heading {
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    background: linear-gradient(45deg, #ffffff, #f0f0f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .footer-text {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: 10px;
+  }
+
+  .footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0;
+    display: inline-block;
+  }
+
+  .footer-links a:hover {
+    color: #ffffff;
+    transform: translateX(5px);
+  }
+
+  .footer-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(45deg, #ffffff, #f0f0f0);
+    transition: width 0.3s ease;
+  }
+
+  .footer-links a:hover::after {
+    width: 100%;
+  }
+
+  .footer-social {
+    text-align: left;
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .social-icon {
+    font-size: 1.5rem;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+  }
+
+  .social-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px) scale(1.1);
+  }
+
+  .footer-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    margin: 40px 0 30px 0;
+  }
+
+  .footer-copyright {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    margin-bottom: 0;
+    font-style: italic;
+  }
+
+  /* Footer Responsive Design */
+  @media (max-width: 768px) {
+    .professional-footer {
+      padding: 40px 0 20px 0;
+      margin-top: 60px;
+    }
+
+    .footer-heading {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+
+    .social-icons {
+      justify-content: center;
+    }
+
+    .footer-social {
+      text-align: center;
+    }
+
+    .footer-links {
+      text-align: center;
+    }
+  }
+
+  
