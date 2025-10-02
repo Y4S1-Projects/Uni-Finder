@@ -1,0 +1,11 @@
+# backend/requirements.txt
+flask
+flask-cors
+pandas
+numpy
+sentence-transformers
+scikit-learn
+fuzzywuzzy
+python-Levenshtein
+requests
+google-generativeai
