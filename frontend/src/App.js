@@ -33,6 +33,7 @@ import SignInPage from './pages/SignInPage';
 import KeywordsPage from './pages/KeywordsPage'; // Import the new component
 import RecommendationsPage from './pages/RecommendationsPage';
 import BestRecommendationPage from './pages/BestRecommendationPage';
+import BudgetOptimizer from './pages/BudgetOptimizer'; // Import Budget Optimizer
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -64,6 +65,7 @@ function AppContent() {
         <Route path="/keywords" element={<KeywordsPage />} /> {/* New route */}
         <Route path="/recommendations" element={<RecommendationsPage />} />
         <Route path="/best-recommendation" element={<BestRecommendationPage />} />
+        <Route path="/budget-optimizer" element={<BudgetOptimizer />} /> {/* Budget Optimizer route */}
  
         <Route path="/addReview" element={<AddReview />} />
         <Route path="/signUp" element={<SignUp />} />

@@ -1,9 +1,23 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS  # Import CORS
 import pandas as pd
 import random
 import numpy as np
 from datetime import datetime
+
+
+# Budget Optimizer Integration
+import sys
+sys.path.append('/Users/shehansalitha/Desktop/Uni-Finder/backend')
+from budget_optimizer_trainer import StudentBudgetOptimizer
+
+# Initialize budget optimizer
+budget_optimizer = StudentBudgetOptimizer()
+try:
+    budget_optimizer.load_models()
+    print("✅ Budget optimizer models loaded successfully")
+except:
+    print("⚠️ Budget optimizer models not found. Run budget_optimizer_trainer.py first")
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -173,12 +187,65 @@ def get_model_accuracy():
         print(f"Error calculating accuracy: {e}")
         return jsonify({"error": str(e)}), 500
 
+@app.route('/budget', methods=['GET'])
+def budget_optimizer_interface():
+    """
+    Serve the budget optimizer web interface
+    """
+    from flask import render_template
+    return render_template('budget_optimizer.html')
+
 @app.route('/health', methods=['GET'])
 def health():
     """
     Health check endpoint
     """
     return jsonify({"status": "healthy", "places_count": len(places)})
+
+
+# Budget Optimizer Routes
+@app.route('/budget/predict', methods=['POST'])
+def predict_expenses():
+    """Predict monthly expenses for a student"""
+    try:
+        student_data = request.json
+        if 'income' not in student_data:
+            return jsonify({"error": "Missing income field"}), 400
+        
+        prediction = budget_optimizer.predict_monthly_expenses(student_data)
+        if prediction is None:
+            return jsonify({"error": "Prediction failed"}), 500
+        
+        return jsonify({"success": True, "prediction": prediction})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/budget/optimize', methods=['POST'])
+def optimize_budget():
+    """Optimize budget allocation for a student"""
+    try:
+        student_data = request.json
+        target_savings = student_data.get('target_savings_rate', 0.15)
+        
+        if 'income' not in student_data:
+            return jsonify({"error": "Missing income field"}), 400
+        
+        optimization = budget_optimizer.optimize_budget(student_data, target_savings)
+        if optimization is None:
+            return jsonify({"error": "Optimization failed"}), 500
+        
+        return jsonify({"success": True, "optimization": optimization})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/budget/performance', methods=['GET'])
+def budget_model_performance():
+    """Get budget model performance metrics"""
+    try:
+        performance = budget_optimizer.get_model_performance()
+        return jsonify({"success": True, "performance": performance})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     print("Starting Flask server...")

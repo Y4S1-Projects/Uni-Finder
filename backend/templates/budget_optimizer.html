@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Student Budget Optimizer - UniFinder LK</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.2em;
+        }
+        
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #ff7b7b, #f093fb);
+            color: white;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        
+        .results h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .metric:last-child {
+            border-bottom: none;
+        }
+        
+        .budget-category {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #667eea;
+            font-style: italic;
+        }
+        
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #d63031;
+        }
+        
+        .success {
+            background: #e6ffe6;
+            color: #00b894;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 5px solid #00b894;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 AI-Powered Student Budget Optimizer</h1>
+            <p>Component 2 of UniFinder LK Platform | Designed for Sri Lankan Students</p>
+        </div>
+        
+        <div class="content">
+            <form id="budgetForm">
+                <div class="form-group">
+                    <label for="income">Monthly Income (LKR) *</label>
+                    <input type="number" id="income" name="income" value="30000" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="degree_type">Degree Type</label>
+                    <select id="degree_type" name="degree_type">
+                        <option value="Engineering">Engineering</option>
+                        <option value="Medicine">Medicine</option>
+                        <option value="Arts">Arts</option>
+                        <option value="Science">Science</option>
+                        <option value="Commerce">Commerce</option>
+                        <option value="Law">Law</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <select id="location" name="location">
+                        <option value="Colombo">Colombo</option>
+                        <option value="Kandy">Kandy</option>
+                        <option value="Galle">Galle</option>
+                        <option value="Jaffna">Jaffna</option>
+                        <option value="Matara">Matara</option>
+                        <option value="Ratnapura">Ratnapura</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="semester">Current Semester</label>
+                    <select id="semester" name="semester">
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5" selected>Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="target_savings_rate">Target Savings Rate (%)</label>
+                    <input type="number" id="target_savings_rate" name="target_savings_rate" value="20" min="0" max="50">
+                </div>
+                
+                <div class="buttons">
+                    <button type="button" class="btn btn-primary" onclick="predictExpenses()">
+                        📊 Predict Expenses
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="optimizeBudget()">
+                        💰 Optimize Budget
+                    </button>
+                </div>
+            </form>
+            
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        function getFormData() {
+            const form = document.getElementById('budgetForm');
+            const formData = new FormData(form);
+            const data = {};
+            
+            for (let [key, value] of formData.entries()) {
+                if (key === 'income' || key === 'semester') {
+                    data[key] = parseInt(value);
+                } else if (key === 'target_savings_rate') {
+                    data[key] = parseFloat(value) / 100; // Convert percentage to decimal
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            data.month = new Date().getMonth() + 1;
+            data.year = new Date().getFullYear();
+            
+            return data;
+        }
+        
+        function showLoading() {
+            document.getElementById('results').innerHTML = '<div class="loading">Processing your request...</div>';
+        }
+        
+        function showError(message) {
+            document.getElementById('results').innerHTML = `<div class="error">❌ Error: ${message}</div>`;
+        }
+        
+        function showSuccess(content) {
+            document.getElementById('results').innerHTML = `<div class="success">${content}</div>`;
+        }
+        
+        async function predictExpenses() {
+            showLoading();
+            
+            try {
+                const data = getFormData();
+                const response = await fetch('/budget/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    const prediction = result.prediction;
+                    
+                    const content = `
+                        <div class="results">
+                            <h3>📊 Expense Prediction Results</h3>
+                            <div class="metric">
+                                <span><strong>Predicted Monthly Expenses:</strong></span>
+                                <span><strong>LKR ${prediction.predicted_total_expenses.toLocaleString()}</strong></span>
+                            </div>
+                            <div class="metric">
+                                <span>Model Confidence:</span>
+                                <span>${prediction.confidence}%</span>
+                            </div>
+                            <div class="metric">
+                                <span>Prediction Date:</span>
+                                <span>${new Date(prediction.prediction_date).toLocaleString()}</span>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.getElementById('results').innerHTML = content;
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Failed to predict expenses');
+                }
+            } catch (error) {
+                showError('Network error. Please check if the server is running.');
+            }
+        }
+        
+        async function optimizeBudget() {
+            showLoading();
+            
+            try {
+                const data = getFormData();
+                const response = await fetch('/budget/optimize', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    const optimization = result.optimization;
+                    
+                    let budgetHtml = '';
+                    for (const [category, amount] of Object.entries(optimization.optimized_budget)) {
+                        const percentage = ((amount / optimization.total_expenses) * 100).toFixed(1);
+                        budgetHtml += `
+                            <div class="budget-category">
+                                <span><strong>${category.charAt(0).toUpperCase() + category.slice(1)}:</strong></span>
+                                <span>LKR ${amount.toLocaleString()} (${percentage}%)</span>
+                            </div>
+                        `;
+                    }
+                    
+                    const content = `
+                        <div class="results">
+                            <h3>💰 Budget Optimization Results</h3>
+                            <div class="metric">
+                                <span><strong>Total Optimized Expenses:</strong></span>
+                                <span><strong>LKR ${optimization.total_expenses.toLocaleString()}</strong></span>
+                            </div>
+                            <div class="metric">
+                                <span><strong>Projected Savings:</strong></span>
+                                <span><strong>LKR ${optimization.projected_savings.toLocaleString()}</strong></span>
+                            </div>
+                            <div class="metric">
+                                <span>Target Savings Rate:</span>
+                                <span>${(optimization.target_savings_rate * 100).toFixed(1)}%</span>
+                            </div>
+                            <hr>
+                            <h4>📋 Optimized Budget Breakdown:</h4>
+                            ${budgetHtml}
+                        </div>
+                    `;
+                    
+                    document.getElementById('results').innerHTML = content;
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Failed to optimize budget');
+                }
+            } catch (error) {
+                showError('Network error. Please check if the server is running.');
+            }
+        }
+        
+        // Load model performance on page load
+        window.onload = async function() {
+            try {
+                const response = await fetch('/budget/performance');
+                if (response.ok) {
+                    const result = await response.json();
+                    const performance = result.performance;
+                    
+                    if (performance.status === 'ready') {
+                        showSuccess(`✅ AI Models Ready | Accuracy: ${performance.accuracy_metrics.expense_prediction.accuracy}%`);
+                    }
+                }
+            } catch (error) {
+                console.log('Model performance check failed:', error);
+            }
+        };
+    </script>
+</body>
+</html>
