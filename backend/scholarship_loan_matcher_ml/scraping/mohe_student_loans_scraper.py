@@ -4,30 +4,21 @@ Website: https://www.mohe.gov.lk/
 Scrapes student loan and DAI information
 """
 
-import requests
+from __future__ import annotations
+
+import logging
+import time
+from datetime import datetime
+from typing import Dict, List
+
 from bs4 import BeautifulSoup
-import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
-import logging
-from datetime import datetime
-import re
-import json
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/mohe_student_loans_scraper.log'),
-        logging.StreamHandler()
-    ]
-)
 logger = logging.getLogger(__name__)
 
 
@@ -211,77 +202,28 @@ class MOHEStudentLoansScraper:
         logger.info(
             f"Extracted {len(all_programs)} subject stream loan amounts")
 
-    def save_to_csv(self, filename=None):
-        """Save data to CSV format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/mohe_student_loans_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
-
-        df = pd.DataFrame(self.data)
-        df.to_csv(filename, index=False, encoding='utf-8')
-        logger.info(f"Saved {len(self.data)} records to {filename}")
-        print(f"✓ CSV saved: {filename}")
-        return filename
-
-    def save_to_json(self, filename=None):
-        """Save data to JSON format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/mohe_student_loans_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved {len(self.data)} records to {filename}")
-        print(f"✓ JSON saved: {filename}")
-        return filename
-
-    def display_summary(self):
-        """Display scraping summary"""
-        print("\n" + "="*70)
-        print("MOHE STUDENT LOANS - SCRAPING SUMMARY")
-        print("="*70)
-        print(f"Total Records: {len(self.data)}")
-        print(f"Source: {self.source}")
-        print(f"Scraped Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-
-        if self.data:
-            df = pd.DataFrame(self.data)
-            print(f"\nColumns: {list(df.columns)}")
-            print("\n=== EXTRACTED RECORDS ===")
-            print(f"General Loan Info: 1")
-            print(f"Degree Awarding Institutes: 16")
-            print(f"Loan Programs by Stream: {len(self.data) - 17}")
-
-            print("\n=== SAMPLE RECORDS ===")
-            for idx, row in df.head(5).iterrows():
-                print(f"\n{idx+1}. {row['name']}")
-                print(f"   Funding: {row['funding_amount']}")
-                print(f"   Deadline: {row['deadline']}")
-
-        print("="*70 + "\n")
+def _to_standard_loan(record: Dict) -> Dict[str, str]:
+    return {
+        "name": record.get("name"),
+        "provider": record.get("source") or "MOHE",
+        "loan_type": "interest_free_student_loan",
+        "interest_rate": record.get("interest_rate") or "interest-free",
+        "eligibility": record.get("eligibility"),
+        "repayment_terms": record.get("repayment_period") or record.get("repayment_terms"),
+        "max_amount": record.get("funding_amount"),
+        "deadline": record.get("deadline") or "rolling",
+        "url": record.get("application_url") or record.get("url"),
+        "source": record.get("source") or "MOHE Student Loans",
+    }
 
 
-def main():
-    """Main execution function"""
-    print("Starting MOHE Student Loans Scraper...\n")
-
+def run_scraper() -> List[Dict[str, str]]:
+    results: List[Dict[str, str]] = []
     scraper = MOHEStudentLoansScraper()
-    scraper.scrape()
-
-    if scraper.data:
-        scraper.save_to_csv()
-        scraper.save_to_json()
-        scraper.display_summary()
-    else:
-        logger.warning("No data was scraped")
-        print("✗ No data was scraped.")
-
-
-if __name__ == "__main__":
-    main()
+    try:
+        scraper.scrape()
+        for record in scraper.data:
+            results.append(_to_standard_loan(record))
+    except Exception as exc:
+        logger.exception("MOHE student loans scraper failed: %s", exc)
+    return results

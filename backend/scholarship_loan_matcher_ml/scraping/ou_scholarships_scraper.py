@@ -4,30 +4,21 @@ Website: https://ou.ac.lk/student-affairs-division/university-scholarships/
 Scrapes scholarship information from OUSL
 """
 
-import requests
+from __future__ import annotations
+
+import logging
+import time
+from datetime import datetime
+from typing import Dict, List
+
 from bs4 import BeautifulSoup
-import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
-import logging
-from datetime import datetime
-import re
-import json
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/ou_scholarships_scraper.log'),
-        logging.StreamHandler()
-    ]
-)
 logger = logging.getLogger(__name__)
 
 
@@ -179,73 +170,39 @@ class OUScholarshipsScraper:
         return '\n'.join(criteria)
 
     def save_to_csv(self, filename=None):
-        """Save data to CSV format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/ou_scholarships_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
-
-        df = pd.DataFrame(self.data)
-        df.to_csv(filename, index=False, encoding='utf-8')
-        logger.info(f"Saved {len(self.data)} scholarships to {filename}")
-        print(f"✓ CSV saved: {filename}")
-        return filename
+        """Deprecated legacy method (unused)."""
+        logger.warning("CSV export is deprecated for this scraper.")
 
     def save_to_json(self, filename=None):
-        """Save data to JSON format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/ou_scholarships_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved {len(self.data)} scholarships to {filename}")
-        print(f"✓ JSON saved: {filename}")
-        return filename
-
-    def display_summary(self):
-        """Display scraping summary"""
-        print("\n" + "="*70)
-        print("OPEN UNIVERSITY SRI LANKA - SCHOLARSHIPS SUMMARY")
-        print("="*70)
-        print(f"Total Records: {len(self.data)}")
-        print(f"Source: {self.source}")
-        print(f"Scraped Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-
-        if self.data:
-            df = pd.DataFrame(self.data)
-            print(f"\nColumns: {list(df.columns)}")
-            print("\n=== SCHOLARSHIPS EXTRACTED ===")
-            for idx, row in df.iterrows():
-                print(f"\n{idx+1}. {row['name']}")
-                print(f"   Funding: {row['funding_amount']}")
-                print(f"   Deadline: {row['deadline']}")
-                print(
-                    f"   Eligibility (first 100 chars): {str(row['eligibility'])[:100]}...")
-
-        print("="*70 + "\n")
+        """Deprecated legacy method (unused)."""
+        logger.warning("JSON export is deprecated for this scraper.")
 
 
-def main():
-    """Main execution function"""
-    print("Starting OUSL Scholarships Scraper...\n")
+def _to_standard_scholarship(record: Dict) -> Dict[str, str]:
+    return {
+        "name": record.get("name"),
+        "provider": record.get("source") or "Open University of Sri Lanka",
+        "scholarship_type": "university",
+        "description": record.get("description"),
+        "eligibility": record.get("eligibility"),
+        "benefits": record.get("funding_amount"),
+        "deadline": record.get("deadline"),
+        "url": record.get("application_url") or record.get("url"),
+        "country": "Sri Lanka",
+        "degree_level": "undergraduate",
+        "field_of_study": "various",
+        "financial_need_required": record.get("financial_need_required", "unknown"),
+        "source": record.get("source") or "OUSL",
+    }
 
+
+def run_scraper() -> List[Dict[str, str]]:
+    results: List[Dict[str, str]] = []
     scraper = OUScholarshipsScraper()
-    scraper.scrape()
-
-    if scraper.data:
-        scraper.save_to_csv()
-        scraper.save_to_json()
-        scraper.display_summary()
-    else:
-        logger.warning("No scholarships were scraped")
-        print("✗ No scholarships were scraped.")
-
-
-if __name__ == "__main__":
-    main()
+    try:
+        scraper.scrape()
+        for record in scraper.data:
+            results.append(_to_standard_scholarship(record))
+    except Exception as exc:
+        logger.exception("OUSL scholarship scraper failed: %s", exc)
+    return results

@@ -4,30 +4,21 @@ Scrapes education loan details from major Sri Lankan banks
 Banks: BOC, Commercial Bank, Peoples Bank, HNB, NSB, PABC Bank
 """
 
-import requests
+from __future__ import annotations
+
+import logging
+import time
+from datetime import datetime
+from typing import Dict, List
+
 from bs4 import BeautifulSoup
-import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
-import logging
-from datetime import datetime
-import re
-import json
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/bank_education_loans_scraper.log'),
-        logging.StreamHandler()
-    ]
-)
 logger = logging.getLogger(__name__)
 
 
@@ -347,81 +338,30 @@ class BankEducationLoansScraper:
         except Exception as e:
             logger.error(f"Error in scrape_pabc: {e}")
 
-    def save_to_csv(self, filename=None):
-        """Save data to CSV format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/bank_education_loans_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
-
-        df = pd.DataFrame(self.data)
-        df.to_csv(filename, index=False, encoding='utf-8')
-        logger.info(f"Saved {len(self.data)} bank loans to {filename}")
-        print(f"✓ CSV saved: {filename}")
-        return filename
-
-    def save_to_json(self, filename=None):
-        """Save data to JSON format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/bank_education_loans_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved {len(self.data)} bank loans to {filename}")
-        print(f"✓ JSON saved: {filename}")
-        return filename
-
-    def display_summary(self):
-        """Display scraping summary"""
-        print("\n" + "="*80)
-        print("BANK EDUCATION LOANS - SCRAPING SUMMARY")
-        print("="*80)
-        print(f"Total Loan Products: {len(self.data)}")
-        print(f"Scraping Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-
-        if self.data:
-            df = pd.DataFrame(self.data)
-            print(f"\nColumns: {list(df.columns)}")
-
-            print("\n=== BANKS COVERED ===")
-            banks = df['bank_name'].unique()
-            for bank in banks:
-                count = len(df[df['bank_name'] == bank])
-                print(f"  • {bank}: {count} product(s)")
-
-            print("\n=== LOAN PRODUCTS EXTRACTED ===")
-            for idx, row in df.iterrows():
-                print(f"\n{idx+1}. {row['bank_name']}")
-                print(f"   Product: {row['loan_product_name']}")
-                print(f"   Max Amount: {row['maximum_loan_amount']}")
-                print(f"   Repayment: {row['repayment_period']}")
-                print(f"   Age: {row['age_criteria']}")
-
-        print("\n" + "="*80 + "\n")
+def _to_standard_loan(record: Dict) -> Dict[str, str]:
+    """Convert raw scraper output to the shared loan schema."""
+    return {
+        "name": record.get("loan_product_name") or record.get("name"),
+        "provider": record.get("bank_name") or record.get("provider"),
+        "loan_type": record.get("loan_type") or "education_loan",
+        "interest_rate": record.get("interest_rate"),
+        "eligibility": record.get("eligibility"),
+        "repayment_terms": record.get("repayment_period"),
+        "max_amount": record.get("maximum_loan_amount") or record.get("funding_amount"),
+        "deadline": record.get("deadline") or "rolling",
+        "url": record.get("website_url") or record.get("application_url"),
+        "source": record.get("source") or "Bank Education Loans",
+    }
 
 
-def main():
-    """Main execution function"""
-    print("Starting Bank Education Loans Scraper...")
-    print("This will scrape education loan details from 6 major Sri Lankan banks\n")
-
+def run_scraper() -> List[Dict[str, str]]:
+    """Public entry-point used by the master scraper."""
+    results: List[Dict[str, str]] = []
     scraper = BankEducationLoansScraper()
-    scraper.scrape()
-
-    if scraper.data:
-        scraper.save_to_csv()
-        scraper.save_to_json()
-        scraper.display_summary()
-    else:
-        logger.warning("No bank loans were scraped")
-        print("✗ No data was scraped.")
-
-
-if __name__ == "__main__":
-    main()
+    try:
+        scraper.scrape()
+        for record in scraper.data:
+            results.append(_to_standard_loan(record))
+    except Exception as exc:
+        logger.exception("Bank education loans scraper failed: %s", exc)
+    return results

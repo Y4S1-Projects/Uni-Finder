@@ -1,27 +1,19 @@
-import requests
+from __future__ import annotations
+
+import logging
+import re
+import time
+from datetime import datetime
+from typing import Dict, List
+
 from bs4 import BeautifulSoup
-import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
-import logging
-from datetime import datetime
-import re
-import json
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/mohe_scraper.log'),
-        logging.StreamHandler()
-    ]
-)
 logger = logging.getLogger(__name__)
 
 
@@ -207,58 +199,31 @@ class MOHEScholarshipScraper:
         logger.info(f"Saved {len(self.data)} scholarships to {filename}")
         return filename
 
-    def save_to_json(self, filename=None):
-        """Save data to JSON format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/mohe_scholarships_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved {len(self.data)} scholarships to {filename}")
-        return filename
-
-    def display_summary(self):
-        """Display scraping summary"""
-        print("\n" + "="*60)
-        print("MOHE SCHOLARSHIPS - SCRAPING SUMMARY")
-        print("="*60)
-        print(f"Total Records: {len(self.data)}")
-        print(f"Source: {self.source}")
-        print(f"Scraped Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-
-        if self.data:
-            df = pd.DataFrame(self.data)
-            print(f"\nColumns: {list(df.columns)}")
-            print("\n=== FIRST 5 SCHOLARSHIPS ===")
-            print(df[['name', 'funding_amount', 'deadline']].head().to_string())
-
-            # Data quality check
-            print("\n=== DATA QUALITY ===")
-            non_na_count = df[df['funding_amount'] != 'N/A'].shape[0]
-            print(
-                f"Scholarships with funding amount: {non_na_count}/{len(df)}")
-            deadline_count = df[df['deadline'] != 'N/A'].shape[0]
-            print(f"Scholarships with deadline: {deadline_count}/{len(df)}")
-
-        print("="*60 + "\n")
+def _to_standard_scholarship(record: Dict) -> Dict[str, str]:
+    return {
+        "name": record.get("name"),
+        "provider": record.get("source") or "MOHE",
+        "scholarship_type": "government",
+        "description": record.get("description"),
+        "eligibility": record.get("eligibility"),
+        "benefits": record.get("funding_amount"),
+        "deadline": record.get("deadline") or "rolling",
+        "url": record.get("application_url") or record.get("url"),
+        "country": "Sri Lanka",
+        "degree_level": record.get("degree_level") or "unspecified",
+        "field_of_study": record.get("field_of_study") or "various",
+        "financial_need_required": record.get("financial_need_required", "unknown"),
+        "source": record.get("source") or "MOHE",
+    }
 
 
-def main():
-    """Main execution function"""
+def run_scraper() -> List[Dict[str, str]]:
+    results: List[Dict[str, str]] = []
     scraper = MOHEScholarshipScraper()
-    scraper.scrape()
-
-    if scraper.data:
-        scraper.save_to_csv()
-        scraper.save_to_json()
-        scraper.display_summary()
-    else:
-        logger.warning("No scholarships were scraped")
-
-
-if __name__ == "__main__":
-    main()
+    try:
+        scraper.scrape()
+        for record in scraper.data:
+            results.append(_to_standard_scholarship(record))
+    except Exception as exc:
+        logger.exception("MOHE scholarship scraper failed: %s", exc)
+    return results

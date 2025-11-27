@@ -4,31 +4,22 @@ Website: https://scholarship-positions.com/category/sri-lanka-scholarships/
 Scrapes Sri Lanka scholarships from scholarship-positions.com
 """
 
-import requests
+from __future__ import annotations
+
+import logging
+import re
+import time
+from datetime import datetime
+from typing import Dict, List
+
 from bs4 import BeautifulSoup
-import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
-import logging
-from datetime import datetime
-import re
-import json
-from urllib.parse import urljoin
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('logs/scholarship_positions_scraper.log'),
-        logging.StreamHandler()
-    ]
-)
 logger = logging.getLogger(__name__)
 
 
@@ -329,87 +320,37 @@ class ScholarshipPositionsScraper:
         return 'N/A'
 
     def save_to_csv(self, filename=None):
-        """Save data to CSV format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/scholarship_positions_{datetime.now().strftime("%Y%m%d_%H%M%S")}.csv'
-
-        df = pd.DataFrame(self.data)
-        df.to_csv(filename, index=False, encoding='utf-8')
-        logger.info(f"Saved {len(self.data)} scholarships to {filename}")
-        print(f"✓ CSV saved: {filename}")
-        return filename
+        logger.warning("CSV export is deprecated for this scraper.")
 
     def save_to_json(self, filename=None):
-        """Save data to JSON format"""
-        if not self.data:
-            logger.warning("No data to save")
-            return
-
-        if filename is None:
-            filename = f'data/scholarship_positions_{datetime.now().strftime("%Y%m%d_%H%M%S")}.json'
-
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(self.data, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved {len(self.data)} scholarships to {filename}")
-        print(f"✓ JSON saved: {filename}")
-        return filename
-
-    def display_summary(self):
-        """Display scraping summary"""
-        print("\n" + "="*70)
-        print("SCHOLARSHIP POSITIONS - SCRAPING SUMMARY")
-        print("="*70)
-        print(f"Total Records: {len(self.data)}")
-        print(f"Source: {self.source}")
-        print(f"Scraped Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"Category: Sri Lanka Scholarships")
-
-        if self.data:
-            df = pd.DataFrame(self.data)
-            print(f"\nColumns: {list(df.columns)}")
-            print("\n=== FIRST 5 SCHOLARSHIPS ===")
-            for idx, row in df.head(5).iterrows():
-                print(f"\n{idx+1}. {row['name']}")
-                print(f"   Deadline: {row['deadline']}")
-                print(f"   Funding: {row['funding_amount']}")
-                print(f"   Eligibility: {str(row['eligibility'])[:100]}...")
-
-            # Data quality check
-            print("\n\n=== DATA QUALITY ===")
-            non_na_count = df[df['funding_amount'] != 'N/A'].shape[0]
-            print(
-                f"Scholarships with funding amount: {non_na_count}/{len(df)}")
-            deadline_count = df[df['deadline'] != 'N/A'].shape[0]
-            print(f"Scholarships with deadline: {deadline_count}/{len(df)}")
-            eligibility_count = df[df['eligibility'] != 'N/A'].shape[0]
-            print(
-                f"Scholarships with eligibility: {eligibility_count}/{len(df)}")
-            desc_count = df[df['description'] != ''].shape[0]
-            print(f"Scholarships with description: {desc_count}/{len(df)}")
-
-        print("="*70 + "\n")
+        logger.warning("JSON export is deprecated for this scraper.")
 
 
-def main():
-    """Main execution function"""
-    print("Starting Scholarship Positions Scraper...")
-    print("This may take several minutes as it scrapes each scholarship page\n")
+def _to_standard_scholarship(record: Dict) -> Dict[str, str]:
+    return {
+        "name": record.get("name"),
+        "provider": record.get("source") or "Scholarship Positions",
+        "scholarship_type": "international",
+        "description": record.get("description"),
+        "eligibility": record.get("eligibility"),
+        "benefits": record.get("funding_amount"),
+        "deadline": record.get("deadline"),
+        "url": record.get("application_url"),
+        "country": "Sri Lanka",
+        "degree_level": record.get("degree_level") or "various",
+        "field_of_study": "various",
+        "financial_need_required": record.get("financial_need_required", "unknown"),
+        "source": record.get("source") or "Scholarship Positions",
+    }
 
+
+def run_scraper() -> List[Dict[str, str]]:
+    results: List[Dict[str, str]] = []
     scraper = ScholarshipPositionsScraper()
-    scraper.scrape()
-
-    if scraper.data:
-        scraper.save_to_csv()
-        scraper.save_to_json()
-        scraper.display_summary()
-    else:
-        logger.warning("No scholarships were scraped")
-        print("✗ No scholarships were scraped. Please check the website or logs.")
-
-
-if __name__ == "__main__":
-    main()
+    try:
+        scraper.scrape()
+        for record in scraper.data:
+            results.append(_to_standard_scholarship(record))
+    except Exception as exc:
+        logger.exception("Scholarship Positions scraper failed: %s", exc)
+    return results
