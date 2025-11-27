@@ -19,6 +19,18 @@ BACKEND_DIR = Path(__file__).resolve().parents[2]
 if str(BACKEND_DIR) not in sys.path:
     sys.path.append(str(BACKEND_DIR))
 
+# Import eligibility_checker - handle both module and script execution
+try:
+    from .eligibility_checker import evaluate_eligibility
+except ImportError:
+    # When running as standalone script, import directly from file
+    import importlib.util
+    eligibility_checker_path = Path(__file__).resolve().parent / "eligibility_checker.py"
+    spec = importlib.util.spec_from_file_location("eligibility_checker", eligibility_checker_path)
+    eligibility_checker = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(eligibility_checker)
+    evaluate_eligibility = eligibility_checker.evaluate_eligibility
+
 ARTIFACT_DIR = MODULE_ROOT / "training" / "artifacts"
 PROCESSED_DATA_PATH = ARTIFACT_DIR / "processed_dataset.json"
 VECTORIZER_PATH = ARTIFACT_DIR / "tfidf_vectorizer.joblib"
@@ -125,6 +137,41 @@ def _passes_filters(record: Dict[str, Any], profile: Dict[str, Any]) -> bool:
     return True
 
 
+def compute_final_score(similarity_score: float, eligibility_result: Dict[str, Any]) -> Dict[str, float]:
+    """
+    Compute rule_score and final_score for a record.
+
+    - If clearly eligible (no failed reasons): rule_score = 1.0
+    - If clearly ineligible (only failed reasons): rule_score = 0.0
+    - If mixed (both passed and failed reasons): rule_score in [0.3, 0.7]
+    - Similarity is halved for ineligible matches.
+    """
+    reasons = eligibility_result.get("reasons", {}) or {}
+    passed = reasons.get("passed", []) or []
+    failed = reasons.get("failed", []) or []
+
+    if eligibility_result.get("eligible"):
+        rule_score = 1.0
+        adjusted_similarity = similarity_score
+    else:
+        if passed and failed:
+            ratio = len(passed) / (len(passed) + len(failed))
+            rule_score = 0.3 + (0.4 * ratio)  # 0.3–0.7
+        elif failed:
+            rule_score = 0.0
+        else:
+            # No explicit rules triggered; treat as neutral partial match
+            rule_score = 0.5
+        adjusted_similarity = similarity_score / 2.0
+
+    final_score = (0.7 * adjusted_similarity) + (0.3 * rule_score)
+    return {
+        "rule_score": float(round(rule_score, 4)),
+        "final_score": float(round(final_score, 4)),
+        "similarity_score": float(round(adjusted_similarity, 4)),
+    }
+
+
 def match_student_profile(
     profile: Dict[str, Any],
     top_n: int = 5,
@@ -148,26 +195,40 @@ def match_student_profile(
     n_neighbors = min(max(candidate_pool, top_n), len(processed_df))
     distances, indices = model.kneighbors(query_vec, n_neighbors=n_neighbors)
 
-    scored_results = []
+    scored_results: List[Dict[str, Any]] = []
     for dist, idx in zip(distances[0], indices[0]):
         record = processed_df.iloc[idx].to_dict()
         similarity = 1 - float(dist)
-        record["similarity_score"] = round(similarity, 4)
+
+        eligibility = evaluate_eligibility(profile, record)
+        scores = compute_final_score(similarity, eligibility)
+
+        record.update(
+            {
+                "similarity_score": scores["similarity_score"],
+                "rule_score": scores["rule_score"],
+                "final_score": scores["final_score"],
+                "eligibility_status": "eligible"
+                if eligibility.get("eligible")
+                else "ineligible",
+                "eligibility_reasons": eligibility.get("reasons", {}),
+            }
+        )
         scored_results.append(record)
 
-    filtered_results = [
-        rec for rec in scored_results if _passes_filters(rec, profile)]
+    filtered_results = [rec for rec in scored_results if _passes_filters(rec, profile)]
     if not filtered_results:
         filtered_results = scored_results  # fall back to similarity order
 
-    # --- NEW: clean NaN/inf BEFORE returning ---
+    # Sort by final_score descending and clean NaN/inf before returning
+    ranked = sorted(filtered_results, key=lambda rec: rec.get("final_score", 0.0), reverse=True)
+
     def _clean_value(v):
         if isinstance(v, float):
             if np.isnan(v) or np.isinf(v):
-                return None  # or 0 if you prefer a numeric default
+                return None
             return v
         if isinstance(v, (np.floating, np.integer)):
-            # handle numpy scalar types
             v = float(v)
             if np.isnan(v) or np.isinf(v):
                 return None
@@ -175,7 +236,7 @@ def match_student_profile(
         return v
 
     cleaned_results: List[Dict[str, Any]] = []
-    for rec in filtered_results[:top_n]:
+    for rec in ranked[:top_n]:
         cleaned_rec = {k: _clean_value(v) for k, v in rec.items()}
         cleaned_results.append(cleaned_rec)
 
