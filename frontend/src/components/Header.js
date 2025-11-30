@@ -120,7 +120,7 @@ const Header = () => {
             </Nav.Link>
             <Nav.Link 
               as={Link} 
-              to="/budget-optimizer" 
+              to="/budget-optimizer-new" 
               className="fw-semibold mx-1"
               style={{ 
                 color: 'rgba(255,255,255,0.9)',

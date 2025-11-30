@@ -12,7 +12,7 @@ const HomePage = () => {
 
   const handleBudgetOptimizer = () => {
     // Navigate to the budget optimizer page within the frontend
-    navigate('/budget-optimizer');
+    navigate('/budget-optimizer-new');
   };
 
   return (
