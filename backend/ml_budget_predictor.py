@@ -50,24 +50,100 @@ class MLBudgetPredictor:
             print(f"⚠️ Error loading models: {e}")
     
     def load_reference_data(self):
-        """Load reference CSV files"""
+        """Load reference CSV files for advanced feature calculation"""
         try:
-            # Load academic calendar for dynamic adjustments
+            # Load academic calendar
             calendar_path = os.path.join(self.model_dir, 'academic_calendar.csv')
             if os.path.exists(calendar_path):
                 self.academic_calendar = pd.read_csv(calendar_path)
                 print("✅ Loaded Academic Calendar")
+            
+            # Load food prices for Food_Cost_Multiplier
+            food_prices_path = os.path.join(self.model_dir, 'food_prices.csv')
+            if os.path.exists(food_prices_path):
+                self.food_prices_df = pd.read_csv(food_prices_path)
+                # Calculate average food price
+                price_col = None
+                for col in ['Price', 'price', 'Unit_Price', 'Cost']:
+                    if col in self.food_prices_df.columns:
+                        price_col = col
+                        break
+                if price_col:
+                    avg_food_price = self.food_prices_df[price_col].mean()
+                    self.food_cost_multiplier = avg_food_price / 200  # Normalize
+                else:
+                    self.food_cost_multiplier = 1.0
+                print(f"✅ Loaded Food Prices (multiplier: {self.food_cost_multiplier:.2f})")
+            else:
+                self.food_cost_multiplier = 1.0
+            
+            # Load rental prices for Avg_District_Rent
+            rentals_path = os.path.join(self.model_dir, 'room_annex_rentals.csv')
+            if os.path.exists(rentals_path):
+                self.rentals_df = pd.read_csv(rentals_path)
+                rent_col = None
+                for col in ['Rent', 'Monthly_Rent', 'Price', 'rent', 'monthly_rent']:
+                    if col in self.rentals_df.columns:
+                        rent_col = col
+                        break
+                if rent_col:
+                    # Clean rental prices - remove "Rs", commas, "/month", etc.
+                    def clean_price(price_str):
+                        if pd.isna(price_str):
+                            return None
+                        price_str = str(price_str)
+                        price_str = price_str.replace('Rs', '').replace('LKR', '').replace(',', '')
+                        price_str = price_str.replace('/month', '').replace('/Month', '').strip()
+                        try:
+                            return float(price_str)
+                        except:
+                            return None
+                    
+                    self.rentals_df[rent_col + '_clean'] = self.rentals_df[rent_col].apply(clean_price)
+                    clean_rents = self.rentals_df[rent_col + '_clean'].dropna()
+                    
+                    if len(clean_rents) > 0:
+                        self.avg_district_rent = clean_rents.median()
+                    else:
+                        self.avg_district_rent = 10000
+                else:
+                    self.avg_district_rent = 10000
+                print(f"✅ Loaded Rental Prices (avg: LKR {self.avg_district_rent:,.2f})")
+            else:
+                self.avg_district_rent = 10000
+            
+            # Load transport costs for Avg_Transport_Cost
+            transport_path = os.path.join(self.model_dir, 'srilanka_transport_costs.csv')
+            if os.path.exists(transport_path):
+                self.transport_df = pd.read_csv(transport_path)
+                cost_col = None
+                for col in ['Cost', 'cost', 'Price', 'Fare', 'fare']:
+                    if col in self.transport_df.columns:
+                        cost_col = col
+                        break
+                if cost_col:
+                    self.avg_transport_cost = self.transport_df[cost_col].median()
+                else:
+                    self.avg_transport_cost = 150
+                print(f"✅ Loaded Transport Costs (avg: LKR {self.avg_transport_cost:.2f})")
+            else:
+                self.avg_transport_cost = 150
                 
         except Exception as e:
             print(f"⚠️ Error loading reference data: {e}")
+            # Set defaults
+            self.food_cost_multiplier = 1.0
+            self.avg_district_rent = 10000
+            self.avg_transport_cost = 150
     
     def preprocess_input(self, student_data):
         """
-        Preprocess student data to match model's expected format
-        NEW MODEL expects these 13 features in exact order:
+        Preprocess student data to match ADVANCED model's expected format
+        ADVANCED MODEL expects these 16 features in exact order:
         Income, Transport, Work_Hours, Comfort,
         Aff_Accommodation, Aff_Food, Aff_Materials, Aff_Transport, Aff_Social,
-        Has_Parental, Has_Job, Has_Scholarship, Has_Loan
+        Has_Parental, Has_Job, Has_Scholarship, Has_Loan,
+        Food_Cost_Multiplier, Avg_District_Rent, Avg_Transport_Cost
         
         Args:
             student_data: Dictionary with student information
@@ -97,8 +173,9 @@ class MLBudgetPredictor:
         # Financial comfort (1-5 scale, default 3)
         comfort = student_data.get('financial_comfort', 3)
         
-        # Features in exact order expected by the model
+        # Features in exact order expected by ADVANCED model (16 features)
         features = {
+            # Original 13 features
             'Income': float(student_data.get('monthly_income', 25000)),
             'Transport': float(student_data.get('transport_budget', student_data.get('transport_cost', 2000))),
             'Work_Hours': float(work_hours),
@@ -111,7 +188,11 @@ class MLBudgetPredictor:
             'Has_Parental': int(has_parental),
             'Has_Job': int(has_job),
             'Has_Scholarship': int(has_scholarship),
-            'Has_Loan': int(has_loan)
+            'Has_Loan': int(has_loan),
+            # NEW 3 features from real pricing data
+            'Food_Cost_Multiplier': float(self.food_cost_multiplier),
+            'Avg_District_Rent': float(self.avg_district_rent),
+            'Avg_Transport_Cost': float(self.avg_transport_cost)
         }
         
         # Create DataFrame with exact column order
@@ -125,9 +206,8 @@ class MLBudgetPredictor:
             except Exception as e:
                 print(f"⚠️ Preprocessing error: {e}")
                 return df.values
-                return df
         
-        return df
+        return df.values
     
     def _extract_year_number(self, year_string):
         """Extract year number from string like 'Second Year'"""

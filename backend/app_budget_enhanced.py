@@ -9,6 +9,7 @@ from flask_cors import CORS
 import pandas as pd
 import os
 from datetime import datetime
+import requests
 
 # Import our custom modules
 from budget_calculator import BudgetCalculator
@@ -23,9 +24,37 @@ ml_predictor = MLBudgetPredictor()
 
 # Global variables
 DATA_DIR = 'budget_optimizer_files'
+MONGODB_API_URL = 'http://localhost:3000/api/budget/save'  # Node.js MongoDB API
 
 print("🚀 Budget Optimizer API Starting...")
 print("="*60)
+
+
+def save_to_mongodb(prediction_data):
+    """
+    Save budget prediction to MongoDB via Node.js API
+    """
+    try:
+        response = requests.post(
+            MONGODB_API_URL,
+            json=prediction_data,
+            headers={'Content-Type': 'application/json'},
+            timeout=5
+        )
+        
+        if response.status_code == 201:
+            result = response.json()
+            print(f"💾 Successfully saved to MongoDB - ID: {result.get('predictionId')}")
+            return result
+        else:
+            print(f"⚠️ Failed to save to MongoDB: {response.status_code}")
+            print(f"   Response: {response.text}")
+            return None
+            
+    except requests.exceptions.RequestException as e:
+        print(f"⚠️ MongoDB save error: {e}")
+        print(f"   Make sure Node.js server is running on port 3000")
+        return None
 
 
 @app.route('/health', methods=['GET'])
@@ -283,6 +312,105 @@ def complete_budget_analysis():
         
         print(f"✅ Complete analysis returned successfully")
         print(f"   Income: LKR {monthly_income} | Expenses: LKR {round(calculated_total_expenses, 2)} | Savings: LKR {round(calculated_savings, 2)}")
+        
+        # Step 7: Save to MongoDB
+        try:
+            mongodb_data = {
+                # User info (optional - can be passed from frontend)
+                'userId': data.get('userId'),
+                'username': data.get('username'),
+                'email': data.get('email'),
+                
+                # Personal Information
+                'monthly_income': monthly_income,
+                'year_of_study': data.get('year_of_study', 'Second Year'),
+                'field_of_study': data.get('field_of_study', 'IT'),
+                'university': data.get('university', 'SLIIT'),
+                'district': data.get('district', 'Colombo'),
+                'accommodation_type': data.get('accommodation_type', 'Rented Room'),
+                
+                # Budget Inputs
+                'rent': rent,
+                'internet': internet,
+                'study_materials': study_materials,
+                'entertainment': entertainment,
+                'utilities': utilities,
+                'healthcare': healthcare,
+                'other': other,
+                
+                # Food Details
+                'food_type': food_data['food_type'],
+                'meals_per_day': food_data['meals_per_day'],
+                'diet_type': food_data['diet_type'],
+                'cooking_frequency': food_data['cooking_frequency'],
+                'cooking_percentage': food_data.get('cooking_percentage', 0),
+                'grocery_items': food_data.get('grocery_items', {}),
+                'delivery_items': food_data.get('delivery_items', {}),
+                
+                # Transport Details
+                'distance_uni_accommodation': transport_data['distance_uni_accommodation'],
+                'distance_home_uni': transport_data['distance_home_uni'],
+                'transport_method': transport_data['transport_method'],
+                'transport_method_home': transport_data['transport_method_home'],
+                'days_per_week': transport_data['days_per_week'],
+                'home_visit_frequency': transport_data['home_visit_frequency'],
+                
+                # Calculated Budgets
+                'food_budget': {
+                    'monthly_total': round(food_budget['monthly_total'], 2),
+                    'breakdown': food_budget.get('breakdown', {}),
+                    'recommendations': food_budget.get('recommendations', [])
+                },
+                'transport_budget': {
+                    'monthly_total': round(transport_budget['monthly_total'], 2),
+                    'breakdown': transport_budget.get('breakdown', {}),
+                    'recommendations': transport_budget.get('recommendations', [])
+                },
+                
+                # ML Prediction Results
+                'predicted_budget': round(complete_analysis.get('budget_prediction', {}).get('predicted_budget', 0), 2),
+                'ml_confidence': round(complete_analysis.get('budget_prediction', {}).get('confidence', 0) * 100, 2),
+                'risk_level': complete_analysis.get('risk_assessment', {}).get('risk_level', 'Medium Risk'),
+                'risk_probability': round(complete_analysis.get('risk_assessment', {}).get('risk_probability', 0) * 100, 2),
+                
+                # Financial Summary
+                'total_expenses': round(calculated_total_expenses, 2),
+                'calculated_savings': round(calculated_savings, 2),
+                'savings_rate': round(savings_rate, 1),
+                
+                # Recommendations
+                'recommendations': complete_analysis.get('recommendation', {}).get('key_recommendations', []),
+                'actionable_steps': complete_analysis.get('recommendation', {}).get('action_steps', []),
+                
+                # Expense Breakdown
+                'expense_breakdown': {
+                    "rent": rent,
+                    "food": round(food_budget['monthly_total'], 2),
+                    "transport": round(transport_budget['monthly_total'], 2),
+                    "internet": internet,
+                    "study_materials": study_materials,
+                    "entertainment": entertainment,
+                    "utilities": utilities,
+                    "healthcare": healthcare,
+                    "other": other
+                },
+                
+                # Metadata
+                'analysis_date': datetime.now().isoformat(),
+                'status': 'active'
+            }
+            
+            # Save to MongoDB (non-blocking)
+            mongo_result = save_to_mongodb(mongodb_data)
+            if mongo_result:
+                response['saved_to_db'] = True
+                response['prediction_id'] = mongo_result.get('predictionId')
+            else:
+                response['saved_to_db'] = False
+                
+        except Exception as db_error:
+            print(f"⚠️ Database save failed (continuing anyway): {db_error}")
+            response['saved_to_db'] = False
         
         return jsonify(response)
         

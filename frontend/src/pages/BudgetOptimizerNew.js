@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import './BudgetOptimizerNew.css';
 
 const BudgetOptimizerNew = () => {
+  // Get current user from Redux store
+  const { currentUser } = useSelector((state) => state.user);
+  
   // Multi-step form state
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -12,9 +16,9 @@ const BudgetOptimizerNew = () => {
   // Form data state
   const [formData, setFormData] = useState({
     // Account Information
-    email: '',
+    email: currentUser?.email || '',
     password: '',
-    full_name: '',
+    full_name: currentUser?.username || '',
     phone: '',
     university: 'SLIIT',
     
@@ -91,17 +95,114 @@ const BudgetOptimizerNew = () => {
     setError(null);
 
     try {
+      // Include user information if logged in
+      const requestData = {
+        ...formData,
+        userId: currentUser?._id || null,
+        username: currentUser?.username || formData.full_name,
+        email: currentUser?.email || formData.email
+      };
+
+      // Step 1: Get ML analysis from Flask
       const response = await fetch(`${backendUrl}/api/budget/complete-analysis`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(requestData)
       });
 
       if (response.ok) {
         const result = await response.json();
         setAnalysisResult(result);
+        
+        // Step 2: Save to MongoDB directly via Node.js API (like SignUp does)
+        try {
+          const budgetSaveData = {
+            // User info
+            userId: currentUser?._id || null,
+            username: currentUser?.username || formData.full_name,
+            email: currentUser?.email || formData.email,
+            
+            // Personal Information
+            monthly_income: formData.monthly_income,
+            year_of_study: formData.year_of_study,
+            field_of_study: formData.field_of_study,
+            university: formData.university,
+            district: formData.district,
+            accommodation_type: formData.accommodation_type,
+            
+            // Budget Inputs
+            rent: formData.rent,
+            internet: formData.internet,
+            study_materials: formData.study_materials,
+            entertainment: formData.entertainment,
+            utilities: formData.utilities,
+            healthcare: formData.healthcare,
+            other: formData.other,
+            
+            // Food Details
+            food_type: formData.food_type,
+            meals_per_day: formData.meals_per_day,
+            diet_type: formData.diet_type,
+            cooking_frequency: formData.cooking_frequency,
+            cooking_percentage: formData.cooking_percentage,
+            
+            // Transport Details
+            distance_uni_accommodation: formData.distance_uni_accommodation,
+            distance_home_uni: formData.distance_home_uni,
+            transport_method: formData.transport_method,
+            transport_method_home: formData.transport_method_home,
+            days_per_week: formData.days_per_week,
+            home_visit_frequency: formData.home_visit_frequency,
+            
+            // Calculated Budgets from Flask response
+            food_budget: result.calculated_budgets?.food || {},
+            transport_budget: result.calculated_budgets?.transport || {},
+            
+            // ML Prediction Results
+            predicted_budget: result.ml_prediction?.predicted_budget || 0,
+            ml_confidence: (result.ml_prediction?.confidence || 0) * 100,
+            risk_level: result.risk_assessment?.risk_level || 'Medium Risk',
+            risk_probability: (result.risk_assessment?.risk_probability || 0) * 100,
+            
+            // Financial Summary
+            total_expenses: result.financial_summary?.total_expenses || 0,
+            calculated_savings: result.financial_summary?.monthly_savings || 0,
+            savings_rate: result.financial_summary?.savings_rate || 0,
+            
+            // Recommendations
+            recommendations: result.recommendation?.key_recommendations || [],
+            actionable_steps: result.recommendation?.action_steps || [],
+            
+            // Expense Breakdown
+            expense_breakdown: result.expense_breakdown || {},
+            
+            // Metadata
+            analysis_date: new Date().toISOString(),
+            status: 'active'
+          };
+
+          // Save to MongoDB via Node.js API (port 3000) - Same as SignUp
+          const saveResponse = await fetch('http://localhost:3000/api/budget/save', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(budgetSaveData)
+          });
+
+          if (saveResponse.ok) {
+            const saveResult = await saveResponse.json();
+            console.log('✅ Budget prediction saved to MongoDB:', saveResult.predictionId);
+          } else {
+            console.warn('⚠️ Failed to save to MongoDB, but showing results anyway');
+          }
+        } catch (saveError) {
+          console.warn('⚠️ MongoDB save error:', saveError.message);
+          // Continue anyway - user still gets analysis results
+        }
+        
         setCurrentStep(7); // Move to results step
       } else {
         const errorData = await response.json();

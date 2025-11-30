@@ -68,7 +68,7 @@ if __name__ == "__main__":
     df = survey_df.copy()
     df = df.drop(['Timestamp', 'Additional_Comments'], axis=1)
     
-    # Feature Engineering (matching FIXED training notebook - 13 features)
+    # Feature Engineering (matching ADVANCED training notebook - 16 features)
     def convert_income(income_str):
         if pd.isna(income_str) or income_str == 'Prefer not to say':
             return 25000
@@ -116,6 +116,14 @@ if __name__ == "__main__":
     df['Has_Scholarship'] = df['Funding_Source'].str.contains('Scholarship', na=False).astype(int)
     df['Has_Loan'] = df['Funding_Source'].str.contains('Loan', na=False).astype(int)
     
+    # NEW: Add the 3 advanced features from real pricing data
+    # These should match what's calculated in training
+    df['Food_Cost_Multiplier'] = 1.5  # Approximate from food_prices.csv
+    df['Avg_District_Rent'] = 15000  # Approximate median from rentals
+    df['Avg_Transport_Cost'] = 150  # Approximate from transport costs
+    
+    print(f"✅ Added 3 advanced pricing features")
+    
     # Create targets (matching fixed training notebook logic)
     # Base percentages
     accommodation_pct = 0.50 - (df['Aff_Accommodation'] - 1) * 0.10  # 50% down to 10%
@@ -139,11 +147,12 @@ if __name__ == "__main__":
     df['Savings_Rate'] = (df['Savings'] / df['Income']) * 100
     df['Financial_Risk'] = ((df['Savings_Rate'] < 10) | (df['Comfort'] <= 2)).astype(int)
     
-    # Prepare features - EXACT 13 features matching new model
+    # Prepare features - EXACT 16 features matching ADVANCED model
     feature_columns = [
         'Income', 'Transport', 'Work_Hours', 'Comfort',
         'Aff_Accommodation', 'Aff_Food', 'Aff_Materials', 'Aff_Transport', 'Aff_Social',
-        'Has_Parental', 'Has_Job', 'Has_Scholarship', 'Has_Loan'
+        'Has_Parental', 'Has_Job', 'Has_Scholarship', 'Has_Loan',
+        'Food_Cost_Multiplier', 'Avg_District_Rent', 'Avg_Transport_Cost'
     ]
     
     X = df[feature_columns].copy()
