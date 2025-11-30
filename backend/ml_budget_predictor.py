@@ -64,6 +64,10 @@ class MLBudgetPredictor:
     def preprocess_input(self, student_data):
         """
         Preprocess student data to match model's expected format
+        NEW MODEL expects these 13 features in exact order:
+        Income, Transport, Work_Hours, Comfort,
+        Aff_Accommodation, Aff_Food, Aff_Materials, Aff_Transport, Aff_Social,
+        Has_Parental, Has_Job, Has_Scholarship, Has_Loan
         
         Args:
             student_data: Dictionary with student information
@@ -72,33 +76,55 @@ class MLBudgetPredictor:
             Processed features ready for model prediction
         """
         
-        # Extract required features (adjust based on your model's training features)
+        # Convert affordability scores (assume user provides 1-5 scale or we estimate)
+        # Default to 3 (Neutral) if not provided
+        aff_accommodation = student_data.get('affordability_accommodation', 3)
+        aff_food = student_data.get('affordability_food', 3)
+        aff_materials = student_data.get('affordability_materials', 3)
+        aff_transport = student_data.get('affordability_transport', 3)
+        aff_social = student_data.get('affordability_social', 3)
+        
+        # Parse funding sources
+        funding_source = student_data.get('funding_source', 'Parental/Family Support')
+        has_parental = 1 if 'Parental' in funding_source or 'Family' in funding_source else 0
+        has_job = 1 if 'Part-time' in funding_source or 'Job' in funding_source else 0
+        has_scholarship = 1 if 'Scholarship' in funding_source or 'Grant' in funding_source else 0
+        has_loan = 1 if 'Loan' in funding_source else 0
+        
+        # Extract work hours (default 0 if not provided)
+        work_hours = student_data.get('work_hours', 0)
+        
+        # Financial comfort (1-5 scale, default 3)
+        comfort = student_data.get('financial_comfort', 3)
+        
+        # Features in exact order expected by the model
         features = {
-            'Estimated_Income_LKR': student_data.get('monthly_income', 25000),
-            'Financial_Comfort_Level': student_data.get('financial_comfort_level', 3),
-            'Academic_Level': student_data.get('year_of_study', 'Second Year'),
-            'Student_District': student_data.get('district', 'Colombo'),
-            'Accommodation_Type': student_data.get('accommodation_type', 'Rented Room'),
-            'Monthly_Rent_LKR': student_data.get('rent', 8000),
-            'Transport_Type': student_data.get('transport_method', 'Bus'),
-            'Food_Type': student_data.get('food_type', 'Mixed'),
-            'Degree_Program': student_data.get('field_of_study', 'IT'),
-            'University': student_data.get('university', 'SLIIT'),
-            'Year_in_Program': self._extract_year_number(student_data.get('year_of_study', 'Second Year')),
-            'Meals_Per_Day': self._extract_meals_count(student_data.get('meals_per_day', '3 meals')),
-            'Home_Visit_Frequency': student_data.get('home_visit_frequency', 'Monthly')
+            'Income': float(student_data.get('monthly_income', 25000)),
+            'Transport': float(student_data.get('transport_budget', student_data.get('transport_cost', 2000))),
+            'Work_Hours': float(work_hours),
+            'Comfort': float(comfort),
+            'Aff_Accommodation': float(aff_accommodation),
+            'Aff_Food': float(aff_food),
+            'Aff_Materials': float(aff_materials),
+            'Aff_Transport': float(aff_transport),
+            'Aff_Social': float(aff_social),
+            'Has_Parental': int(has_parental),
+            'Has_Job': int(has_job),
+            'Has_Scholarship': int(has_scholarship),
+            'Has_Loan': int(has_loan)
         }
         
-        # Create DataFrame
+        # Create DataFrame with exact column order
         df = pd.DataFrame([features])
         
-        # Use preprocessor if available
+        # Use preprocessor (StandardScaler) if available
         if self.feature_preprocessor is not None:
             try:
                 processed_features = self.feature_preprocessor.transform(df)
                 return processed_features
             except Exception as e:
                 print(f"⚠️ Preprocessing error: {e}")
+                return df.values
                 return df
         
         return df
