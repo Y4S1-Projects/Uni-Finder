@@ -3,13 +3,18 @@
 const BASE_URL =
   process.env.REACT_APP_MATCHER_API_BASE || 'http://localhost:3000/api/scholarships';
 
-export async function requestMatches(profile, topN = 5) {
+export async function requestMatches(profile, options = {}) {
+  const { topN = 5, matchType } = options;
+
   const response = await fetch(`${BASE_URL}/match?topN=${topN}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(profile),
+    body: JSON.stringify({
+      ...profile,
+      match_type: matchType,
+    }),
   });
 
   if (!response.ok) {
@@ -19,7 +24,18 @@ export async function requestMatches(profile, topN = 5) {
   }
 
   const payload = await response.json();
-  return payload.matches || [];
+  const matches = payload.matches || [];
+
+  if (!matchType) {
+    return matches;
+  }
+
+  return matches.filter((item) => {
+    if (!item?.record_type) {
+      return false;
+    }
+    return item.record_type.toLowerCase() === matchType.toLowerCase();
+  });
 }
 
 

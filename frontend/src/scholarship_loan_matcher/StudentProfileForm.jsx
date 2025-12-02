@@ -26,7 +26,7 @@ function useValidation(values) {
   }, [values]);
 }
 
-export default function StudentProfileForm({ onSubmit, isLoading }) {
+export default function StudentProfileForm({ onSubmit, isLoading, submitLabel = 'Find Matches' }) {
   const [values, setValues] = useState(initialState);
   const [touched, setTouched] = useState({});
   const errors = useValidation(values);
@@ -175,7 +175,7 @@ export default function StudentProfileForm({ onSubmit, isLoading }) {
       </div>
 
       <button type="submit" className="matcher-form__submit" disabled={isLoading}>
-        {isLoading ? 'Finding matches…' : 'Find Matches'}
+        {isLoading ? 'Finding matches…' : submitLabel}
       </button>
     </form>
   );

@@ -167,6 +167,101 @@
   color: #b42318;
 }
 
+.matcher-landing {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.matcher-landing__hero {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(124, 58, 237, 0.08));
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(79, 70, 229, 0.15);
+}
+
+.matcher-landing__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.matcher-landing__btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.85rem 2rem;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.matcher-landing__btn--primary {
+  background: linear-gradient(120deg, #7c3aed, #6366f1);
+  color: #fff;
+}
+
+.matcher-landing__btn--secondary {
+  background: #09090b;
+  color: #fff;
+}
+
+.matcher-landing__btn--ghost {
+  border: 1px solid #c7d2fe;
+  color: #4338ca;
+  background: #fff;
+}
+
+.matcher-landing__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.25);
+}
+
+.matcher-landing__meta {
+  color: #312e81;
+  font-size: 0.9rem;
+}
+
+.matcher-landing__split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.matcher-landing__card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.5rem;
+  border: 1px solid #e4e7ec;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.matcher-landing__card ul {
+  padding-left: 1.25rem;
+  color: #475467;
+  margin: 0.75rem 0 1rem;
+}
+
+.matcher-landing__features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.matcher-landing__features article {
+  padding: 1.25rem;
+  border-radius: 16px;
+  background: #f9fafb;
+  border: 1px dashed #d4d4ff;
+}
+
 @media (min-width: 960px) {
   .matcher-page {
     flex-direction: row;
@@ -174,6 +269,11 @@
 
   .matcher-page__panel {
     width: 50%;
+  }
+
+  .matcher-landing__cta {
+    flex-direction: row;
+    justify-content: center;
   }
 }
 
