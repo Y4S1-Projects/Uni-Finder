@@ -1,4 +1,9 @@
-export default function MatchResults({ results = [], isLoading, error }) {
+export default function MatchResults({
+  results = [],
+  isLoading,
+  error,
+  emptyMessage = 'Fill the form to see personalized matches.',
+}) {
   if (isLoading) {
     return <div className="matcher-results__state">Loading recommendations…</div>;
   }
@@ -8,7 +13,7 @@ export default function MatchResults({ results = [], isLoading, error }) {
   }
 
   if (!results.length) {
-    return <div className="matcher-results__state">Fill the form to see personalized matches.</div>;
+    return <div className="matcher-results__state">{emptyMessage}</div>;
   }
 
   return (

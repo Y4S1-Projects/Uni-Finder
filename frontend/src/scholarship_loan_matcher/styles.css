@@ -1,18 +1,22 @@
 .matcher-page {
+  margin-top: 50px;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 2rem 1.5rem 4rem;
+  padding: 6rem 1.5rem 4rem;
   max-width: 1200px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  background: #ffffff;
 }
 
 .matcher-page__panel {
   background: #ffffff;
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.07);
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.08);
+  border: 1px solid rgba(102, 126, 234, 0.1);
 }
 
 .matcher-page__panel--results {
@@ -22,7 +26,7 @@
 .matcher-page__eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #6366f1;
+  color: #667eea;
   font-weight: 600;
   font-size: 0.8rem;
 }
@@ -30,6 +34,18 @@
 .matcher-page__lead {
   color: #475467;
   margin-bottom: 1.5rem;
+}
+
+.matcher-page h1 {
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.matcher-page h2 {
+  color: #667eea;
+  font-weight: 600;
+  margin-bottom: 1rem;
 }
 
 .matcher-form {
@@ -63,8 +79,8 @@
 
 .matcher-form input:focus,
 .matcher-form textarea:focus {
-  border-color: #7c3aed;
-  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.12);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
   outline: none;
 }
 
@@ -74,7 +90,7 @@
 
 .matcher-form__submit {
   align-self: flex-start;
-  background: linear-gradient(120deg, #7c3aed, #6366f1);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
   border: none;
   padding: 0.85rem 2.4rem;
@@ -91,7 +107,7 @@
 
 .matcher-form__submit:not(:disabled):hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 20px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 12px 20px rgba(102, 126, 234, 0.3);
 }
 
 .matcher-form__error {
@@ -106,10 +122,11 @@
 }
 
 .matcher-results__card {
-  border: 1px solid #e4e7ec;
+  border: 1px solid rgba(102, 126, 234, 0.15);
   border-radius: 16px;
   padding: 1.25rem;
-  background: #f9fafb;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.05);
 }
 
 .matcher-results__pill {
@@ -117,11 +134,12 @@
   text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.15em;
-  background: #eef2ff;
-  color: #4f46e5;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15), rgba(118, 75, 162, 0.15));
+  color: #667eea;
   border-radius: 999px;
   padding: 0.2rem 0.65rem;
   margin-bottom: 0.5rem;
+  border: 1px solid rgba(102, 126, 234, 0.2);
 }
 
 .matcher-results__description {
@@ -151,15 +169,21 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  color: #6366f1;
+  color: #667eea;
   font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.matcher-results__link:hover {
+  color: #764ba2;
 }
 
 .matcher-results__state {
   padding: 1rem;
   border-radius: 12px;
-  background: #f4f4ff;
-  color: #4c1d95;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  color: #667eea;
+  border: 1px solid rgba(102, 126, 234, 0.2);
 }
 
 .matcher-results__state--error {
@@ -169,20 +193,23 @@
 
 .matcher-landing {
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
+  margin: 50px auto;
+  padding: 6rem 1.5rem 4rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  background: #ffffff;
 }
 
 .matcher-landing__hero {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(124, 58, 237, 0.08));
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
   border-radius: 20px;
   padding: 2rem;
   text-align: center;
-  box-shadow: 0 15px 40px rgba(79, 70, 229, 0.15);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.15);
+  border: 1px solid rgba(102, 126, 234, 0.2);
 }
 
 .matcher-landing__cta {
@@ -204,28 +231,28 @@
 }
 
 .matcher-landing__btn--primary {
-  background: linear-gradient(120deg, #7c3aed, #6366f1);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
 }
 
 .matcher-landing__btn--secondary {
-  background: #09090b;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
 }
 
 .matcher-landing__btn--ghost {
-  border: 1px solid #c7d2fe;
-  color: #4338ca;
-  background: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border: none;
 }
 
 .matcher-landing__btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 12px 24px rgba(99, 102, 241, 0.25);
+  box-shadow: 0 12px 24px rgba(102, 126, 234, 0.3);
 }
 
 .matcher-landing__meta {
-  color: #312e81;
+  color: #667eea;
   font-size: 0.9rem;
 }
 
@@ -239,8 +266,8 @@
   background: #ffffff;
   border-radius: 18px;
   padding: 1.5rem;
-  border: 1px solid #e4e7ec;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(102, 126, 234, 0.15);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.08);
 }
 
 .matcher-landing__card ul {
@@ -258,8 +285,56 @@
 .matcher-landing__features article {
   padding: 1.25rem;
   border-radius: 16px;
-  background: #f9fafb;
-  border: 1px dashed #d4d4ff;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  border: 1px dashed rgba(102, 126, 234, 0.3);
+}
+
+.matcher-results__eligibility {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+  border: 1px solid rgba(102, 126, 234, 0.15);
+}
+
+.matcher-results__eligibility h4 {
+  color: #667eea;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.matcher-results__eligibility-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.matcher-results__eligibility-columns h5 {
+  color: #667eea;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.matcher-results__eligibility-columns ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.matcher-results__eligibility-columns li {
+  padding: 0.5rem 0;
+  color: #475467;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.matcher-results__eligibility-columns li:last-child {
+  border-bottom: none;
 }
 
 @media (min-width: 960px) {

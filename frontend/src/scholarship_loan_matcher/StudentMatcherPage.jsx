@@ -24,7 +24,7 @@ export default function StudentMatcherPage() {
     <div className="matcher-landing">
       <section className="matcher-landing__hero">
         <p className="matcher-page__eyebrow">Funding Discovery Workspace</p>
-        <h1>Scholarship & Loan Matching Hub</h1>
+        <h1>Scholarship & Loan Matching</h1>
         <p className="matcher-page__lead">
           Explore the latest education funding opportunities, then jump into the dedicated flows for
           either scholarships or education loans based on your current priority.
