@@ -33,7 +33,7 @@ function runPredictor(profile, topN = 5) {
       }
       try {
         const parsed = JSON.parse(stdout);
-        resolve(parsed.results || []);
+        resolve(parsed);
       } catch (err) {
         reject(new Error(`Failed to parse predictor output: ${err.message}`));
       }
@@ -45,12 +45,35 @@ exports.matchScholarships = async (req, res) => {
   try {
     const profile = req.body || {};
     const topN = Number(req.query.topN) || 5;
+    const matchType = profile.match_type || req.query.matchType || null;
 
     if (!Object.keys(profile).length) {
       return res.status(400).json({ message: 'Student profile payload is required.' });
     }
 
-    const matches = await runPredictor(profile, topN);
+    const result = await runPredictor(profile, topN);
+    
+    // Filter based on matchType
+    let matches = [];
+    if (matchType === 'scholarship' || matchType === 'scholarships') {
+      matches = result.scholarships || result.results || [];
+      // Also filter results array if it exists
+      if (result.results && Array.isArray(result.results)) {
+        matches = result.results.filter(item => 
+          item.record_type === 'scholarship' || !item.record_type
+        );
+      }
+    } else if (matchType === 'loan' || matchType === 'loans') {
+      matches = result.loans || [];
+      // Also filter results array if it exists
+      if (result.results && Array.isArray(result.results)) {
+        matches = result.results.filter(item => item.record_type === 'loan');
+      }
+    } else {
+      // No filter - return combined results
+      matches = result.results || result.combined || [];
+    }
+
     return res.json({ matches, count: matches.length });
   } catch (error) {
     console.error('Scholarship matcher error:', error);

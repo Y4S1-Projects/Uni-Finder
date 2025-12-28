@@ -80,6 +80,7 @@ export default function MatcherFlowPage({
           onSubmit={handleSubmit}
           isLoading={isLoading}
           submitLabel={copy.submitLabel}
+          matchType={matchType}
         />
       </section>
 
@@ -95,5 +96,7 @@ export default function MatcherFlowPage({
     </div>
   );
 }
+
+
 
 
