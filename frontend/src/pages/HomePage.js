@@ -15,6 +15,10 @@ const HomePage = () => {
     navigate('/budget-optimizer-new');
   };
 
+  const handleScholarshipMatcher = () => {
+    window.location.href = 'http://localhost:3001/scholarship-matcher';
+  };
+
   return (
     <div className="homepage-container">
       {/* Professional Header Section */}
@@ -219,8 +223,20 @@ const HomePage = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    animation: 'float 6s ease-in-out infinite 3s'
-                  }}>
+                    animation: 'float 6s ease-in-out infinite 3s',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onClick={handleScholarshipMatcher}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                  }}
+                  >
                     <div style={{ fontSize: '2rem', marginBottom: '10px' }}>🏆</div>
                     <div style={{ fontSize: '0.9rem', fontWeight: '600', textAlign: 'center' }}>Scholarship & Loan Matcher</div>
                   </div>
