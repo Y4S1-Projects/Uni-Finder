@@ -6,6 +6,7 @@ import cors from 'cors';
 import adminroutes from './routes/admin.routes.js'
 import cookieParser from 'cookie-parser';
 import authroutes from './routes/auth.routes.js'
+import budgetroutes from './routes/budget.routes.js'
 dotenv.config();
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -23,7 +24,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'http://localhost:3001', // Replace with your frontend's URL
+    origin: ['http://localhost:3000', 'http://localhost:3001'], // Allow both React ports
+    credentials: true
 }));
 app.listen(3000, () => {
     console.log('server listen on port 3000!')
@@ -39,6 +41,7 @@ app.use("/api/auth",authroutes)
 
 
 app.use("/api/admin",adminroutes)
+app.use("/api/budget",budgetroutes)
 
 app.use((err,req,res,next)=>{
     const statusCode=err.statusCode||500;
