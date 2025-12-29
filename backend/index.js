@@ -5,12 +5,14 @@ import Admin from "./models/manager.model.js";
 import cors from 'cors';
 import adminroutes from './routes/admin.routes.js'
 import cookieParser from 'cookie-parser';
-import authroutes from './routes/auth.routes.js'
-import scholarshipMatcherRoutes from './routes/scholarshipMatcherRoutes.js';
 import { createRequire } from 'module';
+import authroutes from './routes/auth.routes.js'
+import budgetroutes from './routes/budget.routes.js'
+import scholarshipMatcherRoutes from './routes/scholarshipMatcherRoutes.js';
+dotenv.config();
+
 const require = createRequire(import.meta.url);
 const updateDatasetRoutes = require('./routes/updateDatasetRoutes.js');
-dotenv.config();
 
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log('Connected to Mongodb')
@@ -27,7 +29,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'http://localhost:3001', // Replace with your frontend's URL
+    origin: ['http://localhost:3000', 'http://localhost:3001'], // Allow both React ports
+    credentials: true
 }));
 app.listen(3000, () => {
     console.log('server listen on port 3000!')
@@ -43,9 +46,10 @@ app.use("/api/auth",authroutes)
 
 
 app.use("/api/admin",adminroutes)
+app.use("/api/budget",budgetroutes)
 
 app.use("/api/scholarships", scholarshipMatcherRoutes);
-app.use('/api', updateDatasetRoutes);
+app.use("/api", updateDatasetRoutes);
 
 app.use((err,req,res,next)=>{
     const statusCode=err.statusCode||500;
