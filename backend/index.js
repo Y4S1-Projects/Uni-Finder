@@ -6,6 +6,10 @@ import cors from 'cors';
 import adminroutes from './routes/admin.routes.js'
 import cookieParser from 'cookie-parser';
 import authroutes from './routes/auth.routes.js'
+import scholarshipMatcherRoutes from './routes/scholarshipMatcherRoutes.js';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const updateDatasetRoutes = require('./routes/updateDatasetRoutes.js');
 dotenv.config();
 
 mongoose.connect(process.env.MONGO).then(()=>{
@@ -39,6 +43,9 @@ app.use("/api/auth",authroutes)
 
 
 app.use("/api/admin",adminroutes)
+
+app.use("/api/scholarships", scholarshipMatcherRoutes);
+app.use('/api', updateDatasetRoutes);
 
 app.use((err,req,res,next)=>{
     const statusCode=err.statusCode||500;

@@ -41,6 +41,10 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/Signin';
 import ProfileAll from './pages/ProfileAll';
 
+import StudentMatcherPage from './scholarship_loan_matcher/StudentMatcherPage';
+import ScholarshipMatcherPage from './scholarship_loan_matcher/ScholarshipMatcherPage';
+import LoanMatcherPage from './scholarship_loan_matcher/LoanMatcherPage';
+
 function AppContent() {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -64,6 +68,10 @@ function AppContent() {
         <Route path="/keywords" element={<KeywordsPage />} /> {/* New route */}
         <Route path="/recommendations" element={<RecommendationsPage />} />
         <Route path="/best-recommendation" element={<BestRecommendationPage />} />
+
+        <Route path="/scholarship-matcher" element={<StudentMatcherPage />} />
+        <Route path="/scholarship-matcher/scholarships" element={<ScholarshipMatcherPage />} />
+        <Route path="/scholarship-matcher/loans" element={<LoanMatcherPage />} />
  
         <Route path="/addReview" element={<AddReview />} />
         <Route path="/signUp" element={<SignUp />} />
