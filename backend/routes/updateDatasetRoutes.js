@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const { triggerUpdate } = require('../controllers/updateDatasetController');
+const { triggerUpdate, getStats } = require('../controllers/updateDatasetController');
 
-// POST /api/update-datasets
+// GET /api/update-datasets/stats - Get current dataset statistics
+router.get('/update-datasets/stats', getStats);
+
+// POST /api/update-datasets - Trigger dataset update
 router.post('/update-datasets', triggerUpdate);
 
 module.exports = router;
+
 
 
 

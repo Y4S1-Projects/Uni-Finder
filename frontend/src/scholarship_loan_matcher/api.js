@@ -2,6 +2,9 @@
 // You can override this via REACT_APP_MATCHER_API_BASE in your env if needed.
 const BASE_URL =
   process.env.REACT_APP_MATCHER_API_BASE || 'http://localhost:3000/api/scholarships';
+const API_BASE = process.env.REACT_APP_MATCHER_API_BASE 
+  ? process.env.REACT_APP_MATCHER_API_BASE.replace('/api/scholarships', '')
+  : 'http://localhost:3000';
 
 export async function requestMatches(profile, options = {}) {
   const { topN = 5, matchType } = options;
@@ -36,6 +39,40 @@ export async function requestMatches(profile, options = {}) {
     }
     return item.record_type.toLowerCase() === matchType.toLowerCase();
   });
+}
+
+export async function triggerDatasetUpdate() {
+  const response = await fetch(`${API_BASE}/api/update-datasets`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({}));
+    const message = errorBody?.error || errorBody?.message || 'Failed to update datasets.';
+    throw new Error(message);
+  }
+
+  return await response.json();
+}
+
+export async function getDatasetStats() {
+  const response = await fetch(`${API_BASE}/api/update-datasets/stats`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.json().catch(() => ({}));
+    const message = errorBody?.error || errorBody?.message || 'Failed to fetch dataset stats.';
+    throw new Error(message);
+  }
+
+  return await response.json();
 }
 
 

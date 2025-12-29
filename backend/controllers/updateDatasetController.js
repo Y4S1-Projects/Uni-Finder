@@ -54,6 +54,65 @@ function runUpdatePipeline() {
   });
 }
 
+function getDatasetStats() {
+  return new Promise((resolve, reject) => {
+    const STATS_SCRIPT_PATH = path.join(
+      __dirname,
+      '..',
+      'scholarship_loan_matcher_ml',
+      'pipeline',
+      'get_stats.py'
+    );
+
+    const child = spawn(PYTHON_BIN, [STATS_SCRIPT_PATH], {
+      cwd: path.join(__dirname, '..'),
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+
+    let stdout = '';
+    let stderr = '';
+
+    child.stdout.on('data', (chunk) => {
+      stdout += chunk.toString();
+    });
+
+    child.stderr.on('data', (chunk) => {
+      stderr += chunk.toString();
+    });
+
+    child.on('close', (code) => {
+      if (code !== 0) {
+        return reject(new Error(stderr || `Stats fetch exited with code ${code}`));
+      }
+      try {
+        const parsed = JSON.parse(stdout || '{}');
+        if (parsed.error) {
+          return reject(new Error(parsed.error));
+        }
+        resolve(parsed);
+      } catch (err) {
+        reject(new Error(`Failed to parse stats output: ${err.message}`));
+      }
+    });
+  });
+}
+
+exports.getStats = async (req, res) => {
+  try {
+    const stats = await getDatasetStats();
+    return res.json({
+      success: true,
+      ...stats,
+    });
+  } catch (error) {
+    console.error('Dataset stats error:', error);
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 exports.triggerUpdate = async (req, res) => {
   try {
     const result = await runUpdatePipeline();
@@ -66,7 +125,7 @@ exports.triggerUpdate = async (req, res) => {
     }
 
     const updatedAt =
-      (result.summary && result.summary.finished_at) || new Date().toISOString();
+      (result.summary && result.summary.completed_at) || new Date().toISOString();
 
     return res.json({
       success: true,
@@ -82,6 +141,7 @@ exports.triggerUpdate = async (req, res) => {
     });
   }
 };
+
 
 
 
