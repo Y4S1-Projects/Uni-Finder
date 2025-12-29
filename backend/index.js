@@ -5,9 +5,14 @@ import Admin from "./models/manager.model.js";
 import cors from 'cors';
 import adminroutes from './routes/admin.routes.js'
 import cookieParser from 'cookie-parser';
+import { createRequire } from 'module';
 import authroutes from './routes/auth.routes.js'
 import budgetroutes from './routes/budget.routes.js'
+import scholarshipMatcherRoutes from './routes/scholarshipMatcherRoutes.js';
 dotenv.config();
+
+const require = createRequire(import.meta.url);
+const updateDatasetRoutes = require('./routes/updateDatasetRoutes.js');
 
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log('Connected to Mongodb')
@@ -42,6 +47,9 @@ app.use("/api/auth",authroutes)
 
 app.use("/api/admin",adminroutes)
 app.use("/api/budget",budgetroutes)
+
+app.use("/api/scholarships", scholarshipMatcherRoutes);
+app.use("/api", updateDatasetRoutes);
 
 app.use((err,req,res,next)=>{
     const statusCode=err.statusCode||500;
