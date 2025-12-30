@@ -1,12 +1,17 @@
 # app/api/recommend.py
 from fastapi import APIRouter
 
+from app.schemas.request import RecommendationRequest
+from app.services.recommendation_service import RecommendationService
+
 router = APIRouter()
+service = RecommendationService()
 
 
-@router.get("/ping")
-def ping():
-    """
-    Simple ping endpoint to verify routing works.
-    """
-    return {"message": "Degree Recommendation API is reachable"}
+@router.post("/debug")
+def recommend_debug(request: RecommendationRequest):
+    return service.get_recommendations_debug(
+        student_data=request.student.model_dump(),
+        district=request.district,
+        max_results=request.max_results,
+    )
