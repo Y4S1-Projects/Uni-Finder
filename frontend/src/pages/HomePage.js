@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Row, Col, Button, Card } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import './home.css';
 
 const HomePage = () => {
@@ -8,6 +8,15 @@ const HomePage = () => {
 
   const handleGetStarted = () => {
     navigate('/keywords'); // Navigate to the keywords page
+  };
+
+  const handleBudgetOptimizer = () => {
+    // Navigate to the budget optimizer page within the frontend
+    navigate('/budget-optimizer-new');
+  };
+
+  const handleScholarshipMatcher = () => {
+    window.location.href = 'http://localhost:3001/scholarship-matcher';
   };
 
   return (
@@ -181,10 +190,23 @@ const HomePage = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    animation: 'float 6s ease-in-out infinite 2s'
-                  }}>
+                    animation: 'float 6s ease-in-out infinite 2s',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onClick={handleBudgetOptimizer}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                  }}
+                  >
                     <div style={{ fontSize: '2rem', marginBottom: '10px' }}>💰</div>
                     <div style={{ fontSize: '0.9rem', fontWeight: '600' }}>Budget Optimizer</div>
+                    <div style={{ fontSize: '0.7rem', opacity: 0.8, marginTop: '5px' }}>Click to Launch</div>
                   </div>
                   
                   <div className="floating-card" style={{
@@ -201,8 +223,20 @@ const HomePage = () => {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    animation: 'float 6s ease-in-out infinite 3s'
-                  }}>
+                    animation: 'float 6s ease-in-out infinite 3s',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onClick={handleScholarshipMatcher}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.3)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.2)';
+                  }}
+                  >
                     <div style={{ fontSize: '2rem', marginBottom: '10px' }}>🏆</div>
                     <div style={{ fontSize: '0.9rem', fontWeight: '600', textAlign: 'center' }}>Scholarship & Loan Matcher</div>
                   </div>
@@ -301,7 +335,27 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="module-card" style={{backgroundColor: '#e8f5e8', padding: '25px', borderRadius: '15px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)'}}>
+          <div className="module-card" style={{
+            backgroundColor: '#e8f5e8', 
+            padding: '25px', 
+            borderRadius: '15px', 
+            boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            position: 'relative'
+          }}
+          onClick={handleBudgetOptimizer}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.2)';
+            e.currentTarget.style.backgroundColor = '#e0f2e0';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+            e.currentTarget.style.backgroundColor = '#e8f5e8';
+          }}
+          >
             <div className="module-icon" style={{fontSize: '48px', textAlign: 'center', marginBottom: '15px'}}>💰</div>
             <h3 style={{color: '#388e3c', marginBottom: '15px', textAlign: 'center'}}>2. Student Budget Optimizer</h3>
             <p style={{fontSize: '14px', lineHeight: '1.5', textAlign: 'justify'}}>
@@ -309,6 +363,34 @@ const HomePage = () => {
               real-time cost-of-living indices, accommodation costs, and educational expenses to help students make 
               informed financial decisions throughout their academic journey.
             </p>
+            
+            {/* Launch Indicator */}
+            <div style={{
+              position: 'absolute',
+              top: '15px',
+              right: '15px',
+              background: 'rgba(56, 142, 60, 0.2)',
+              color: '#388e3c',
+              padding: '5px 10px',
+              borderRadius: '20px',
+              fontSize: '12px',
+              fontWeight: '600'
+            }}>
+              🚀 Live Demo
+            </div>
+            
+            <div style={{
+              textAlign: 'center',
+              marginTop: '15px',
+              padding: '10px',
+              background: 'rgba(56, 142, 60, 0.1)',
+              borderRadius: '8px',
+              fontSize: '13px',
+              fontWeight: '600',
+              color: '#2e7d32'
+            }}>
+              Click to access AI Budget Optimizer →
+            </div>
           </div>
 
           <div className="module-card" style={{backgroundColor: '#fff3e0', padding: '25px', borderRadius: '15px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)'}}>
