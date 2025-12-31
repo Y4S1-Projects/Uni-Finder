@@ -3,19 +3,18 @@ from typing import Tuple
 
 from app.domain.student import StudentProfile
 from app.domain.program import DegreeProgram
-from app.repositories.cutoff_repository import CutoffRepository
+from app.engines.cutoff_matcher import CutoffMatcher
 
 
-cutoff_repo = CutoffRepository()
+cutoff_matcher = CutoffMatcher()
 
 
 def check_eligibility(
-    student: StudentProfile,
-    program: DegreeProgram,
-    district: str
+    student: StudentProfile, program: DegreeProgram, district: str
 ) -> Tuple[bool, str]:
     """
-    Determines if a student is eligible for a degree program.
+    Determines if a student is eligible for a degree program
+    using semantic cutoff matching.
     """
 
     # 1. Stream check
@@ -27,13 +26,16 @@ def check_eligibility(
     if missing:
         return False, f"Missing required subjects: {', '.join(missing)}"
 
-    # 3. District-based cutoff
-    cutoff = cutoff_repo.get_cutoff(program.degree_name, district)
+    # 3. AI-based cutoff resolution
+    cutoff, match_info = cutoff_matcher.get_cutoff_semantic(
+        program_name=program.degree_name, district=district
+    )
 
     if cutoff is None:
-        return False, "No cutoff data available for this district"
+        return False, match_info
 
+    # 4. Z-score check
     if student.zscore < cutoff:
-        return False, f"Z-score below district cutoff ({cutoff})"
+        return False, f"Z-score below cutoff ({cutoff})"
 
-    return True, "Eligible based on stream, subjects, and Z-score"
+    return True, f"Eligible ({match_info})"
