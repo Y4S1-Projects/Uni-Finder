@@ -70,11 +70,11 @@ export default function MatcherFlowPage({
   return (
     <div className="matcher-page">
       <section className="matcher-page__panel">
-        <header>
+        <div className="matcher-page__header">
           <p className="matcher-page__eyebrow">{copy.eyebrow}</p>
           <h1>{copy.title}</h1>
           <p className="matcher-page__lead">{copy.lead}</p>
-        </header>
+        </div>
 
         <StudentProfileForm
           onSubmit={handleSubmit}

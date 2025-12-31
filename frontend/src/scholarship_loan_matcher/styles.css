@@ -23,23 +23,30 @@
   min-height: 200px;
 }
 
+.matcher-page__header {
+     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+  color: white;
+  padding: 10px 20px;
+}
+
 .matcher-page__eyebrow {
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  color: #667eea;
+  color: #0f1013;
   font-weight: 600;
   font-size: 0.8rem;
 }
 
 .matcher-page__lead {
-  color: #475467;
+  color: #070707;
   margin-bottom: 1.5rem;
 }
 
 .matcher-page h1 {
-  color: #333;
+  
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: #667eea;
 }
 
 .matcher-page h2 {
@@ -277,6 +284,7 @@
   text-align: center;
   box-shadow: 0 15px 40px rgba(102, 126, 234, 0.15);
   border: 1px solid rgba(102, 126, 234, 0.2);
+  color: #667eea;
 }
 
 .matcher-landing__cta {
