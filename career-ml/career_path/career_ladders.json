@@ -1,0 +1,11 @@
+{
+  "SOFTWARE_ENGINEERING": ["INTERN_SE", "JR_SE", "SE", "SR_SE", "TECH_LEAD"],
+  "QUALITY_ASSURANCE": [
+    "INTERN_QA",
+    "JR_QA_EN",
+    "QA_EN",
+    "SR_QA_EN",
+    "QA_LEAD"
+  ],
+  "DATA_ENGINEERING": ["JR_DATA_EN", "DATA_EN", "SR_DATA_EN", "DATA_ARCH"]
+}
