@@ -1,13 +1,28 @@
 {
-  "SOFTWARE_ENGINEERING": ["INTERN_SE", "JR_SE", "SE", "SR_SE", "TECH_LEAD"],
-  "QUALITY_ASSURANCE": [
-    "INTERN_QA",
-    "JR_QA_EN",
-    "QA_EN",
-    "SR_QA_EN",
-    "QA_LEAD"
+  "SOFTWARE_ENGINEERING": [
+    "INTERN_SE",
+    "JR_SE",
+    "JR_FE_DEV",
+    "JR_FS_DEV"
   ],
-  "DATA_ENGINEERING": ["JR_DATA_EN", "DATA_EN", "SR_DATA_EN", "DATA_ARCH"],
-  "AI_ML": ["AI_ML_ENGINEER_INT", "AI_ML_ENGINEER", "SENIOR_AI_ML_ENGINEER"],
-  "DATA": ["DATA_ANALYST_INT", "DATA_ENGINEER_INT", "SENIOR_DATA_ENGINEER"]
+  "DATA": [
+    "DATA_ANALYST_INT",
+    "DATA_ENGINEER_INT"
+  ],
+  "AI_ML": [
+    "AI_ML_ENGINEER_INT"
+  ],
+  "DEVOPS": [
+    "DEVOPS_TRAINEE",
+    "JR_SYS_ADMIN"
+  ],
+  "QA": [
+    "JR_QA_ENG"
+  ],
+  "MOBILE": [
+    "JR_MOBILE_DEV"
+  ],
+  "UI_UX": [
+    "JR_UI_UX_DESIGNER"
+  ]
 }
