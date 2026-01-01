@@ -22,17 +22,12 @@ __pycache__/
 *.so
 *.egg-info/
 venv/
-.env
-.env.*
+
 
 # VSCode
 .vscode/
 
-# Environment files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+
 
 # Logs
 logs/
