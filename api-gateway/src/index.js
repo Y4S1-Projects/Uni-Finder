@@ -18,6 +18,11 @@ const CAREER_SERVICE_URL =
 const BUDGET_SERVICE_URL =
   process.env.BUDGET_SERVICE_URL || "http://localhost:5002";
 
+const TARGET_BACKEND = BACKEND_URL || "http://localhost:5000";
+const TARGET_RECO = RECOMMENDATION_SERVICE_URL || "http://localhost:5003";
+const TARGET_DEGREE = DEGREE_SERVICE_URL || "http://localhost:5001";
+const TARGET_BUDGET = BUDGET_SERVICE_URL || "http://localhost:5002";
+
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
@@ -35,73 +40,56 @@ app.get("/health", (req, res) => {
     status: "ok",
     gateway: "unifinder",
     upstreams: {
-      backend: BACKEND_URL,
-      recommendation: RECOMMENDATION_SERVICE_URL,
-      budget: BUDGET_SERVICE_URL,
-      degree: DEGREE_SERVICE_URL,
+      backend: TARGET_BACKEND,
+      recommendation: TARGET_RECO,
+      budget: TARGET_BUDGET,
+      degree: TARGET_DEGREE,
       career: CAREER_SERVICE_URL,
     },
   });
 });
 
 // Core backend (Express + Mongo)
-app.use(
-  createProxyMiddleware("/api", {
-    target: BACKEND_URL,
-    changeOrigin: true,
-    proxyTimeout: 10_000,
-    timeout: 10_000,
-    pathRewrite: (path) => `/api${path}`,
-    onError: logProxyError("backend"),
-  })
-);
+const backendProxy = createProxyMiddleware({
+	target: TARGET_BACKEND,
+	changeOrigin: true,
+	proxyTimeout: 10_000,
+	timeout: 10_000,
+	onError: logProxyError("backend"),
+});
+app.use("/api", backendProxy);
 
-// Travel/degree recommendation service (Flask)
-app.use(
-  createProxyMiddleware(["/recommend", "/best_recommendation"], {
-    target: RECOMMENDATION_SERVICE_URL,
-    changeOrigin: true,
-    proxyTimeout: 20_000,
-    timeout: 20_000,
-    onError: logProxyError("recommendation"),
-  })
-);
+// Place recommendation service (Flask)
+const recommendationProxy = createProxyMiddleware({
+	target: TARGET_RECO,
+	changeOrigin: true,
+	proxyTimeout: 20_000,
+	timeout: 20_000,
+	onError: logProxyError("recommendation"),
+});
+app.use(["/recommend", "/best_recommendation"], recommendationProxy);
 
 // Degree recommendation (FastAPI) - exposed under /degree/*
-app.use(
-  createProxyMiddleware("/degree", {
-    target: DEGREE_SERVICE_URL,
-    changeOrigin: true,
-    proxyTimeout: 20_000,
-    timeout: 20_000,
-    pathRewrite: { "^/degree": "" },
-    onError: logProxyError("degree"),
-  })
-);
+const degreeProxy = createProxyMiddleware({
+	target: TARGET_DEGREE,
+	changeOrigin: true,
+	proxyTimeout: 20_000,
+	timeout: 20_000,
+	pathRewrite: { "^/degree": "" },
+	onError: logProxyError("degree"),
+});
+app.use("/degree", degreeProxy);
 
 // Budget optimizer (Flask ML service)
-app.use(
-  createProxyMiddleware("/budget-service", {
-    target: BUDGET_SERVICE_URL,
-    changeOrigin: true,
-    proxyTimeout: 20_000,
-    timeout: 20_000,
-    pathRewrite: { "^/budget-service": "" },
-    onError: logProxyError("budget"),
-  })
-);
-
-// Career service (FastAPI) - exposed under /career/*
-app.use(
-  createProxyMiddleware("/career", {
-    target: CAREER_SERVICE_URL,
-    changeOrigin: true,
-    proxyTimeout: 20_000,
-    timeout: 20_000,
-    pathRewrite: { "^/career": "" },
-    onError: logProxyError("career"),
-  })
-);
+const budgetProxy = createProxyMiddleware({
+	target: TARGET_BUDGET,
+	changeOrigin: true,
+	proxyTimeout: 20_000,
+	timeout: 20_000,
+	pathRewrite: { "^/budget-service": "" },
+	onError: logProxyError("budget"),
+});
+app.use("/budget-service", budgetProxy);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found on API gateway" });
