@@ -1,5 +1,4 @@
-import React, { useState, useMemo, useRef } from "react";
-import { useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import skillsList from "../data/skills.json";
 
 export default function SkillSelector({ selected = [], onChange }) {
@@ -29,40 +28,17 @@ export default function SkillSelector({ selected = [], onChange }) {
       .slice(0, 50);
   }, [normalized, query]);
 
-  const makeIds = (arr) =>
-    (arr || []).map((s) => {
-      if (s == null) return "";
-      if (typeof s === "string" || typeof s === "number") return String(s);
-      return String(s.id ?? s.skill_id ?? s.skillId ?? "");
-    });
-
-  // internal selected state to avoid flicker/race when parent updates
-  const [internalSelected, setInternalSelected] = useState(() =>
-    makeIds(selected)
-  );
-  const lastActionRef = useRef(0);
-
-  // helper to compare arrays case-insensitively
-  const eqIds = (a, b) => {
-    if (!a && !b) return true;
-    const aa = (a || []).map((s) => String(s).toLowerCase()).filter(Boolean);
-    const bb = (b || []).map((s) => String(s).toLowerCase()).filter(Boolean);
-    if (aa.length !== bb.length) return false;
-    const sa = new Set(aa);
-    return bb.every((x) => sa.has(x));
-  };
-
-  useEffect(() => {
-    const next = makeIds(selected);
-    console.log("SkillSelector: prop selected ->", selected);
-    if (!eqIds(next, internalSelected)) {
-      console.log("SkillSelector: syncing internalSelected ->", next);
-      setInternalSelected(next);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Convert selected to array of string IDs
+  const selectedIds = useMemo(() => {
+    return (selected || [])
+      .map((s) => {
+        if (s == null) return "";
+        if (typeof s === "string" || typeof s === "number") return String(s);
+        return String(s.id ?? s.skill_id ?? s.skillId ?? "");
+      })
+      .filter(Boolean);
   }, [selected]);
 
-  const selectedIds = internalSelected;
   const selectedSetLower = useMemo(
     () => new Set(selectedIds.map((s) => s.toLowerCase())),
     [selectedIds]
@@ -71,27 +47,16 @@ export default function SkillSelector({ selected = [], onChange }) {
   function toggle(id) {
     const sid = String(id);
     const exists = selectedSetLower.has(sid.toLowerCase());
-    if (exists) return; // clicking an already-selected item won't deselect — use the ✕ button to remove
+    if (exists) return; // Use ✕ button to remove
     const next = [...selectedIds, sid];
-    lastActionRef.current = Date.now();
-    console.log("SkillSelector: toggle", id, "exists?", exists, "next->", next);
-    setInternalSelected(next);
     if (typeof onChange === "function") onChange(next);
   }
 
   function remove(id) {
     const sid = String(id);
-    // ignore immediate accidental click if it happens right after a toggle
-    if (Date.now() - lastActionRef.current < 250) {
-      console.log("SkillSelector: ignoring rapid remove", id);
-      lastActionRef.current = 0;
-      return;
-    }
     const next = selectedIds.filter(
       (x) => x.toLowerCase() !== sid.toLowerCase()
     );
-    console.log("SkillSelector: remove", id, "next->", next);
-    setInternalSelected(next);
     if (typeof onChange === "function") onChange(next);
   }
 
@@ -112,40 +77,41 @@ export default function SkillSelector({ selected = [], onChange }) {
       <div
         style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 6 }}
       >
-        {selectedIds
-          .map((id) => String(id))
-          .filter((id) => id !== "")
-          .map((id, idx) => (
-            <div
-              key={id || `sel-${idx}`}
+        {selectedIds.map((id, idx) => (
+          <div
+            key={id || `sel-${idx}`}
+            style={{
+              background: "#e6eef8",
+              padding: "6px 8px",
+              borderRadius: 16,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            <span style={{ fontSize: 12 }}>{labelFor(id)}</span>
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                remove(id);
+              }}
+              title={`Remove ${labelFor(id)}`}
+              aria-label={`Remove ${labelFor(id)}`}
               style={{
-                background: "#e6eef8",
-                padding: "6px 8px",
-                borderRadius: 16,
-                display: "flex",
-                alignItems: "center",
-                gap: 8,
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                fontSize: 12,
+                lineHeight: 1,
+                padding: 4,
               }}
             >
-              <span style={{ fontSize: 12 }}>{labelFor(id)}</span>
-              <button
-                type="button"
-                onClick={() => remove(id)}
-                title={`Remove ${labelFor(id)}`}
-                aria-label={`Remove ${labelFor(id)}`}
-                style={{
-                  background: "transparent",
-                  border: "none",
-                  cursor: "pointer",
-                  fontSize: 12,
-                  lineHeight: 1,
-                  padding: 4,
-                }}
-              >
-                ✕
-              </button>
-            </div>
-          ))}
+              ✕
+            </button>
+          </div>
+        ))}
       </div>
 
       <input
