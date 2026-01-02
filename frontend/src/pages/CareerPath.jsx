@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SkillSelector from "../components/SkillSelector";
 
 const API_GATEWAY =
@@ -8,7 +8,7 @@ const CAREER_API = `${API_GATEWAY}/career`;
 export default function CareerPath() {
   const [domain, setDomain] = useState("SOFTWARE_ENGINEERING");
   const [currentRole, setCurrentRole] = useState("JR_SE");
-  const [selectedSkills, setSelectedSkills] = useState(["SK003", "SK004"]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -45,6 +45,10 @@ export default function CareerPath() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("selectedSkills:", selectedSkills);
+  }, [selectedSkills]);
 
   return (
     <div style={{ padding: "2rem", maxWidth: 800, margin: "0 auto" }}>

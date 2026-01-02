@@ -22,6 +22,7 @@ const TARGET_BACKEND = BACKEND_URL || "http://localhost:5000";
 const TARGET_RECO = RECOMMENDATION_SERVICE_URL || "http://localhost:5003";
 const TARGET_DEGREE = DEGREE_SERVICE_URL || "http://localhost:5001";
 const TARGET_BUDGET = BUDGET_SERVICE_URL || "http://localhost:5002";
+const TARGET_CAREER = CAREER_SERVICE_URL || "http://localhost:5004";
 
 const app = express();
 app.use(express.json());
@@ -44,7 +45,7 @@ app.get("/health", (req, res) => {
       recommendation: TARGET_RECO,
       budget: TARGET_BUDGET,
       degree: TARGET_DEGREE,
-      career: CAREER_SERVICE_URL,
+      career: TARGET_CAREER,
     },
   });
 });
@@ -91,6 +92,17 @@ const budgetProxy = createProxyMiddleware({
 });
 app.use("/budget-service", budgetProxy);
 
+// Career service (new proxy)
+const careerProxy = createProxyMiddleware({
+  target: TARGET_CAREER,
+  changeOrigin: true,
+  proxyTimeout: 20_000,
+  timeout: 20_000,
+  pathRewrite: { "^/career": "" },
+  onError: logProxyError("career"),
+});
+app.use("/career", careerProxy);
+
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found on API gateway" });
 });
@@ -101,4 +113,5 @@ app.listen(PORT, () => {
   console.log(`→ Recommendation service: ${RECOMMENDATION_SERVICE_URL}`);
   console.log(`→ Degree service: ${DEGREE_SERVICE_URL}`);
   console.log(`→ Budget service: ${BUDGET_SERVICE_URL}`);
+  console.log(`→ Career service: ${CAREER_SERVICE_URL}`);
 });
