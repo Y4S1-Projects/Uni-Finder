@@ -99,8 +99,17 @@ const careerProxy = createProxyMiddleware({
   proxyTimeout: 20_000,
   timeout: 20_000,
   pathRewrite: { "^/career": "" },
+  onProxyReq(proxyReq, req, res) {
+    if (req.body) {
+      const bodyData = JSON.stringify(req.body);
+      proxyReq.setHeader("Content-Type", "application/json");
+      proxyReq.setHeader("Content-Length", Buffer.byteLength(bodyData));
+      proxyReq.write(bodyData);
+    }
+  },
   onError: logProxyError("career"),
 });
+
 app.use("/career", careerProxy);
 
 app.use((req, res) => {

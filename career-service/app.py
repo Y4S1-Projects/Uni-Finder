@@ -31,34 +31,51 @@ class PredictRoleRequest(BaseModel):
 @app.on_event("startup")
 def load_data():
     global role_profiles_df, CAREER_LADDERS, role_classifier, skill_columns, role_id_to_title
+    
+    print(f"[startup] BASE_DIR: {BASE_DIR}")
+    print(f"[startup] ML_DIR: {ML_DIR}")
+    print(f"[startup] ROLE_CLASSIFIER_PKL: {ROLE_CLASSIFIER_PKL}")
+    print(f"[startup] Model file exists: {ROLE_CLASSIFIER_PKL.exists()}")
+    
     try:
         role_profiles_df = pd.read_csv(ROLE_PROFILE_CSV)
-    except Exception:
+        print(f"[startup] Loaded role_profiles_df: {len(role_profiles_df)} rows")
+    except Exception as e:
+        print(f"[startup] Failed to load role_profiles: {e}")
         role_profiles_df = pd.DataFrame(columns=["role_id", "skill_id", "frequency", "importance"])
+    
     try:
         with open(CAREER_LADDERS_JSON, "r") as f:
             CAREER_LADDERS = json.load(f)
-    except Exception:
+        print(f"[startup] Loaded CAREER_LADDERS: {list(CAREER_LADDERS.keys())}")
+    except Exception as e:
+        print(f"[startup] Failed to load career ladders: {e}")
         CAREER_LADDERS = {}
     
     # Load the decision tree role classifier
     try:
         role_classifier = joblib.load(ROLE_CLASSIFIER_PKL)
-    except Exception:
+        print(f"[startup] Loaded role_classifier: {type(role_classifier)}")
+    except Exception as e:
+        print(f"[startup] Failed to load role classifier: {e}")
         role_classifier = None
     
     # Load skill columns from the training data to ensure correct feature order
     try:
         df = pd.read_csv(JOB_SKILL_VECTORS_CSV, nrows=1)
         skill_columns = [c for c in df.columns if c.startswith("skill_")]
-    except Exception:
+        print(f"[startup] Loaded {len(skill_columns)} skill columns")
+    except Exception as e:
+        print(f"[startup] Failed to load skill columns: {e}")
         skill_columns = []
     
     # Build role_id to role_title mapping
     try:
         df_roles = pd.read_csv(JOB_SKILL_VECTORS_CSV, usecols=["role_id", "role_title"])
         role_id_to_title = dict(zip(df_roles["role_id"], df_roles["role_title"]))
-    except Exception:
+        print(f"[startup] Loaded {len(role_id_to_title)} role titles")
+    except Exception as e:
+        print(f"[startup] Failed to load role titles: {e}")
         role_id_to_title = {}
 
 
