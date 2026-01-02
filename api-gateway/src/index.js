@@ -9,14 +9,20 @@ dotenv.config();
 const PORT = process.env.PORT || 8080;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "http://localhost:3000";
 const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:5000";
-const RECOMMENDATION_SERVICE_URL = process.env.RECOMMENDATION_SERVICE_URL || "http://localhost:5003";
-const DEGREE_SERVICE_URL = process.env.DEGREE_SERVICE_URL || "http://localhost:5001";
-const BUDGET_SERVICE_URL = process.env.BUDGET_SERVICE_URL || "http://localhost:5002";
+const RECOMMENDATION_SERVICE_URL =
+  process.env.RECOMMENDATION_SERVICE_URL || "http://localhost:5003";
+const DEGREE_SERVICE_URL =
+  process.env.DEGREE_SERVICE_URL || "http://localhost:5001";
+const CAREER_SERVICE_URL =
+  process.env.CAREER_SERVICE_URL || "http://localhost:5004";
+const BUDGET_SERVICE_URL =
+  process.env.BUDGET_SERVICE_URL || "http://localhost:5002";
 
 const TARGET_BACKEND = BACKEND_URL || "http://localhost:5000";
 const TARGET_RECO = RECOMMENDATION_SERVICE_URL || "http://localhost:5003";
 const TARGET_DEGREE = DEGREE_SERVICE_URL || "http://localhost:5001";
 const TARGET_BUDGET = BUDGET_SERVICE_URL || "http://localhost:5002";
+const TARGET_CAREER = CAREER_SERVICE_URL || "http://localhost:5004";
 
 const app = express();
 app.use(express.json());
@@ -24,23 +30,24 @@ app.use(morgan("dev"));
 app.use(cors({ origin: [FRONTEND_ORIGIN], credentials: true }));
 
 const logProxyError = (label) => (err, req, res) => {
-	console.error(`[Gateway:${label}]`, err.message, { url: req.originalUrl });
-	if (!res.headersSent) {
-		res.status(502).json({ message: "Upstream service unavailable" });
-	}
+  console.error(`[Gateway:${label}]`, err.message, { url: req.originalUrl });
+  if (!res.headersSent) {
+    res.status(502).json({ message: "Upstream service unavailable" });
+  }
 };
 
 app.get("/health", (req, res) => {
-	res.json({
-		status: "ok",
-		gateway: "unifinder",
-		upstreams: {
-			backend: TARGET_BACKEND,
-			recommendation: TARGET_RECO,
-			budget: TARGET_BUDGET,
-			degree: TARGET_DEGREE,
-		},
-	});
+  res.json({
+    status: "ok",
+    gateway: "unifinder",
+    upstreams: {
+      backend: TARGET_BACKEND,
+      recommendation: TARGET_RECO,
+      budget: TARGET_BUDGET,
+      degree: TARGET_DEGREE,
+      career: TARGET_CAREER,
+    },
+  });
 });
 
 // Core backend (Express + Mongo)
@@ -85,14 +92,35 @@ const budgetProxy = createProxyMiddleware({
 });
 app.use("/budget-service", budgetProxy);
 
+// Career service (new proxy)
+const careerProxy = createProxyMiddleware({
+  target: TARGET_CAREER,
+  changeOrigin: true,
+  proxyTimeout: 20_000,
+  timeout: 20_000,
+  pathRewrite: { "^/career": "" },
+  onProxyReq(proxyReq, req, res) {
+    if (req.body) {
+      const bodyData = JSON.stringify(req.body);
+      proxyReq.setHeader("Content-Type", "application/json");
+      proxyReq.setHeader("Content-Length", Buffer.byteLength(bodyData));
+      proxyReq.write(bodyData);
+    }
+  },
+  onError: logProxyError("career"),
+});
+
+app.use("/career", careerProxy);
+
 app.use((req, res) => {
-	res.status(404).json({ message: "Route not found on API gateway" });
+  res.status(404).json({ message: "Route not found on API gateway" });
 });
 
 app.listen(PORT, () => {
-	console.log(`API Gateway listening on http://localhost:${PORT}`);
-	console.log(`→ Backend: ${BACKEND_URL}`);
-	console.log(`→ Recommendation service: ${RECOMMENDATION_SERVICE_URL}`);
-	console.log(`→ Degree service: ${DEGREE_SERVICE_URL}`);
-	console.log(`→ Budget service: ${BUDGET_SERVICE_URL}`);
+  console.log(`API Gateway listening on http://localhost:${PORT}`);
+  console.log(`→ Backend: ${BACKEND_URL}`);
+  console.log(`→ Recommendation service: ${RECOMMENDATION_SERVICE_URL}`);
+  console.log(`→ Degree service: ${DEGREE_SERVICE_URL}`);
+  console.log(`→ Budget service: ${BUDGET_SERVICE_URL}`);
+  console.log(`→ Career service: ${CAREER_SERVICE_URL}`);
 });
