@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import SkillSelector from "../components/SkillSelector";
 
-const API_GATEWAY =
-  process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
-const CAREER_API = `${API_GATEWAY}/career`;
+// Direct connection to career service (bypass API gateway)
+const CAREER_API = "http://localhost:5004";
 
 export default function CareerPath() {
   const [selectedSkills, setSelectedSkills] = useState([]);
