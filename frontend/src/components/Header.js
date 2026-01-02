@@ -108,6 +108,18 @@ const Header = () => {
             </Nav.Link>
             <Nav.Link 
               as={Link} 
+              to="/career" 
+              className="fw-semibold mx-1"
+              style={{ 
+                color: 'rgba(255,255,255,0.9)',
+                transition: 'color 0.3s ease',
+                fontSize: isHomePage ? '0.9rem' : '0.9rem'
+              }}
+            >
+              Career
+            </Nav.Link>
+            <Nav.Link 
+              as={Link} 
               to="/all" 
               className="fw-semibold mx-1"
               style={{ 

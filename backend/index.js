@@ -12,18 +12,20 @@ import updateDatasetRoutes from "./routes/updateDatasetRoutes.js";
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:8080")
-	.split(",")
-	.map((origin) => origin.trim());
+const ALLOWED_ORIGINS = (
+  process.env.CORS_ORIGINS || "http://localhost:3000,http://localhost:8080"
+)
+  .split(",")
+  .map((origin) => origin.trim());
 
 mongoose
-	.connect(process.env.MONGO)
-	.then(() => {
-		console.log("Connected to Mongodb");
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+  .connect(process.env.MONGO)
+  .then(() => {
+    console.log("Connected to Mongodb");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // Enable CORS for all origins
 
@@ -33,14 +35,14 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(
-	cors({
-		origin: ALLOWED_ORIGINS,
-		credentials: true,
-	})
+  cors({
+    origin: ALLOWED_ORIGINS,
+    credentials: true,
+  })
 );
 
 app.listen(PORT, () => {
-	console.log(`server listening on port ${PORT}!`);
+  console.log(`server listening on port ${PORT}!`);
 });
 
 app.use("/api/auth", authroutes);
@@ -58,11 +60,11 @@ app.use("/api/scholarships", scholarshipMatcherRoutes);
 app.use("/api", updateDatasetRoutes);
 
 app.use((err, req, res, next) => {
-	const statusCode = err.statusCode || 500;
-	const message = err.message || "internal server error";
-	return res.status(statusCode).json({
-		success: false,
-		message,
-		statusCode,
-	});
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "internal server error";
+  return res.status(statusCode).json({
+    success: false,
+    message,
+    statusCode,
+  });
 });
