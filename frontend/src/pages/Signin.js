@@ -8,7 +8,11 @@ export default function SignIn() {
 	const { loading, error, currentUser } = useSelector((state) => state.user); // Track currentUser
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const API_BASE = process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
+	const API_BASE = process.env.REACT_APP_BACKEND_URL;
+
+	if (!API_BASE) {
+		throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");
+	}
 
 	const handleChange = (e) => {
 		setFormdata({ ...formdata, [e.target.id]: e.target.value });

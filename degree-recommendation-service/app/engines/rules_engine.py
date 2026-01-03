@@ -17,14 +17,16 @@ def check_eligibility(
     using semantic cutoff matching.
     """
 
-    # 1. Stream check
-    if student.stream.lower() != program.stream.lower():
-        return False, "Stream mismatch"
+    # 1. Stream check (only if program declares a stream)
+    if program.stream and student.stream:
+        if student.stream.lower() != program.stream.lower():
+            return False, "Stream mismatch"
 
-    # 2. Subject prerequisites
-    missing = set(program.subject_prerequisites) - set(student.subjects)
-    if missing:
-        return False, f"Missing required subjects: {', '.join(missing)}"
+    # 2. Subject prerequisites (only if program declares prerequisites)
+    if program.subject_prerequisites:
+        missing = set(program.subject_prerequisites) - set(student.subjects)
+        if missing:
+            return False, f"Missing required subjects: {', '.join(sorted(missing))}"
 
     # 3. AI-based cutoff resolution
     cutoff, match_info = cutoff_matcher.get_cutoff_semantic(
@@ -32,7 +34,8 @@ def check_eligibility(
     )
 
     if cutoff is None:
-        return False, match_info
+        # Keep the wording consistent and explicit for callers/tests.
+        return False, f"Cutoff unavailable: {match_info}"
 
     # 4. Z-score check
     if student.zscore < cutoff:

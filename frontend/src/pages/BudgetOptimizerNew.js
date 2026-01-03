@@ -3,9 +3,18 @@ import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar } 
 import { useSelector } from "react-redux";
 import "./BudgetOptimizerNew.css";
 
-const API_GATEWAY = process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
-const BUDGET_API_BASE = `${API_GATEWAY}/budget-service`;
-const BACKEND_API_BASE = `${API_GATEWAY}/api`;
+const BUDGET_API_BASE = process.env.REACT_APP_BUDGET_SERVICE_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+if (!BUDGET_API_BASE) {
+	throw new Error("Missing REACT_APP_BUDGET_SERVICE_URL in frontend .env");
+}
+
+if (!BACKEND_URL) {
+	throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");
+}
+
+const BACKEND_API_BASE = `${BACKEND_URL}/api`;
 
 const BudgetOptimizerNew = () => {
 	// Get current user from Redux store
@@ -239,7 +248,7 @@ const BudgetOptimizerNew = () => {
 				setError(errorData.error || "Failed to analyze budget");
 			}
 		} catch (error) {
-			setError("Network error. Please check if the API gateway (8080) and budget service are running.");
+			setError("Network error. Please check if the backend and budget service are running.");
 		} finally {
 			setLoading(false);
 		}
