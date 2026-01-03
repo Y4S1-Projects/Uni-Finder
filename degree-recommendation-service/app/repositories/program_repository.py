@@ -29,7 +29,12 @@ class ProgramRepository:
             reader = csv.DictReader(file)
 
             for row in reader:
-                program = DegreeProgram.from_csv(row)
+                # Some CSVs include BOM/whitespace in headers; normalize keys for robustness.
+                normalized_row = {
+                    (str(k).lstrip("\ufeff").strip() if k is not None else ""): v
+                    for k, v in row.items()
+                }
+                program = DegreeProgram.from_csv(normalized_row)
                 self._programs.append(program)
 
         return self._programs

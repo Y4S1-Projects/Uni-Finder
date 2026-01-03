@@ -8,7 +8,11 @@ const Addreview = () => {
 	const fileRef1 = useRef(null);
 	const navigate = useNavigate();
 	const { currentUser } = useSelector((state) => state.user);
-	const API_BASE = process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
+	const API_BASE = process.env.REACT_APP_BACKEND_URL;
+
+	if (!API_BASE) {
+		throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");
+	}
 
 	const [formData, setFormData] = useState({
 		userId: currentUser?._id || "",

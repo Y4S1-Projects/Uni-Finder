@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from "react-bootstrap";
 import "./BudgetOptimizer.css";
 
-const API_GATEWAY = process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
-const BUDGET_API_BASE = `${API_GATEWAY}/budget-service`;
+const BUDGET_API_BASE = process.env.REACT_APP_BUDGET_SERVICE_URL;
+
+if (!BUDGET_API_BASE) {
+	throw new Error("Missing REACT_APP_BUDGET_SERVICE_URL in frontend .env");
+}
 
 const BudgetOptimizer = () => {
 	const [formData, setFormData] = useState({
@@ -78,7 +81,7 @@ const BudgetOptimizer = () => {
 				setError(errorData.error || "Failed to predict expenses");
 			}
 		} catch (error) {
-			setError("Network error. Please check if the backend server is running.");
+			setError("Network error. Please check if the budget service is running.");
 		} finally {
 			setLoading(false);
 		}
@@ -120,7 +123,7 @@ const BudgetOptimizer = () => {
 				setError(errorData.error || "Failed to optimize budget");
 			}
 		} catch (error) {
-			setError("Network error. Please check if the backend server is running.");
+			setError("Network error. Please check if the budget service is running.");
 		} finally {
 			setLoading(false);
 		}

@@ -15,7 +15,34 @@ class RecommendationPipeline:
         self.program_repo = ProgramRepository()
         self.similarity_engine = SimilarityEngine()
         self.ranking_engine = RankingEngine()
-        self.embeddings = np.load(EMBEDDINGS_PATH)
+        self.embeddings = None
+        try:
+            self.embeddings = np.load(EMBEDDINGS_PATH)
+        except Exception:
+            # Embeddings are an optimization; fall back to on-the-fly similarity.
+            self.embeddings = None
+
+    def recommend(
+        self,
+        student: StudentProfile,
+        district: str,
+        max_results: int = 5,
+    ) -> List[Dict]:
+        debug = self.recommend_debug(
+            student=student, district=district, max_results=max_results
+        )
+        eligible = debug["eligible_recommendations"]
+        # Strip explanation-heavy fields for the simple endpoint.
+        for item in eligible:
+            item.pop("reason", None)
+            item.pop("subjects_required", None)
+            item.pop("stream_required", None)
+            item.pop("student_subjects", None)
+            item.pop("student_stream", None)
+            item.pop("student_zscore", None)
+            item.pop("district", None)
+            item.pop("eligibility", None)
+        return eligible
 
     def recommend_debug(
         self,
@@ -26,17 +53,32 @@ class RecommendationPipeline:
         programs = self.program_repo.get_all_programs()
         student_vec = self.similarity_engine.encode_text(student.interests)
 
+        embeddings_ok = (
+            self.embeddings is not None
+            and isinstance(self.embeddings, np.ndarray)
+            and len(self.embeddings) == len(programs)
+        )
+
         eligible = []
         rejected = []
 
         for idx, program in enumerate(programs):
             is_eligible, reason = check_eligibility(student, program, district)
 
-            similarity = float(
-                self.similarity_engine.compute_similarity(
-                    student.interests, program.degree_name
+            if embeddings_ok:
+                similarity = float(
+                    self.similarity_engine.compute_similarity_vectors(
+                        student_vec,
+                        self.embeddings[idx],
+                    )
                 )
-            )
+            else:
+                similarity = float(
+                    self.similarity_engine.compute_similarity(
+                        student.interests,
+                        program.degree_name,
+                    )
+                )
 
             debug_entry = {
                 "degree_name": program.degree_name,

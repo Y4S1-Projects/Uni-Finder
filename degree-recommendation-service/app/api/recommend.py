@@ -15,3 +15,12 @@ def recommend_debug(request: RecommendationRequest):
         district=request.district,
         max_results=request.max_results,
     )
+
+
+@router.post("")
+def recommend(request: RecommendationRequest):
+    return service.get_recommendations(
+        student_data=request.student.model_dump(),
+        district=request.district,
+        max_results=request.max_results,
+    )
