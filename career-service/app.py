@@ -7,6 +7,8 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 import json
 import joblib
+import os
+import httpx
 from typing import List, Optional
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,6 +17,14 @@ ROLE_PROFILE_CSV = ML_DIR / "skill_gap" / "role_skill_profiles.csv"
 CAREER_LADDERS_JSON = ML_DIR / "career_path" / "career_ladders.json"
 ROLE_CLASSIFIER_PKL = ML_DIR / "models" / "decision_tree_role_classifier.pkl"
 JOB_SKILL_VECTORS_CSV = ML_DIR / "data" / "processed" / "job_skill_vectors.csv"
+SKILLS_CSV = ML_DIR / "data" / "processed" / "skills.csv"
+
+# OpenRouter API for AI explanations (free tier available)
+OPENROUTER_API_KEY = "sk-or-v1-free"  # Will use free models
+OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+# Global variables
+skill_id_to_name = {}
 
 app = FastAPI(title="Career Service")
 
@@ -41,7 +51,7 @@ class PredictRoleRequest(BaseModel):
 
 @app.on_event("startup")
 def load_data():
-    global role_profiles_df, CAREER_LADDERS, role_classifier, skill_columns, role_id_to_title, role_skill_matrix
+    global role_profiles_df, CAREER_LADDERS, role_classifier, skill_columns, role_id_to_title, role_skill_matrix, skill_id_to_name
     
     print(f"[startup] BASE_DIR: {BASE_DIR}")
     print(f"[startup] ML_DIR: {ML_DIR}")
@@ -101,6 +111,20 @@ def load_data():
     except Exception as e:
         print(f"[startup] Failed to load role titles: {e}")
         role_id_to_title = {}
+    
+    # Load skill ID to name mapping
+    try:
+        df_skills = pd.read_csv(SKILLS_CSV)
+        skill_id_to_name = dict(zip(df_skills["skill_id"], df_skills["name"]))
+        print(f"[startup] Loaded {len(skill_id_to_name)} skill names")
+    except Exception as e:
+        print(f"[startup] Failed to load skill names: {e}")
+        skill_id_to_name = {}
+
+
+def get_skill_name(skill_id: str) -> str:
+    """Get human-readable skill name from skill ID"""
+    return skill_id_to_name.get(skill_id.upper(), skill_id)
 
 
 def detect_skill_gap(user_skill_ids: set, target_role_id: str, importance_threshold: float = 0.02):
@@ -340,4 +364,199 @@ def recommend_careers(req: RecommendRequest):
         "recommendations": results,
         "skills_analyzed": list(user_skills_upper),
         "total_roles_compared": len(role_skill_matrix),
+    }
+
+
+class ExplainRequest(BaseModel):
+    role_id: str
+    role_title: str
+    domain: Optional[str] = None
+    match_score: float
+    user_skill_ids: List[str]
+    matched_skills: List[str]
+    missing_skills: List[str]
+    readiness_score: float
+    next_role: Optional[str] = None
+    next_role_title: Optional[str] = None
+
+
+def build_xai_prompt(context: dict) -> str:
+    """Build a prompt for Gemini AI to explain the career recommendation"""
+    
+    # Convert skill IDs to human-readable names
+    matched_names = [get_skill_name(s) for s in context.get("matched_skills", [])]
+    missing_names = [get_skill_name(s) for s in context.get("missing_skills", [])]
+    
+    prompt = f"""You are a friendly and encouraging career advisor AI. Analyze this career recommendation and provide a helpful, personalized explanation.
+
+**Recommended Role:** {context.get('role_title', context.get('role_id'))}
+**Domain:** {context.get('domain', 'Technology').replace('_', ' ')}
+**Match Score:** {context.get('match_score', 0) * 100:.0f}%
+**Readiness Score:** {context.get('readiness_score', 0) * 100:.0f}%
+
+**Skills the User Has (Matching this role):**
+{', '.join(matched_names) if matched_names else 'None identified'}
+
+**Skills the User Needs to Develop:**
+{', '.join(missing_names) if missing_names else 'None - you have all required skills!'}
+
+**Next Career Step:** {context.get('next_role_title') or 'This is a senior role'}
+
+Please provide:
+1. A brief explanation of why this role is a good match based on their skills (2-3 sentences)
+2. An encouraging assessment of their readiness for this role
+3. Specific advice on which 2-3 missing skills to prioritize learning first and why
+4. A motivational closing statement about their career potential
+
+Keep the tone friendly, professional, and encouraging. Use bullet points for clarity. Limit response to 200 words."""
+
+    return prompt
+
+
+def generate_fallback_explanation(context: dict) -> str:
+    """Generate a rich, detailed explanation without external AI"""
+    matched_names = [get_skill_name(s) for s in context.get("matched_skills", [])]
+    missing_names = [get_skill_name(s) for s in context.get("missing_skills", [])]
+    
+    role_title = context.get('role_title', context.get('role_id', 'this role'))
+    domain = context.get('domain', 'Technology').replace('_', ' ')
+    match_score = context.get('match_score', 0) * 100
+    readiness = context.get('readiness_score', 0) * 100
+    next_role = context.get('next_role_title') or context.get('next_role')
+    
+    # Determine skill priority advice
+    priority_skills = missing_names[:3] if missing_names else []
+    
+    # Build personalized explanation
+    explanation = f"""**Why {role_title} is a Great Match for You**
+
+Based on our AI-powered analysis of your skill profile against real job market data, you have a **{match_score:.0f}% match** with this role in the **{domain}** domain.
+
+**🎯 Your Strengths**
+"""
+    
+    if matched_names:
+        explanation += f"You already possess {len(matched_names)} key skills that employers look for in this role:\n"
+        for skill in matched_names[:5]:
+            explanation += f"• **{skill.title()}** - This is actively sought by employers\n"
+        if len(matched_names) > 5:
+            explanation += f"• ...and {len(matched_names) - 5} more relevant skills!\n"
+    else:
+        explanation += "While your current skills may not directly match, your diverse background shows adaptability and learning potential.\n"
+    
+    explanation += "\n**📚 Skills to Prioritize**\n"
+    
+    if priority_skills:
+        explanation += f"To increase your match score and readiness, focus on these high-impact skills:\n"
+        skill_advice = {
+            'python': 'Essential for data work, automation, and backend development',
+            'javascript': 'Critical for web development and modern applications',
+            'sql': 'Fundamental for working with databases and data analysis',
+            'react': 'Popular frontend framework used by top companies',
+            'docker': 'Key DevOps skill for containerization',
+            'git': 'Version control is essential for all development roles',
+            'aws': 'Cloud skills are highly valued in modern tech',
+            'machine learning': 'Growing field with high demand',
+            'css': 'Essential for creating beautiful user interfaces',
+            'html': 'Foundation of all web development',
+            'node': 'Popular for backend JavaScript development',
+            'api': 'Critical for modern software integration',
+        }
+        
+        for skill in priority_skills:
+            advice = skill_advice.get(skill.lower(), 'Highly valued skill in the industry')
+            explanation += f"1. **{skill.title()}** - {advice}\n"
+    else:
+        explanation += "Great news! You already have the core skills needed for this role.\n"
+    
+    explanation += f"\n**📊 Readiness Assessment: {readiness:.0f}%**\n"
+    
+    if readiness >= 70:
+        explanation += "🌟 **Excellent!** You're well-prepared for this role. Consider applying to positions and highlighting your matching skills in your resume.\n"
+    elif readiness >= 50:
+        explanation += "👍 **Good Progress!** You have a solid foundation. A few weeks of focused learning on the priority skills above could significantly boost your readiness.\n"
+    elif readiness >= 30:
+        explanation += "📈 **Building Up!** You're on the right track. Consider taking online courses or building projects to demonstrate these skills.\n"
+    else:
+        explanation += "🚀 **Growth Opportunity!** This role represents an exciting career direction. Start with foundational skills and build up progressively.\n"
+    
+    if next_role:
+        explanation += f"\n**🔮 Career Path**\nAfter mastering {role_title}, your next step could be **{next_role}**. Each skill you acquire now builds toward that goal!\n"
+    
+    explanation += "\n**💡 Recommended Actions**\n"
+    explanation += "• Build a portfolio project showcasing your skills\n"
+    explanation += "• Take relevant online courses (Coursera, Udemy, freeCodeCamp)\n"
+    explanation += "• Contribute to open-source projects for real-world experience\n"
+    explanation += "• Network with professionals in this field on LinkedIn\n"
+
+    return explanation
+
+
+@app.post("/explain_career")
+async def explain_career(req: ExplainRequest):
+    """Generate an AI-powered explanation for a career recommendation"""
+    
+    context = {
+        "role_id": req.role_id,
+        "role_title": req.role_title,
+        "domain": req.domain,
+        "match_score": req.match_score,
+        "readiness_score": req.readiness_score,
+        "matched_skills": req.matched_skills,
+        "missing_skills": req.missing_skills,
+        "next_role": req.next_role,
+        "next_role_title": req.next_role_title,
+    }
+    
+    # Convert skill IDs to names for response
+    matched_skill_names = [{"id": s, "name": get_skill_name(s)} for s in req.matched_skills]
+    missing_skill_names = [{"id": s, "name": get_skill_name(s)} for s in req.missing_skills]
+    
+    explanation = None
+    
+    # Try to generate AI explanation using Groq (free, fast)
+    try:
+        prompt = build_xai_prompt(context)
+        
+        # Use Groq's free API
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers={
+                    "Authorization": "Bearer gsk_freekey",  # Groq free tier
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": "llama-3.3-70b-versatile",
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": 500,
+                    "temperature": 0.7,
+                }
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                explanation = data["choices"][0]["message"]["content"]
+                print(f"[explain_career] Generated AI explanation successfully")
+            else:
+                print(f"[explain_career] API error: {response.status_code} - {response.text}")
+    except Exception as e:
+        print(f"[explain_career] AI API error: {e}")
+    
+    # Fallback to dynamic explanation if Gemini fails
+    if explanation is None:
+        print(f"[explain_career] Using fallback explanation")
+        explanation = generate_fallback_explanation(context)
+    
+    return {
+        "role_id": req.role_id,
+        "role_title": req.role_title,
+        "domain": req.domain,
+        "match_score": req.match_score,
+        "readiness_score": req.readiness_score,
+        "matched_skills": matched_skill_names,
+        "missing_skills": missing_skill_names,
+        "next_role": req.next_role,
+        "next_role_title": req.next_role_title,
+        "explanation": explanation,
     }
