@@ -16,19 +16,48 @@ function formatExplanation(text) {
 }
 
 export function AIExplanation({ explanation }) {
+  const [displayedText, setDisplayedText] = React.useState("");
+  const [isTyping, setIsTyping] = React.useState(true);
+
+  React.useEffect(() => {
+    if (!explanation) return;
+
+    setDisplayedText("");
+    setIsTyping(true);
+    let currentIndex = 0;
+
+    const intervalId = setInterval(() => {
+      if (currentIndex < explanation.length) {
+        setDisplayedText(explanation.substring(0, currentIndex + 1));
+        currentIndex++;
+      } else {
+        setIsTyping(false);
+        clearInterval(intervalId);
+      }
+    }, 15); // Adjust speed here (lower = faster)
+
+    return () => clearInterval(intervalId);
+  }, [explanation]);
+
   if (!explanation) return null;
 
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-6 rounded-xl border border-purple-200">
-      <h3 className="flex items-center gap-2 text-purple-600 font-semibold mb-4">
-        🤖 AI Career Analysis
+    <div
+      className="bg-gradient-to-br from-purple-50 via-violet-50 to-indigo-50 p-6 rounded-2xl border-2 border-purple-200 shadow-lg animate-fade-in-up"
+      style={{ animationDelay: "0.4s" }}
+    >
+      <h3 className="flex items-center gap-2 text-purple-700 font-bold mb-4 text-lg">
+        <span className="text-2xl">🤖</span> AI Career Analysis
       </h3>
       <div
         className="text-purple-900 leading-relaxed whitespace-pre-wrap"
         dangerouslySetInnerHTML={{
-          __html: formatExplanation(explanation),
+          __html: formatExplanation(displayedText),
         }}
       />
+      {isTyping && (
+        <span className="inline-block w-1 h-4 bg-purple-600 ml-1 animate-blink" />
+      )}
     </div>
   );
 }

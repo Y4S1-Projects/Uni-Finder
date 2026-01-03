@@ -37,8 +37,10 @@ export default function CareerPath() {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       {/* Header */}
-      <h2 className="text-2xl font-bold mb-2">🎯 Career Path Recommender</h2>
-      <p className="text-gray-500 mb-6">
+      <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+        🎯 Career Path Recommender
+      </h2>
+      <p className="text-gray-600 mb-8 text-lg">
         Select your skills below and we'll recommend the best matching career
         roles using AI-powered cosine similarity analysis.
       </p>
@@ -84,9 +86,14 @@ function SkillSelectionForm({
   loading,
 }) {
   return (
-    <form onSubmit={onSubmit} className="grid gap-4">
+    <form
+      onSubmit={onSubmit}
+      className="grid gap-6 p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-2 border-blue-200 shadow-lg"
+    >
       <label>
-        <strong className="block mb-2">Your Skills</strong>
+        <strong className="block mb-3 text-gray-700 text-lg">
+          Your Skills
+        </strong>
         <SkillSelector selected={selectedSkills} onChange={onSkillsChange} />
       </label>
 
@@ -94,13 +101,13 @@ function SkillSelectionForm({
         <button
           type="submit"
           disabled={loading || selectedSkills.length === 0}
-          className={`px-6 py-3 text-white rounded-md text-base font-medium transition-colors ${
+          className={`px-8 py-4 text-white rounded-xl text-base font-semibold transition-all duration-300 shadow-lg ${
             selectedSkills.length === 0
               ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 hover:bg-blue-600 cursor-pointer"
+              : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:scale-105 cursor-pointer"
           }`}
         >
-          {loading ? "Analyzing..." : "Find My Best Career Matches"}
+          {loading ? "🔍 Analyzing..." : "✨ Find My Best Career Matches"}
         </button>
       </div>
     </form>

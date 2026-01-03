@@ -6,21 +6,25 @@ import React from "react";
 
 const SKILL_STYLES = {
   matched: {
-    tagClass: "bg-green-100 text-green-800",
+    tagClass:
+      "bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-300 shadow-sm hover:shadow-md transition-all duration-200",
     label: "✅ Skills You Have",
-    labelClass: "text-green-600",
+    labelClass: "text-green-700 font-semibold",
   },
   missing: {
-    tagClass: "bg-amber-100 text-amber-800",
+    tagClass:
+      "bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 border border-amber-300 shadow-sm hover:shadow-md transition-all duration-200",
     label: "📚 Skills to Learn",
-    labelClass: "text-yellow-600",
+    labelClass: "text-amber-700 font-semibold",
   },
 };
 
 export function SkillTag({ skill, variant = "matched", size = "small" }) {
   const style = SKILL_STYLES[variant];
   const sizeClasses =
-    size === "large" ? "px-3 py-1.5 text-sm" : "px-2 py-0.5 text-xs";
+    size === "large"
+      ? "px-3 py-1 text-xs font-medium"
+      : "px-2 py-0.5 text-[10px] font-medium";
 
   // Handle both string and object skills
   const skillName = typeof skill === "object" ? skill.name || skill.id : skill;

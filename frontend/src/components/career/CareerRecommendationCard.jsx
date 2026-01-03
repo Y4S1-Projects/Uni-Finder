@@ -26,16 +26,16 @@ export function CareerRecommendationCard({
 
   return (
     <div
-      className={`p-6 rounded-xl mb-4 relative ${
+      className={`p-6 rounded-2xl mb-5 relative transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] ${
         isBestMatch
-          ? "bg-gradient-to-br from-blue-50 to-sky-50 border-2 border-blue-400"
-          : "bg-white border border-gray-200"
+          ? "bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border-2 border-blue-300 shadow-xl"
+          : "bg-gradient-to-br from-blue-50/60 via-sky-50/70 to-indigo-50/50 border-2 border-blue-200/60 hover:border-blue-300"
       }`}
     >
       {/* Best Match Badge */}
       {isBestMatch && (
-        <span className="absolute -top-2.5 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-          BEST MATCH
+        <span className="absolute -top-3 right-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse">
+          ⭐ BEST MATCH
         </span>
       )}
 
@@ -96,7 +96,7 @@ export function CareerRecommendationCard({
       {/* View Details Button */}
       <button
         onClick={() => onViewDetails(recommendation)}
-        className="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md text-sm font-medium flex items-center gap-1.5 transition-colors"
+        className="mt-5 px-6 py-3 bg-gradient-to-r from-indigo-400 to-blue-400 hover:from-indigo-500 hover:to-blue-500 text-white rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
       >
         🔍 View Details & AI Explanation
       </button>
