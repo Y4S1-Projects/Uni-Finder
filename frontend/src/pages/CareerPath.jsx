@@ -35,10 +35,10 @@ export default function CareerPath() {
   };
 
   return (
-    <div style={{ padding: "2rem", maxWidth: 900, margin: "0 auto" }}>
+    <div className="p-8 max-w-4xl mx-auto">
       {/* Header */}
-      <h2>🎯 Career Path Recommender</h2>
-      <p style={{ color: "#666", marginBottom: "1.5rem" }}>
+      <h2 className="text-2xl font-bold mb-2">🎯 Career Path Recommender</h2>
+      <p className="text-gray-500 mb-6">
         Select your skills below and we'll recommend the best matching career
         roles using AI-powered cosine similarity analysis.
       </p>
@@ -84,27 +84,21 @@ function SkillSelectionForm({
   loading,
 }) {
   return (
-    <form onSubmit={onSubmit} style={{ display: "grid", gap: "1rem" }}>
+    <form onSubmit={onSubmit} className="grid gap-4">
       <label>
-        <strong>Your Skills</strong>
-        <div style={{ marginTop: 8 }}>
-          <SkillSelector selected={selectedSkills} onChange={onSkillsChange} />
-        </div>
+        <strong className="block mb-2">Your Skills</strong>
+        <SkillSelector selected={selectedSkills} onChange={onSkillsChange} />
       </label>
 
-      <div style={{ marginTop: 8 }}>
+      <div className="mt-2">
         <button
           type="submit"
           disabled={loading || selectedSkills.length === 0}
-          style={{
-            padding: "0.75rem 1.5rem",
-            background: selectedSkills.length === 0 ? "#ccc" : "#4a90d9",
-            color: "white",
-            border: "none",
-            borderRadius: 6,
-            cursor: selectedSkills.length === 0 ? "not-allowed" : "pointer",
-            fontSize: 16,
-          }}
+          className={`px-6 py-3 text-white rounded-md text-base font-medium transition-colors ${
+            selectedSkills.length === 0
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 hover:bg-blue-600 cursor-pointer"
+          }`}
         >
           {loading ? "Analyzing..." : "Find My Best Career Matches"}
         </button>
@@ -115,23 +109,13 @@ function SkillSelectionForm({
 
 function ErrorMessage({ message }) {
   return (
-    <div
-      style={{
-        marginTop: "1rem",
-        color: "crimson",
-        padding: "1rem",
-        background: "#fff0f0",
-        borderRadius: 6,
-      }}
-    >
-      {message}
-    </div>
+    <div className="mt-4 text-red-600 p-4 bg-red-50 rounded-md">{message}</div>
   );
 }
 
 function RecommendationsSection({ recommendations, onViewDetails }) {
   return (
-    <div style={{ marginTop: "2rem" }}>
+    <div className="mt-8">
       {/* Summary */}
       <RecommendationsSummary
         skillsCount={recommendations.skills_analyzed.length}
@@ -139,7 +123,9 @@ function RecommendationsSection({ recommendations, onViewDetails }) {
       />
 
       {/* Title */}
-      <h3 style={{ marginBottom: "1rem" }}>🏆 Top Career Recommendations</h3>
+      <h3 className="text-xl font-semibold mb-4">
+        🏆 Top Career Recommendations
+      </h3>
 
       {/* Recommendation Cards */}
       {recommendations.recommendations.map((rec, index) => (

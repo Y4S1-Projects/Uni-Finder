@@ -6,37 +6,27 @@ import React from "react";
 
 const SKILL_STYLES = {
   matched: {
-    background: "#d1fae5",
-    color: "#065f46",
+    tagClass: "bg-green-100 text-green-800",
     label: "✅ Skills You Have",
-    labelColor: "#059669",
+    labelClass: "text-green-600",
   },
   missing: {
-    background: "#fef3c7",
-    color: "#92400e",
+    tagClass: "bg-amber-100 text-amber-800",
     label: "📚 Skills to Learn",
-    labelColor: "#ca8a04",
+    labelClass: "text-yellow-600",
   },
 };
 
 export function SkillTag({ skill, variant = "matched", size = "small" }) {
   const style = SKILL_STYLES[variant];
-  const padding = size === "large" ? "6px 12px" : "2px 8px";
-  const fontSize = size === "large" ? 13 : 11;
+  const sizeClasses =
+    size === "large" ? "px-3 py-1.5 text-sm" : "px-2 py-0.5 text-xs";
 
   // Handle both string and object skills
   const skillName = typeof skill === "object" ? skill.name || skill.id : skill;
 
   return (
-    <span
-      style={{
-        background: style.background,
-        padding,
-        borderRadius: 12,
-        fontSize,
-        color: style.color,
-      }}
-    >
+    <span className={`${style.tagClass} ${sizeClasses} rounded-full`}>
       {skillName}
     </span>
   );
@@ -56,23 +46,11 @@ export function SkillTagList({
   return (
     <div>
       {showLabel && (
-        <div
-          style={{
-            fontSize: 12,
-            color: style.labelColor,
-            marginBottom: 4,
-          }}
-        >
+        <div className={`text-xs ${style.labelClass} mb-1`}>
           {style.label} ({skills.length})
         </div>
       )}
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: size === "large" ? 8 : 4,
-        }}
-      >
+      <div className={`flex flex-wrap ${size === "large" ? "gap-2" : "gap-1"}`}>
         {skills.slice(0, maxDisplay).map((skill, index) => (
           <SkillTag
             key={typeof skill === "object" ? skill.id : skill || index}
@@ -82,7 +60,7 @@ export function SkillTagList({
           />
         ))}
         {skills.length > maxDisplay && (
-          <span style={{ fontSize: 11, color: "#666" }}>
+          <span className="text-xs text-gray-500">
             +{skills.length - maxDisplay} more
           </span>
         )}

@@ -19,31 +19,12 @@ export function AIExplanation({ explanation }) {
   if (!explanation) return null;
 
   return (
-    <div
-      style={{
-        background: "linear-gradient(135deg, #fdf4ff 0%, #f5f3ff 100%)",
-        padding: "1.5rem",
-        borderRadius: 12,
-        border: "1px solid #e9d5ff",
-      }}
-    >
-      <h3
-        style={{
-          margin: "0 0 1rem 0",
-          color: "#7c3aed",
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-        }}
-      >
+    <div className="bg-gradient-to-br from-purple-50 to-violet-50 p-6 rounded-xl border border-purple-200">
+      <h3 className="flex items-center gap-2 text-purple-600 font-semibold mb-4">
         🤖 AI Career Analysis
       </h3>
       <div
-        style={{
-          color: "#4c1d95",
-          lineHeight: 1.7,
-          whiteSpace: "pre-wrap",
-        }}
+        className="text-purple-900 leading-relaxed whitespace-pre-wrap"
         dangerouslySetInnerHTML={{
           __html: formatExplanation(explanation),
         }}
@@ -54,9 +35,9 @@ export function AIExplanation({ explanation }) {
 
 export function AILoadingState() {
   return (
-    <div style={{ textAlign: "center", padding: "3rem" }}>
-      <div style={{ fontSize: 48, marginBottom: "1rem" }}>🤖</div>
-      <div style={{ color: "#666" }}>AI is analyzing this career path...</div>
+    <div className="text-center py-12">
+      <div className="text-5xl mb-4">🤖</div>
+      <div className="text-gray-500">AI is analyzing this career path...</div>
     </div>
   );
 }

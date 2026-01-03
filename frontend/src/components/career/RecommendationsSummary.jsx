@@ -6,16 +6,8 @@ import React from "react";
 
 export function RecommendationsSummary({ skillsCount, rolesCount }) {
   return (
-    <div
-      style={{
-        background: "#f8fafc",
-        padding: "1rem",
-        borderRadius: 8,
-        marginBottom: "1.5rem",
-        borderLeft: "4px solid #4a90d9",
-      }}
-    >
-      <p style={{ margin: 0, color: "#666" }}>
+    <div className="bg-slate-50 p-4 rounded-lg mb-6 border-l-4 border-blue-500">
+      <p className="m-0 text-gray-500">
         Analyzed <strong>{skillsCount}</strong> skills across{" "}
         <strong>{rolesCount}</strong> career roles
       </p>
@@ -25,18 +17,9 @@ export function RecommendationsSummary({ skillsCount, rolesCount }) {
 
 export function HowItWorks() {
   return (
-    <div
-      style={{
-        background: "#faf5ff",
-        padding: "1.5rem",
-        borderRadius: 8,
-        marginTop: "1.5rem",
-      }}
-    >
-      <h3 style={{ margin: "0 0 1rem 0", color: "#7c3aed" }}>
-        💡 How This Works
-      </h3>
-      <p style={{ color: "#666", lineHeight: 1.6, margin: 0 }}>
+    <div className="bg-purple-50 p-6 rounded-lg mt-6">
+      <h3 className="text-purple-600 font-semibold mb-4">💡 How This Works</h3>
+      <p className="text-gray-600 leading-relaxed m-0">
         Our AI uses <strong>Cosine Similarity</strong> to compare your skill
         profile against real job market data. Each role has an
         importance-weighted skill profile built from actual job postings. The

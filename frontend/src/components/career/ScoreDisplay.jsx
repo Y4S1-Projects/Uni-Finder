@@ -5,82 +5,73 @@
 import React from "react";
 
 export function getScoreColor(score) {
-  if (score >= 0.7) return "#16a34a"; // green
-  if (score >= 0.4) return "#ca8a04"; // yellow
-  return "#dc2626"; // red
+  if (score >= 0.7) return "text-green-600";
+  if (score >= 0.4) return "text-yellow-600";
+  return "text-red-600";
+}
+
+export function getScoreBgColor(score) {
+  if (score >= 0.7) return "bg-green-500";
+  if (score >= 0.4) return "bg-yellow-500";
+  return "bg-red-500";
 }
 
 export function ScoreCircle({ score, label, size = "normal" }) {
-  const color = getScoreColor(score);
-  const fontSize = size === "large" ? 32 : size === "small" ? 20 : 28;
-  const labelSize = size === "large" ? 14 : 12;
+  const colorClass = getScoreColor(score);
+  const sizeClasses = {
+    large: "text-3xl",
+    normal: "text-2xl",
+    small: "text-xl",
+  };
+  const labelSizeClasses = {
+    large: "text-sm",
+    normal: "text-xs",
+    small: "text-xs",
+  };
 
   return (
-    <div style={{ textAlign: "right" }}>
-      <div
-        style={{
-          fontSize,
-          fontWeight: "bold",
-          color,
-        }}
-      >
+    <div className="text-right">
+      <div className={`font-bold ${sizeClasses[size]} ${colorClass}`}>
         {(score * 100).toFixed(0)}%
       </div>
-      <div style={{ fontSize: labelSize, color: "#666" }}>{label}</div>
+      <div className={`${labelSizeClasses[size]} text-gray-500`}>{label}</div>
     </div>
   );
 }
 
-export function ScoreCard({
-  score,
-  label,
-  bgColor = "#f0f7ff",
-  textColor = "#2563eb",
-}) {
+export function ScoreCard({ score, label, variant = "blue" }) {
+  const variants = {
+    blue: "bg-blue-50 text-blue-600",
+    green: "bg-green-50 text-green-600",
+    purple: "bg-purple-50 text-purple-600",
+  };
+
   return (
     <div
-      style={{
-        flex: 1,
-        background: bgColor,
-        padding: "1rem",
-        borderRadius: 8,
-        textAlign: "center",
-      }}
+      className={`flex-1 p-4 rounded-lg text-center ${
+        variants[variant]?.split(" ")[0] || "bg-blue-50"
+      }`}
     >
       <div
-        style={{
-          fontSize: 32,
-          fontWeight: "bold",
-          color: textColor,
-        }}
+        className={`text-3xl font-bold ${
+          variants[variant]?.split(" ")[1] || "text-blue-600"
+        }`}
       >
         {(score * 100).toFixed(0)}%
       </div>
-      <div style={{ fontSize: 12, color: "#666" }}>{label}</div>
+      <div className="text-xs text-gray-500">{label}</div>
     </div>
   );
 }
 
-export function ProgressBar({ score, height = 8 }) {
-  const color = getScoreColor(score);
+export function ProgressBar({ score, height = "h-2" }) {
+  const bgColorClass = getScoreBgColor(score);
 
   return (
-    <div
-      style={{
-        background: "#e5e7eb",
-        borderRadius: height,
-        height,
-        overflow: "hidden",
-      }}
-    >
+    <div className={`bg-gray-200 rounded-full ${height} overflow-hidden`}>
       <div
-        style={{
-          width: `${score * 100}%`,
-          height: "100%",
-          background: color,
-          borderRadius: height,
-          transition: "width 0.5s ease",
-        }}
+        className={`${height} ${bgColorClass} rounded-full transition-all duration-500`}
+        style={{ width: `${score * 100}%` }}
       />
     </div>
   );

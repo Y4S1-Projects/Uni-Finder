@@ -14,32 +14,11 @@ export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
 
   return (
     <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: "rgba(0,0,0,0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 1000,
-        padding: "1rem",
-      }}
+      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
       onClick={onClose}
     >
       <div
-        style={{
-          background: "white",
-          borderRadius: 16,
-          maxWidth: 700,
-          width: "100%",
-          maxHeight: "90vh",
-          overflow: "auto",
-          padding: "2rem",
-          position: "relative",
-        }}
+        className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-auto p-8 relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -62,18 +41,7 @@ function CloseButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      style={{
-        position: "absolute",
-        top: 16,
-        right: 16,
-        background: "#f3f4f6",
-        border: "none",
-        borderRadius: "50%",
-        width: 32,
-        height: 32,
-        cursor: "pointer",
-        fontSize: 18,
-      }}
+      className="absolute top-4 right-4 bg-gray-100 hover:bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center text-lg transition-colors"
     >
       ✕
     </button>
@@ -84,32 +52,30 @@ function CareerDetailContent({ jobDetail }) {
   return (
     <>
       {/* Header */}
-      <div style={{ marginBottom: "1.5rem" }}>
-        <h2 style={{ margin: "0 0 8px 0", color: "#1e40af" }}>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-blue-800 mb-2">
           {jobDetail.role_title || jobDetail.role_id}
         </h2>
         <DomainBadge domain={jobDetail.domain} size="large" />
       </div>
 
       {/* Scores */}
-      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem" }}>
+      <div className="flex gap-4 mb-6">
         <ScoreCard
           score={jobDetail.match_score}
           label="Match Score"
-          bgColor="#f0f7ff"
-          textColor="#2563eb"
+          variant="blue"
         />
         <ScoreCard
           score={jobDetail.readiness_score}
           label="Readiness"
-          bgColor="#f0fdf4"
-          textColor="#16a34a"
+          variant="green"
         />
       </div>
 
       {/* Next Career Step */}
       {jobDetail.next_role && (
-        <div style={{ marginBottom: "1.5rem" }}>
+        <div className="mb-6">
           <NextRoleBadge
             nextRole={jobDetail.next_role}
             nextRoleTitle={jobDetail.next_role_title}
@@ -120,10 +86,8 @@ function CareerDetailContent({ jobDetail }) {
 
       {/* Skills You Have */}
       {jobDetail.matched_skills?.length > 0 && (
-        <div style={{ marginBottom: "1.5rem" }}>
-          <h3
-            style={{ margin: "0 0 0.75rem 0", color: "#059669", fontSize: 16 }}
-          >
+        <div className="mb-6">
+          <h3 className="text-base font-semibold text-green-600 mb-3">
             ✅ Skills You Already Have ({jobDetail.matched_skills.length})
           </h3>
           <SkillTagList
@@ -138,10 +102,8 @@ function CareerDetailContent({ jobDetail }) {
 
       {/* Skills to Develop */}
       {jobDetail.missing_skills?.length > 0 && (
-        <div style={{ marginBottom: "1.5rem" }}>
-          <h3
-            style={{ margin: "0 0 0.75rem 0", color: "#ca8a04", fontSize: 16 }}
-          >
+        <div className="mb-6">
+          <h3 className="text-base font-semibold text-yellow-600 mb-3">
             📚 Skills to Develop ({jobDetail.missing_skills.length})
           </h3>
           <SkillTagList
@@ -162,7 +124,7 @@ function CareerDetailContent({ jobDetail }) {
 
 function ErrorState() {
   return (
-    <div style={{ textAlign: "center", padding: "2rem", color: "#666" }}>
+    <div className="text-center py-8 text-gray-500">
       Failed to load details. Please try again.
     </div>
   );

@@ -4,34 +4,28 @@
  */
 import React from "react";
 
-const DOMAIN_COLORS = {
-  SOFTWARE_ENGINEERING: { bg: "#e0e7ff", text: "#4338ca" },
-  DATA: { bg: "#fef3c7", text: "#92400e" },
-  AI_ML: { bg: "#fce7f3", text: "#9d174d" },
-  DEVOPS: { bg: "#d1fae5", text: "#065f46" },
-  QA: { bg: "#fee2e2", text: "#991b1b" },
-  MOBILE: { bg: "#e0f2fe", text: "#0369a1" },
-  UI_UX: { bg: "#f3e8ff", text: "#7c3aed" },
-  default: { bg: "#f3f4f6", text: "#4b5563" },
+const DOMAIN_CLASSES = {
+  SOFTWARE_ENGINEERING: "bg-indigo-100 text-indigo-700",
+  DATA: "bg-amber-100 text-amber-800",
+  AI_ML: "bg-pink-100 text-pink-700",
+  DEVOPS: "bg-green-100 text-green-800",
+  QA: "bg-red-100 text-red-700",
+  MOBILE: "bg-sky-100 text-sky-700",
+  UI_UX: "bg-purple-100 text-purple-700",
+  default: "bg-gray-100 text-gray-600",
 };
 
 export function DomainBadge({ domain, size = "small" }) {
   if (!domain) return null;
 
-  const colors = DOMAIN_COLORS[domain] || DOMAIN_COLORS.default;
-  const padding = size === "large" ? "4px 12px" : "2px 8px";
-  const fontSize = size === "large" ? 14 : 12;
+  const colorClass = DOMAIN_CLASSES[domain] || DOMAIN_CLASSES.default;
+  const sizeClasses =
+    size === "large"
+      ? "px-3 py-1 text-sm rounded-md"
+      : "px-2 py-0.5 text-xs rounded";
 
   return (
-    <span
-      style={{
-        background: colors.bg,
-        color: colors.text,
-        padding,
-        borderRadius: size === "large" ? 6 : 4,
-        fontSize,
-      }}
-    >
+    <span className={`${colorClass} ${sizeClasses} font-medium`}>
       {domain.replace(/_/g, " ")}
     </span>
   );
