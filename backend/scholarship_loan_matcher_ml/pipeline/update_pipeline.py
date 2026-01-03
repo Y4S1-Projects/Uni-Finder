@@ -1,4 +1,4 @@
-"""Unified dataset update pipeline: scrapers → cleaners → processed data."""
+"""Unified dataset update pipeline: scrapers → cleaners → merge with existing → processed data."""
 
 from __future__ import annotations
 
@@ -7,6 +7,8 @@ import logging
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any
+
+import pandas as pd
 
 # Import scrapers
 from ..scraping.master_scraper import run_master_scraper
@@ -140,29 +142,97 @@ def run_full_update() -> Dict[str, Any]:
         }
         summary["errors"].append(error_msg)
 
-    # Step 2: Clean scholarships
-    logger.info("Step 2: Cleaning scholarship data")
+    # Step 2: Clean scholarships and merge with existing
+    logger.info("Step 2: Cleaning scholarship data and merging with existing")
     scholarship_clean_success = False
     if RAW_SCHOLARSHIPS_PATH.exists():
         try:
+            # Load existing cleaned data if it exists
+            existing_scholarships_df = None
+            existing_count = 0
+            if CLEAN_SCHOLARSHIPS_PATH.exists():
+                try:
+                    existing_scholarships_df = pd.read_csv(CLEAN_SCHOLARSHIPS_PATH, encoding='utf-8')
+                    existing_count = len(existing_scholarships_df)
+                    logger.info("Loaded %d existing scholarship records to merge", existing_count)
+                except Exception as e:
+                    logger.warning("Failed to load existing scholarships for merging: %s", e)
+            
+            # Clean new scraped data (write to temp file first)
+            temp_clean_path = CLEAN_SCHOLARSHIPS_PATH.parent / "scholarships_clean_temp.csv"
             clean_stats = clean_scholarships(
-                RAW_SCHOLARSHIPS_PATH, CLEAN_SCHOLARSHIPS_PATH
+                RAW_SCHOLARSHIPS_PATH, temp_clean_path
             )
-            summary["cleaner_results"]["scholarships"] = {
-                "success": True,
-                "rows_input": clean_stats.get("rows_input", 0),
-                "rows_output": clean_stats.get("rows_output", 0),
-                "duplicates_removed": clean_stats.get("duplicates_removed", 0),
-                "invalid_rows_fixed": clean_stats.get("invalid_rows_fixed", 0),
-            }
+            new_count = clean_stats.get("rows_output", 0)
+            logger.info("Cleaned %d new scholarship records", new_count)
+            
+            # Merge with existing data
+            if existing_scholarships_df is not None and new_count > 0:
+                new_scholarships_df = pd.read_csv(temp_clean_path, encoding='utf-8')
+                
+                # Create a unique identifier for deduplication (name + provider)
+                existing_scholarships_df['_merge_key'] = (
+                    existing_scholarships_df['name'].fillna('').str.lower().str.strip() + '|' +
+                    existing_scholarships_df['provider'].fillna('').str.lower().str.strip()
+                )
+                new_scholarships_df['_merge_key'] = (
+                    new_scholarships_df['name'].fillna('').str.lower().str.strip() + '|' +
+                    new_scholarships_df['provider'].fillna('').str.lower().str.strip()
+                )
+                
+                # Find duplicates
+                duplicates_mask = new_scholarships_df['_merge_key'].isin(existing_scholarships_df['_merge_key'])
+                duplicates_count = duplicates_mask.sum()
+                
+                # Keep only new records (not duplicates)
+                new_unique_df = new_scholarships_df[~duplicates_mask].copy()
+                new_unique_count = len(new_unique_df)
+                
+                # Remove merge key before combining
+                existing_scholarships_df = existing_scholarships_df.drop(columns=['_merge_key'])
+                new_unique_df = new_unique_df.drop(columns=['_merge_key'])
+                
+                # Combine existing + new unique records
+                merged_df = pd.concat([existing_scholarships_df, new_unique_df], ignore_index=True)
+                merged_count = len(merged_df)
+                
+                logger.info(
+                    "Merged scholarships: %d existing + %d new = %d total (%d duplicates skipped)",
+                    existing_count, new_unique_count, merged_count, duplicates_count
+                )
+                
+                # Save merged result
+                merged_df.to_csv(CLEAN_SCHOLARSHIPS_PATH, index=False, encoding='utf-8')
+                temp_clean_path.unlink(missing_ok=True)  # Remove temp file
+                
+                summary["cleaner_results"]["scholarships"] = {
+                    "success": True,
+                    "rows_input": clean_stats.get("rows_input", 0),
+                    "rows_output": merged_count,
+                    "existing_count": existing_count,
+                    "new_count": new_count,
+                    "new_unique_count": new_unique_count,
+                    "duplicates_removed": clean_stats.get("duplicates_removed", 0) + duplicates_count,
+                    "invalid_rows_fixed": clean_stats.get("invalid_rows_fixed", 0),
+                }
+            else:
+                # No existing data or no new data, just use cleaned new data
+                if temp_clean_path.exists():
+                    temp_clean_path.rename(CLEAN_SCHOLARSHIPS_PATH)
+                summary["cleaner_results"]["scholarships"] = {
+                    "success": True,
+                    "rows_input": clean_stats.get("rows_input", 0),
+                    "rows_output": new_count,
+                    "existing_count": existing_count,
+                    "new_count": new_count,
+                    "new_unique_count": new_count,
+                    "duplicates_removed": clean_stats.get("duplicates_removed", 0),
+                    "invalid_rows_fixed": clean_stats.get("invalid_rows_fixed", 0),
+                }
+            
             scholarship_clean_success = True
-            logger.info(
-                "Scholarship cleaning completed: %d rows input → %d rows output",
-                clean_stats.get("rows_input", 0),
-                clean_stats.get("rows_output", 0),
-            )
         except Exception as e:
-            error_msg = f"Scholarship cleaning failed: {str(e)}"
+            error_msg = f"Scholarship cleaning/merging failed: {str(e)}"
             logger.exception(error_msg)
             summary["cleaner_results"]["scholarships"] = {
                 "success": False,
@@ -178,27 +248,95 @@ def run_full_update() -> Dict[str, Any]:
         }
         summary["warnings"].append(warning_msg)
 
-    # Step 3: Clean loans
-    logger.info("Step 3: Cleaning loan data")
+    # Step 3: Clean loans and merge with existing
+    logger.info("Step 3: Cleaning loan data and merging with existing")
     loan_clean_success = False
     if RAW_LOANS_PATH.exists():
         try:
-            clean_stats = clean_loans(RAW_LOANS_PATH, CLEAN_LOANS_PATH)
-            summary["cleaner_results"]["loans"] = {
-                "success": True,
-                "rows_input": clean_stats.get("rows_input", 0),
-                "rows_output": clean_stats.get("rows_output", 0),
-                "duplicates_removed": clean_stats.get("duplicates_removed", 0),
-                "invalid_rows_fixed": clean_stats.get("invalid_rows_fixed", 0),
-            }
+            # Load existing cleaned data if it exists
+            existing_loans_df = None
+            existing_count = 0
+            if CLEAN_LOANS_PATH.exists():
+                try:
+                    existing_loans_df = pd.read_csv(CLEAN_LOANS_PATH, encoding='utf-8')
+                    existing_count = len(existing_loans_df)
+                    logger.info("Loaded %d existing loan records to merge", existing_count)
+                except Exception as e:
+                    logger.warning("Failed to load existing loans for merging: %s", e)
+            
+            # Clean new scraped data (write to temp file first)
+            temp_clean_path = CLEAN_LOANS_PATH.parent / "loans_clean_temp.csv"
+            clean_stats = clean_loans(RAW_LOANS_PATH, temp_clean_path)
+            new_count = clean_stats.get("rows_output", 0)
+            logger.info("Cleaned %d new loan records", new_count)
+            
+            # Merge with existing data
+            if existing_loans_df is not None and new_count > 0:
+                new_loans_df = pd.read_csv(temp_clean_path, encoding='utf-8')
+                
+                # Create a unique identifier for deduplication (name + provider)
+                existing_loans_df['_merge_key'] = (
+                    existing_loans_df['name'].fillna('').str.lower().str.strip() + '|' +
+                    existing_loans_df['provider'].fillna('').str.lower().str.strip()
+                )
+                new_loans_df['_merge_key'] = (
+                    new_loans_df['name'].fillna('').str.lower().str.strip() + '|' +
+                    new_loans_df['provider'].fillna('').str.lower().str.strip()
+                )
+                
+                # Find duplicates
+                duplicates_mask = new_loans_df['_merge_key'].isin(existing_loans_df['_merge_key'])
+                duplicates_count = duplicates_mask.sum()
+                
+                # Keep only new records (not duplicates)
+                new_unique_df = new_loans_df[~duplicates_mask].copy()
+                new_unique_count = len(new_unique_df)
+                
+                # Remove merge key before combining
+                existing_loans_df = existing_loans_df.drop(columns=['_merge_key'])
+                new_unique_df = new_unique_df.drop(columns=['_merge_key'])
+                
+                # Combine existing + new unique records
+                merged_df = pd.concat([existing_loans_df, new_unique_df], ignore_index=True)
+                merged_count = len(merged_df)
+                
+                logger.info(
+                    "Merged loans: %d existing + %d new = %d total (%d duplicates skipped)",
+                    existing_count, new_unique_count, merged_count, duplicates_count
+                )
+                
+                # Save merged result
+                merged_df.to_csv(CLEAN_LOANS_PATH, index=False, encoding='utf-8')
+                temp_clean_path.unlink(missing_ok=True)  # Remove temp file
+                
+                summary["cleaner_results"]["loans"] = {
+                    "success": True,
+                    "rows_input": clean_stats.get("rows_input", 0),
+                    "rows_output": merged_count,
+                    "existing_count": existing_count,
+                    "new_count": new_count,
+                    "new_unique_count": new_unique_count,
+                    "duplicates_removed": clean_stats.get("duplicates_removed", 0) + duplicates_count,
+                    "invalid_rows_fixed": clean_stats.get("invalid_rows_fixed", 0),
+                }
+            else:
+                # No existing data or no new data, just use cleaned new data
+                if temp_clean_path.exists():
+                    temp_clean_path.rename(CLEAN_LOANS_PATH)
+                summary["cleaner_results"]["loans"] = {
+                    "success": True,
+                    "rows_input": clean_stats.get("rows_input", 0),
+                    "rows_output": new_count,
+                    "existing_count": existing_count,
+                    "new_count": new_count,
+                    "new_unique_count": new_count,
+                    "duplicates_removed": clean_stats.get("duplicates_removed", 0),
+                    "invalid_rows_fixed": clean_stats.get("invalid_rows_fixed", 0),
+                }
+            
             loan_clean_success = True
-            logger.info(
-                "Loan cleaning completed: %d rows input → %d rows output",
-                clean_stats.get("rows_input", 0),
-                clean_stats.get("rows_output", 0),
-            )
         except Exception as e:
-            error_msg = f"Loan cleaning failed: {str(e)}"
+            error_msg = f"Loan cleaning/merging failed: {str(e)}"
             logger.exception(error_msg)
             summary["cleaner_results"]["loans"] = {
                 "success": False,
