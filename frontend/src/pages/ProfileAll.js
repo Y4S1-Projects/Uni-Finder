@@ -8,7 +8,11 @@ export default function ProfileAll() {
 	const [orderIdToDelete, setOrderIdToDelete] = useState("");
 	const [showModal, setShowModal] = useState(false);
 	const componentPDF = useRef();
-	const API_BASE = process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
+	const API_BASE = process.env.REACT_APP_BACKEND_URL;
+
+	if (!API_BASE) {
+		throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");
+	}
 
 	useEffect(() => {
 		fetchOrders();
@@ -29,7 +33,7 @@ export default function ProfileAll() {
 
 	const handleDeleteOrder = async () => {
 		try {
-			const res = await fetch(`/api/user/user_delete/${orderIdToDelete}`, {
+			const res = await fetch(`${API_BASE}/api/user/user_delete/${orderIdToDelete}`, {
 				method: "DELETE",
 			});
 			if (!res.ok) {

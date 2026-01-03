@@ -1,26 +1,26 @@
 {
-  "name": "travel-recommendation-app",
+  "name": "uni-finder",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@reduxjs/toolkit": "^2.6.1",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.8.4",
-    "bootstrap": "^5.3.3",
-    "core-js": "^3.45.1",
-    "flowbite-react": "^0.11.7",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.8.0",
-    "react-dom": "^18.3.1",
+    "@reduxjs/toolkit": "^2.11.2",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "axios": "^1.13.2",
+    "bootstrap": "^5.3.8",
+    "core-js": "^3.47.0",
+    "flowbite-react": "^0.12.15",
+    "react": "^19.2.3",
+    "react-bootstrap": "^2.10.10",
+    "react-dom": "^19.2.3",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^6.30.0",
+    "react-router-dom": "^7.11.0",
     "react-scripts": "^5.0.1",
     "redux-persist": "^6.0.0",
-    "sweetalert2": "^11.17.2",
-    "web-vitals": "^2.1.4"
+    "sweetalert2": "^11.26.17",
+    "web-vitals": "^5.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -45,5 +45,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.17"
   }
 }

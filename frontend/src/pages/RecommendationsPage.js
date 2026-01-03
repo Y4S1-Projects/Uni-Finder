@@ -7,7 +7,10 @@ const RecommendationsPage = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { keyword } = location.state || { keyword: "" }; // Get the selected keyword
-	const API_GATEWAY_URL = process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
+	const RECOMMENDATION_SERVICE_URL = process.env.REACT_APP_RECOMMENDATION_SERVICE_URL;
+	if (!RECOMMENDATION_SERVICE_URL) {
+		throw new Error("Missing REACT_APP_RECOMMENDATION_SERVICE_URL in frontend .env");
+	}
 	const [recommendations, setRecommendations] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState("");
@@ -19,7 +22,7 @@ const RecommendationsPage = () => {
 				setLoading(true);
 				setError("");
 				try {
-					const response = await axios.post(`${API_GATEWAY_URL}/recommend`, {
+					const response = await axios.post(`${RECOMMENDATION_SERVICE_URL}/recommend`, {
 						user_input: keyword,
 					});
 
@@ -35,7 +38,7 @@ const RecommendationsPage = () => {
 					}
 				} catch (error) {
 					console.error("Error fetching recommendations:", error);
-					setError("Failed to fetch recommendations. Please make sure the server is running.");
+					setError("Failed to fetch recommendations. Please make sure the recommendation service is running.");
 					setRecommendations([]);
 				} finally {
 					setLoading(false);
@@ -48,7 +51,7 @@ const RecommendationsPage = () => {
 	const handleShowBestRecommendation = async () => {
 		try {
 			if (recommendations.length > 0) {
-				const response = await axios.post(`${API_GATEWAY_URL}/best_recommendation`, {
+				const response = await axios.post(`${RECOMMENDATION_SERVICE_URL}/best_recommendation`, {
 					user_input: keyword,
 					recommendations: recommendations,
 				});

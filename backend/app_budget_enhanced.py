@@ -25,7 +25,7 @@ ml_predictor = MLBudgetPredictor()
 # Global variables
 DATA_DIR = "budget_optimizer_files"
 MONGODB_API_URL = os.getenv(
-    "MONGODB_API_URL", "http://localhost:5000/api/budget/save"
+    "MONGODB_API_URL", "http://localhost:8080/api/budget/save"
 )  # Node.js MongoDB API
 
 print("🚀 Budget Optimizer API Starting...")
@@ -41,7 +41,6 @@ def save_to_mongodb(prediction_data):
             MONGODB_API_URL,
             json=prediction_data,
             headers={"Content-Type": "application/json"},
-            timeout=5,
         )
 
         if response.status_code == 201:
@@ -57,7 +56,7 @@ def save_to_mongodb(prediction_data):
 
     except requests.exceptions.RequestException as e:
         print(f"⚠️ MongoDB save error: {e}")
-        print(f"   Make sure Node.js server is running on port 3000")
+        print(f"   Make sure the API gateway is running on port 8080")
         return None
 
 

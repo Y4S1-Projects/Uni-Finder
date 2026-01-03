@@ -1,7 +1,11 @@
-// Route all matcher calls through the API gateway (port 8080 by default).
-const API_GATEWAY = process.env.REACT_APP_API_GATEWAY_URL || "http://localhost:8080";
-const BASE_URL = `${API_GATEWAY}/api/scholarships`;
-const API_BASE = API_GATEWAY;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+if (!BACKEND_URL) {
+	throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");
+}
+
+const BASE_URL = `${BACKEND_URL}/api/scholarships`;
+const API_BASE = BACKEND_URL;
 
 export async function requestMatches(profile, options = {}) {
 	const { topN = 5, matchType } = options;

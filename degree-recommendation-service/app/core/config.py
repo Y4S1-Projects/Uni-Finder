@@ -7,6 +7,9 @@ class Settings(BaseSettings):
     APP_NAME: str = "Degree Recommendation Service"
     ENV: str = "development"
 
+    # Server
+    PORT: int = 5001
+
     # Data
     DATA_DIR: str = "data"
 
