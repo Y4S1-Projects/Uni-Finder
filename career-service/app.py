@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from pathlib import Path
 import pandas as pd
 import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
 import json
 import joblib
 from typing import List, Optional
@@ -40,7 +41,7 @@ class PredictRoleRequest(BaseModel):
 
 @app.on_event("startup")
 def load_data():
-    global role_profiles_df, CAREER_LADDERS, role_classifier, skill_columns, role_id_to_title
+    global role_profiles_df, CAREER_LADDERS, role_classifier, skill_columns, role_id_to_title, role_skill_matrix
     
     print(f"[startup] BASE_DIR: {BASE_DIR}")
     print(f"[startup] ML_DIR: {ML_DIR}")
@@ -50,6 +51,19 @@ def load_data():
     try:
         role_profiles_df = pd.read_csv(ROLE_PROFILE_CSV)
         print(f"[startup] Loaded role_profiles_df: {len(role_profiles_df)} rows")
+        
+        # Build role-skill matrix for cosine similarity recommender
+        role_skill_matrix = role_profiles_df.pivot_table(
+            index="role_id",
+            columns="skill_id",
+            values="importance",
+            fill_value=0
+        )
+        print(f"[startup] Built role_skill_matrix: {role_skill_matrix.shape}")
+    except Exception as e:
+        print(f"[startup] Failed to load role_profiles: {e}")
+        role_profiles_df = pd.DataFrame(columns=["role_id", "skill_id", "frequency", "importance"])
+        role_skill_matrix = pd.DataFrame()
     except Exception as e:
         print(f"[startup] Failed to load role_profiles: {e}")
         role_profiles_df = pd.DataFrame(columns=["role_id", "skill_id", "frequency", "importance"])
@@ -235,4 +249,95 @@ def predict_role(req: PredictRoleRequest):
         "next_role_title": next_role_title,
         "skill_gap": skill_gap,
         "skills_used": list(user_skills_lower),
+    }
+
+
+class RecommendRequest(BaseModel):
+    user_skill_ids: List[str]
+    top_n: Optional[int] = 5
+
+
+def build_user_vector(user_skill_ids: set, skill_columns: pd.Index) -> np.ndarray:
+    """Convert user's skill IDs into a vector aligned with role_skill_matrix columns."""
+    vector = np.zeros(len(skill_columns))
+    skill_index = {skill: idx for idx, skill in enumerate(skill_columns)}
+    
+    for skill_id in user_skill_ids:
+        if skill_id in skill_index:
+            vector[skill_index[skill_id]] = 1.0
+    
+    return vector.reshape(1, -1)
+
+
+@app.post("/recommend_careers")
+def recommend_careers(req: RecommendRequest):
+    """Recommend best-fit career roles based on cosine similarity between user skills and role profiles."""
+    if role_skill_matrix.empty:
+        raise HTTPException(status_code=500, detail="Role skill matrix not loaded")
+    
+    if not req.user_skill_ids:
+        raise HTTPException(status_code=400, detail="No skills provided")
+    
+    # Normalize user skills to uppercase (matching role_profiles format)
+    user_skills_upper = set(s.strip().upper() for s in req.user_skill_ids if s)
+    
+    # Build user vector aligned with role_skill_matrix columns
+    user_vector = build_user_vector(user_skills_upper, role_skill_matrix.columns)
+    
+    # Calculate cosine similarity between user and all roles
+    role_vectors = role_skill_matrix.values
+    similarity_scores = cosine_similarity(user_vector, role_vectors)[0]
+    
+    # Create recommendations dataframe
+    recommendations = pd.DataFrame({
+        "role_id": role_skill_matrix.index,
+        "match_score": similarity_scores
+    }).sort_values("match_score", ascending=False)
+    
+    # Get top N recommendations
+    top_recommendations = recommendations.head(req.top_n)
+    
+    # Build detailed response
+    results = []
+    for _, row in top_recommendations.iterrows():
+        role_id = row["role_id"]
+        match_score = round(float(row["match_score"]), 3)
+        
+        # Get role title
+        role_title = role_id_to_title.get(role_id, role_id)
+        
+        # Get domain
+        domain = get_domain_for_role(role_id)
+        
+        # Get next role in career path
+        next_role = None
+        next_role_title = None
+        if domain:
+            try:
+                next_role = get_next_role(domain, role_id)
+                if next_role:
+                    next_role_title = role_id_to_title.get(next_role, next_role)
+            except ValueError:
+                pass
+        
+        # Get skill gap for this role
+        try:
+            skill_gap = detect_skill_gap(user_skills_upper, role_id, importance_threshold=0.02)
+        except Exception:
+            skill_gap = None
+        
+        results.append({
+            "role_id": role_id,
+            "role_title": role_title,
+            "match_score": match_score,
+            "domain": domain,
+            "next_role": next_role,
+            "next_role_title": next_role_title,
+            "skill_gap": skill_gap,
+        })
+    
+    return {
+        "recommendations": results,
+        "skills_analyzed": list(user_skills_upper),
+        "total_roles_compared": len(role_skill_matrix),
     }

@@ -6,7 +6,7 @@ const CAREER_API = "http://localhost:5004";
 
 export default function CareerPath() {
   const [selectedSkills, setSelectedSkills] = useState([]);
-  const [result, setResult] = useState(null);
+  const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,14 +19,15 @@ export default function CareerPath() {
 
     setLoading(true);
     setError(null);
-    setResult(null);
+    setRecommendations(null);
 
     try {
-      const resp = await fetch(`${CAREER_API}/predict_role`, {
+      const resp = await fetch(`${CAREER_API}/recommend_careers`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           user_skill_ids: selectedSkills,
+          top_n: 5,
         }),
       });
 
@@ -36,7 +37,7 @@ export default function CareerPath() {
       }
 
       const data = await resp.json();
-      setResult(data);
+      setRecommendations(data);
     } catch (err) {
       setError(err.message || String(err));
     } finally {
@@ -46,10 +47,10 @@ export default function CareerPath() {
 
   return (
     <div style={{ padding: "2rem", maxWidth: 900, margin: "0 auto" }}>
-      <h2>Career Path Predictor</h2>
+      <h2>🎯 Career Path Recommender</h2>
       <p style={{ color: "#666", marginBottom: "1.5rem" }}>
-        Select your skills below and we'll predict your current role, show your
-        next career step, and identify skills you need to develop.
+        Select your skills below and we'll recommend the best matching career
+        roles using AI-powered cosine similarity analysis.
       </p>
 
       <form onSubmit={handlePredict} style={{ display: "grid", gap: "1rem" }}>
@@ -77,7 +78,7 @@ export default function CareerPath() {
               fontSize: 16,
             }}
           >
-            {loading ? "Analyzing..." : "Predict My Career Path"}
+            {loading ? "Analyzing..." : "Find My Best Career Matches"}
           </button>
         </div>
       </form>
@@ -96,172 +97,280 @@ export default function CareerPath() {
         </div>
       )}
 
-      {result && (
+      {recommendations && (
         <div style={{ marginTop: "2rem" }}>
-          {/* Predicted Role */}
+          {/* Summary */}
           <div
             style={{
-              background: "#f0f7ff",
-              padding: "1.5rem",
+              background: "#f8fafc",
+              padding: "1rem",
               borderRadius: 8,
-              marginBottom: "1rem",
+              marginBottom: "1.5rem",
+              borderLeft: "4px solid #4a90d9",
             }}
           >
-            <h3 style={{ margin: "0 0 0.5rem 0", color: "#2563eb" }}>
-              📊 Your Predicted Role
-            </h3>
-            <div style={{ fontSize: 24, fontWeight: "bold", color: "#1e40af" }}>
-              {result.predicted_role_title || result.predicted_role}
-            </div>
-            {result.confidence && (
-              <div style={{ marginTop: 8, color: "#666" }}>
-                Confidence: {(result.confidence * 100).toFixed(1)}%
-              </div>
-            )}
-            {result.domain && (
-              <div style={{ marginTop: 4, color: "#666" }}>
-                Domain: {result.domain.replace(/_/g, " ")}
-              </div>
-            )}
+            <p style={{ margin: 0, color: "#666" }}>
+              Analyzed <strong>{recommendations.skills_analyzed.length}</strong>{" "}
+              skills across{" "}
+              <strong>{recommendations.total_roles_compared}</strong> career
+              roles
+            </p>
           </div>
 
-          {/* Next Career Step */}
-          {result.next_role && (
+          {/* Recommendations */}
+          <h3 style={{ marginBottom: "1rem" }}>
+            🏆 Top Career Recommendations
+          </h3>
+
+          {recommendations.recommendations.map((rec, index) => (
             <div
+              key={rec.role_id}
               style={{
-                background: "#f0fdf4",
+                background:
+                  index === 0
+                    ? "linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%)"
+                    : "#fff",
+                border: index === 0 ? "2px solid #4a90d9" : "1px solid #e5e7eb",
                 padding: "1.5rem",
-                borderRadius: 8,
+                borderRadius: 12,
                 marginBottom: "1rem",
+                position: "relative",
               }}
             >
-              <h3 style={{ margin: "0 0 0.5rem 0", color: "#16a34a" }}>
-                🚀 Next Career Step
-              </h3>
+              {index === 0 && (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: -10,
+                    right: 16,
+                    background: "#4a90d9",
+                    color: "white",
+                    padding: "4px 12px",
+                    borderRadius: 12,
+                    fontSize: 12,
+                    fontWeight: "bold",
+                  }}
+                >
+                  BEST MATCH
+                </span>
+              )}
+
               <div
-                style={{ fontSize: 20, fontWeight: "bold", color: "#166534" }}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  marginBottom: "1rem",
+                }}
               >
-                {result.next_role_title || result.next_role}
+                <div>
+                  <h4
+                    style={{
+                      margin: "0 0 4px 0",
+                      fontSize: 20,
+                      color: "#1e40af",
+                    }}
+                  >
+                    {index + 1}. {rec.role_title || rec.role_id}
+                  </h4>
+                  {rec.domain && (
+                    <span
+                      style={{
+                        background: "#e0e7ff",
+                        color: "#4338ca",
+                        padding: "2px 8px",
+                        borderRadius: 4,
+                        fontSize: 12,
+                      }}
+                    >
+                      {rec.domain.replace(/_/g, " ")}
+                    </span>
+                  )}
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div
+                    style={{
+                      fontSize: 28,
+                      fontWeight: "bold",
+                      color:
+                        rec.match_score >= 0.7
+                          ? "#16a34a"
+                          : rec.match_score >= 0.4
+                          ? "#ca8a04"
+                          : "#dc2626",
+                    }}
+                  >
+                    {(rec.match_score * 100).toFixed(0)}%
+                  </div>
+                  <div style={{ fontSize: 12, color: "#666" }}>Match Score</div>
+                </div>
               </div>
-              {result.skill_gap && (
-                <div style={{ marginTop: 8, color: "#666" }}>
-                  Readiness Score:{" "}
-                  <strong>
-                    {(result.skill_gap.readiness_score * 100).toFixed(0)}%
-                  </strong>
+
+              {/* Progress bar */}
+              <div
+                style={{
+                  background: "#e5e7eb",
+                  borderRadius: 8,
+                  height: 8,
+                  marginBottom: "1rem",
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    width: `${rec.match_score * 100}%`,
+                    height: "100%",
+                    background:
+                      rec.match_score >= 0.7
+                        ? "#16a34a"
+                        : rec.match_score >= 0.4
+                        ? "#ca8a04"
+                        : "#dc2626",
+                    borderRadius: 8,
+                    transition: "width 0.5s ease",
+                  }}
+                />
+              </div>
+
+              {/* Next Career Step */}
+              {rec.next_role && (
+                <div
+                  style={{
+                    background: "#f0fdf4",
+                    padding: "0.75rem",
+                    borderRadius: 6,
+                    marginBottom: "1rem",
+                  }}
+                >
+                  <span style={{ color: "#16a34a", fontWeight: 500 }}>
+                    🚀 Next Step:
+                  </span>{" "}
+                  <span style={{ color: "#166534" }}>
+                    {rec.next_role_title || rec.next_role}
+                  </span>
+                </div>
+              )}
+
+              {/* Skill Gap */}
+              {rec.skill_gap && (
+                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                  {/* Readiness */}
+                  <div style={{ flex: "1 1 120px" }}>
+                    <div
+                      style={{ fontSize: 12, color: "#666", marginBottom: 4 }}
+                    >
+                      Readiness
+                    </div>
+                    <div style={{ fontWeight: "bold", color: "#1e40af" }}>
+                      {(rec.skill_gap.readiness_score * 100).toFixed(0)}%
+                    </div>
+                  </div>
+
+                  {/* Matched Skills */}
+                  {rec.skill_gap.matched_skills?.length > 0 && (
+                    <div style={{ flex: "2 1 200px" }}>
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: "#059669",
+                          marginBottom: 4,
+                        }}
+                      >
+                        ✅ Skills You Have (
+                        {rec.skill_gap.matched_skills.length})
+                      </div>
+                      <div
+                        style={{ display: "flex", flexWrap: "wrap", gap: 4 }}
+                      >
+                        {rec.skill_gap.matched_skills
+                          .slice(0, 5)
+                          .map((skill) => (
+                            <span
+                              key={skill}
+                              style={{
+                                background: "#d1fae5",
+                                padding: "2px 8px",
+                                borderRadius: 12,
+                                fontSize: 11,
+                                color: "#065f46",
+                              }}
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        {rec.skill_gap.matched_skills.length > 5 && (
+                          <span style={{ fontSize: 11, color: "#666" }}>
+                            +{rec.skill_gap.matched_skills.length - 5} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Missing Skills */}
+                  {rec.skill_gap.missing_skills?.length > 0 && (
+                    <div style={{ flex: "2 1 200px" }}>
+                      <div
+                        style={{
+                          fontSize: 12,
+                          color: "#ca8a04",
+                          marginBottom: 4,
+                        }}
+                      >
+                        📚 Skills to Learn (
+                        {rec.skill_gap.missing_skills.length})
+                      </div>
+                      <div
+                        style={{ display: "flex", flexWrap: "wrap", gap: 4 }}
+                      >
+                        {rec.skill_gap.missing_skills
+                          .slice(0, 5)
+                          .map((skill) => (
+                            <span
+                              key={skill}
+                              style={{
+                                background: "#fef3c7",
+                                padding: "2px 8px",
+                                borderRadius: 12,
+                                fontSize: 11,
+                                color: "#92400e",
+                              }}
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        {rec.skill_gap.missing_skills.length > 5 && (
+                          <span style={{ fontSize: 11, color: "#666" }}>
+                            +{rec.skill_gap.missing_skills.length - 5} more
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
+          ))}
 
-          {/* Missing Skills */}
-          {result.skill_gap &&
-            result.skill_gap.missing_skills &&
-            result.skill_gap.missing_skills.length > 0 && (
-              <div
-                style={{
-                  background: "#fffbeb",
-                  padding: "1.5rem",
-                  borderRadius: 8,
-                  marginBottom: "1rem",
-                }}
-              >
-                <h3 style={{ margin: "0 0 1rem 0", color: "#ca8a04" }}>
-                  📚 Skills to Develop
-                </h3>
-                <p style={{ color: "#666", marginBottom: "1rem" }}>
-                  To advance to{" "}
-                  <strong>{result.next_role_title || result.next_role}</strong>,
-                  consider learning these skills:
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {result.skill_gap.missing_skills.map((skill) => (
-                    <span
-                      key={skill}
-                      style={{
-                        background: "#fef3c7",
-                        padding: "6px 12px",
-                        borderRadius: 16,
-                        fontSize: 13,
-                        color: "#92400e",
-                      }}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-          {/* Matched Skills */}
-          {result.skill_gap &&
-            result.skill_gap.matched_skills &&
-            result.skill_gap.matched_skills.length > 0 && (
-              <div
-                style={{
-                  background: "#ecfdf5",
-                  padding: "1.5rem",
-                  borderRadius: 8,
-                  marginBottom: "1rem",
-                }}
-              >
-                <h3 style={{ margin: "0 0 1rem 0", color: "#059669" }}>
-                  ✅ Skills You Already Have
-                </h3>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                  {result.skill_gap.matched_skills.map((skill) => (
-                    <span
-                      key={skill}
-                      style={{
-                        background: "#d1fae5",
-                        padding: "6px 12px",
-                        borderRadius: 16,
-                        fontSize: 13,
-                        color: "#065f46",
-                      }}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-          {/* Explanation */}
+          {/* How it works */}
           <div
             style={{
               background: "#faf5ff",
               padding: "1.5rem",
               borderRadius: 8,
+              marginTop: "1.5rem",
             }}
           >
             <h3 style={{ margin: "0 0 1rem 0", color: "#7c3aed" }}>
               💡 How This Works
             </h3>
-            <p style={{ color: "#666", lineHeight: 1.6 }}>
-              Our AI model analyzed your selected skills using a{" "}
-              <strong>Decision Tree Classifier</strong> trained on real job
-              postings. Based on the skill patterns, it predicted your most
-              likely current role in the job market.
+            <p style={{ color: "#666", lineHeight: 1.6, margin: 0 }}>
+              Our AI uses <strong>Cosine Similarity</strong> to compare your
+              skill profile against real job market data. Each role has an
+              importance-weighted skill profile built from actual job postings.
+              The match score indicates how well your skills align with each
+              role's requirements. Higher scores mean better fit!
             </p>
-            {result.next_role && result.skill_gap && (
-              <p
-                style={{ color: "#666", lineHeight: 1.6, marginTop: "0.75rem" }}
-              >
-                Your readiness score of{" "}
-                <strong>
-                  {(result.skill_gap.readiness_score * 100).toFixed(0)}%
-                </strong>{" "}
-                indicates how well your current skills match the requirements
-                for{" "}
-                <strong>{result.next_role_title || result.next_role}</strong>.
-                {result.skill_gap.readiness_score >= 0.7
-                  ? " You're well-prepared for this next step!"
-                  : result.skill_gap.readiness_score >= 0.4
-                  ? " You have a solid foundation but should focus on developing the missing skills."
-                  : " Focus on building the skills listed above to progress in your career."}
-              </p>
-            )}
           </div>
         </div>
       )}
