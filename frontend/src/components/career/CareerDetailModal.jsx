@@ -14,11 +14,11 @@ export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1050] overflow-auto py-8"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-auto p-8 relative"
+        className="bg-white rounded-2xl max-w-2xl w-full mx-4 p-8 relative shadow-2xl border border-gray-100 max-h-[85vh] overflow-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
