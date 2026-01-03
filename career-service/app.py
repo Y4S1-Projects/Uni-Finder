@@ -8,8 +8,15 @@ from sklearn.metrics.pairwise import cosine_similarity
 import json
 import joblib
 import os
-import httpx
 from typing import List, Optional
+
+# Gemini AI for explainability (from explainability_engine.ipynb)
+try:
+    from google import genai
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+    print("[startup] google-genai not installed, AI explanations will use fallback")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 ML_DIR = BASE_DIR / "career-ml"
@@ -19,9 +26,18 @@ ROLE_CLASSIFIER_PKL = ML_DIR / "models" / "decision_tree_role_classifier.pkl"
 JOB_SKILL_VECTORS_CSV = ML_DIR / "data" / "processed" / "job_skill_vectors.csv"
 SKILLS_CSV = ML_DIR / "data" / "processed" / "skills.csv"
 
-# OpenRouter API for AI explanations (free tier available)
-OPENROUTER_API_KEY = "sk-or-v1-free"  # Will use free models
-OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+# Gemini API Key from explainability_engine.ipynb
+GEMINI_API_KEY = "AIzaSyB551idpBC0C_vZY-4npBIF2qXXxAE_FqE"
+os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
+
+# Initialize Gemini client
+gemini_client = None
+if GEMINI_AVAILABLE:
+    try:
+        gemini_client = genai.Client()
+        print("[startup] Gemini AI client initialized")
+    except Exception as e:
+        print(f"[startup] Failed to initialize Gemini client: {e}")
 
 # Global variables
 skill_id_to_name = {}
@@ -418,10 +434,11 @@ def generate_fallback_explanation(context: dict) -> str:
     matched_names = [get_skill_name(s) for s in context.get("matched_skills", [])]
     missing_names = [get_skill_name(s) for s in context.get("missing_skills", [])]
     
-    role_title = context.get('role_title', context.get('role_id', 'this role'))
-    domain = context.get('domain', 'Technology').replace('_', ' ')
-    match_score = context.get('match_score', 0) * 100
-    readiness = context.get('readiness_score', 0) * 100
+    role_title = context.get('role_title') or context.get('role_id') or 'this role'
+    domain_raw = context.get('domain') or 'Technology'
+    domain = domain_raw.replace('_', ' ') if domain_raw else 'Technology'
+    match_score = (context.get('match_score') or 0) * 100
+    readiness = (context.get('readiness_score') or 0) * 100
     next_role = context.get('next_role_title') or context.get('next_role')
     
     # Determine skill priority advice
@@ -514,36 +531,54 @@ async def explain_career(req: ExplainRequest):
     
     explanation = None
     
-    # Try to generate AI explanation using Groq (free, fast)
-    try:
-        prompt = build_xai_prompt(context)
-        
-        # Use Groq's free API
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(
-                "https://api.groq.com/openai/v1/chat/completions",
-                headers={
-                    "Authorization": "Bearer gsk_freekey",  # Groq free tier
-                    "Content-Type": "application/json",
-                },
-                json={
-                    "model": "llama-3.3-70b-versatile",
-                    "messages": [{"role": "user", "content": prompt}],
-                    "max_tokens": 500,
-                    "temperature": 0.7,
-                }
+    # Try to generate AI explanation using Gemini (from explainability_engine.ipynb)
+    if gemini_client is not None and GEMINI_AVAILABLE:
+        try:
+            # Build prompt using matched and missing skill names
+            matched_names = [get_skill_name(s) for s in context.get("matched_skills", [])]
+            missing_names = [get_skill_name(s) for s in context.get("missing_skills", [])]
+            
+            role_title = context.get('role_title') or context.get('role_id') or 'this role'
+            domain_raw = context.get('domain') or 'Technology'
+            domain_str = domain_raw.replace('_', ' ') if domain_raw else 'Technology'
+            match_score_val = context.get('match_score') or 0
+            readiness_val = context.get('readiness_score') or 0
+            next_role_str = context.get('next_role_title') or 'This is a senior role'
+            
+            prompt = f"""You are a career guidance assistant.
+
+Explain why a user should consider the role of {role_title} in the {domain_str} domain.
+
+Match score: {match_score_val:.2f}
+Readiness score: {readiness_val:.2f}
+
+Skills already possessed:
+{', '.join(matched_names) if matched_names else 'None identified'}
+
+Skills to improve:
+{', '.join(missing_names) if missing_names else 'None - user has all required skills'}
+
+Next career step: {next_role_str}
+
+Generate a clear, supportive, human-friendly explanation that:
+1. Explains why this role is a good fit based on their current skills
+2. Provides encouragement about their readiness level
+3. Suggests which 2-3 missing skills to prioritize and why
+4. Ends with a motivational statement about their career potential
+
+Do not mention skill IDs. Keep the response under 200 words."""
+
+            response = gemini_client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=prompt
             )
             
-            if response.status_code == 200:
-                data = response.json()
-                explanation = data["choices"][0]["message"]["content"]
-                print(f"[explain_career] Generated AI explanation successfully")
-            else:
-                print(f"[explain_career] API error: {response.status_code} - {response.text}")
-    except Exception as e:
-        print(f"[explain_career] AI API error: {e}")
+            explanation = response.text.strip()
+            print(f"[explain_career] Generated Gemini AI explanation successfully")
+        except Exception as e:
+            print(f"[explain_career] Gemini API error: {e}")
     
-    # Fallback to dynamic explanation if Gemini fails
+    # Fallback to rich explanation if Gemini fails
     if explanation is None:
         print(f"[explain_career] Using fallback explanation")
         explanation = generate_fallback_explanation(context)
