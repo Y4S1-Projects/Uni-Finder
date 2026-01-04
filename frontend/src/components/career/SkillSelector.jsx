@@ -45,9 +45,14 @@ export default function SkillSelector({ selected = [], onChange }) {
   function toggle(id) {
     const sid = String(id);
     const exists = selectedSetLower.has(sid.toLowerCase());
-    if (exists) return; // Use ✕ button to remove
-    const next = [...selectedIds, sid];
-    if (typeof onChange === "function") onChange(next);
+    if (exists) {
+      // Remove the skill if already selected
+      remove(sid);
+    } else {
+      // Add the skill if not selected
+      const next = [...selectedIds, sid];
+      if (typeof onChange === "function") onChange(next);
+    }
   }
 
   function remove(id) {
@@ -309,7 +314,7 @@ export default function SkillSelector({ selected = [], onChange }) {
       {/* Selected count badge */}
       {selectedIds.length > 0 && (
         <div className="mt-3 flex items-center gap-2">
-          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
             ✓ {selectedIds.length} skill{selectedIds.length !== 1 ? "s" : ""}{" "}
             selected
           </span>
