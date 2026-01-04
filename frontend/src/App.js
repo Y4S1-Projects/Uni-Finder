@@ -27,10 +27,16 @@
 // export default App;
 // src/App.js
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
 import CareerPath from "./pages/CareerPath";
+import CareerLadder from "./pages/CareerLadder";
 import KeywordsPage from "./pages/KeywordsPage"; // Import the new component
 import RecommendationsPage from "./pages/RecommendationsPage";
 import BestRecommendationPage from "./pages/BestRecommendationPage";
@@ -51,52 +57,70 @@ import LoanMatcherPage from "./scholarship_loan_matcher/LoanMatcherPage";
 import DegreeRecommendationsPage from "./features/degreeRecommendation/pages/DegreeRecommendationsPage";
 
 function AppContent() {
-	const location = useLocation();
-	const isHomePage = location.pathname === "/";
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
-	useEffect(() => {
-		if (isHomePage) {
-			document.body.classList.add("homepage");
-			document.body.classList.remove("non-homepage");
-		} else {
-			document.body.classList.remove("homepage");
-			document.body.classList.add("non-homepage");
-		}
-	}, [isHomePage]);
+  useEffect(() => {
+    if (isHomePage) {
+      document.body.classList.add("homepage");
+      document.body.classList.remove("non-homepage");
+    } else {
+      document.body.classList.remove("homepage");
+      document.body.classList.add("non-homepage");
+    }
+  }, [isHomePage]);
 
-	return (
-		<>
-			<Header />
-			<Routes>
-				<Route path='/' element={<HomePage />} />
-				<Route path='/signin' element={<SignInPage />} />
-				<Route path='/keywords' element={<KeywordsPage />} /> {/* New route */}
-				<Route path='/career' element={<CareerPath />} />
-				<Route path='/recommendations' element={<RecommendationsPage />} />
-				<Route path='/degree-recommendations' element={<DegreeRecommendationsPage />} />
-				<Route path='/best-recommendation' element={<BestRecommendationPage />} />
-				<Route path='/budget-optimizer' element={<BudgetOptimizer />} /> {/* Budget Optimizer route */}
-				<Route path='/budget-optimizer-new' element={<BudgetOptimizerNew />} /> {/* New AI Budget Optimizer route */}
-				{/* Scholarship & Loan Matcher */}
-				<Route path='/scholarship-matcher' element={<StudentMatcherPage />} />
-				<Route path='/scholarship-matcher/scholarships' element={<ScholarshipMatcherPage />} />
-				<Route path='/scholarship-matcher/loans' element={<LoanMatcherPage />} />
-				<Route path='/addReview' element={<AddReview />} />
-				<Route path='/signUp' element={<SignUp />} />
-				<Route path='/signInNew' element={<SignIn />} />
-				<Route path='/all' element={<ProfileAll />} />
-			</Routes>
-			<Footer />
-		</>
-	);
+  return (
+    <>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/keywords" element={<KeywordsPage />} /> {/* New route */}
+        <Route path="/career" element={<CareerPath />} />
+        <Route path="/career-ladder" element={<CareerLadder />} />
+        <Route path="/recommendations" element={<RecommendationsPage />} />
+        <Route
+          path="/degree-recommendations"
+          element={<DegreeRecommendationsPage />}
+        />
+        <Route
+          path="/best-recommendation"
+          element={<BestRecommendationPage />}
+        />
+        <Route path="/budget-optimizer" element={<BudgetOptimizer />} />{" "}
+        {/* Budget Optimizer route */}
+        <Route
+          path="/budget-optimizer-new"
+          element={<BudgetOptimizerNew />}
+        />{" "}
+        {/* New AI Budget Optimizer route */}
+        {/* Scholarship & Loan Matcher */}
+        <Route path="/scholarship-matcher" element={<StudentMatcherPage />} />
+        <Route
+          path="/scholarship-matcher/scholarships"
+          element={<ScholarshipMatcherPage />}
+        />
+        <Route
+          path="/scholarship-matcher/loans"
+          element={<LoanMatcherPage />}
+        />
+        <Route path="/addReview" element={<AddReview />} />
+        <Route path="/signUp" element={<SignUp />} />
+        <Route path="/signInNew" element={<SignIn />} />
+        <Route path="/all" element={<ProfileAll />} />
+      </Routes>
+      <Footer />
+    </>
+  );
 }
 
 function App() {
-	return (
-		<Router>
-			<AppContent />
-		</Router>
-	);
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
 }
 
 export default App;
