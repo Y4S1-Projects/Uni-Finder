@@ -1,14 +1,10 @@
 # app/domain/student.py
-from typing import List
+from typing import List, Optional
 
 
 class StudentProfile:
     def __init__(
-        self,
-        stream: str,
-        subjects: List[str],
-        zscore: float,
-        interests: str
+        self, stream: str, subjects: List[str], zscore: Optional[float], interests: str
     ):
         self.stream = stream
         self.subjects = subjects

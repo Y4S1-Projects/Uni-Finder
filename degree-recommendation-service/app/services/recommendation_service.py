@@ -1,5 +1,5 @@
 # app/services/recommendation_service.py
-from typing import Dict
+from typing import Dict, Optional
 
 from app.domain.student import StudentProfile
 from app.pipelines.recommendation_pipeline import RecommendationPipeline
@@ -13,12 +13,12 @@ class RecommendationService:
         self,
         student_data: Dict,
         district: str,
-        max_results: int,
+        max_results: Optional[int],
     ):
         student = StudentProfile(
             stream=student_data["stream"],
             subjects=student_data["subjects"],
-            zscore=student_data["zscore"],
+            zscore=student_data.get("zscore"),
             interests=student_data["interests"],
         )
 
@@ -32,12 +32,12 @@ class RecommendationService:
         self,
         student_data: Dict,
         district: str,
-        max_results: int,
+        max_results: Optional[int],
     ):
         student = StudentProfile(
             stream=student_data["stream"],
             subjects=student_data["subjects"],
-            zscore=student_data["zscore"],
+            zscore=student_data.get("zscore"),
             interests=student_data["interests"],
         )
 

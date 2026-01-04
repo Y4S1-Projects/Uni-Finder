@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Alert, Spinner } from "react-bootstrap";
-import StudentProfileForm from "../components/StudentProfileForm";
-import RecommendationsResults from "../components/RecommendationsResults";
+import StudentProfileForm from "../components/degree/StudentProfileForm";
+import RecommendationsResults from "../components/degree/RecommendationsResults";
 import { fetchDegreeRecommendations } from "../api/degreeRecommendationApi";
 
 const DEFAULT_FORM = {
 	stream: "Science",
 	subjects: ["Physics", "Chemistry", "Combined Mathematics"],
-	zscore: 1.5,
-	interests: "computer science, software engineering, AI",
+	zscore: "",
+	interests: "Computer Science",
 	district: "Colombo",
-	max_results: 5,
 };
 
 export default function DegreeRecommendationsPage() {
@@ -27,7 +26,6 @@ export default function DegreeRecommendationsPage() {
 			const data = await fetchDegreeRecommendations(payload);
 			setResults(data);
 		} catch (err) {
-			console.error("Degree recommendations error:", err);
 			setError("Failed to fetch degree recommendations. Please ensure API Gateway and degree service are running.");
 		} finally {
 			setLoading(false);
@@ -35,19 +33,16 @@ export default function DegreeRecommendationsPage() {
 	};
 
 	return (
-		<div className='pt-24 pb-10'>
+		<div className='py-4 py-lg-5'>
 			<Container>
 				<Row className='justify-content-center'>
 					<Col lg={10} xl={9}>
 						<Card className='shadow'>
 							<Card.Body>
-								<div className='d-flex align-items-start justify-content-between flex-wrap gap-3'>
+								<div className='flex-wrap gap-3 px-4 d-flex align-items-start justify-content-between'>
 									<div>
-										<h2 className='h4 mb-1 fw-bold'>Degree Recommendations</h2>
+										<h2 className='mb-1 h4 fw-bold'>Degree Recommendations</h2>
 										<div className='text-muted'>Enter student details to get AI-powered degree suggestions.</div>
-									</div>
-									<div className='text-muted small'>
-										Endpoint: <span className='fw-semibold'>POST /degree/recommend</span>
 									</div>
 								</div>
 
@@ -62,7 +57,7 @@ export default function DegreeRecommendationsPage() {
 								)}
 
 								{loading && (
-									<div className='d-flex align-items-center gap-2 mt-4 text-muted'>
+									<div className='gap-2 mt-4 d-flex align-items-center text-muted'>
 										<Spinner animation='border' size='sm' />
 										<span>Generating recommendations...</span>
 									</div>
