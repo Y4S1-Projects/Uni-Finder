@@ -5,15 +5,15 @@
 import React from "react";
 
 export function getScoreColor(score) {
-  if (score >= 0.7) return "text-green-600";
-  if (score >= 0.4) return "text-yellow-600";
-  return "text-red-600";
+  if (score >= 0.7) return "text-purple-600";
+  if (score >= 0.4) return "text-indigo-600";
+  return "text-gray-600";
 }
 
 export function getScoreBgColor(score) {
-  if (score >= 0.7) return "bg-green-500";
-  if (score >= 0.4) return "bg-yellow-500";
-  return "bg-red-500";
+  if (score >= 0.7) return "bg-gradient-to-r from-purple-500 to-blue-500";
+  if (score >= 0.4) return "bg-gradient-to-r from-indigo-400 to-blue-400";
+  return "bg-gray-400";
 }
 
 export function ScoreCircle({ score, label, size = "normal" }) {
@@ -41,11 +41,11 @@ export function ScoreCircle({ score, label, size = "normal" }) {
 
 export function ScoreCard({ score, label, variant = "blue" }) {
   const variants = {
-    blue: "bg-gradient-to-br from-blue-50 to-blue-100 text-blue-700 border-2 border-blue-200",
+    blue: "bg-gradient-to-br from-purple-50 to-blue-50 text-purple-700 border-2 border-purple-200",
     green:
-      "bg-gradient-to-br from-green-50 to-green-100 text-green-700 border-2 border-green-200",
+      "bg-gradient-to-br from-indigo-50 to-blue-50 text-indigo-700 border-2 border-indigo-200",
     purple:
-      "bg-gradient-to-br from-purple-50 to-purple-100 text-purple-700 border-2 border-purple-200",
+      "bg-gradient-to-br from-purple-50 to-violet-50 text-purple-700 border-2 border-purple-200",
   };
 
   return (

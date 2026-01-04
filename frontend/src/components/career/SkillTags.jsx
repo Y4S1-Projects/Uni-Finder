@@ -3,19 +3,22 @@
  * Displays skills as colored tags
  */
 import React from "react";
+import { FaCheckCircle, FaBookOpen } from "react-icons/fa";
 
 const SKILL_STYLES = {
   matched: {
     tagClass:
-      "bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 border border-green-300 shadow-sm hover:shadow-md transition-all duration-200",
-    label: "✅ Skills You Have",
-    labelClass: "text-green-700 font-semibold",
+      "bg-gradient-to-r from-purple-100 to-blue-100 text-purple-900 border border-purple-300 shadow-sm hover:shadow-md transition-all duration-200",
+    label: "Skills You Have",
+    labelClass: "text-purple-700 font-semibold flex items-center gap-1.5",
+    icon: FaCheckCircle,
   },
   missing: {
     tagClass:
-      "bg-gradient-to-r from-amber-100 to-yellow-100 text-amber-800 border border-amber-300 shadow-sm hover:shadow-md transition-all duration-200",
-    label: "📚 Skills to Learn",
-    labelClass: "text-amber-700 font-semibold",
+      "bg-gray-100 text-gray-700 border border-gray-300 shadow-sm hover:shadow-md transition-all duration-200",
+    label: "Skills to Learn",
+    labelClass: "text-gray-700 font-semibold flex items-center gap-1.5",
+    icon: FaBookOpen,
   },
 };
 
@@ -51,7 +54,7 @@ export function SkillTagList({
     <div>
       {showLabel && (
         <div className={`text-xs ${style.labelClass} mb-1`}>
-          {style.label} ({skills.length})
+          <style.icon /> {style.label} ({skills.length})
         </div>
       )}
       <div className={`flex flex-wrap ${size === "large" ? "gap-2" : "gap-1"}`}>

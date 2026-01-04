@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from "react";
-import skillsList from "../data/skills.json";
+import React, { useState, useMemo, useRef, useEffect } from "react";
+import skillsList from "../../data/skills.json";
 
 export default function SkillSelector({ selected = [], onChange }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const containerRef = useRef(null);
 
   const normalized = useMemo(() => {
     return skillsList.map((s) => ({ id: String(s.skill_id), label: s.name }));
@@ -69,8 +70,27 @@ export default function SkillSelector({ selected = [], onChange }) {
     return String(id);
   }
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    }
+
+    if (open) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [open]);
+
   return (
-    <div className="relative">
+    <div className="relative" ref={containerRef}>
       {/* Selected Skills */}
       {selectedIds.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">
@@ -126,12 +146,11 @@ export default function SkillSelector({ selected = [], onChange }) {
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
-            setOpen(true);
+            if (!open) setOpen(true);
           }}
           onFocus={() => setOpen(true)}
-          onBlur={() => setTimeout(() => setOpen(false), 150)}
           placeholder="Search skills (e.g. Python, React, SQL...)"
-          className="w-full pl-10 pr-4 py-3 
+          className="w-full pl-10 pr-20 py-3 
                      border-2 border-gray-200 rounded-xl
                      bg-white text-gray-700 placeholder-gray-400
                      focus:border-blue-400 focus:ring-4 focus:ring-blue-100 
@@ -139,17 +158,42 @@ export default function SkillSelector({ selected = [], onChange }) {
                      transition-all duration-200 outline-none
                      text-sm font-medium"
         />
-        {query && (
+        <div className="absolute inset-y-0 right-0 flex items-center gap-1 pr-3">
+          {query && (
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setQuery("");
+              }}
+              className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-0"
+              title="Clear search"
+            >
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
           <button
             type="button"
-            onMouseDown={(e) => {
-              e.preventDefault();
-              setQuery("");
-            }}
-            className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+            onClick={() => setOpen(!open)}
+            className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-0"
+            title={open ? "Close dropdown" : "Open dropdown"}
           >
             <svg
-              className="h-5 w-5"
+              className={`h-6 w-6 transform transition-transform duration-200 ${
+                open ? "rotate-180" : ""
+              }`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -158,11 +202,11 @@ export default function SkillSelector({ selected = [], onChange }) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
+                d="M19 9l-7 7-7-7"
               />
             </svg>
           </button>
-        )}
+        </div>
       </div>
 
       {/* Dropdown */}

@@ -3,7 +3,7 @@
  * Main page for career recommendations using modular components
  */
 import React from "react";
-import SkillSelector from "../components/SkillSelector";
+import CareerProfileForm from "../components/career/CareerProfileForm";
 import {
   CareerRecommendationCard,
   CareerDetailModal,
@@ -14,9 +14,25 @@ import {
   useCareerRecommendations,
   useCareerDetail,
 } from "../hooks/useCareerRecommendations";
+import { useInput } from "../hooks/use-input";
+import {
+  validateExperienceLevel,
+  validateCurrentStatus,
+  validatePreferredDomain,
+  validateEducationLevel,
+  validateCareerGoal,
+} from "../utils/validationUtils";
+import { FaChartLine, FaTrophy } from "react-icons/fa";
 
 export default function CareerPath() {
   const [selectedSkills, setSelectedSkills] = React.useState([]);
+
+  // Form inputs using useInput hook
+  const experienceLevel = useInput("", validateExperienceLevel);
+  const currentStatus = useInput("", validateCurrentStatus);
+  const preferredDomain = useInput("", validatePreferredDomain);
+  const educationLevel = useInput("", validateEducationLevel);
+  const careerGoal = useInput("", validateCareerGoal);
 
   // Custom hooks for business logic
   const { recommendations, loading, error, fetchRecommendations } =
@@ -27,7 +43,33 @@ export default function CareerPath() {
 
   const handlePredict = async (e) => {
     e.preventDefault();
-    await fetchRecommendations(selectedSkills, 5);
+
+    // Validate all required fields
+    experienceLevel.handleInputBlur();
+    currentStatus.handleInputBlur();
+    educationLevel.handleInputBlur();
+    careerGoal.handleInputBlur();
+
+    // Check for errors
+    if (
+      experienceLevel.hasError ||
+      currentStatus.hasError ||
+      educationLevel.hasError ||
+      careerGoal.hasError
+    ) {
+      return;
+    }
+
+    // Prepare career context data
+    const careerContext = {
+      experience_level: experienceLevel.value,
+      current_status: currentStatus.value,
+      preferred_domain: preferredDomain.value || null,
+      education_level: educationLevel.value,
+      career_goal: careerGoal.value,
+    };
+
+    await fetchRecommendations(selectedSkills, 5, careerContext);
   };
 
   const handleViewJob = (recommendation) => {
@@ -35,22 +77,27 @@ export default function CareerPath() {
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
+    <div className="p-8 max-w-5xl mx-auto">
       {/* Header */}
-      <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-        🎯 Career Path Recommender
+      <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
+        <FaChartLine /> Career Path Recommender
       </h2>
-      <p className="text-gray-600 mb-8 text-lg">
-        Select your skills below and we'll recommend the best matching career
-        roles using AI-powered cosine similarity analysis.
+      <p className="text-gray-700 mb-8 text-lg">
+        Tell us about yourself and select your skills to get personalized
+        AI-powered career recommendations.
       </p>
 
-      {/* Skill Selection Form */}
-      <SkillSelectionForm
+      {/* Career Profile Form */}
+      <CareerProfileForm
         selectedSkills={selectedSkills}
         onSkillsChange={setSelectedSkills}
         onSubmit={handlePredict}
         loading={loading}
+        experienceLevel={experienceLevel}
+        currentStatus={currentStatus}
+        preferredDomain={preferredDomain}
+        educationLevel={educationLevel}
+        careerGoal={careerGoal}
       />
 
       {/* Error Display */}
@@ -76,43 +123,8 @@ export default function CareerPath() {
 }
 
 // =============================================================================
-// Sub-components (could be extracted to separate files if needed)
+// Sub-components
 // =============================================================================
-
-function SkillSelectionForm({
-  selectedSkills,
-  onSkillsChange,
-  onSubmit,
-  loading,
-}) {
-  return (
-    <form
-      onSubmit={onSubmit}
-      className="grid gap-6 p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-2 border-blue-200 shadow-lg"
-    >
-      <label>
-        <strong className="block mb-3 text-gray-700 text-lg">
-          Your Skills
-        </strong>
-        <SkillSelector selected={selectedSkills} onChange={onSkillsChange} />
-      </label>
-
-      <div className="mt-2">
-        <button
-          type="submit"
-          disabled={loading || selectedSkills.length === 0}
-          className={`px-8 py-4 text-white rounded-xl text-base font-semibold transition-all duration-300 shadow-lg ${
-            selectedSkills.length === 0
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:scale-105 cursor-pointer"
-          }`}
-        >
-          {loading ? "🔍 Analyzing..." : "✨ Find My Best Career Matches"}
-        </button>
-      </div>
-    </form>
-  );
-}
 
 function ErrorMessage({ message }) {
   return (
@@ -130,8 +142,8 @@ function RecommendationsSection({ recommendations, onViewDetails }) {
       />
 
       {/* Title */}
-      <h3 className="text-xl font-semibold mb-4">
-        🏆 Top Career Recommendations
+      <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent flex items-center gap-2">
+        <FaTrophy /> Top Career Recommendations
       </h3>
 
       {/* Recommendation Cards */}

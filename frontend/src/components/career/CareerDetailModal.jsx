@@ -8,6 +8,8 @@ import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
 import { DomainBadge } from "./DomainBadge";
 import { AIExplanation, AILoadingState } from "./AIExplanation";
+import { IoClose } from "react-icons/io5";
+import { FaCheckCircle, FaBookOpen } from "react-icons/fa";
 
 export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
   if (!isOpen) return null;
@@ -47,9 +49,10 @@ function CloseButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      className="absolute top-4 right-4 bg-gradient-to-br from-gray-100 to-gray-200 hover:from-red-100 hover:to-red-200 rounded-full w-10 h-10 flex items-center justify-center text-xl transition-all duration-300 hover:scale-110 hover:rotate-90 shadow-md hover:shadow-lg z-10"
+      className="absolute top-4 right-4 bg-white hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 rounded-full w-16 h-16 flex items-center justify-center transition-all duration-300 hover:scale-125 shadow-lg hover:shadow-2xl border-2 border-purple-200 hover:border-purple-600 z-50 group"
+      aria-label="Close modal"
     >
-      ✕
+      <IoClose className="text-4xl text-purple-600 group-hover:text-purple-800 group-hover:rotate-90 transition-all duration-300" />
     </button>
   );
 }
@@ -99,8 +102,8 @@ function CareerDetailContent({ jobDetail }) {
           className="mb-6 animate-fade-in-up"
           style={{ animationDelay: "0.2s" }}
         >
-          <h3 className="text-base font-semibold text-green-700 mb-3 flex items-center gap-2">
-            <span className="text-lg">✅</span> Skills You Already Have (
+          <h3 className="text-base font-semibold text-purple-700 mb-3 flex items-center gap-2">
+            <FaCheckCircle className="text-lg" /> Skills You Already Have (
             {jobDetail.matched_skills.length})
           </h3>
           <SkillTagList
@@ -119,8 +122,8 @@ function CareerDetailContent({ jobDetail }) {
           className="mb-6 animate-fade-in-up"
           style={{ animationDelay: "0.3s" }}
         >
-          <h3 className="text-base font-semibold text-amber-700 mb-3 flex items-center gap-2">
-            <span className="text-lg">📚</span> Skills to Develop (
+          <h3 className="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <FaBookOpen className="text-lg" /> Skills to Develop (
             {jobDetail.missing_skills.length})
           </h3>
           <SkillTagList
