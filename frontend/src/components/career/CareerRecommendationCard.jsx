@@ -30,7 +30,7 @@ export function CareerRecommendationCard({
       className={`p-6 rounded-2xl mb-5 relative transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] ${
         isBestMatch
           ? "bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 border-2 border-purple-300 shadow-xl"
-          : "bg-white border-2 border-gray-200 hover:border-purple-300"
+          : "bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/60 border-2 border-gray-200 hover:border-purple-300"
       }`}
     >
       {/* Best Match Badge */}
@@ -97,7 +97,18 @@ export function CareerRecommendationCard({
       {/* View Details Button */}
       <button
         onClick={() => onViewDetails(recommendation)}
-        className="mt-5 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
+        className="mt-5 px-6 py-3 text-white rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
+        style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background =
+            "linear-gradient(135deg, #5568d3 0%, #65408b 100%)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background =
+            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+        }}
       >
         <FaEye /> View Details & AI Explanation
       </button>

@@ -22,7 +22,7 @@ export default function CareerLadder() {
       status: "current",
       skillsRequired: 5,
       yearsRequired: "0-2 years",
-      salary: "$50k - $70k",
+      salary: "LKR 60k - 100k/mo",
     },
     {
       id: 2,
@@ -31,7 +31,7 @@ export default function CareerLadder() {
       status: "next",
       skillsRequired: 15,
       yearsRequired: "2-4 years",
-      salary: "$70k - $90k",
+      salary: "LKR 100k - 150k/mo",
     },
     {
       id: 3,
@@ -40,7 +40,7 @@ export default function CareerLadder() {
       status: "locked",
       skillsRequired: 25,
       yearsRequired: "4-7 years",
-      salary: "$90k - $120k",
+      salary: "LKR 150k - 250k/mo",
     },
     {
       id: 4,
@@ -49,7 +49,7 @@ export default function CareerLadder() {
       status: "locked",
       skillsRequired: 35,
       yearsRequired: "7-10 years",
-      salary: "$120k - $150k",
+      salary: "LKR 250k - 400k/mo",
     },
     {
       id: 5,
@@ -58,7 +58,7 @@ export default function CareerLadder() {
       status: "locked",
       skillsRequired: 45,
       yearsRequired: "10+ years",
-      salary: "$150k+",
+      salary: "LKR 400k+/mo",
     },
   ];
 

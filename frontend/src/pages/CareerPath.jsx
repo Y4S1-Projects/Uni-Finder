@@ -22,7 +22,7 @@ import {
   validateEducationLevel,
   validateCareerGoal,
 } from "../utils/validationUtils";
-import { FaChartLine, FaTrophy } from "react-icons/fa";
+import { FaChartLine, FaTrophy, FaUndo } from "react-icons/fa";
 
 export default function CareerPath() {
   // Restore state from sessionStorage on mount
@@ -159,11 +159,23 @@ export default function CareerPath() {
   };
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
+    <div className="p-8 max-w-5xl mx-auto mt-24">
       {/* Header */}
-      <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
-        <FaChartLine /> Career Path Recommender
-      </h2>
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
+          <FaChartLine /> Career Path Recommender
+        </h2>
+
+        {/* Reset Button */}
+        <button
+          onClick={handleClearState}
+          className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+          title="Reset all inputs and recommendations"
+        >
+          <FaUndo />
+          <span className="font-semibold">Reset</span>
+        </button>
+      </div>
       <p className="text-gray-700 mb-8 text-lg">
         Tell us about yourself and select your skills to get personalized
         AI-powered career recommendations.
