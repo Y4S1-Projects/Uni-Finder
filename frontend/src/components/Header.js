@@ -1,21 +1,4 @@
-// // src/components/Header.js
-// import React from 'react';
-// import { Link } from 'react-router-dom';
 
-// const Header = () => {
-//   return (
-//     <header>
-//       <nav>
-//         <Link to="/">Home</Link>
-//         <Link to="/signin">Sign In</Link>
-//         <Link to="/recommendations">Recommendations</Link>
-//       </nav>
-//     </header>
-//   );
-// };
-
-// export default Header;
-// src/components/Header.js
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
@@ -69,7 +52,7 @@ const Header = () => {
 						<Nav.Link
 							as={Link}
 							to='/'
-							className='fw-semibold mx-1'
+							className='mx-1 fw-semibold'
 							style={{
 								color: "rgba(255,255,255,0.9)",
 								transition: "color 0.3s ease",
@@ -79,30 +62,19 @@ const Header = () => {
 						</Nav.Link>
 						<Nav.Link
 							as={Link}
-							to='/keywords'
-							className='fw-semibold mx-1'
+							to='/scholarship-matcher'
+							className='mx-1 fw-semibold'
 							style={{
 								color: "rgba(255,255,255,0.9)",
 								transition: "color 0.3s ease",
 								fontSize: isHomePage ? "0.9rem" : "0.9rem",
 							}}>
-							Solutions
-						</Nav.Link>
-						<Nav.Link
-							as={Link}
-							to='/recommendations'
-							className='fw-semibold mx-1'
-							style={{
-								color: "rgba(255,255,255,0.9)",
-								transition: "color 0.3s ease",
-								fontSize: isHomePage ? "0.9rem" : "0.9rem",
-							}}>
-							Recommendations
+							Scholarships
 						</Nav.Link>
 						<Nav.Link
 							as={Link}
 							to='/degree-recommendations'
-							className='fw-semibold mx-1'
+							className='mx-1 fw-semibold'
 							style={{
 								color: "rgba(255,255,255,0.9)",
 								transition: "color 0.3s ease",
@@ -113,7 +85,7 @@ const Header = () => {
 						<Nav.Link
 							as={Link}
 							to='/career'
-							className='fw-semibold mx-1'
+							className='mx-1 fw-semibold'
 							style={{
 								color: "rgba(255,255,255,0.9)",
 								transition: "color 0.3s ease",
@@ -123,19 +95,8 @@ const Header = () => {
 						</Nav.Link>
 						<Nav.Link
 							as={Link}
-							to='/all'
-							className='fw-semibold mx-1'
-							style={{
-								color: "rgba(255,255,255,0.9)",
-								transition: "color 0.3s ease",
-								fontSize: isHomePage ? "0.9rem" : "0.9rem",
-							}}>
-							Reviews
-						</Nav.Link>
-						<Nav.Link
-							as={Link}
 							to='/budget-optimizer-new'
-							className='fw-semibold mx-1'
+							className='mx-1 fw-semibold'
 							style={{
 								color: "rgba(255,255,255,0.9)",
 								transition: "color 0.3s ease",
