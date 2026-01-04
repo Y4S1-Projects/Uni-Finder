@@ -8,6 +8,8 @@ import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
 import { DomainBadge } from "./DomainBadge";
 import { AIExplanation, AILoadingState } from "./AIExplanation";
+import { IoClose } from "react-icons/io5";
+import { FaCheckCircle, FaBookOpen } from "react-icons/fa";
 
 export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
   if (!isOpen) return null;
@@ -47,9 +49,9 @@ function CloseButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      className="absolute top-4 right-4 bg-gradient-to-br from-gray-100 to-gray-200 hover:from-red-100 hover:to-red-200 rounded-full w-10 h-10 flex items-center justify-center text-xl transition-all duration-300 hover:scale-110 hover:rotate-90 shadow-md hover:shadow-lg z-10"
+      className="absolute top-4 right-4 bg-gradient-to-br from-gray-100 to-gray-200 hover:from-red-100 hover:to-red-200 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-90 shadow-md hover:shadow-lg z-10"
     >
-      ✕
+      <IoClose className="text-2xl text-gray-600 hover:text-red-600" />
     </button>
   );
 }
@@ -99,8 +101,8 @@ function CareerDetailContent({ jobDetail }) {
           className="mb-6 animate-fade-in-up"
           style={{ animationDelay: "0.2s" }}
         >
-          <h3 className="text-base font-semibold text-green-700 mb-3 flex items-center gap-2">
-            <span className="text-lg">✅</span> Skills You Already Have (
+          <h3 className="text-base font-semibold text-purple-700 mb-3 flex items-center gap-2">
+            <FaCheckCircle className="text-lg" /> Skills You Already Have (
             {jobDetail.matched_skills.length})
           </h3>
           <SkillTagList
@@ -119,8 +121,8 @@ function CareerDetailContent({ jobDetail }) {
           className="mb-6 animate-fade-in-up"
           style={{ animationDelay: "0.3s" }}
         >
-          <h3 className="text-base font-semibold text-amber-700 mb-3 flex items-center gap-2">
-            <span className="text-lg">📚</span> Skills to Develop (
+          <h3 className="text-base font-semibold text-gray-700 mb-3 flex items-center gap-2">
+            <FaBookOpen className="text-lg" /> Skills to Develop (
             {jobDetail.missing_skills.length})
           </h3>
           <SkillTagList

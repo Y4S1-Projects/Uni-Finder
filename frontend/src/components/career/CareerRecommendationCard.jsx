@@ -7,6 +7,7 @@ import { ScoreCircle, ProgressBar } from "./ScoreDisplay";
 import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
 import { DomainBadge } from "./DomainBadge";
+import { FaStar, FaEye } from "react-icons/fa";
 
 export function CareerRecommendationCard({
   recommendation,
@@ -28,21 +29,21 @@ export function CareerRecommendationCard({
     <div
       className={`p-6 rounded-2xl mb-5 relative transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] ${
         isBestMatch
-          ? "bg-gradient-to-br from-blue-50 via-indigo-50 to-blue-100 border-2 border-blue-300 shadow-xl"
-          : "bg-gradient-to-br from-blue-50/60 via-sky-50/70 to-indigo-50/50 border-2 border-blue-200/60 hover:border-blue-300"
+          ? "bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 border-2 border-purple-300 shadow-xl"
+          : "bg-white border-2 border-gray-200 hover:border-purple-300"
       }`}
     >
       {/* Best Match Badge */}
       {isBestMatch && (
-        <span className="absolute -top-3 right-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse">
-          ⭐ BEST MATCH
+        <span className="absolute -top-3 right-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse flex items-center gap-1.5">
+          <FaStar /> BEST MATCH
         </span>
       )}
 
       {/* Header: Title, Domain, Score */}
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h4 className="text-xl font-semibold text-blue-800 mb-1">
+          <h4 className="text-xl font-semibold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent mb-1">
             {rank}. {role_title || role_id}
           </h4>
           <DomainBadge domain={domain} />
@@ -67,8 +68,8 @@ export function CareerRecommendationCard({
         <div className="flex gap-4 flex-wrap">
           {/* Readiness */}
           <div className="flex-1 min-w-[120px]">
-            <div className="text-xs text-gray-500 mb-1">Readiness</div>
-            <div className="font-bold text-blue-800">
+            <div className="text-xs text-gray-600 mb-1">Readiness</div>
+            <div className="font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent">
               {(skill_gap.readiness_score * 100).toFixed(0)}%
             </div>
           </div>
@@ -96,9 +97,9 @@ export function CareerRecommendationCard({
       {/* View Details Button */}
       <button
         onClick={() => onViewDetails(recommendation)}
-        className="mt-5 px-6 py-3 bg-gradient-to-r from-indigo-400 to-blue-400 hover:from-indigo-500 hover:to-blue-500 text-white rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
+        className="mt-5 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
       >
-        🔍 View Details & AI Explanation
+        <FaEye /> View Details & AI Explanation
       </button>
     </div>
   );

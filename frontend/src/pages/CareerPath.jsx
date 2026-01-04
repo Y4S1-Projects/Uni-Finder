@@ -14,6 +14,7 @@ import {
   useCareerRecommendations,
   useCareerDetail,
 } from "../hooks/useCareerRecommendations";
+import { FaChartLine, FaSearch, FaTrophy } from "react-icons/fa";
 
 export default function CareerPath() {
   const [selectedSkills, setSelectedSkills] = React.useState([]);
@@ -37,10 +38,10 @@ export default function CareerPath() {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       {/* Header */}
-      <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-        🎯 Career Path Recommender
+      <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
+        <FaChartLine /> Career Path Recommender
       </h2>
-      <p className="text-gray-600 mb-8 text-lg">
+      <p className="text-gray-700 mb-8 text-lg">
         Select your skills below and we'll recommend the best matching career
         roles using AI-powered cosine similarity analysis.
       </p>
@@ -88,10 +89,10 @@ function SkillSelectionForm({
   return (
     <form
       onSubmit={onSubmit}
-      className="grid gap-6 p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl border-2 border-blue-200 shadow-lg"
+      className="grid gap-6 p-6 bg-white rounded-2xl border-2 border-purple-200 shadow-lg"
     >
       <label>
-        <strong className="block mb-3 text-gray-700 text-lg">
+        <strong className="block mb-3 text-gray-800 text-lg">
           Your Skills
         </strong>
         <SkillSelector selected={selectedSkills} onChange={onSkillsChange} />
@@ -104,10 +105,18 @@ function SkillSelectionForm({
           className={`px-8 py-4 text-white rounded-xl text-base font-semibold transition-all duration-300 shadow-lg ${
             selectedSkills.length === 0
               ? "bg-gray-300 cursor-not-allowed"
-              : "bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:shadow-2xl hover:scale-105 cursor-pointer"
+              : "bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-2xl hover:scale-105 cursor-pointer"
           }`}
         >
-          {loading ? "🔍 Analyzing..." : "✨ Find My Best Career Matches"}
+          {loading ? (
+            <>
+              <FaSearch className="animate-spin" /> Analyzing...
+            </>
+          ) : (
+            <>
+              <FaTrophy /> Find My Best Career Matches
+            </>
+          )}
         </button>
       </div>
     </form>
@@ -130,8 +139,8 @@ function RecommendationsSection({ recommendations, onViewDetails }) {
       />
 
       {/* Title */}
-      <h3 className="text-xl font-semibold mb-4">
-        🏆 Top Career Recommendations
+      <h3 className="text-xl font-semibold mb-4 bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent flex items-center gap-2">
+        <FaTrophy /> Top Career Recommendations
       </h3>
 
       {/* Recommendation Cards */}

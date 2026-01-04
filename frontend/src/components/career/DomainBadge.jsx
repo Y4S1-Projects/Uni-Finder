@@ -6,17 +6,17 @@ import React from "react";
 
 const DOMAIN_CLASSES = {
   SOFTWARE_ENGINEERING:
-    "bg-gradient-to-r from-indigo-100 to-indigo-200 text-indigo-700 border border-indigo-300",
-  DATA: "bg-gradient-to-r from-amber-100 to-amber-200 text-amber-800 border border-amber-300",
+    "bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 border border-purple-300",
+  DATA: "bg-gradient-to-r from-indigo-100 to-blue-100 text-indigo-700 border border-indigo-300",
   AI_ML:
-    "bg-gradient-to-r from-pink-100 to-pink-200 text-pink-700 border border-pink-300",
+    "bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 border border-purple-300",
   DEVOPS:
-    "bg-gradient-to-r from-green-100 to-green-200 text-green-800 border border-green-300",
-  QA: "bg-gradient-to-r from-red-100 to-red-200 text-red-700 border border-red-300",
+    "bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border border-blue-300",
+  QA: "bg-gradient-to-r from-slate-100 to-gray-100 text-slate-700 border border-slate-300",
   MOBILE:
-    "bg-gradient-to-r from-sky-100 to-sky-200 text-sky-700 border border-sky-300",
+    "bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 border border-indigo-300",
   UI_UX:
-    "bg-gradient-to-r from-purple-100 to-purple-200 text-purple-700 border border-purple-300",
+    "bg-gradient-to-r from-purple-100 to-violet-100 text-purple-700 border border-purple-300",
   default:
     "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border border-gray-300",
 };
