@@ -18,7 +18,7 @@ if (!DEGREE_SERVICE_URL) {
  * @typedef {Object} DegreeRecommendationRequest
  * @property {StudentProfile} student
  * @property {string} district
- * @property {number} max_results
+ * @property {number=} max_results
  */
 
 /**

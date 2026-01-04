@@ -34,11 +34,16 @@ def check_eligibility(
     )
 
     if cutoff is None:
+        # If the caller didn't provide a z-score, we can still recommend based on
+        # interests (and other checks above) even when cutoff is unavailable.
+        if student.zscore is None:
+            return True, f"Eligible (z-score ignored; cutoff unavailable: {match_info})"
+
         # Keep the wording consistent and explicit for callers/tests.
         return False, f"Cutoff unavailable: {match_info}"
 
-    # 4. Z-score check
-    if student.zscore < cutoff:
+    # 4. Z-score check (optional)
+    if student.zscore is not None and student.zscore < cutoff:
         return False, f"Z-score below cutoff ({cutoff})"
 
     return True, f"Eligible ({match_info})"
