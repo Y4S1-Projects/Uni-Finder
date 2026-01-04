@@ -1,5 +1,5 @@
 # app/pipelines/recommendation_pipeline.py
-from typing import List, Dict
+from typing import List, Dict, Optional
 import numpy as np
 
 from app.domain.student import StudentProfile
@@ -26,7 +26,7 @@ class RecommendationPipeline:
         self,
         student: StudentProfile,
         district: str,
-        max_results: int = 5,
+        max_results: Optional[int] = None,
     ) -> List[Dict]:
         debug = self.recommend_debug(
             student=student, district=district, max_results=max_results
@@ -48,7 +48,7 @@ class RecommendationPipeline:
         self,
         student: StudentProfile,
         district: str,
-        max_results: int = 5,
+        max_results: Optional[int] = None,
     ) -> Dict:
         programs = self.program_repo.get_all_programs()
         student_vec = self.similarity_engine.encode_text(student.interests)
@@ -84,6 +84,7 @@ class RecommendationPipeline:
                 "degree_name": program.degree_name,
                 "stream_required": program.stream,
                 "subjects_required": program.subject_prerequisites,
+                "metadata": program.metadata,
                 "student_stream": student.stream,
                 "student_subjects": student.subjects,
                 "student_zscore": student.zscore,
@@ -102,8 +103,12 @@ class RecommendationPipeline:
 
         eligible.sort(key=lambda x: x["score"], reverse=True)
 
+        eligible_recommendations = (
+            eligible if max_results is None else eligible[:max_results]
+        )
+
         return {
-            "eligible_recommendations": eligible[:max_results],
+            "eligible_recommendations": eligible_recommendations,
             "rejected_programs": rejected,
             "summary": {
                 "total_programs": len(programs),

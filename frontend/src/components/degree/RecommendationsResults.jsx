@@ -25,31 +25,39 @@ export default function RecommendationsResults({ results }) {
 	return (
 		<Card className='shadow-sm'>
 			<Card.Body>
-				<div className='d-flex align-items-center justify-content-between mb-3'>
+				<div className='mb-3 d-flex align-items-center justify-content-between'>
 					<Card.Title className='mb-0'>Recommendations</Card.Title>
 					<Badge bg='secondary'>{results.length}</Badge>
 				</div>
 				<ListGroup variant='flush'>
 					{results.map((item, idx) => (
 						<ListGroup.Item key={`${item.degree_name || "degree"}-${idx}`}>
-							<div className='d-flex justify-content-between align-items-start'>
-								<div>
-									<div className='fw-semibold'>{item.degree_name || "(Unnamed Degree)"}</div>
+							<div className='gap-3 d-flex justify-content-between align-items-start'>
+								<div className='min-w-0 flex-grow-1'>
+									<div className='fw-semibold text-break'>{item.degree_name || "(Unnamed Degree)"}</div>
 									{(item.metadata?.institute || item.metadata?.faculty) && (
-										<div className='text-muted small'>
-											{item.metadata?.institute ? item.metadata.institute : ""}
-											{item.metadata?.institute && item.metadata?.faculty ? " • " : ""}
-											{item.metadata?.faculty ? item.metadata.faculty : ""}
+										<div className='text-muted small text-break'>
+											{item.metadata?.institute ? (
+												<span>
+													<span className='fw-semibold'>University:</span> {item.metadata.institute}
+												</span>
+											) : null}
+											{item.metadata?.institute && item.metadata?.faculty ? " • " : null}
+											{item.metadata?.faculty ? (
+												<span>
+													<span className='fw-semibold'>Faculty:</span> {item.metadata.faculty}
+												</span>
+											) : null}
 										</div>
 									)}
 								</div>
-								<div className='text-end'>
+								<div className='flex-shrink-0 text-end'>
 									<div className='small text-muted'>Score</div>
 									<div className='fw-bold'>{formatNumber(item.score)}</div>
 								</div>
 							</div>
 
-							<div className='d-flex gap-3 mt-2 small text-muted'>
+							<div className='gap-3 mt-2 d-flex small text-muted'>
 								<div>
 									Similarity: <span className='fw-semibold'>{formatNumber(item.similarity)}</span>
 								</div>
