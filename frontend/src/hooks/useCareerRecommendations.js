@@ -45,6 +45,7 @@ export function useCareerRecommendations() {
     error,
     fetchRecommendations,
     clearRecommendations,
+    setRecommendations,
   };
 }
 

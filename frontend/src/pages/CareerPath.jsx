@@ -25,21 +25,91 @@ import {
 import { FaChartLine, FaTrophy } from "react-icons/fa";
 
 export default function CareerPath() {
-  const [selectedSkills, setSelectedSkills] = React.useState([]);
+  // Restore state from sessionStorage on mount
+  const [selectedSkills, setSelectedSkills] = React.useState(() => {
+    const saved = sessionStorage.getItem("careerPath_skills");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // Form inputs using useInput hook
-  const experienceLevel = useInput("", validateExperienceLevel);
-  const currentStatus = useInput("", validateCurrentStatus);
-  const preferredDomain = useInput("", validatePreferredDomain);
-  const educationLevel = useInput("", validateEducationLevel);
-  const careerGoal = useInput("", validateCareerGoal);
+  // Form inputs using useInput hook with restored values
+  const experienceLevel = useInput(
+    sessionStorage.getItem("careerPath_experienceLevel") || "",
+    validateExperienceLevel
+  );
+  const currentStatus = useInput(
+    sessionStorage.getItem("careerPath_currentStatus") || "",
+    validateCurrentStatus
+  );
+  const preferredDomain = useInput(
+    sessionStorage.getItem("careerPath_preferredDomain") || "",
+    validatePreferredDomain
+  );
+  const educationLevel = useInput(
+    sessionStorage.getItem("careerPath_educationLevel") || "",
+    validateEducationLevel
+  );
+  const careerGoal = useInput(
+    sessionStorage.getItem("careerPath_careerGoal") || "",
+    validateCareerGoal
+  );
 
   // Custom hooks for business logic
-  const { recommendations, loading, error, fetchRecommendations } =
-    useCareerRecommendations();
+  const {
+    recommendations,
+    loading,
+    error,
+    fetchRecommendations,
+    setRecommendations,
+  } = useCareerRecommendations();
 
   const { selectedJob, jobDetail, detailLoading, fetchJobDetail, closeDetail } =
     useCareerDetail();
+
+  // Restore recommendations on mount
+  React.useEffect(() => {
+    const savedRecommendations = sessionStorage.getItem(
+      "careerPath_recommendations"
+    );
+    if (savedRecommendations) {
+      setRecommendations(JSON.parse(savedRecommendations));
+    }
+  }, [setRecommendations]);
+
+  // Save selectedSkills to sessionStorage whenever it changes
+  React.useEffect(() => {
+    sessionStorage.setItem("careerPath_skills", JSON.stringify(selectedSkills));
+  }, [selectedSkills]);
+
+  // Save form values to sessionStorage whenever they change
+  React.useEffect(() => {
+    sessionStorage.setItem("careerPath_experienceLevel", experienceLevel.value);
+  }, [experienceLevel.value]);
+
+  React.useEffect(() => {
+    sessionStorage.setItem("careerPath_currentStatus", currentStatus.value);
+  }, [currentStatus.value]);
+
+  React.useEffect(() => {
+    sessionStorage.setItem("careerPath_preferredDomain", preferredDomain.value);
+  }, [preferredDomain.value]);
+
+  React.useEffect(() => {
+    sessionStorage.setItem("careerPath_educationLevel", educationLevel.value);
+  }, [educationLevel.value]);
+
+  React.useEffect(() => {
+    sessionStorage.setItem("careerPath_careerGoal", careerGoal.value);
+  }, [careerGoal.value]);
+
+  // Save recommendations to sessionStorage whenever they change
+  React.useEffect(() => {
+    if (recommendations) {
+      sessionStorage.setItem(
+        "careerPath_recommendations",
+        JSON.stringify(recommendations)
+      );
+    }
+  }, [recommendations]);
 
   const handlePredict = async (e) => {
     e.preventDefault();
@@ -74,6 +144,18 @@ export default function CareerPath() {
 
   const handleViewJob = (recommendation) => {
     fetchJobDetail(recommendation, selectedSkills);
+  };
+
+  // Optional: Add a function to clear saved state
+  const handleClearState = () => {
+    sessionStorage.removeItem("careerPath_skills");
+    sessionStorage.removeItem("careerPath_experienceLevel");
+    sessionStorage.removeItem("careerPath_currentStatus");
+    sessionStorage.removeItem("careerPath_preferredDomain");
+    sessionStorage.removeItem("careerPath_educationLevel");
+    sessionStorage.removeItem("careerPath_careerGoal");
+    sessionStorage.removeItem("careerPath_recommendations");
+    window.location.reload();
   };
 
   return (
