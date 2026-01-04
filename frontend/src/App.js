@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
+import CareerPath from "./pages/CareerPath";
+import CareerLadder from "./pages/CareerLadder";
 import BudgetOptimizer from "./pages/BudgetOptimizer"; // Import Budget Optimizer
 import BudgetOptimizerNew from "./pages/BudgetOptimizerNew"; // Import New Budget Optimizer
 import Header from "./components/Header";
@@ -35,6 +37,8 @@ function AppContent() {
 			<Routes>
 				<Route path='/' element={<HomePage />} />
 				<Route path='/signin' element={<SignInPage />} />
+				<Route path='/career' element={<CareerPath />} />
+				<Route path='/career-ladder' element={<CareerLadder />} />
 				<Route path='/degree-recommendations' element={<DegreeRecommendationsPage />} />
 				<Route path='/budget-optimizer' element={<BudgetOptimizer />} /> {/* Budget Optimizer route */}
 				<Route path='/budget-optimizer-new' element={<BudgetOptimizerNew />} /> {/* New AI Budget Optimizer route */}

@@ -4,33 +4,35 @@
  */
 import React from "react";
 
-const DOMAIN_COLORS = {
-  SOFTWARE_ENGINEERING: { bg: "#e0e7ff", text: "#4338ca" },
-  DATA: { bg: "#fef3c7", text: "#92400e" },
-  AI_ML: { bg: "#fce7f3", text: "#9d174d" },
-  DEVOPS: { bg: "#d1fae5", text: "#065f46" },
-  QA: { bg: "#fee2e2", text: "#991b1b" },
-  MOBILE: { bg: "#e0f2fe", text: "#0369a1" },
-  UI_UX: { bg: "#f3e8ff", text: "#7c3aed" },
-  default: { bg: "#f3f4f6", text: "#4b5563" },
+const DOMAIN_CLASSES = {
+  SOFTWARE_ENGINEERING:
+    "bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 border border-purple-300",
+  DATA: "bg-gradient-to-r from-indigo-100 to-blue-100 text-indigo-700 border border-indigo-300",
+  AI_ML:
+    "bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 border border-purple-300",
+  DEVOPS:
+    "bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border border-blue-300",
+  QA: "bg-gradient-to-r from-slate-100 to-gray-100 text-slate-700 border border-slate-300",
+  MOBILE:
+    "bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 border border-indigo-300",
+  UI_UX:
+    "bg-gradient-to-r from-purple-100 to-violet-100 text-purple-700 border border-purple-300",
+  default:
+    "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border border-gray-300",
 };
 
 export function DomainBadge({ domain, size = "small" }) {
   if (!domain) return null;
 
-  const colors = DOMAIN_COLORS[domain] || DOMAIN_COLORS.default;
-  const padding = size === "large" ? "4px 12px" : "2px 8px";
-  const fontSize = size === "large" ? 14 : 12;
+  const colorClass = DOMAIN_CLASSES[domain] || DOMAIN_CLASSES.default;
+  const sizeClasses =
+    size === "large"
+      ? "px-3 py-1 text-sm rounded-md"
+      : "px-2 py-0.5 text-xs rounded";
 
   return (
     <span
-      style={{
-        background: colors.bg,
-        color: colors.text,
-        padding,
-        borderRadius: size === "large" ? 6 : 4,
-        fontSize,
-      }}
+      className={`${colorClass} ${sizeClasses} font-semibold shadow-sm hover:shadow-md transition-all duration-200`}
     >
       {domain.replace(/_/g, " ")}
     </span>

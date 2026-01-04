@@ -58,6 +58,10 @@ export function useCareerDetail() {
     setDetailLoading(true);
     setJobDetail(null);
 
+    // Extract skill IDs (skills may be objects {id, name} or strings)
+    const extractSkillIds = (skills) =>
+      (skills || []).map((s) => (typeof s === "object" ? s.id : s));
+
     try {
       const data = await getCareerExplanation({
         roleId: recommendation.role_id,
@@ -65,8 +69,12 @@ export function useCareerDetail() {
         domain: recommendation.domain,
         matchScore: recommendation.match_score,
         userSkillIds: userSkillIds,
-        matchedSkills: recommendation.skill_gap?.matched_skills || [],
-        missingSkills: recommendation.skill_gap?.missing_skills || [],
+        matchedSkills: extractSkillIds(
+          recommendation.skill_gap?.matched_skills
+        ),
+        missingSkills: extractSkillIds(
+          recommendation.skill_gap?.missing_skills
+        ),
         readinessScore: recommendation.skill_gap?.readiness_score || 0,
         nextRole: recommendation.next_role,
         nextRoleTitle: recommendation.next_role_title,
@@ -76,19 +84,19 @@ export function useCareerDetail() {
     } catch (err) {
       console.error(err);
       // Fallback to basic detail without AI explanation
+      // Skills from recommendation are already {id, name} objects
+      const normalizeSkills = (skills) =>
+        (skills || []).map((s) =>
+          typeof s === "object" ? s : { id: s, name: s }
+        );
+
       const fallbackDetail = {
         ...recommendation,
-        matched_skills: (recommendation.skill_gap?.matched_skills || []).map(
-          (s) => ({
-            id: s,
-            name: s,
-          })
+        matched_skills: normalizeSkills(
+          recommendation.skill_gap?.matched_skills
         ),
-        missing_skills: (recommendation.skill_gap?.missing_skills || []).map(
-          (s) => ({
-            id: s,
-            name: s,
-          })
+        missing_skills: normalizeSkills(
+          recommendation.skill_gap?.missing_skills
         ),
         readiness_score: recommendation.skill_gap?.readiness_score || 0,
         explanation: null,

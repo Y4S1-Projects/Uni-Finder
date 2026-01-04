@@ -1,6 +1,7 @@
 """Career ladder and skill gap detection services"""
 from typing import Optional
 from data_loader import DataStore
+from .skill_service import get_skill_name
 
 
 def detect_skill_gap(user_skill_ids: set, target_role_id: str, importance_threshold: float = 0.02) -> dict:
@@ -20,9 +21,13 @@ def detect_skill_gap(user_skill_ids: set, target_role_id: str, importance_thresh
         raise ValueError(f"No role profile found for role_id={target_role_id}")
 
     required_skills = set(role_df[role_df["importance"] >= importance_threshold]["skill_id"].astype(str))
-    missing_skills = sorted(required_skills - user_skill_ids)
-    matched_skills = sorted(required_skills & user_skill_ids)
-    readiness = (len(matched_skills) / len(required_skills)) if required_skills else 0.0
+    missing_skill_ids = sorted(required_skills - user_skill_ids)
+    matched_skill_ids = sorted(required_skills & user_skill_ids)
+    readiness = (len(matched_skill_ids) / len(required_skills)) if required_skills else 0.0
+
+    # Convert to objects with id and name
+    missing_skills = [{"id": sid, "name": get_skill_name(sid)} for sid in missing_skill_ids]
+    matched_skills = [{"id": sid, "name": get_skill_name(sid)} for sid in matched_skill_ids]
 
     return {
         "target_role": target_role_id,

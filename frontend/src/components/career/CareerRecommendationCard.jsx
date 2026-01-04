@@ -7,6 +7,7 @@ import { ScoreCircle, ProgressBar } from "./ScoreDisplay";
 import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
 import { DomainBadge } from "./DomainBadge";
+import { FaStar, FaEye } from "react-icons/fa";
 
 export function CareerRecommendationCard({
   recommendation,
@@ -26,53 +27,23 @@ export function CareerRecommendationCard({
 
   return (
     <div
-      style={{
-        background: isBestMatch
-          ? "linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%)"
-          : "#fff",
-        border: isBestMatch ? "2px solid #4a90d9" : "1px solid #e5e7eb",
-        padding: "1.5rem",
-        borderRadius: 12,
-        marginBottom: "1rem",
-        position: "relative",
-      }}
+      className={`p-6 rounded-2xl mb-5 relative transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] ${
+        isBestMatch
+          ? "bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 border-2 border-purple-300 shadow-xl"
+          : "bg-white border-2 border-gray-200 hover:border-purple-300"
+      }`}
     >
       {/* Best Match Badge */}
       {isBestMatch && (
-        <span
-          style={{
-            position: "absolute",
-            top: -10,
-            right: 16,
-            background: "#4a90d9",
-            color: "white",
-            padding: "4px 12px",
-            borderRadius: 12,
-            fontSize: 12,
-            fontWeight: "bold",
-          }}
-        >
-          BEST MATCH
+        <span className="absolute -top-3 right-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg animate-pulse flex items-center gap-1.5">
+          <FaStar /> BEST MATCH
         </span>
       )}
 
       {/* Header: Title, Domain, Score */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          marginBottom: "1rem",
-        }}
-      >
+      <div className="flex justify-between items-start mb-4">
         <div>
-          <h4
-            style={{
-              margin: "0 0 4px 0",
-              fontSize: 20,
-              color: "#1e40af",
-            }}
-          >
+          <h4 className="text-xl font-semibold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent mb-1">
             {rank}. {role_title || role_id}
           </h4>
           <DomainBadge domain={domain} />
@@ -81,32 +52,30 @@ export function CareerRecommendationCard({
       </div>
 
       {/* Progress Bar */}
-      <div style={{ marginBottom: "1rem" }}>
+      <div className="mb-4">
         <ProgressBar score={match_score} />
       </div>
 
       {/* Next Career Step */}
       {next_role && (
-        <div style={{ marginBottom: "1rem" }}>
+        <div className="mb-4">
           <NextRoleBadge nextRole={next_role} nextRoleTitle={next_role_title} />
         </div>
       )}
 
       {/* Skill Gap Display */}
       {skill_gap && (
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+        <div className="flex gap-4 flex-wrap">
           {/* Readiness */}
-          <div style={{ flex: "1 1 120px" }}>
-            <div style={{ fontSize: 12, color: "#666", marginBottom: 4 }}>
-              Readiness
-            </div>
-            <div style={{ fontWeight: "bold", color: "#1e40af" }}>
+          <div className="flex-1 min-w-[120px]">
+            <div className="text-xs text-gray-600 mb-1">Readiness</div>
+            <div className="font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent">
               {(skill_gap.readiness_score * 100).toFixed(0)}%
             </div>
           </div>
 
           {/* Matched Skills */}
-          <div style={{ flex: "2 1 200px" }}>
+          <div className="flex-[2] min-w-[200px]">
             <SkillTagList
               skills={skill_gap.matched_skills}
               variant="matched"
@@ -115,7 +84,7 @@ export function CareerRecommendationCard({
           </div>
 
           {/* Missing Skills */}
-          <div style={{ flex: "2 1 200px" }}>
+          <div className="flex-[2] min-w-[200px]">
             <SkillTagList
               skills={skill_gap.missing_skills}
               variant="missing"
@@ -128,22 +97,9 @@ export function CareerRecommendationCard({
       {/* View Details Button */}
       <button
         onClick={() => onViewDetails(recommendation)}
-        style={{
-          marginTop: "1rem",
-          padding: "0.5rem 1rem",
-          background: "#7c3aed",
-          color: "white",
-          border: "none",
-          borderRadius: 6,
-          cursor: "pointer",
-          fontSize: 14,
-          fontWeight: 500,
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-        }}
+        className="mt-5 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
       >
-        🔍 View Details & AI Explanation
+        <FaEye /> View Details & AI Explanation
       </button>
     </div>
   );
