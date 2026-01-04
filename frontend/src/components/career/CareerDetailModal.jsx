@@ -49,9 +49,10 @@ function CloseButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      className="absolute top-4 right-4 bg-gradient-to-br from-gray-100 to-gray-200 hover:from-red-100 hover:to-red-200 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110 hover:rotate-90 shadow-md hover:shadow-lg z-10"
+      className="absolute top-4 right-4 bg-white hover:bg-gradient-to-br hover:from-purple-50 hover:to-blue-50 rounded-full w-16 h-16 flex items-center justify-center transition-all duration-300 hover:scale-125 shadow-lg hover:shadow-2xl border-2 border-purple-200 hover:border-purple-600 z-50 group"
+      aria-label="Close modal"
     >
-      <IoClose className="text-2xl text-gray-600 hover:text-red-600" />
+      <IoClose className="text-4xl text-purple-600 group-hover:text-purple-800 group-hover:rotate-90 transition-all duration-300" />
     </button>
   );
 }

@@ -3,7 +3,7 @@
  * Main page for career recommendations using modular components
  */
 import React from "react";
-import SkillSelector from "../components/SkillSelector";
+import SkillSelector from "../components/career/SkillSelector";
 import {
   CareerRecommendationCard,
   CareerDetailModal,
