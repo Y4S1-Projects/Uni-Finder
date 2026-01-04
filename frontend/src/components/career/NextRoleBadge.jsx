@@ -13,23 +13,11 @@ export function NextRoleBadge({
 
   if (variant === "full") {
     return (
-      <div
-        style={{
-          background: "#faf5ff",
-          padding: "1rem",
-          borderRadius: 8,
-        }}
-      >
-        <div
-          style={{
-            fontWeight: 500,
-            color: "#7c3aed",
-            marginBottom: 4,
-          }}
-        >
+      <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100 p-5 rounded-xl border-2 border-purple-200 shadow-md hover:shadow-lg transition-all duration-300">
+        <div className="font-semibold text-purple-700 mb-2 flex items-center gap-2">
           🚀 Next Career Step
         </div>
-        <div style={{ fontSize: 18, color: "#5b21b6" }}>
+        <div className="text-xl font-bold bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text text-transparent">
           {nextRoleTitle || nextRole}
         </div>
       </div>
@@ -37,15 +25,11 @@ export function NextRoleBadge({
   }
 
   return (
-    <div
-      style={{
-        background: "#f0fdf4",
-        padding: "0.75rem",
-        borderRadius: 6,
-      }}
-    >
-      <span style={{ color: "#16a34a", fontWeight: 500 }}>🚀 Next Step:</span>{" "}
-      <span style={{ color: "#166534" }}>{nextRoleTitle || nextRole}</span>
+    <div className="bg-gradient-to-r from-green-50 to-emerald-50 px-4 py-2.5 rounded-lg border border-green-200 shadow-sm hover:shadow-md transition-all duration-200">
+      <span className="text-green-700 font-semibold">🚀 Next Step:</span>{" "}
+      <span className="text-green-800 font-medium">
+        {nextRoleTitle || nextRole}
+      </span>
     </div>
   );
 }
