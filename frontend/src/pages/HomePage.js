@@ -23,6 +23,10 @@ const HomePage = () => {
 		window.location.href = "http://localhost:3001/scholarship-matcher";
 	};
 
+	const handleCareerPredictor = () => {
+		navigate("/career");
+	};
+
 	return (
 		<div className='homepage-container'>
 			{/* Professional Header Section */}
@@ -294,9 +298,21 @@ const HomePage = () => {
 											alignItems: "center",
 											justifyContent: "center",
 											animation: "float 6s ease-in-out infinite 4s",
+											cursor: "pointer",
+											transition: "all 0.3s ease",
+										}}
+										onClick={handleCareerPredictor}
+										onMouseEnter={(e) => {
+											e.currentTarget.style.transform = "scale(1.05)";
+											e.currentTarget.style.background = "rgba(255,255,255,0.3)";
+										}}
+										onMouseLeave={(e) => {
+											e.currentTarget.style.transform = "scale(1)";
+											e.currentTarget.style.background = "rgba(255,255,255,0.2)";
 										}}>
 										<div style={{ fontSize: "2rem", marginBottom: "10px" }}>📈</div>
 										<div style={{ fontSize: "0.9rem", fontWeight: "600" }}>Career Predictor</div>
+										<div style={{ fontSize: "0.7rem", opacity: 0.8, marginTop: "5px" }}>Click to Launch</div>
 									</div>
 								</div>
 							</div>
