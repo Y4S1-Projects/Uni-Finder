@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# Uni-Finder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Uni-Finder is a multi-service educational guidance platform for Sri Lankan students. It combines a React frontend with multiple backend services that provide:
 
-## Available Scripts
+- Degree recommendations
+- Career guidance (recommendations + explainability)
+- Scholarship/loan matching (via the Node API)
+- Student budget optimization
 
-In the project directory, you can run:
+## Repository layout
 
-### `npm start`
+- `frontend/` — React app (UI)
+- `backend/` — Node/Express API + some Python microservices
+- `degree-recommendation-service/` — FastAPI degree recommendation engine
+- `career-service/` — FastAPI career guidance service
+- `career-ml/` — notebooks + trained artifacts used by `career-service/`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Services (local dev)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+| Service              | Folder                           | Tech              | Default URL                              |
+| -------------------- | -------------------------------- | ----------------- | ---------------------------------------- |
+| Frontend UI          | `frontend/`                      | React (CRA)       | `http://localhost:3000`                  |
+| Node API             | `backend/`                       | Express + MongoDB | `http://localhost:5000` _(configurable)_ |
+| Budget Optimizer API | `backend/`                       | Flask             | `http://127.0.0.1:5002`                  |
+| Recommendation API   | `backend/`                       | Flask             | `http://127.0.0.1:5003`                  |
+| Career Service       | `career-service/`                | FastAPI           | `http://127.0.0.1:5004`                  |
+| Degree Service       | `degree-recommendation-service/` | FastAPI           | `http://127.0.0.1:5001`                  |
 
-### `npm test`
+## Quick start (Windows)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1) Frontend
 
-### `npm run build`
+```bash
+cd frontend
+npm install
+copy .env.example .env
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 2) Node API (Express)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+cd backend
+npm install
+npm run dev
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 3) Python services
 
-### `npm run eject`
+Degree Service:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+cd degree-recommendation-service
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python main.py
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Career Service:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+cd career-service
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python -m uvicorn app:app --reload --host 127.0.0.1 --port 5004
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Budget Optimizer API:
 
-## Learn More
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python app_budget_enhanced.py
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Recommendation API:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+python app.py
+```
 
-### Code Splitting
+## Service documentation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Frontend: [frontend/README.md](frontend/README.md)
+- Node API + Python microservices: [backend/README.md](backend/README.md)
+- Career Service: [career-service/README.md](career-service/README.md)
+- Degree Service: [degree-recommendation-service/README.md](degree-recommendation-service/README.md)
 
-### Analyzing the Bundle Size
+## Environment variables
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The frontend expects service base URLs via CRA env vars. See [frontend/.env.example](frontend/.env.example).
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Security note: do not commit real secrets (DB passwords, API keys) into `.env` files.
