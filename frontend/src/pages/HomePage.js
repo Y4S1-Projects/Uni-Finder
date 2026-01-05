@@ -67,7 +67,7 @@ const HomePage = () => {
 									height: "80vh",
 									paddingRight: "2rem",
 								}}>
-								<div className='brand-logo mb-4'>
+								<div className='mb-4 brand-logo'>
 									<div
 										style={{
 											width: "80px",
@@ -87,7 +87,7 @@ const HomePage = () => {
 								</div>
 
 								<h1
-									className='display-4 fw-bold mb-4'
+									className='mb-4 display-4 fw-bold'
 									style={{
 										fontSize: "clamp(2.5rem, 5vw, 4rem)",
 										lineHeight: "1.2",
@@ -101,7 +101,7 @@ const HomePage = () => {
 								</h1>
 
 								<p
-									className='lead mb-4'
+									className='mb-4 lead'
 									style={{
 										fontSize: "1.25rem",
 										opacity: 0.9,
@@ -111,12 +111,12 @@ const HomePage = () => {
 									cutting-edge AI technology
 								</p>
 
-								<div className='cta-buttons mb-4'>
+								<div className='mb-4 cta-buttons'>
 									<Button
 										variant='light'
 										size='lg'
 										onClick={handleGetStarted}
-										className='me-3 mb-3'
+										className='mb-3 me-3'
 										style={{
 											borderRadius: "50px",
 											padding: "12px 30px",
@@ -149,15 +149,15 @@ const HomePage = () => {
 										marginTop: "2rem",
 										flexWrap: "wrap",
 									}}>
-									<div className='stat-item text-center'>
+									<div className='text-center stat-item'>
 										<div style={{ fontSize: "2rem", fontWeight: "bold", color: "#ffd700" }}>350K+</div>
 										<div style={{ fontSize: "0.9rem", opacity: 0.8 }}>A/L Candidates</div>
 									</div>
-									<div className='stat-item text-center'>
+									<div className='text-center stat-item'>
 										<div style={{ fontSize: "2rem", fontWeight: "bold", color: "#ffd700" }}>4</div>
 										<div style={{ fontSize: "0.9rem", opacity: 0.8 }}>AI Modules</div>
 									</div>
-									<div className='stat-item text-center'>
+									<div className='text-center stat-item'>
 										<div style={{ fontSize: "2rem", fontWeight: "bold", color: "#ffd700" }}>95%</div>
 										<div style={{ fontSize: "0.9rem", opacity: 0.8 }}>Accuracy</div>
 									</div>
@@ -357,8 +357,8 @@ const HomePage = () => {
 			{/* Main Content */}
 			<Container className='mt-5'>
 				<div style={{ paddingTop: "2rem" }}>
-					<div className='text-center mb-5'>
-						<h1 id='main-topic' className='gradient-text mb-3'>
+					<div className='mb-5 text-center'>
+						<h1 id='main-topic' className='mb-3 gradient-text'>
 							Transforming Education Through AI
 						</h1>
 						<p className='lead text-muted' style={{ maxWidth: "800px", margin: "0 auto" }}>
