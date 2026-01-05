@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, Alert, Spinner } from "react-bootstrap";
 import StudentProfileForm from "../components/degree/StudentProfileForm";
 import RecommendationsResults from "../components/degree/RecommendationsResults";
 import { fetchDegreeRecommendations } from "../api/degreeRecommendationApi";
+import { FaExclamationTriangle, FaGraduationCap, FaSpinner } from "react-icons/fa";
 
 const DEFAULT_FORM = {
 	stream: "Science",
@@ -33,44 +33,38 @@ export default function DegreeRecommendationsPage() {
 	};
 
 	return (
-		<div className='py-4 py-lg-5'>
-			<Container>
-				<Row className='justify-content-center'>
-					<Col lg={10} xl={9}>
-						<Card className='shadow'>
-							<Card.Body>
-								<div className='flex-wrap gap-3 px-4 d-flex align-items-start justify-content-between'>
-									<div>
-										<h2 className='mb-1 h4 fw-bold'>Degree Recommendations</h2>
-										<div className='text-muted'>Enter student details to get AI-powered degree suggestions.</div>
-									</div>
-								</div>
+		<div className='max-w-5xl p-8 mx-auto'>
+			{/* Header */}
+			<h2 className='flex items-center gap-2 mb-3 text-3xl font-bold text-transparent bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text'>
+				<FaGraduationCap /> Degree Recommendations
+			</h2>
+			<p className='mb-8 text-lg text-gray-700'>
+				Enter your A/L stream, subjects, and interests to get AI-powered degree suggestions.
+			</p>
 
-								<hr className='my-4' />
+			{/* Form */}
+			<StudentProfileForm initialValues={DEFAULT_FORM} onSubmit={handleSubmit} loading={loading} />
 
-								<StudentProfileForm initialValues={DEFAULT_FORM} onSubmit={handleSubmit} loading={loading} />
+			{/* Error */}
+			{error ? (
+				<div className='flex items-start gap-3 p-4 mt-6 text-red-700 border border-red-200 rounded-lg bg-red-50'>
+					<FaExclamationTriangle className='mt-0.5 flex-shrink-0' />
+					<div className='min-w-0'>{error}</div>
+				</div>
+			) : null}
 
-								{error && (
-									<Alert variant='danger' className='mt-4 mb-0'>
-										{error}
-									</Alert>
-								)}
+			{/* Loading */}
+			{loading ? (
+				<div className='flex items-center gap-2 mt-6 text-gray-600'>
+					<FaSpinner className='animate-spin' />
+					<span>Generating recommendations…</span>
+				</div>
+			) : null}
 
-								{loading && (
-									<div className='gap-2 mt-4 d-flex align-items-center text-muted'>
-										<Spinner animation='border' size='sm' />
-										<span>Generating recommendations...</span>
-									</div>
-								)}
-							</Card.Body>
-						</Card>
-
-						<div className='mt-4'>
-							<RecommendationsResults results={results} />
-						</div>
-					</Col>
-				</Row>
-			</Container>
+			{/* Results */}
+			<div className='mt-8'>
+				<RecommendationsResults results={results} />
+			</div>
 		</div>
 	);
 }
