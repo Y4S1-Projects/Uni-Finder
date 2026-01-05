@@ -14,7 +14,7 @@ JOB_SKILL_VECTORS_CSV = ML_DIR / "data" / "processed" / "job_skill_vectors.csv"
 SKILLS_CSV = ML_DIR / "data" / "processed" / "skills.csv"
 
 # Gemini API Configuration (from explainability_engine.ipynb)
-GEMINI_API_KEY = "AIzaSyB551idpBC0C_vZY-4npBIF2qXXxAE_FqE"
+GEMINI_API_KEY = "AIzaSyD8FymLTIuwptSztOBBtL0XhJYnDFcc7b0"
 os.environ["GEMINI_API_KEY"] = GEMINI_API_KEY
 
 # CORS settings
