@@ -157,6 +157,9 @@ export default function DatasetUpdateControl() {
           <p className="dataset-update-control__success-message">
             ✓ Dataset update completed successfully!
           </p>
+          <p className="dataset-update-control__current-stats-title">
+            <strong>Newly added data</strong>
+          </p>
           <div className="dataset-update-control__stats">
             {getScholarshipCount() !== null && (
               <div className="dataset-update-control__stat-item">

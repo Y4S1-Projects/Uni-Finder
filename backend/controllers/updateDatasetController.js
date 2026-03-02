@@ -22,7 +22,7 @@ function runUpdatePipeline() {
       'except Exception as exc:',
       '    err = {"success": False, "error": str(exc), "details": traceback.format_exc()}',
       '    print(json.dumps(err))',
-    ].join('; ');
+    ].join('\n');
 
     const child = spawn(PYTHON_BIN, ['-c', code], {
       cwd: path.join(__dirname, '..'),
