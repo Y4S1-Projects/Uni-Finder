@@ -194,7 +194,46 @@ def match_profile(profile: Dict[str, Any], top_n: int = 5, candidate_pool: int =
     scored_results: List[Dict[str, Any]] = []
     # Determine match type from profile or record
     match_type = profile.get("desired_program_type") or profile.get("match_type")
-    
+
+    def _extract_year_for_recency(record: Dict[str, Any]) -> int | None:
+        """
+        Extract a plausible year from record metadata for recency-based ranking.
+        We do NOT expose this in the API response – it's only used for ordering,
+        so that newer opportunities (e.g., 2026) appear before older ones.
+        """
+        import re
+        from datetime import datetime
+
+        current_year = datetime.now().year
+
+        year_field = record.get("year")
+        if isinstance(year_field, (int, float)):
+            year_int = int(year_field)
+            if 2000 <= year_int <= current_year + 1:
+                return year_int
+        if isinstance(year_field, str):
+            try:
+                year_int = int(year_field.strip())
+                if 2000 <= year_int <= current_year + 1:
+                    return year_int
+            except ValueError:
+                pass
+
+        blob = " ".join(
+            str(part or "")
+            for part in [
+                record.get("name"),
+                record.get("description"),
+                record.get("eligibility"),
+            ]
+        )
+        years = [
+            int(y)
+            for y in re.findall(r"(20[0-9]{2})", blob)
+            if 2000 <= int(y) <= current_year + 1
+        ]
+        return max(years) if years else None
+
     for dist, idx in zip(distances[0], indices[0]):
         record = combined_df.iloc[idx].to_dict()
         similarity = 1 - float(dist)
@@ -202,21 +241,50 @@ def match_profile(profile: Dict[str, Any], top_n: int = 5, candidate_pool: int =
         eligibility = evaluate_eligibility(profile, record, match_type=match_type)
         final_score, rule_score, adj_similarity = compute_final_score(similarity, eligibility)
 
+        # Lightly prioritize explicit field-of-study preferences in the final score.
+        field_bonus = 0.0
+        field_of_study = str(profile.get("field_of_study") or "").strip()
+        if field_of_study and field_of_study.lower() not in ["education_loan", "all fields"]:
+            passed_reasons = (eligibility.get("reasons", {}) or {}).get("passed", []) or []
+            failed_reasons = (eligibility.get("reasons", {}) or {}).get("failed", []) or []
+            passed_text = " ".join(passed_reasons).lower()
+            failed_text = " ".join(failed_reasons).lower()
+            if "field of study" in passed_text:
+                field_bonus += 0.05
+            if "field of study" in failed_text:
+                field_bonus -= 0.05
+
+        boosted_final = max(0.0, min(1.0, final_score + field_bonus))
+
+        recency_year = _extract_year_for_recency(record)
+
         record.update(
             {
                 "similarity_score": adj_similarity,
                 "rule_score": rule_score,
-                "final_score": final_score,
+                "final_score": boosted_final,
                 "eligibility_status": "eligible" if eligibility.get("eligible") else "ineligible",
                 "eligibility_reasons": eligibility.get("reasons", {}),
+                "__recency_year": recency_year,
             }
         )
         scored_results.append(record)
 
-    ranked = sorted(scored_results, key=lambda rec: rec.get("final_score", 0.0), reverse=True)
+    ranked = sorted(
+        scored_results,
+        key=lambda rec: (
+            rec.get("__recency_year") or 0,
+            rec.get("final_score", 0.0),
+        ),
+        reverse=True,
+    )
     cleaned_ranked = []
     for rec in ranked:
-        cleaned_rec = {k: _clean_value(v) for k, v in rec.items()}
+        cleaned_rec = {
+            k: _clean_value(v)
+            for k, v in rec.items()
+            if k != "__recency_year"
+        }
         # Ensure name is cleaned
         if "name" in cleaned_rec:
             cleaned_rec["name"] = _clean_name(str(cleaned_rec.get("name", "")))

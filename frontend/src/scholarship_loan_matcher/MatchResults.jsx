@@ -20,49 +20,71 @@ export default function MatchResults({
     <div className="matcher-results">
       {results.map((item, index) => (
         <article key={`${item.name}-${index}`} className="matcher-results__card">
-          <header>
-            <p className="matcher-results__pill">{item.record_type}</p>
-            <h3>{item.name}</h3>
+          <header className="matcher-results__header">
+            <div className="matcher-results__header-top">
+              <p className="matcher-results__pill">{item.record_type}</p>
+              {typeof item.final_score === 'number' && (
+                <span className="matcher-results__score-badge">
+                  {(item.final_score * 100).toFixed(0)}% match
+                </span>
+              )}
+            </div>
+            <h3 className="matcher-results__title">{item.name}</h3>
           </header>
-          <p className="matcher-results__description">{item.description || 'No description available.'}</p>
-          <dl>
-            {item.program_type && (
-              <>
-                <dt>Program Type</dt>
-                <dd>{item.program_type}</dd>
-              </>
-            )}
-            {item.loan_type && (
-              <>
-                <dt>Loan Type</dt>
-                <dd>{item.loan_type}</dd>
-              </>
-            )}
-            {item.eligibility && (
-              <>
-                <dt>Eligibility</dt>
-                <dd>{item.eligibility}</dd>
-              </>
-            )}
-            {item.funding_amount && (
-              <>
-                <dt>Funding Amount</dt>
-                <dd>LKR {item.funding_amount.toLocaleString()}</dd>
-              </>
-            )}
-            {item.deadline && (
-              <>
-                <dt>Deadline</dt>
-                <dd>{item.deadline}</dd>
-              </>
-            )}
-            {typeof item.final_score === 'number' && (
-              <>
-                <dt>Match Score</dt>
-                <dd>{(item.final_score * 100).toFixed(1)}%</dd>
-              </>
-            )}
-          </dl>
+
+          <div className="matcher-results__body">
+            <p className="matcher-results__description">
+              {item.description || 'No description available.'}
+            </p>
+
+            <div className="matcher-results__meta">
+              <div className="matcher-results__meta-primary">
+                {(item.program_type || item.loan_type) && (
+                  <div className="matcher-results__meta-item">
+                    <span className="matcher-results__meta-label">Program Type</span>
+                    <span className="matcher-results__meta-value">
+                      {item.program_type || item.loan_type}
+                    </span>
+                  </div>
+                )}
+                {item.funding_amount && (
+                  <div className="matcher-results__meta-item">
+                    <span className="matcher-results__meta-label">Funding Amount</span>
+                    <span className="matcher-results__meta-value">
+                      LKR {item.funding_amount.toLocaleString()}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="matcher-results__meta-secondary">
+                {item.provider && (
+                  <div className="matcher-results__meta-item">
+                    <span className="matcher-results__meta-label">Organization / University</span>
+                    <span className="matcher-results__meta-value">{item.provider}</span>
+                  </div>
+                )}
+                {item.deadline && (
+                  <div className="matcher-results__meta-item">
+                    <span className="matcher-results__meta-label">Application Deadline</span>
+                    <span className="matcher-results__meta-value">{item.deadline}</span>
+                  </div>
+                )}
+                {item.region && (
+                  <div className="matcher-results__meta-item">
+                    <span className="matcher-results__meta-label">Region</span>
+                    <span className="matcher-results__meta-value">{item.region}</span>
+                  </div>
+                )}
+                {item.eligibility && (
+                  <div className="matcher-results__meta-item">
+                    <span className="matcher-results__meta-label">Key Eligibility</span>
+                    <span className="matcher-results__meta-value">{item.eligibility}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
           {item.eligibility_reasons && (
             <div className="matcher-results__eligibility">
