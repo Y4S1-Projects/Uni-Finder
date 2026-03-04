@@ -3,6 +3,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.recommend import router as recommend_router
+from app.api.courses import router as courses_router
 from app.core.logging import setup_logging
 
 
@@ -27,6 +28,7 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(recommend_router, prefix="/recommend", tags=["Recommendation"])
+    app.include_router(courses_router, prefix="/api", tags=["Courses"])
 
     @app.get("/health", tags=["Health"])
     def health_check():

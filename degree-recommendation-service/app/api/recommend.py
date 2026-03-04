@@ -14,6 +14,7 @@ def recommend_debug(request: RecommendationRequest):
         student_data=request.student.model_dump(),
         district=request.district,
         max_results=request.max_results,
+        above_score_count=request.above_score_count,
     )
 
 
@@ -23,4 +24,5 @@ def recommend(request: RecommendationRequest):
         student_data=request.student.model_dump(),
         district=request.district,
         max_results=request.max_results,
+        above_score_count=request.above_score_count,
     )
