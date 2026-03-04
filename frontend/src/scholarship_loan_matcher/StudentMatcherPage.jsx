@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import DatasetUpdateControl from './DatasetUpdateControl';
+import DatasetStatus from './DatasetStatus';
 import './styles.css';
 
 const FEATURES = [
@@ -85,7 +85,7 @@ export default function StudentMatcherPage() {
       </section>
 
       <section className="matcher-landing__update-section">
-        <DatasetUpdateControl />
+        <DatasetStatus />
       </section>
     </div>
   );
