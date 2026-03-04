@@ -31,3 +31,30 @@ class RecommendationRequest(BaseModel):
         le=50,
         description="Number of courses above student's z-score to include",
     )
+
+
+class InterestBasedRecommendationRequest(BaseModel):
+    """Request model for interest-based course recommendation with 3-step pipeline."""
+
+    student_input: str = Field(
+        ...,
+        min_length=10,
+        max_length=2000,
+        example="I love working with data, solving complex problems, and developing software applications. I'm interested in machine learning and artificial intelligence.",
+        description="Student's interests, skills, and career goals",
+    )
+    eligible_courses: List[str] = Field(
+        ...,
+        example=["19", "20", "41", "21"],
+        description="List of course codes eligible from rules-based filtering",
+    )
+    max_results: Optional[int] = Field(
+        default=5,
+        ge=1,
+        le=20,
+        description="Maximum number of recommendations to return",
+    )
+    explain: bool = Field(
+        default=True,
+        description="Whether to generate personalized explanations using Gemini API",
+    )

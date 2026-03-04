@@ -8,3 +8,5 @@ scikit-learn
 sentence-transformers
 torch
 pytest
+google-generativeai
+python-dotenv

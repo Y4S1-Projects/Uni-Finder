@@ -132,3 +132,4 @@ desktop.ini
 .mypy_cache/
 .dmypy.json
 dmypy.json
+degree-recommendation-service/.env
