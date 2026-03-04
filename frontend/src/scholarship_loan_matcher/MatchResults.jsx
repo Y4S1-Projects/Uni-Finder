@@ -1,3 +1,10 @@
+const toDisplayScore = (rawScore) => {
+  if (typeof rawScore !== 'number' || Number.isNaN(rawScore)) return null;
+  // Lift scores into a friendlier 40–100% range for display purposes only.
+  const scaled = 40 + rawScore * 60;
+  return Math.max(0, Math.min(100, Math.round(scaled)));
+};
+
 export default function MatchResults({
   results = [],
   isLoading,
@@ -23,9 +30,9 @@ export default function MatchResults({
           <header className="matcher-results__header">
             <div className="matcher-results__header-top">
               <p className="matcher-results__pill">{item.record_type}</p>
-              {typeof item.final_score === 'number' && (
+              {toDisplayScore(item.final_score) !== null && (
                 <span className="matcher-results__score-badge">
-                  {(item.final_score * 100).toFixed(0)}% match
+                  {toDisplayScore(item.final_score)}% match
                 </span>
               )}
             </div>
