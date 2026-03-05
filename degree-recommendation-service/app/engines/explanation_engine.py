@@ -238,3 +238,29 @@ Be encouraging and specific. Avoid generic phrases."""
             explanations[course_code] = explanation
 
         return explanations
+
+    def _call_gemini_api(self, prompt: str, max_tokens: int = 300) -> str:
+        """
+        Generic method to call Gemini API with any prompt.
+
+        Args:
+            prompt: The prompt to send to Gemini
+            max_tokens: Maximum tokens in response
+
+        Returns:
+            Response text from Gemini
+
+        Raises:
+            Exception: If API call fails
+        """
+        try:
+            response = self.model.generate_content(
+                prompt,
+                generation_config=genai.types.GenerationConfig(
+                    max_output_tokens=max_tokens,
+                    temperature=0.7,
+                ),
+            )
+            return response.text
+        except Exception as e:
+            raise Exception(f"Gemini API call failed: {str(e)}")

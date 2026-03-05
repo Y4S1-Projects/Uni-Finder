@@ -58,3 +58,48 @@ class InterestBasedRecommendationRequest(BaseModel):
         default=True,
         description="Whether to generate personalized explanations using Gemini API",
     )
+
+
+class OLPathwayRequest(BaseModel):
+    """Request model for O/L to A/L stream pathway recommendation."""
+
+    student_input: str = Field(
+        ...,
+        min_length=10,
+        max_length=2000,
+        example="I want to become a software engineer and work with computers",
+        description="Student's interests, career goals, or job roles",
+    )
+    ol_marks: dict[str, str] = Field(
+        ...,
+        example={
+            "Mathematics": "A",
+            "Science": "B",
+            "English": "B",
+            "First Language": "A",
+            "History": "C",
+        },
+        description="O/L subject marks (subject name to grade mapping). Valid grades: A, B, C, S, W, F",
+    )
+    max_degree_results: Optional[int] = Field(
+        default=5,
+        ge=1,
+        le=10,
+        description="Maximum number of target degrees to show",
+    )
+    explain: bool = Field(
+        default=True,
+        description="Whether to generate personalized explanations using Gemini API",
+    )
+
+    @field_validator("ol_marks")
+    @classmethod
+    def validate_ol_marks(cls, v):
+        """Validate O/L marks are valid grades."""
+        valid_grades = {"A", "B", "C", "S", "W", "F"}
+        for subject, grade in v.items():
+            if grade.upper() not in valid_grades:
+                raise ValueError(
+                    f"Invalid grade '{grade}' for subject '{subject}'. Valid grades: A, B, C, S, W, F"
+                )
+        return {k: v.upper() for k, v in v.items()}
