@@ -9,3 +9,5 @@ fuzzywuzzy
 python-Levenshtein
 requests
 google-generativeai
+openai
+python-dotenv
