@@ -264,3 +264,122 @@ Be encouraging and specific. Avoid generic phrases."""
             return response.text
         except Exception as e:
             raise Exception(f"Gemini API call failed: {str(e)}")
+
+    # ========== Dream vs. Reality Explanation Methods ==========
+
+    def generate_al_explanation(
+        self,
+        student_input: str,
+        reality_course: CourseRecommendation,
+        is_mismatch: bool,
+        dream_course: Optional[CourseRecommendation] = None,
+    ) -> str:
+        """
+        Generate explanation for A/L students with dream vs. reality awareness.
+
+        Args:
+            student_input: Student's expressed interests
+            reality_course: Top eligible course (what they CAN study)
+            is_mismatch: Whether their dream differs from reality
+            dream_course: Top interest match (what they WANT to study) if mismatch
+
+        Returns:
+            Personalized explanation string
+        """
+        if is_mismatch and dream_course:
+            prompt = f"""
+Act as a compassionate Sri Lankan University Career Counselor.
+
+STUDENT CONTEXT:
+- The student's interest is: "{student_input}"
+- Their #1 interest aligns with: {dream_course.course_name} ({dream_course.stream} stream)
+- However, their A/L results make them INELIGIBLE for that degree
+- Based on STRICT eligibility, we recommend: {reality_course.course_name} ({reality_course.stream} stream)
+
+TASK:
+Write a 3-sentence explanation (max 80 words):
+1. ACKNOWLEDGE: Gently recognize their interest in {dream_course.course_name}
+2. REALITY: Explain why their A/L stream/scores don't allow that path
+3. ALTERNATIVE: Show how {reality_course.course_name} is still a valuable choice that:
+   - Incorporates some of their interests
+   - Opens realistic career paths: {', '.join(reality_course.job_roles[:3])}
+   - Builds on their actual strengths
+
+TONE: Empathetic but honest. Avoid phrases like "unfortunately" or "sadly".
+Focus on the POSITIVE aspects of the alternative.
+"""
+        else:
+            prompt = f"""
+Act as a Sri Lankan University Career Counselor.
+
+STUDENT CONTEXT:
+- The student's interest is: "{student_input}"
+- We are recommending (strictly eligible): {reality_course.course_name} ({reality_course.stream} stream)
+- This is a STRONG match for both their interests AND eligibility
+
+TASK:
+Write a 2-sentence explanation (max 60 words):
+1. Explain why this course fits their interests
+2. Highlight the career paths it opens: {', '.join(reality_course.job_roles[:3])}
+
+TONE: Encouraging and confident.
+"""
+
+        try:
+            return self._call_gemini_api(prompt, max_tokens=150)
+        except Exception as e:
+            # Fallback explanation
+            if is_mismatch and dream_course:
+                return (
+                    f"While your interests align with {dream_course.course_name}, "
+                    f"your A/L profile makes you eligible for {reality_course.course_name}. "
+                    f"This program still offers strong career paths in {', '.join(reality_course.job_roles[:2])}."
+                )
+            else:
+                return (
+                    f"{reality_course.course_name} is an excellent match for your interests. "
+                    f"It prepares you for careers in {', '.join(reality_course.job_roles[:2])}."
+                )
+
+    def generate_ol_explanation(
+        self,
+        student_input: str,
+        top_course: CourseRecommendation,
+        suggested_stream: str,
+    ) -> str:
+        """
+        Generate explanation for O/L students with stream guidance.
+
+        Args:
+            student_input: Student's expressed interests
+            top_course: Top recommended course to aim for
+            suggested_stream: A/L stream needed for that course
+
+        Returns:
+            Personalized explanation with stream guidance
+        """
+        prompt = f"""
+Act as a Sri Lankan University Career Counselor speaking to an O/L student.
+
+STUDENT CONTEXT:
+- The student's interest is: "{student_input}"
+- Based on this, their dream degree is: {top_course.course_name}
+- To qualify, they need to choose: {suggested_stream} stream at A/L
+
+TASK:
+Write a 3-sentence explanation (max 80 words):
+1. Connect their interests to {top_course.course_name}
+2. Recommend the {suggested_stream} stream as their path
+3. Mention O/L subjects they should focus on (especially Math/Science if needed)
+
+TONE: Motivational and forward-looking. This is their chance to shape their future.
+"""
+
+        try:
+            return self._call_gemini_api(prompt, max_tokens=150)
+        except Exception as e:
+            return (
+                f"Your interests in '{student_input}' align well with {top_course.course_name}. "
+                f"To pursue this path, you should select the {suggested_stream} stream at A/L. "
+                f"Focus on building a strong foundation in your O/L subjects, especially Math and Science."
+            )

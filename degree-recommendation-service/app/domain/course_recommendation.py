@@ -68,5 +68,55 @@ class CourseRecommendation:
         ]
         return " | ".join([part for part in text_parts if part])
 
+    def get_weighted_text(self) -> str:
+        """
+        Get weighted text representation that boosts important career-relevant fields.
+
+        Phase 3: Weighted Corpus Construction
+        By repeating high-value columns (Job Roles, Core Skills), we mathematically
+        force the embedding model to pay more attention to career outcomes.
+
+        Example:
+        Bad:  "Computer Science. Software Engineer. Coding"
+        Good: "Computer Science. Software Engineer, Software Engineer, Tech Lead.
+               Coding, Big Data, Big Data, AI, AI"
+
+        Returns:
+            Weighted text string for enhanced semantic matching
+        """
+        parts = []
+
+        # Course name (weight: 2x) - Important for direct matches
+        if self.course_name:
+            parts.append(f"Degree: {self.course_name}")
+            parts.append(self.course_name)  # Repeat once
+
+        # Job roles (weight: 3x) - MOST IMPORTANT for career mapping
+        if self.job_roles:
+            roles_text = ", ".join(self.job_roles)
+            parts.append(f"Careers: {roles_text}")
+            parts.append(roles_text)  # Repeat 1st time
+            parts.append(roles_text)  # Repeat 2nd time
+
+        # Core skills (weight: 2x) - Important for technical matching
+        if self.core_skills:
+            skills_text = ", ".join(self.core_skills)
+            parts.append(f"Skills: {skills_text}")
+            parts.append(skills_text)  # Repeat once
+
+        # Interests (weight: 1x) - Baseline importance
+        if self.interests:
+            parts.append(f"Interests: {', '.join(self.interests)}")
+
+        # Industries (weight: 1x) - Context
+        if self.industries:
+            parts.append(f"Industries: {', '.join(self.industries)}")
+
+        # Stream (weight: 1x) - Categorical info
+        if self.stream:
+            parts.append(f"Stream: {self.stream}")
+
+        return ". ".join(parts)
+
     def __repr__(self) -> str:
         return f"CourseRecommendation(code={self.course_code}, name={self.course_name}, stream={self.stream})"
