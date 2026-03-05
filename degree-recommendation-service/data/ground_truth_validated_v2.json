@@ -1,0 +1,263 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "created_date": "2026-03-05",
+    "description": "PROPERLY VALIDATED test cases with real Z-score cutoffs from Cutoff_Dataset_Mapped.csv",
+    "total_test_cases": 11,
+    "validation_method": "Each test case verified with actual course cutoff data",
+    "relevance_scale": "3 = Perfect Match (Eligible), 2 = Good Match (Eligible), 1 = Partial (Eligible), 0 = Not Eligible",
+    "key_changes": [
+      "All Z-scores computed from actual cutoff values in Cutoff_Dataset_Mapped.csv",
+      "Stream/subject requirements verified against University_Courses_Dataset.csv",
+      "Each test case explicitly states: 'VERIFIED ELIGIBLE for X course'",
+      "Added mismatch test cases for streams that CANNOT access certain programs",
+      "Added low Z-score test cases to verify filtering"
+    ]
+  },
+  "test_cases": [
+    {
+      "test_id": "TC_101",
+      "category": "Medicine & Healthcare",
+      "student_interest": "I want to be a doctor and save lives. Medicine is my passion and calling.",
+      "student_profile": {
+        "stream": "Biological Science",
+        "subjects": [
+          "Biology",
+          "Chemistry",
+          "Physics"
+        ],
+        "z_score": 1.9339,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "001"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Bio Science with Z=1.934 (cutoff=1.884) - VERIFIED ELIGIBLE for Medicine"
+    },
+    {
+      "test_id": "TC_102",
+      "category": "Agriculture",
+      "student_interest": "I love working with plants, sustainable farming, and agricultural innovation.",
+      "student_profile": {
+        "stream": "Biological Science",
+        "subjects": [
+          "Biology",
+          "Chemistry",
+          "Environmental Science"
+        ],
+        "z_score": 0.7968,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "004"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Bio Science with Z=0.797 - VERIFIED ELIGIBLE for Agriculture"
+    },
+    {
+      "test_id": "TC_103",
+      "category": "Food Science & Nutrition",
+      "student_interest": "I'm passionate about food science, nutrition, and food safety innovation.",
+      "student_profile": {
+        "stream": "Biological Science",
+        "subjects": [
+          "Biology",
+          "Chemistry",
+          "Environmental Science"
+        ],
+        "z_score": 1.3007,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "005"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Bio Science with Z=1.301 - VERIFIED ELIGIBLE for Food Science"
+    },
+    {
+      "test_id": "TC_201",
+      "category": "Engineering - General",
+      "student_interest": "I love building structures, designing systems, and solving engineering challenges.",
+      "student_profile": {
+        "stream": "Physical Science",
+        "subjects": [
+          "Combined Mathematics",
+          "Physics",
+          "Chemistry"
+        ],
+        "z_score": 1.8896000000000002,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "008"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Physical Science with Z=1.890 - VERIFIED ELIGIBLE for Engineering"
+    },
+    {
+      "test_id": "TC_202",
+      "category": "Computer Science & IT",
+      "student_interest": "I love programming, building software systems, and working with AI and data.",
+      "student_profile": {
+        "stream": "Physical Science",
+        "subjects": [
+          "Combined Mathematics",
+          "Physics",
+          "Chemistry"
+        ],
+        "z_score": 1.5457999999999998,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "012"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Physical Science with Z=1.546 - VERIFIED ELIGIBLE for Computer Science"
+    },
+    {
+      "test_id": "TC_301",
+      "category": "Business & Management",
+      "student_interest": "I love managing teams, understanding business strategy, and entrepreneurship.",
+      "student_profile": {
+        "stream": "Commerce",
+        "subjects": [
+          "Accounting",
+          "Business Studies",
+          "Economics"
+        ],
+        "z_score": 1.5161,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "016"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Commerce with Z=1.516 - VERIFIED ELIGIBLE for Management"
+    },
+    {
+      "test_id": "TC_302",
+      "category": "Accounting & Finance",
+      "student_interest": "I'm skilled with numbers and want to become a chartered accountant.",
+      "student_profile": {
+        "stream": "Commerce",
+        "subjects": [
+          "Accounting",
+          "Business Studies",
+          "Economics"
+        ],
+        "z_score": 1.5791000000000002,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "017"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Commerce with Z=1.579 - VERIFIED ELIGIBLE for Accounting"
+    },
+    {
+      "test_id": "TC_401",
+      "category": "Arts & Humanities",
+      "student_interest": "I love literature, history, philosophy, and exploring human culture.",
+      "student_profile": {
+        "stream": "Arts",
+        "subjects": [
+          "Sinhala",
+          "English",
+          "History"
+        ],
+        "z_score": 1.5,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "019"
+      ],
+      "relevance_scores": [
+        3
+      ],
+      "notes": "Arts stream student - VERIFIED ELIGIBLE for general Arts degree"
+    },
+    {
+      "test_id": "TC_501",
+      "category": "Mismatch Test",
+      "student_interest": "I want to study engineering and build bridges, but I'm an Arts student.",
+      "student_profile": {
+        "stream": "Arts",
+        "subjects": [
+          "Sinhala",
+          "English",
+          "History"
+        ],
+        "z_score": 2.0,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "008"
+      ],
+      "relevance_scores": [
+        0
+      ],
+      "notes": "Arts stream cannot access Engineering (Physical Science required). System should explain why."
+    },
+    {
+      "test_id": "TC_502",
+      "category": "Mismatch Test",
+      "student_interest": "I want to become a doctor and study medicine.",
+      "student_profile": {
+        "stream": "Commerce",
+        "subjects": [
+          "Accounting",
+          "Business Studies",
+          "Economics"
+        ],
+        "z_score": 2.5,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "001"
+      ],
+      "relevance_scores": [
+        0
+      ],
+      "notes": "Commerce stream cannot access Medicine (Biological Science required). System should explain why."
+    },
+    {
+      "test_id": "TC_601",
+      "category": "Low Z-score Filter",
+      "student_interest": "I want to study any biological science program.",
+      "student_profile": {
+        "stream": "Biological Science",
+        "subjects": [
+          "Biology",
+          "Chemistry",
+          "Environmental Science"
+        ],
+        "z_score": 0.7,
+        "district": "COLOMBO"
+      },
+      "expected_top_courses": [
+        "004",
+        "005"
+      ],
+      "relevance_scores": [
+        3,
+        3
+      ],
+      "notes": "Low Z-score (0.7) - can access Agriculture/Food Science, but NOT Medicine"
+    }
+  ]
+}

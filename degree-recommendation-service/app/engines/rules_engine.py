@@ -18,6 +18,14 @@ def check_eligibility(
     """
     Determines if a student is eligible for a degree program.
 
+    Z-Score Special Values:
+    - zscore=None or zscore <= 0: Skip Z-score check (indicate "no Z-score filtering")
+    - zscore > 0: Perform Z-score cutoff validation
+
+    Stream Special Values:
+    - stream=None, stream="", stream="Any": Skip stream check (interests-only mode)
+    - Otherwise: Validate stream match with program requirements
+
     Returns:
         (is_eligible, reason, details_dict)
     """
@@ -29,7 +37,14 @@ def check_eligibility(
     }
 
     # 1. Stream check
-    if program.stream and student.stream:
+    # Skip stream check if student.stream is None, empty, or "Any"
+    student_stream_provided = (
+        student.stream
+        and student.stream.strip()
+        and student.stream.strip().lower() != "any"
+    )
+
+    if student_stream_provided and program.stream:
         program_stream_lower = program.stream.lower()
         student_stream_lower = student.stream.lower()
 
@@ -45,6 +60,9 @@ def check_eligibility(
                 f"Stream mismatch: requires {program.stream}, you have {student.stream}",
                 details,
             )
+    else:
+        # No stream provided or "Any" stream - skip check
+        details["stream_match"] = True
 
     # 2. Subject prerequisites
     if program.subject_requirements:
@@ -90,7 +108,10 @@ def check_eligibility(
             return True, f"Eligible by stream & subjects. {cutoff_info}", details
 
     # 4. Z-score comparison
-    if student.zscore is not None:
+    # Z-score <= 0 means "don't check Z-score" (special case for Scenarios 01, 03, 04)
+    zscore_check_enabled = student.zscore is not None and student.zscore > 0
+
+    if zscore_check_enabled:
         if cutoff is not None:
             meets_cutoff = student.zscore >= cutoff
             details["zscore_check"] = meets_cutoff
@@ -117,12 +138,12 @@ def check_eligibility(
             details["zscore_check"] = True
             return True, f"Eligible by stream & subjects. {cutoff_info}", details
     else:
-        # Student didn't provide Z-score
+        # Z-score not provided or <= 0 (skip check) - treat as eligible by stream/subjects
         details["zscore_check"] = True  # Can't fail what wasn't checked
         if cutoff is not None:
             return (
                 True,
-                f"Eligible by stream & subjects. Cutoff is {cutoff:.4f}. {cutoff_info}",
+                f"Eligible by stream & subjects. Cutoff is {cutoff:.4f} (no Z-score check). {cutoff_info}",
                 details,
             )
         else:

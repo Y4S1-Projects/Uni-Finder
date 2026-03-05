@@ -132,3 +132,6 @@ desktop.ini
 .mypy_cache/
 .dmypy.json
 dmypy.json
+degree-recommendation-service/.env
+.github/instructions/ChatTrackRecords.md
+ChatTrackRecords.md
