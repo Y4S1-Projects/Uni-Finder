@@ -1,11 +1,9 @@
-const express = require('express');
+import express from "express";
+import { matchScholarships } from "../controllers/scholarshipMatcherController.js";
+
 const router = express.Router();
 
-const { matchScholarships } = require('../controllers/scholarshipMatcherController');
-
 // POST /api/scholarships/match
-router.post('/match', matchScholarships);
+router.post("/match", matchScholarships);
 
-module.exports = router;
-
-
+export default router;
