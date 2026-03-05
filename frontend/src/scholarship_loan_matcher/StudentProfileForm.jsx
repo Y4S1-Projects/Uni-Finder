@@ -2,12 +2,33 @@ import { useMemo, useState } from 'react';
 
 // Sri Lankan Districts (25 districts)
 const SRI_LANKAN_DISTRICTS = [
-  'Ampara', 'Anuradhapura', 'Badulla', 'Batticaloa', 'Colombo',
-  'Galle', 'Gampaha', 'Hambantota', 'Jaffna', 'Kalutara',
-  'Kandy', 'Kegalle', 'Kilinochchi', 'Kurunegala', 'Mannar',
-  'Matale', 'Matara', 'Moneragala', 'Mullaitivu', 'Nuwara Eliya',
-  'Polonnaruwa', 'Puttalam', 'Ratnapura', 'Trincomalee', 'Vavuniya'
+  'Ampara',
+  'Anuradhapura',
+  'Badulla',
+  'Batticaloa',
+  'Colombo',
+  'Galle',
+  'Gampaha',
+  'Hambantota',
+  'Jaffna',
+  'Kalutara',
+  'Kandy',
+  'Kegalle',
+  'Kilinochchi',
+  'Kurunegala',
+  'Mannar',
+  'Matale',
+  'Matara',
+  'Moneragala',
+  'Mullaitivu',
+  'Nuwara Eliya',
+  'Polonnaruwa',
+  'Puttalam',
+  'Ratnapura',
+  'Trincomalee',
+  'Vavuniya'
 ];
+
 
 // A/L Streams
 const AL_STREAMS = [
@@ -33,6 +54,7 @@ const UNI_REGISTRATION_STATUS = [
 
 // Preferred Field of Study
 const PREFERRED_FIELDS = [
+  'All Fields',
   'IT',
   'Engineering',
   'Medicine',
@@ -184,9 +206,12 @@ export default function StudentProfileForm({
       // Normalize scholarship form data for backend
       formatted = {
         education_level: 'undergraduate', // Default for A/L students
-        field_of_study: scholarshipValues.preferredFieldOfStudy === 'Other' 
-          ? scholarshipValues.preferredFieldOther 
-          : scholarshipValues.preferredFieldOfStudy,
+        field_of_study:
+          scholarshipValues.preferredFieldOfStudy === 'Other'
+            ? scholarshipValues.preferredFieldOther
+            : scholarshipValues.preferredFieldOfStudy === 'All Fields'
+            ? ''
+            : scholarshipValues.preferredFieldOfStudy,
         family_income: Number(scholarshipValues.annualHouseholdIncome),
         district: scholarshipValues.district,
         age: 18, // Default age for A/L students
@@ -198,7 +223,10 @@ export default function StudentProfileForm({
         uni_registration_status: scholarshipValues.uniRegistrationStatus,
         samurdhi_recipient: scholarshipValues.samurdhiRecipient === 'Yes',
         siblings_studying: Number(scholarshipValues.siblingsStudying) || 0,
-        study_interests: `${scholarshipValues.preferredFieldOfStudy} scholarship`,
+        study_interests:
+          scholarshipValues.preferredFieldOfStudy && scholarshipValues.preferredFieldOfStudy !== 'All Fields'
+            ? `${scholarshipValues.preferredFieldOfStudy} scholarship`
+            : 'Scholarships for any field',
         desired_program_type: 'scholarship',
         skills: [],
       };
@@ -206,9 +234,12 @@ export default function StudentProfileForm({
       // Normalize loan form data for backend
       formatted = {
         education_level: 'undergraduate',
-        field_of_study: loanValues.preferredFieldOfStudy === 'Other' 
-          ? loanValues.preferredFieldOther 
-          : loanValues.preferredFieldOfStudy,
+        field_of_study:
+          loanValues.preferredFieldOfStudy === 'Other'
+            ? loanValues.preferredFieldOther
+            : loanValues.preferredFieldOfStudy === 'All Fields'
+            ? ''
+            : loanValues.preferredFieldOfStudy,
         family_income: 0, // Not collected in loan form
         district: '', // Not collected in loan form
         age: 18,
@@ -221,9 +252,10 @@ export default function StudentProfileForm({
         loan_amount_required: Number(loanValues.loanAmountRequired),
         guarantor_availability: loanValues.guarantorAvailability,
         employment_status: loanValues.employmentStatus,
-        study_interests: loanValues.preferredFieldOfStudy 
-          ? `Loan for ${loanValues.preferredFieldOfStudy} at ${loanValues.targetInstituteType}`
-          : `Loan for ${loanValues.targetInstituteType}`,
+        study_interests:
+          loanValues.preferredFieldOfStudy && loanValues.preferredFieldOfStudy !== 'All Fields'
+            ? `Loan for ${loanValues.preferredFieldOfStudy} at ${loanValues.targetInstituteType}`
+            : `Loan for ${loanValues.targetInstituteType || 'higher education'}`,
         desired_program_type: 'loan',
         skills: [],
       };

@@ -194,7 +194,7 @@ def match_profile(profile: Dict[str, Any], top_n: int = 5, candidate_pool: int =
     scored_results: List[Dict[str, Any]] = []
     # Determine match type from profile or record
     match_type = profile.get("desired_program_type") or profile.get("match_type")
-    
+
     for dist, idx in zip(distances[0], indices[0]):
         record = combined_df.iloc[idx].to_dict()
         similarity = 1 - float(dist)
@@ -202,17 +202,56 @@ def match_profile(profile: Dict[str, Any], top_n: int = 5, candidate_pool: int =
         eligibility = evaluate_eligibility(profile, record, match_type=match_type)
         final_score, rule_score, adj_similarity = compute_final_score(similarity, eligibility)
 
+        # Prioritize explicit field-of-study preferences in the final score.
+        field_bonus = 0.0
+        field_of_study = str(profile.get("field_of_study") or "").strip()
+        if field_of_study and field_of_study.lower() not in ["education_loan", "all fields"]:
+            passed_reasons = (eligibility.get("reasons", {}) or {}).get("passed", []) or []
+            failed_reasons = (eligibility.get("reasons", {}) or {}).get("failed", []) or []
+            passed_text = " ".join(passed_reasons).lower()
+            failed_text = " ".join(failed_reasons).lower()
+
+            # If eligibility rules explicitly say the field of study matches, give a strong boost.
+            if "field of study" in passed_text:
+                field_bonus += 0.10
+            # If rules say the field of study does NOT match, penalize.
+            if "field of study" in failed_text:
+                field_bonus -= 0.10
+
+            # Also look directly for the preferred field string inside the record text
+            # (name, description, eligibility, program/loan type).
+            field_lower = field_of_study.lower()
+            record_blob = " ".join(
+                str(part or "").lower()
+                for part in [
+                    record.get("program_type"),
+                    record.get("loan_type"),
+                    record.get("name"),
+                    record.get("description"),
+                    record.get("eligibility"),
+                ]
+            )
+            if field_lower and field_lower in record_blob:
+                field_bonus += 0.15
+            else:
+                # Small penalty when the preferred field is clearly not mentioned.
+                field_bonus -= 0.05
+
+        boosted_final = max(0.0, min(1.0, final_score + field_bonus))
+
         record.update(
             {
                 "similarity_score": adj_similarity,
                 "rule_score": rule_score,
-                "final_score": final_score,
+                "final_score": boosted_final,
                 "eligibility_status": "eligible" if eligibility.get("eligible") else "ineligible",
                 "eligibility_reasons": eligibility.get("reasons", {}),
             }
         )
         scored_results.append(record)
 
+    # Rank strictly by final score (highest first) so the best matches
+    # always appear at the top of the list.
     ranked = sorted(scored_results, key=lambda rec: rec.get("final_score", 0.0), reverse=True)
     cleaned_ranked = []
     for rec in ranked:

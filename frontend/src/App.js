@@ -14,6 +14,7 @@ import SignIn from "./pages/Signin";
 import StudentMatcherPage from "./scholarship_loan_matcher/StudentMatcherPage";
 import ScholarshipMatcherPage from "./scholarship_loan_matcher/ScholarshipMatcherPage";
 import LoanMatcherPage from "./scholarship_loan_matcher/LoanMatcherPage";
+import AdminDatasetPage from "./scholarship_loan_matcher/AdminDatasetPage";
 
 import DegreeRecommendationsPage from "./pages/DegreeRecommendationsPage";
 
@@ -46,6 +47,7 @@ function AppContent() {
 				<Route path='/scholarship-matcher' element={<StudentMatcherPage />} />
 				<Route path='/scholarship-matcher/scholarships' element={<ScholarshipMatcherPage />} />
 				<Route path='/scholarship-matcher/loans' element={<LoanMatcherPage />} />
+				<Route path="/scholarship-matcher/admin-datasets" element={<AdminDatasetPage />} />
 				<Route path='/signUp' element={<SignUp />} />
 				<Route path='/signInNew' element={<SignIn />} />
 			</Routes>

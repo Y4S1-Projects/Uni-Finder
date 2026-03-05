@@ -15,18 +15,18 @@ const UPDATE_PIPELINE_PATH = path.join(
 );
 
 function runUpdatePipeline() {
-	return new Promise((resolve, reject) => {
-		// Run the pipeline as a one-off script printing JSON to stdout
-		const code = [
-			"import json, traceback",
-			"from scholarship_loan_matcher_ml.pipeline.update_pipeline import run_full_update",
-			"try:",
-			"    summary = run_full_update()",
-			'    print(json.dumps({"success": True, "summary": summary}))',
-			"except Exception as exc:",
-			'    err = {"success": False, "error": str(exc), "details": traceback.format_exc()}',
-			"    print(json.dumps(err))",
-		].join("; ");
+  return new Promise((resolve, reject) => {
+    // Run the pipeline as a one-off script printing JSON to stdout
+    const code = [
+      'import json, traceback',
+      'from scholarship_loan_matcher_ml.pipeline.update_pipeline import run_full_update',
+      'try:',
+      '    summary = run_full_update()',
+      '    print(json.dumps({"success": True, "summary": summary}))',
+      'except Exception as exc:',
+      '    err = {"success": False, "error": str(exc), "details": traceback.format_exc()}',
+      '    print(json.dumps(err))',
+    ].join('\n');
 
 		const child = spawn(PYTHON_BIN, ["-c", code], {
 			cwd: path.join(__dirname, ".."),
