@@ -824,6 +824,229 @@ const BudgetOptimizerNew = () => {
           </Card.Body>
         </Card>
 
+        {/* 🆕 OPTIMAL BUDGET STRATEGY SECTION */}
+        {analysisResult.optimal_strategy && (
+          <Card className="shadow-lg border-0 mb-4 border-success border-3">
+            <Card.Header className="bg-gradient-success text-white">
+              <h4 className="mb-0">🎯 YOUR PERSONALIZED OPTIMAL BUDGET STRATEGY</h4>
+              <p className="mb-0 mt-2">AI-powered recommendations to maximize your savings</p>
+            </Card.Header>
+            <Card.Body className="p-4">
+              {/* Strategy Overview */}
+              <Row className="mb-4">
+                <Col md={4}>
+                  <div className="text-center p-3 bg-light rounded">
+                    <h6 className="text-muted">Current Situation</h6>
+                    <h4 className="text-danger mb-0">
+                      LKR {analysisResult.optimal_strategy.current_situation.total_expenses.toLocaleString()}
+                    </h4>
+                    <small className="text-muted">
+                      {analysisResult.optimal_strategy.current_situation.savings_rate}% savings rate
+                    </small>
+                  </div>
+                </Col>
+                <Col md={4}>
+                  <div className="text-center p-3 bg-success text-white rounded">
+                    <h6>Optimal Target</h6>
+                    <h4 className="mb-0">
+                      LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+                    </h4>
+                    <small>
+                      {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% savings rate
+                    </small>
+                  </div>
+                </Col>
+                <Col md={4}>
+                  <div className="text-center p-3 bg-warning rounded">
+                    <h6 className="text-dark">Potential Improvement</h6>
+                    <h4 className="text-success mb-0">
+                      +LKR {analysisResult.optimal_strategy.potential_improvement.extra_savings.toLocaleString()}
+                    </h4>
+                    <small className="text-dark">Extra savings/month</small>
+                  </div>
+                </Col>
+              </Row>
+
+              {/* Maximum Savings Potential */}
+              {analysisResult.optimal_strategy.maximum_savings_potential > 0 && (
+                <Alert variant="success" className="mb-4">
+                  <h5>💰 Total Savings Potential: LKR {analysisResult.optimal_strategy.maximum_savings_potential.toLocaleString()}/month</h5>
+                  <p className="mb-0">By implementing all recommendations below, you could save this amount monthly!</p>
+                </Alert>
+              )}
+
+              {/* Optimal Alternatives */}
+              {analysisResult.optimal_strategy.optimal_alternatives && 
+               analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
+                <div className="mb-4">
+                  <h5 className="mb-3">🔄 Smart Budget Alternatives</h5>
+                  {analysisResult.optimal_strategy.optimal_alternatives.map((alt, index) => (
+                    <Card key={index} className={`mb-3 border-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'}`}>
+                      <Card.Body>
+                        <Row>
+                          <Col md={8}>
+                            <div className="d-flex align-items-start mb-2">
+                              <span className={`badge bg-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'} me-2`}>
+                                {alt.priority} Priority
+                              </span>
+                              <h6 className="mb-0">{alt.category}</h6>
+                            </div>
+                            <p className="mb-2">
+                              <strong>Current:</strong> {alt.current_choice}
+                            </p>
+                            <p className="mb-2 text-success">
+                              <strong>✨ Optimal:</strong> {alt.optimal_choice}
+                            </p>
+                            <p className="text-muted mb-3">
+                              <small><strong>Why?</strong> {alt.reasoning}</small>
+                            </p>
+                            
+                            {/* Action Steps */}
+                            {alt.action_steps && alt.action_steps.length > 0 && (
+                              <div>
+                                <strong>Action Steps:</strong>
+                                <ol className="mb-0 mt-2">
+                                  {alt.action_steps.map((step, idx) => (
+                                    <li key={idx}><small>{step}</small></li>
+                                  ))}
+                                </ol>
+                              </div>
+                            )}
+                            
+                            {alt.note && (
+                              <p className="text-info mt-2 mb-0">
+                                <small><strong>Note:</strong> {alt.note}</small>
+                              </p>
+                            )}
+                          </Col>
+                          <Col md={4} className="text-center border-start">
+                            <div className="p-3">
+                              <h6 className="text-muted mb-2">Potential Savings</h6>
+                              <h3 className="text-success mb-0">
+                                LKR {alt.estimated_savings.toLocaleString()}
+                              </h3>
+                              <small className="text-muted d-block mt-1">/month</small>
+                              {alt.payback_period && (
+                                <small className="d-block mt-2 text-info">
+                                  <strong>Payback:</strong> {alt.payback_period}
+                                </small>
+                              )}
+                            </div>
+                          </Col>
+                        </Row>
+                      </Card.Body>
+                    </Card>
+                  ))}
+                </div>
+              )}
+
+              {/* Implementation Plan */}
+              {analysisResult.optimal_strategy.implementation_plan && (
+                <div className="mb-4">
+                  <h5 className="mb-3">📋 Your Action Plan</h5>
+                  <Row>
+                    {analysisResult.optimal_strategy.implementation_plan.immediate_actions && 
+                     analysisResult.optimal_strategy.implementation_plan.immediate_actions.length > 0 && (
+                      <Col md={4}>
+                        <Card className="border-danger mb-3">
+                          <Card.Header className="bg-danger text-white">
+                            <h6 className="mb-0">🚨 Immediate (This Week)</h6>
+                          </Card.Header>
+                          <Card.Body>
+                            <ul className="mb-0 ps-3">
+                              {analysisResult.optimal_strategy.implementation_plan.immediate_actions.map((action, idx) => (
+                                <li key={idx} className="mb-2">
+                                  <small>{action.action}</small>
+                                  <div className="text-success">
+                                    <small><strong>Save: LKR {action.savings.toLocaleString()}</strong></small>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    )}
+                    
+                    {analysisResult.optimal_strategy.implementation_plan.this_month_actions && 
+                     analysisResult.optimal_strategy.implementation_plan.this_month_actions.length > 0 && (
+                      <Col md={4}>
+                        <Card className="border-warning mb-3">
+                          <Card.Header className="bg-warning">
+                            <h6 className="mb-0">⏰ This Month</h6>
+                          </Card.Header>
+                          <Card.Body>
+                            <ul className="mb-0 ps-3">
+                              {analysisResult.optimal_strategy.implementation_plan.this_month_actions.map((action, idx) => (
+                                <li key={idx} className="mb-2">
+                                  <small>{action.action}</small>
+                                  <div className="text-success">
+                                    <small><strong>Save: LKR {action.savings.toLocaleString()}</strong></small>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    )}
+                    
+                    {analysisResult.optimal_strategy.implementation_plan.long_term_actions && 
+                     analysisResult.optimal_strategy.implementation_plan.long_term_actions.length > 0 && (
+                      <Col md={4}>
+                        <Card className="border-info mb-3">
+                          <Card.Header className="bg-info text-white">
+                            <h6 className="mb-0">🎯 Long-term (3-6 months)</h6>
+                          </Card.Header>
+                          <Card.Body>
+                            <ul className="mb-0 ps-3">
+                              {analysisResult.optimal_strategy.implementation_plan.long_term_actions.map((action, idx) => (
+                                <li key={idx} className="mb-2">
+                                  <small>{action.action}</small>
+                                  <div className="text-success">
+                                    <small><strong>Save: LKR {action.savings.toLocaleString()}</strong></small>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    )}
+                  </Row>
+                </div>
+              )}
+
+              {/* Success Metrics */}
+              {analysisResult.optimal_strategy.success_metrics && (
+                <Card className="bg-light border-0">
+                  <Card.Body>
+                    <h5 className="mb-3">📈 Track Your Progress</h5>
+                    <Row>
+                      <Col md={4} className="mb-2">
+                        <strong>1 Month Goal:</strong>
+                        <p className="mb-0">{analysisResult.optimal_strategy.success_metrics.target_1_month}</p>
+                      </Col>
+                      <Col md={4} className="mb-2">
+                        <strong>3 Month Goal:</strong>
+                        <p className="mb-0">{analysisResult.optimal_strategy.success_metrics.target_3_months}</p>
+                      </Col>
+                      <Col md={4} className="mb-2">
+                        <strong>6 Month Goal:</strong>
+                        <p className="mb-0">{analysisResult.optimal_strategy.success_metrics.target_6_months}</p>
+                      </Col>
+                    </Row>
+                    <hr />
+                    <p className="text-muted mb-0">
+                      <strong>💡 Tip:</strong> {analysisResult.optimal_strategy.success_metrics.tracking}
+                    </p>
+                  </Card.Body>
+                </Card>
+              )}
+            </Card.Body>
+          </Card>
+        )}
+
         {/* Action Buttons */}
         <div className="text-center">
           <Button variant="outline-primary" onClick={() => setCurrentStep(1)} className="me-2">

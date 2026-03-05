@@ -443,6 +443,226 @@ class MLBudgetPredictor:
             'prediction_date': datetime.now().isoformat()
         }
     
+    def generate_optimal_budget_strategy(self, student_data, current_expenses):
+        """
+        Generate the BEST BUDGET STRATEGY based on user inputs and ML insights
+        Provides optimal alternatives and step-by-step improvements
+        
+        Args:
+            student_data: User input data
+            current_expenses: Calculated current expenses breakdown
+        
+        Returns:
+            Comprehensive optimal strategy with alternatives and savings
+        """
+        
+        monthly_income = student_data.get('monthly_income', 25000)
+        current_total = current_expenses.get('total_expenses', 0)
+        current_savings = monthly_income - current_total
+        
+        # Get ML prediction for optimal budget
+        ml_prediction = self.predict_budget(student_data)
+        optimal_budget = ml_prediction.get('predicted_optimal_budget', monthly_income * 0.85)
+        
+        strategy = {
+            'strategy_name': 'Personalized Optimal Budget Plan',
+            'current_situation': {
+                'total_expenses': round(current_total, 2),
+                'savings': round(current_savings, 2),
+                'savings_rate': round((current_savings / monthly_income * 100), 1)
+            },
+            'optimal_target': {
+                'target_expenses': round(optimal_budget, 2),
+                'target_savings': round(monthly_income - optimal_budget, 2),
+                'target_savings_rate': round(((monthly_income - optimal_budget) / monthly_income * 100), 1)
+            },
+            'potential_improvement': {
+                'expense_reduction': round(current_total - optimal_budget, 2),
+                'extra_savings': round((monthly_income - optimal_budget) - current_savings, 2)
+            }
+        }
+        
+        # Generate category-specific optimal alternatives
+        alternatives = []
+        
+        # 1. FOOD OPTIMIZATION
+        food_type = student_data.get('food_type', 'Mixed')
+        current_food = current_expenses.get('food', 0)
+        cooking_pct = student_data.get('cooking_percentage', 50)
+        
+        if food_type == 'Food Delivery' or food_type == 'Mostly Canteen/Restaurants':
+            alternatives.append({
+                'category': 'Food',
+                'current_choice': f'{food_type} (LKR {current_food:,.0f}/month)',
+                'optimal_choice': 'Mixed (70% Home Cooked + 30% Outside)',
+                'reasoning': 'Home cooking can reduce food costs by 40-50% while maintaining nutrition',
+                'estimated_savings': round(current_food * 0.4, 2),
+                'action_steps': [
+                    'Buy basic cooking equipment (one-time: LKR 3,000)',
+                    'Purchase groceries weekly from local markets',
+                    'Meal prep on weekends (saves time + money)',
+                    'Reserve outside food for social occasions only'
+                ],
+                'priority': 'High'
+            })
+        elif food_type == 'Mixed' and cooking_pct < 60:
+            alternatives.append({
+                'category': 'Food',
+                'current_choice': f'Mixed ({cooking_pct}% home cooking)',
+                'optimal_choice': 'Mixed (70-80% Home Cooked)',
+                'reasoning': 'Increasing home cooking from current level will save without sacrificing quality',
+                'estimated_savings': round(current_food * 0.15, 2),
+                'action_steps': [
+                    f'Increase home cooking from {cooking_pct}% to 75%',
+                    'Learn 3-4 quick Sri Lankan recipes (20 min prep)',
+                    'Buy groceries in bulk for discounts',
+                    'Share cooking with roommates to split costs'
+                ],
+                'priority': 'Medium'
+            })
+        
+        # 2. TRANSPORT OPTIMIZATION
+        transport_method = student_data.get('transport_method', 'Bus')
+        current_transport = current_expenses.get('transport', 0)
+        distance_uni = student_data.get('distance_uni_accommodation', 5)
+        
+        if transport_method == 'Tuk-Tuk' and distance_uni < 3:
+            alternatives.append({
+                'category': 'Transport',
+                'current_choice': f'Tuk-Tuk (LKR {current_transport:,.0f}/month)',
+                'optimal_choice': 'Bicycle or Walking (distance < 3km)',
+                'reasoning': 'Short distance makes eco-friendly alternatives viable and cost-free',
+                'estimated_savings': round(current_transport * 0.90, 2),
+                'action_steps': [
+                    'Purchase a bicycle (one-time: LKR 15,000)',
+                    'Save LKR 3,000+/month on transport',
+                    'Improve health with daily exercise',
+                    'Zero fuel costs and maintenance'
+                ],
+                'priority': 'High',
+                'payback_period': '5 months'
+            })
+        elif transport_method in ['Tuk-Tuk', 'Private Car'] and distance_uni >= 3:
+            alternatives.append({
+                'category': 'Transport',
+                'current_choice': f'{transport_method} (LKR {current_transport:,.0f}/month)',
+                'optimal_choice': 'Public Bus or Train',
+                'reasoning': 'Public transport is 60-70% cheaper for daily commutes',
+                'estimated_savings': round(current_transport * 0.65, 2),
+                'action_steps': [
+                    'Get student bus pass (50% discount available)',
+                    'Plan routes using Google Maps',
+                    'Leave 15 minutes earlier to account for schedules',
+                    'Use Tuk-Tuk only for emergencies'
+                ],
+                'priority': 'High'
+            })
+        
+        # 3. ACCOMMODATION OPTIMIZATION
+        rent = student_data.get('rent', 0)
+        accommodation_type = student_data.get('accommodation_type', 'Rented Room')
+        district = student_data.get('district', 'Colombo')
+        
+        # Calculate district average
+        district_avg_rent = self.avg_district_rent if self.avg_district_rent else 10000
+        
+        if rent > district_avg_rent * 1.2:
+            alternatives.append({
+                'category': 'Accommodation',
+                'current_choice': f'{accommodation_type} - LKR {rent:,.0f}/month',
+                'optimal_choice': f'Shared accommodation in {district}',
+                'reasoning': f'Your rent is 20%+ above district average (LKR {district_avg_rent:,.0f})',
+                'estimated_savings': round(rent - district_avg_rent, 2),
+                'action_steps': [
+                    'Search for shared rooms/boarding houses',
+                    'Consider moving slightly farther (save 30-40%)',
+                    'Check university notice boards for roommate ads',
+                    f'Target rent: LKR {district_avg_rent * 0.8:,.0f} - {district_avg_rent:,.0f}'
+                ],
+                'priority': 'Medium',
+                'note': 'Moving costs: ~LKR 5,000 (one-time)'
+            })
+        
+        # 4. STUDY MATERIALS OPTIMIZATION
+        study_materials = current_expenses.get('study_materials', 2000)
+        if study_materials > 2000:
+            alternatives.append({
+                'category': 'Study Materials',
+                'current_choice': f'LKR {study_materials:,.0f}/month (buying new)',
+                'optimal_choice': 'Digital + Second-hand + Library resources',
+                'reasoning': 'Save 50-70% without compromising learning quality',
+                'estimated_savings': round(study_materials * 0.6, 2),
+                'action_steps': [
+                    'Use university library (free textbooks)',
+                    'Buy second-hand books from seniors (50% off)',
+                    'Use legal digital resources (Project Gutenberg, etc.)',
+                    'Form study groups to share resources',
+                    'Photocopy essential chapters only'
+                ],
+                'priority': 'Low'
+            })
+        
+        # 5. ENTERTAINMENT OPTIMIZATION
+        entertainment = current_expenses.get('entertainment', 0)
+        if entertainment > monthly_income * 0.08:
+            alternatives.append({
+                'category': 'Entertainment',
+                'current_choice': f'LKR {entertainment:,.0f}/month ({(entertainment/monthly_income*100):.1f}% of income)',
+                'optimal_choice': f'LKR {monthly_income * 0.05:,.0f}/month (5% of income)',
+                'reasoning': 'Entertainment should be 5-7% of income for students',
+                'estimated_savings': round(entertainment - (monthly_income * 0.05), 2),
+                'action_steps': [
+                    'Choose free activities: campus events, parks, beaches',
+                    'Use student discounts (movie tickets 50% off)',
+                    'Host potluck dinners instead of restaurants',
+                    'Limit streaming subscriptions to 1-2 services',
+                    'Budget: LKR 500/week maximum'
+                ],
+                'priority': 'Medium'
+            })
+        
+        strategy['optimal_alternatives'] = alternatives
+        
+        # Calculate total potential savings
+        total_potential_savings = sum(alt.get('estimated_savings', 0) for alt in alternatives)
+        strategy['maximum_savings_potential'] = round(total_potential_savings, 2)
+        
+        # Generate implementation plan (prioritized)
+        implementation_plan = {
+            'immediate_actions': [],
+            'this_month_actions': [],
+            'long_term_actions': []
+        }
+        
+        for alt in alternatives:
+            if alt['priority'] == 'High':
+                implementation_plan['immediate_actions'].append({
+                    'action': f"Optimize {alt['category']}: {alt['optimal_choice']}",
+                    'savings': alt['estimated_savings']
+                })
+            elif alt['priority'] == 'Medium':
+                implementation_plan['this_month_actions'].append({
+                    'action': f"Review {alt['category']}: {alt['optimal_choice']}",
+                    'savings': alt['estimated_savings']
+                })
+            else:
+                implementation_plan['long_term_actions'].append({
+                    'action': f"Consider {alt['category']}: {alt['optimal_choice']}",
+                    'savings': alt['estimated_savings']
+                })
+        
+        strategy['implementation_plan'] = implementation_plan
+        
+        # Success metrics
+        strategy['success_metrics'] = {
+            'target_1_month': f"Reduce expenses by LKR {total_potential_savings * 0.3:,.0f}",
+            'target_3_months': f"Achieve {((monthly_income - optimal_budget) / monthly_income * 100):.0f}% savings rate",
+            'target_6_months': f"Build emergency fund of LKR {monthly_income * 2:,.0f}",
+            'tracking': 'Monitor weekly expenses using mobile app or spreadsheet'
+        }
+        
+        return strategy
+    
     def generate_complete_analysis(self, student_data):
         """
         Generate complete budget analysis with predictions and risk assessment

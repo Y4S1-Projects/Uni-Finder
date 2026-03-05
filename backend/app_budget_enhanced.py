@@ -268,6 +268,26 @@ def complete_budget_analysis():
         calculated_savings = monthly_income - calculated_total_expenses
         savings_rate = (calculated_savings / monthly_income * 100) if monthly_income > 0 else 0
         
+        # Step 5.5: Generate Optimal Budget Strategy (NEW FEATURE!)
+        current_expense_breakdown = {
+            'rent': rent,
+            'food': food_budget['monthly_total'],
+            'transport': transport_budget['monthly_total'],
+            'internet': internet,
+            'study_materials': study_materials,
+            'entertainment': entertainment,
+            'utilities': utilities,
+            'healthcare': healthcare,
+            'other': other,
+            'total_expenses': calculated_total_expenses
+        }
+        
+        optimal_strategy = ml_predictor.generate_optimal_budget_strategy(
+            student_data, 
+            current_expense_breakdown
+        )
+        print(f"✅ Optimal Strategy Generated - Potential Savings: LKR {optimal_strategy['maximum_savings_potential']}")
+        
         # Step 6: Build comprehensive response
         response = {
             "success": True,
@@ -307,7 +327,10 @@ def complete_budget_analysis():
             
             # Overall recommendation
             "recommendation": complete_analysis.get('recommendation'),
-            "optimization_status": complete_analysis['financial_summary'].get('optimization_status')
+            "optimization_status": complete_analysis['financial_summary'].get('optimization_status'),
+            
+            # 🆕 NEW: Optimal Budget Strategy
+            "optimal_strategy": optimal_strategy
         }
         
         print(f"✅ Complete analysis returned successfully")
