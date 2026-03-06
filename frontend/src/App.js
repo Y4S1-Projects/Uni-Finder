@@ -10,14 +10,13 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/Signin";
-import "./pages/home.css"; // Global styles including navbar
 
 import StudentMatcherPage from "./scholarship_loan_matcher/StudentMatcherPage";
 import ScholarshipMatcherPage from "./scholarship_loan_matcher/ScholarshipMatcherPage";
 import LoanMatcherPage from "./scholarship_loan_matcher/LoanMatcherPage";
 import AdminDatasetPage from "./scholarship_loan_matcher/AdminDatasetPage";
 
-import OnboardingGateway from "./pages/OnboardingGateway";
+import OnboardingGateway from "./pages/degree-recommendation/DegreeHome";
 import ALWizardFlow from "./pages/degree-recommendation/ALWizardFlow";
 import OLExplorerFlow from "./pages/degree-recommendation/OLExplorerFlow";
 
@@ -36,28 +35,30 @@ function AppContent() {
 	}, [isHomePage]);
 
 	return (
-		<>
+		<div className='flex flex-col min-h-screen'>
 			<Header />
-			<Routes>
-				<Route path='/' element={<HomePage />} />
-				<Route path='/signin' element={<SignInPage />} />
-				<Route path='/career' element={<CareerPath />} />
-				<Route path='/career-ladder' element={<CareerLadder />} />
-				<Route path='/degree-recommendations' element={<OnboardingGateway />} />
-				<Route path='/degree-recommendations/al-students' element={<ALWizardFlow />} />
-				<Route path='/degree-recommendations/all-students' element={<OLExplorerFlow />} />
-				<Route path='/budget-optimizer' element={<BudgetOptimizer />} /> {/* Budget Optimizer route */}
-				<Route path='/budget-optimizer-new' element={<BudgetOptimizerNew />} /> {/* New AI Budget Optimizer route */}
-				{/* Scholarship & Loan Matcher */}
-				<Route path='/scholarship-matcher' element={<StudentMatcherPage />} />
-				<Route path='/scholarship-matcher/scholarships' element={<ScholarshipMatcherPage />} />
-				<Route path='/scholarship-matcher/loans' element={<LoanMatcherPage />} />
-				<Route path='/scholarship-matcher/admin-datasets' element={<AdminDatasetPage />} />
-				<Route path='/signUp' element={<SignUp />} />
-				<Route path='/signInNew' element={<SignIn />} />
-			</Routes>
+			<main className='flex-grow'>
+				<Routes>
+					<Route path='/' element={<HomePage />} />
+					<Route path='/signin' element={<SignInPage />} />
+					<Route path='/career' element={<CareerPath />} />
+					<Route path='/career-ladder' element={<CareerLadder />} />
+					<Route path='/degree-recommendations' element={<OnboardingGateway />} />
+					<Route path='/degree-recommendations/al-students' element={<ALWizardFlow />} />
+					<Route path='/degree-recommendations/all-students' element={<OLExplorerFlow />} />
+					<Route path='/budget-optimizer' element={<BudgetOptimizer />} /> {/* Budget Optimizer route */}
+					<Route path='/budget-optimizer-new' element={<BudgetOptimizerNew />} /> {/* New AI Budget Optimizer route */}
+					{/* Scholarship & Loan Matcher */}
+					<Route path='/scholarship-matcher' element={<StudentMatcherPage />} />
+					<Route path='/scholarship-matcher/scholarships' element={<ScholarshipMatcherPage />} />
+					<Route path='/scholarship-matcher/loans' element={<LoanMatcherPage />} />
+					<Route path='/scholarship-matcher/admin-datasets' element={<AdminDatasetPage />} />
+					<Route path='/signUp' element={<SignUp />} />
+					<Route path='/signInNew' element={<SignIn />} />
+				</Routes>
+			</main>
 			<Footer />
-		</>
+		</div>
 	);
 }
 

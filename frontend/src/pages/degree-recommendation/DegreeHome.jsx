@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaCompass, FaGraduationCap, FaArrowRight, FaMagic } from "react-icons/fa";
 
@@ -6,7 +5,7 @@ export default function OnboardingGateway() {
 	const navigate = useNavigate();
 
 	return (
-		<div className='flex items-center justify-center min-h-screen px-4 py-12 bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50'>
+		<div className='flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-slate-50 via-purple-50 to-blue-50'>
 			{/* Animated background elements */}
 			<div className='absolute top-0 left-0 bg-purple-300 rounded-full w-96 h-96 mix-blend-multiply filter blur-3xl opacity-20 animate-blob'></div>
 			<div
