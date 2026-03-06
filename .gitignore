@@ -6,6 +6,7 @@ degree-recommendation-service/docs/
 backend/node_modules/
 backend/__pycache__/
 frontend/node_modules/
+frontend/package-lock.json
 
 # ============================================================
 # NODE.JS
@@ -58,6 +59,7 @@ env.bak/
 venv.bak/
 .Python
 .python-version
+
 
 # ============================================================
 # TESTING & COVERAGE
