@@ -13,7 +13,16 @@ class StudentRequest(BaseModel):
     @field_validator("stream")
     @classmethod
     def validate_stream(cls, v):
-        valid_streams = ["Science", "Arts", "Commerce", "Technology"]
+        valid_streams = [
+            "Physical Science",
+            "Biological Science",
+            "Commerce",
+            "Engineering Technology",
+            "Bio-Systems Technology",
+            "Arts",
+            "Science",  # backward compatibility alias
+            "Technology",  # backward compatibility alias
+        ]
         if v not in valid_streams:
             raise ValueError(f"Stream must be one of: {', '.join(valid_streams)}")
         return v
