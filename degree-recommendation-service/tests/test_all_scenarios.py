@@ -1,395 +1,948 @@
 """
-Comprehensive Test Suite for V3 A/L Pipeline - All 5 Scenarios
-
-Scenario 01: Stream-based search (no Z-score, no interests)
-Scenario 02: Stream + Z-score search (no interests)
-Scenario 03: Interests-only search (infer stream from interests)
-Scenario 04: Stream + Interests search
-Scenario 05: Stream + Z-score + Interests search (full filtering)
-
-Each scenario tested with multiple student profiles.
+Comprehensive Testing Suite for A/L Degree Recommendation Engine
+Tests all possible scenarios students can trigger through the wizard
 """
 
-import sys
-from pathlib import Path
+import requests
+import json
+from typing import Dict, List, Tuple, Any
+import time
+from datetime import datetime
 
-sys.path.insert(0, str(Path(__file__).parent))
+# Backend API configuration
+BACKEND_URL = "http://127.0.0.1:5001"
+RECOMMEND_ENDPOINT = f"{BACKEND_URL}/recommend"
+INTERESTS_ENDPOINT = f"{BACKEND_URL}/interests"
 
-from app.domain.student import StudentProfile
-from app.pipelines.dream_reality_pipeline import DreamRealityPipeline
+# Test data
+test_results = []
+test_start_time = datetime.now()
 
-# Initialize pipeline
-pipeline = DreamRealityPipeline(
-    semantic_weight=0.7,
-    tfidf_weight=0.3,
-    use_career_mapping=True,
-)
+# Valid data pools (aligned with UGC flexible stream rules)
+VALID_STREAMS = [
+    "Physical Science",
+    "Biological Science",
+    "Commerce",
+    "Engineering Technology",
+    "Bio-Systems Technology",
+    "Arts",
+]
+VALID_SUBJECTS = {
+    "Physical Science": [
+        "Combined Mathematics",
+        "Physics",
+        "Chemistry",
+        "Information & Communication Technology",
+        "Higher Mathematics",
+    ],
+    "Biological Science": [
+        "Biology",
+        "Chemistry",
+        "Physics",
+        "Agricultural Science",
+        "Information & Communication Technology",
+    ],
+    "Commerce": [
+        "Accounting",
+        "Business Studies",
+        "Economics",
+        "Business Statistics",
+        "Geography",
+        "Political Science",
+        "History",
+        "Logic & Scientific Method",
+        "English",
+        "Information & Communication Technology",
+        "Agricultural Science",
+        "Combined Mathematics",
+        "Physics",
+        "French",
+        "German",
+    ],
+    "Engineering Technology": [
+        "Engineering Technology",
+        "Science for Technology",
+        "Information & Communication Technology",
+        "Economics",
+        "Geography",
+        "Home Economics",
+        "English",
+        "Communication & Media Studies",
+        "Art",
+        "Business Studies",
+        "Accounting",
+        "Mathematics",
+        "Agricultural Science",
+    ],
+    "Bio-Systems Technology": [
+        "Bio-Systems Technology",
+        "Science for Technology",
+        "Information & Communication Technology",
+        "Economics",
+        "Geography",
+        "Home Economics",
+        "English",
+        "Communication & Media Studies",
+        "Art",
+        "Business Studies",
+        "Accounting",
+        "Mathematics",
+        "Agricultural Science",
+    ],
+    "Arts": [
+        "History",
+        "Geography",
+        "Economics",
+        "Political Science",
+        "Logic",
+        "English",
+        "Sinhala",
+        "Tamil",
+        "Arabic",
+        "French",
+        "German",
+        "Buddhism",
+        "Hinduism",
+        "Christianity",
+        "Islam",
+        "Art",
+        "Dance",
+        "Music",
+        "Drama",
+        "Home Economics",
+        "Communication & Media Studies",
+        "Information & Communication Technology",
+        "Agricultural Science",
+    ],
+}
+VALID_DISTRICTS = [
+    "Colombo",
+    "Gampaha",
+    "Kalutara",
+    "Matara",
+    "Galle",
+    "Hambantota",
+    "Jaffna",
+    "Mullaitivu",
+    "Batticaloa",
+    "Ampara",
+    "Trincomalee",
+    "Kurunegala",
+    "Puttalum",
+    "Anuradhapura",
+    "Polonnaruwa",
+    "Matale",
+    "Kandy",
+    "Nuwara Eliya",
+    "Badulla",
+    "Monaragala",
+    "Ratnapura",
+    "Kegalle",
+]
 
 
-def print_scenario_header(scenario_num, scenario_name):
-    print("\n" + "=" * 80)
-    print(f"SCENARIO {scenario_num}: {scenario_name}")
+class TestResult:
+    """Store individual test result"""
+
+    def __init__(
+        self,
+        test_name: str,
+        scenario: str,
+        status: str,
+        response_code: int = None,
+        response_data: Dict = None,
+        error: str = None,
+        request_payload: Dict = None,
+    ):
+        self.test_name = test_name
+        self.scenario = scenario
+        self.status = status  # "PASS", "FAIL", "ERROR"
+        self.response_code = response_code
+        self.response_data = response_data
+        self.error = error
+        self.request_payload = request_payload
+        self.timestamp = datetime.now()
+
+    def to_dict(self):
+        return {
+            "test_name": self.test_name,
+            "scenario": self.scenario,
+            "status": self.status,
+            "response_code": self.response_code,
+            "has_results": bool(self.response_data and "courses" in self.response_data),
+            "error": self.error,
+            "timestamp": self.timestamp.isoformat(),
+        }
+
+    def __repr__(self):
+        return f"[{self.status}] {self.test_name} (Scenario: {self.scenario}) - Code: {self.response_code}"
+
+
+def make_request(
+    endpoint: str, payload: Dict, test_name: str, scenario: str
+) -> TestResult:
+    """Make HTTP request and capture result"""
+    try:
+        print(f"\n📤 Testing: {test_name}")
+        print(f"   Payload: {json.dumps(payload, indent=2)}")
+
+        response = requests.post(endpoint, json=payload, timeout=10)
+
+        print(f"   Response Code: {response.status_code}")
+
+        # Try to parse JSON
+        try:
+            response_json = response.json()
+        except:
+            response_json = {"raw": response.text}
+
+        print(f"   Response: {json.dumps(response_json, indent=2)[:200]}...")
+
+        # Determine if test passed
+        if response.status_code == 200:
+            status = "PASS"
+            error = None
+        else:
+            status = "FAIL"
+            error = response_json.get("detail", response.text)
+
+        result = TestResult(
+            test_name=test_name,
+            scenario=scenario,
+            status=status,
+            response_code=response.status_code,
+            response_data=response_json,
+            error=error,
+            request_payload=payload,
+        )
+        test_results.append(result)
+        return result
+
+    except Exception as e:
+        print(f"   ❌ ERROR: {str(e)}")
+        result = TestResult(
+            test_name=test_name,
+            scenario=scenario,
+            status="ERROR",
+            error=str(e),
+            request_payload=payload,
+        )
+        test_results.append(result)
+        return result
+
+
+# ============================================================================
+# SCENARIO DEFINITIONS
+# ============================================================================
+
+
+class ScenarioTester:
+    """Test each scenario with various input combinations"""
+
+    @staticmethod
+    def test_s1_stream_only():
+        """
+        Scenario S1: Stream + Subjects + District only (NO Z-Score, NO Interests)
+        This is when student skips Steps 1 and 2
+        """
+        print("\n" + "=" * 80)
+        print("SCENARIO S1: Stream + Subjects + District (No Z-Score, No Interests)")
+        print("=" * 80)
+
+        tests = [
+            {
+                "name": "S1.1 - Physical Science with Combined Mathematics, Physics, Chemistry",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S1.2 - Arts Stream with History, Geography, Economics",
+                "payload": {
+                    "student": {
+                        "stream": "Arts",
+                        "subjects": ["History", "Geography", "Economics"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Kandy",
+                    "max_results": 5,
+                },
+            },
+            {
+                "name": "S1.3 - Commerce Stream with Accounting, Business Studies, Economics",
+                "payload": {
+                    "student": {
+                        "stream": "Commerce",
+                        "subjects": ["Accounting", "Business Studies", "Economics"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Galle",
+                    "max_results": 8,
+                },
+            },
+            {
+                "name": "S1.4 - Physical Science with Combined Mathematics, Physics, Higher Mathematics",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": [
+                            "Combined Mathematics",
+                            "Physics",
+                            "Higher Mathematics",
+                        ],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S1.5 - Arts with Logic, Geography, English (Jaffna)",
+                "payload": {
+                    "student": {
+                        "stream": "Arts",
+                        "subjects": [
+                            "Logic",
+                            "Geography",
+                            "English",
+                        ],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Jaffna",
+                    "max_results": 10,
+                },
+            },
+        ]
+
+        for test in tests:
+            make_request(RECOMMEND_ENDPOINT, test["payload"], test["name"], "S1")
+
+    @staticmethod
+    def test_s2_stream_zscore():
+        """
+        Scenario S2: Stream + Subjects + Z-Score (NO Interests)
+        This is when student provides stream+subjects+zscore but skips interests
+        """
+        print("\n" + "=" * 80)
+        print("SCENARIO S2: Stream + Subjects + Z-Score (No Interests)")
+        print("=" * 80)
+
+        tests = [
+            {
+                "name": "S2.1 - Physical Science with High Z-Score (2.5)",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": 2.5,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S2.2 - Physical Science with Medium Z-Score (1.5)",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": 1.5,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S2.3 - Biological Science with Low Z-Score (0.5)",
+                "payload": {
+                    "student": {
+                        "stream": "Biological Science",
+                        "subjects": ["Biology", "Chemistry", "Physics"],
+                        "zscore": 0.5,
+                        "interests": "",
+                    },
+                    "district": "Kandy",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S2.4 - Arts with Z-Score (1.8)",
+                "payload": {
+                    "student": {
+                        "stream": "Arts",
+                        "subjects": ["History", "Geography", "Economics"],
+                        "zscore": 1.8,
+                        "interests": "",
+                    },
+                    "district": "Galle",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S2.5 - Commerce with Negative Z-Score (-0.5)",
+                "payload": {
+                    "student": {
+                        "stream": "Commerce",
+                        "subjects": ["Accounting", "Business Studies", "Economics"],
+                        "zscore": -0.5,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S2.6 - Physical Science with Z-Score = 0",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": 0,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+        ]
+
+        for test in tests:
+            make_request(RECOMMEND_ENDPOINT, test["payload"], test["name"], "S2")
+
+    @staticmethod
+    def test_s4_stream_interests():
+        """
+        Scenario S4: Stream + Subjects + Interests (NO Z-Score)
+        This is when student provides interests but skips Z-Score
+        """
+        print("\n" + "=" * 80)
+        print("SCENARIO S4: Stream + Subjects + Interests (No Z-Score)")
+        print("=" * 80)
+
+        tests = [
+            {
+                "name": "S4.1 - Physical Science with Engineering Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": None,
+                        "interests": "I am passionate about engineering, especially civil and structural design. I love solving complex problems and building infrastructure.",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S4.2 - Biological Science with Medicine Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Biological Science",
+                        "subjects": ["Biology", "Chemistry", "Physics"],
+                        "zscore": None,
+                        "interests": "Interested in medical field, healthcare, becoming a doctor. I love helping people and saving lives through medicine.",
+                    },
+                    "district": "Kandy",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S4.3 - Arts with Literature and Language Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Arts",
+                        "subjects": ["English", "History", "Economics"],
+                        "zscore": None,
+                        "interests": "I love literature, writing, and languages. Interested in academic research and teaching English at university level.",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S4.4 - Commerce with Business Management Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Commerce",
+                        "subjects": ["Accounting", "Business Studies", "Economics"],
+                        "zscore": None,
+                        "interests": "I want to start my own business. Interested in entrepreneurship, business management, and financial planning.",
+                    },
+                    "district": "Galle",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S4.5 - Physical Science with IT/CS Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": [
+                            "Combined Mathematics",
+                            "Physics",
+                            "Information & Communication Technology",
+                        ],
+                        "zscore": None,
+                        "interests": "Passionate about computer science, programming, and software development. Want to work in AI and machine learning.",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+        ]
+
+        for test in tests:
+            make_request(RECOMMEND_ENDPOINT, test["payload"], test["name"], "S4")
+
+    @staticmethod
+    def test_s5_all_fields():
+        """
+        Scenario S5: Stream + Subjects + Z-Score + Interests (ALL FIELDS)
+        This is when student completes all 3 steps
+        """
+        print("\n" + "=" * 80)
+        print("SCENARIO S5: Stream + Subjects + Z-Score + Interests (All Fields)")
+        print("=" * 80)
+
+        tests = [
+            {
+                "name": "S5.1 - Physical Science High Z-Score with Engineering Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": 2.8,
+                        "interests": "I am passionate about engineering, especially civil and structural design. I love solving complex problems and building infrastructure.",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S5.2 - Biological Science Medium Z-Score with Medicine Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Biological Science",
+                        "subjects": ["Biology", "Chemistry", "Physics"],
+                        "zscore": 1.5,
+                        "interests": "Interested in medical field, healthcare, becoming a doctor. I love helping people and saving lives through medicine.",
+                    },
+                    "district": "Kandy",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S5.3 - Physical Science Low Z-Score with IT Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": [
+                            "Combined Mathematics",
+                            "Physics",
+                            "Information & Communication Technology",
+                        ],
+                        "zscore": 0.3,
+                        "interests": "Want to pursue computer science and information technology. Interested in software development and web applications.",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S5.4 - Arts High Z-Score with Social Studies Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Arts",
+                        "subjects": ["History", "Geography", "Economics"],
+                        "zscore": 2.5,
+                        "interests": "Deeply interested in sociology, social sciences, and international relations. Want to work for NGOs or government.",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "S5.5 - Commerce Medium Z-Score with Accounting Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Commerce",
+                        "subjects": ["Accounting", "Business Studies", "Economics"],
+                        "zscore": 1.6,
+                        "interests": "Interested in accounting, auditing, and becoming a chartered accountant. Love numbers and financial analysis.",
+                    },
+                    "district": "Galle",
+                    "max_results": 10,
+                },
+            },
+        ]
+
+        for test in tests:
+            make_request(RECOMMEND_ENDPOINT, test["payload"], test["name"], "S5")
+
+    @staticmethod
+    def test_edge_cases():
+        """Test edge cases and error conditions"""
+        print("\n" + "=" * 80)
+        print("EDGE CASES & VALIDATION TESTS")
+        print("=" * 80)
+
+        tests = [
+            {
+                "name": "EC1 - Invalid Stream",
+                "payload": {
+                    "student": {
+                        "stream": "InvalidStream",
+                        "subjects": ["Physics", "Chemistry", "Mathematics"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+                "expect_fail": True,
+            },
+            {
+                "name": "EC2 - Invalid District",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "InvalidDistrict",
+                    "max_results": 10,
+                },
+                "expect_fail": False,  # District might not be validated strictly
+            },
+            {
+                "name": "EC3 - Z-Score out of range (3.5)",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": 3.5,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+                "expect_fail": True,
+            },
+            {
+                "name": "EC4 - Z-Score out of range (-3.5)",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": -3.5,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+                "expect_fail": True,
+            },
+            {
+                "name": "EC5 - Invalid Subject for Stream",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": [
+                            "Accounting",
+                            "Business Studies",
+                            "Economics",
+                        ],  # Commerce subjects
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+                "expect_fail": True,  # Now should fail with rule-based validator
+            },
+            {
+                "name": "EC6 - Only 2 Subjects (should fail in frontend but test backend)",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+                "expect_fail": False,
+            },
+            {
+                "name": "EC7 - Empty Subjects List",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": [],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+                "expect_fail": True,
+            },
+            {
+                "name": "EC8 - Negative max_results",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": -5,
+                },
+                "expect_fail": True,
+            },
+            {
+                "name": "EC9 - Very high max_results (100)",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": ["Combined Mathematics", "Physics", "Chemistry"],
+                        "zscore": None,
+                        "interests": "",
+                    },
+                    "district": "Colombo",
+                    "max_results": 100,
+                },
+                "expect_fail": False,
+            },
+        ]
+
+        for test in tests:
+            result = make_request(
+                RECOMMEND_ENDPOINT, test["payload"], test["name"], "EDGE_CASE"
+            )
+            # Verify expectation
+            if "expect_fail" in test:
+                if test["expect_fail"] and result.status != "FAIL":
+                    print(
+                        f"⚠️  UNEXPECTED: Expected this to fail but got {result.status}"
+                    )
+
+    @staticmethod
+    def test_cross_stream_comparisons():
+        """Compare results across different streams"""
+        print("\n" + "=" * 80)
+        print("CROSS-STREAM COMPARISON TESTS")
+        print("=" * 80)
+
+        # Same interests, all streams
+        interests_text = "I am passionate about technology, programming, software development, and AI applications."
+
+        tests = [
+            {
+                "name": "CROSS1.1 - Physical Science + Tech Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Physical Science",
+                        "subjects": [
+                            "Combined Mathematics",
+                            "Physics",
+                            "Information & Communication Technology",
+                        ],
+                        "zscore": 2.0,
+                        "interests": interests_text,
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "CROSS1.2 - Commerce + Same Tech Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Commerce",
+                        "subjects": ["Accounting", "Business Studies", "Economics"],
+                        "zscore": 2.0,
+                        "interests": interests_text,
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+            {
+                "name": "CROSS1.3 - Arts + Same Tech Interests",
+                "payload": {
+                    "student": {
+                        "stream": "Arts",
+                        "subjects": [
+                            "History",
+                            "Geography",
+                            "Information & Communication Technology",
+                        ],
+                        "zscore": 2.0,
+                        "interests": interests_text,
+                    },
+                    "district": "Colombo",
+                    "max_results": 10,
+                },
+            },
+        ]
+
+        for test in tests:
+            make_request(
+                RECOMMEND_ENDPOINT, test["payload"], test["name"], "CROSS_STREAM"
+            )
+
+
+# ============================================================================
+# RESULT REPORTING
+# ============================================================================
+
+
+def generate_report():
+    """Generate comprehensive test report"""
+
+    print("\n\n" + "=" * 80)
+    print("TEST EXECUTION SUMMARY")
     print("=" * 80)
 
+    # Summary stats
+    total_tests = len(test_results)
+    passed = sum(1 for r in test_results if r.status == "PASS")
+    failed = sum(1 for r in test_results if r.status == "FAIL")
+    errors = sum(1 for r in test_results if r.status == "ERROR")
 
-def print_test_case(test_name, profile, district="COLOMBO"):
-    print(f"\n[Test] {test_name}")
-    print(f"  Stream: {profile.stream}")
-    print(f"  Interests: {profile.interests[:50]}...")
-    print(f"  Z-Score: {profile.zscore}")
-    print(f"  District: {district}")
+    print(f"\n📊 TOTAL TESTS: {total_tests}")
+    print(f"✅ PASSED: {passed} ({passed*100//total_tests}%)")
+    print(f"❌ FAILED: {failed} ({failed*100//total_tests}%)")
+    print(f"⚠️  ERRORS: {errors} ({errors*100//total_tests}%)")
+
+    # Group by scenario
+    print(f"\n📋 BREAKDOWN BY SCENARIO:")
+    scenarios = {}
+    for result in test_results:
+        if result.scenario not in scenarios:
+            scenarios[result.scenario] = {"PASS": 0, "FAIL": 0, "ERROR": 0}
+        scenarios[result.scenario][result.status] += 1
+
+    for scenario, stats in sorted(scenarios.items()):
+        total = sum(stats.values())
+        print(f"\n  {scenario}:")
+        print(f"    ✅ {stats['PASS']}/{total} passed")
+        if stats["FAIL"] > 0:
+            print(f"    ❌ {stats['FAIL']} failed")
+        if stats["ERROR"] > 0:
+            print(f"    ⚠️  {stats['ERROR']} errors")
+
+    # Detailed failure report
+    if failed + errors > 0:
+        print(f"\n⚠️  FAILURES AND ERRORS:")
+        for result in test_results:
+            if result.status != "PASS":
+                print(f"\n  {result.test_name}")
+                print(f"    Status: {result.status}")
+                print(f"    Response Code: {result.response_code}")
+                print(f"    Error: {result.error}")
+
+    # Sample passing test output
+    print(f"\n📄 SAMPLE PASSING TEST DETAILS:")
+    for result in test_results[:3]:
+        if result.status == "PASS":
+            print(f"\n  ✅ {result.test_name}")
+            if result.response_data and "courses" in result.response_data:
+                courses = result.response_data.get("courses", [])
+                print(f"    Found {len(courses)} courses")
+                if courses:
+                    print(
+                        f"    Top match: {courses[0].get('code')} - {courses[0].get('name')}"
+                    )
+                    print(
+                        f"    Match percentage: {courses[0].get('match_percentage', 'N/A')}%"
+                    )
+
+    # Time stats
+    duration = (datetime.now() - test_start_time).total_seconds()
+    print(f"\n⏱️  Test Duration: {duration:.2f} seconds")
+    print(f"   Average per test: {duration/total_tests:.2f} seconds")
+
+    # Save JSON report
+    report_data = {
+        "timestamp": test_start_time.isoformat(),
+        "duration_seconds": duration,
+        "summary": {
+            "total": total_tests,
+            "passed": passed,
+            "failed": failed,
+            "errors": errors,
+        },
+        "scenarios": scenarios,
+        "detailed_results": [r.to_dict() for r in test_results],
+    }
+
+    with open("test_report.json", "w") as f:
+        json.dump(report_data, f, indent=2)
+
+    print(f"\n📁 Full report saved to: test_report.json")
 
 
-def print_results(result):
-    eligible_count = len(result.get("all_eligible_courses", []))
-    filtered_count = len(result.get("recommendations", []))
+def main():
+    """Run all tests"""
+    print("🚀 Starting Comprehensive A/L Degree Recommendation Testing")
+    print(f"Backend URL: {BACKEND_URL}")
+    print(f"Test Start Time: {test_start_time}")
 
-    print(f"  Eligible Courses (all): {eligible_count}")
-    if eligible_count > 0:
-        top_5_eligible = result["all_eligible_courses"][:5]
-        codes = [c["course_code"] for c in top_5_eligible]
-        names = [c["course_name"][:30] for c in top_5_eligible]
-        print(f"    Top 5: {codes}")
-        for code, name in zip(codes, names):
-            print(f"      {code}: {name}")
+    # Check backend is running
+    try:
+        response = requests.get(f"{BACKEND_URL}/health", timeout=5)
+        if response.status_code == 200:
+            print("✅ Backend is online")
+        else:
+            print("⚠️  Backend responded but with unexpected status")
+    except Exception as e:
+        print(f"❌ Backend is not reachable: {e}")
+        print("Make sure to run: python main.py in degree-recommendation-service")
+        return
 
-    print(f"  Interest-Filtered Courses: {filtered_count}")
-    if filtered_count > 0:
-        top_5_filtered = result["recommendations"][:5]
-        codes = [c["course_code"] for c in top_5_filtered]
-        names = [c["course_name"][:30] for c in top_5_filtered]
-        print(f"    Top 5: {codes}")
-        for code, name in zip(codes, names):
-            print(f"      {code}: {name}")
+    # Run all scenarios
+    tester = ScenarioTester()
 
-    if result.get("has_mismatch"):
-        dream = result.get("dream_course", {})
-        print(f"\n  MISMATCH DETECTED:")
-        print(f"    Dream Course: {dream.get('course_name')} (not eligible)")
-        print(f"    Reason: {dream.get('ineligibility_reason')}")
+    tester.test_s1_stream_only()
+    time.sleep(2)
+
+    tester.test_s2_stream_zscore()
+    time.sleep(2)
+
+    tester.test_s4_stream_interests()
+    time.sleep(2)
+
+    tester.test_s5_all_fields()
+    time.sleep(2)
+
+    tester.test_edge_cases()
+    time.sleep(2)
+
+    tester.test_cross_stream_comparisons()
+
+    # Generate report
+    generate_report()
+
+    print("\n✨ Testing complete!")
 
 
-# ============================================================================
-# SCENARIO 01: Stream-only search (no Z-score, no interests)
-# ============================================================================
-print_scenario_header(1, "Stream-Only Search (No Z-score, No Interests)")
-
-print("\n[Scenario 01 Logic]")
-print("  - Filter by stream only")
-print("  - No Z-score filtering")
-print("  - No interest-based ranking")
-print("  - Use default/minimal interest text")
-
-# Test 01.1: Biological Science student (minimal info)
-test_profile = StudentProfile(
-    stream="Biological Science",
-    subjects=["Biology", "Chemistry", "Physics"],
-    zscore=0.0,  # No Z-score (ignored in stream-only)
-    interests="looking for biological programs",
-)
-print_test_case("01.1 - Bio Science Student (Stream Only)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 01.2: Physical Science student
-test_profile = StudentProfile(
-    stream="Physical Science",
-    subjects=["Combined Mathematics", "Physics", "Chemistry"],
-    zscore=0.0,
-    interests="interested in physical programs",
-)
-print_test_case("01.2 - Physical Science Student (Stream Only)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 01.3: Commerce student
-test_profile = StudentProfile(
-    stream="Commerce",
-    subjects=["Accounting", "Business Studies", "Economics"],
-    zscore=0.0,
-    interests="want commerce programs",
-)
-print_test_case("01.3 - Commerce Student (Stream Only)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 01.4: Arts student
-test_profile = StudentProfile(
-    stream="Arts",
-    subjects=["Sinhala", "English", "History"],
-    zscore=0.0,
-    interests="looking for arts degrees",
-)
-print_test_case("01.4 - Arts Student (Stream Only)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# ============================================================================
-# SCENARIO 02: Stream + Z-score search (no interests)
-# ============================================================================
-print_scenario_header(2, "Stream + Z-Score Search (No Interests)")
-
-print("\n[Scenario 02 Logic]")
-print("  - Filter by stream AND Z-score")
-print("  - Z-score acts as cutoff eligibility")
-print("  - Rank remaining courses by Z-score/eligibility")
-print("  - No interest-based ranking")
-
-# Test 02.1: Bio Science with HIGH Z-score (eligible for Medicine)
-test_profile = StudentProfile(
-    stream="Biological Science",
-    subjects=["Biology", "Chemistry", "Physics"],
-    zscore=2.0,  # High score, eligible for Medicine (cutoff ~1.88)
-    interests="any biological program",
-)
-print_test_case("02.1 - Bio Science, Z=2.0 (High, eligible for Medicine)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 02.2: Bio Science with LOW Z-score (only low-cutoff programs)
-test_profile = StudentProfile(
-    stream="Biological Science",
-    subjects=["Biology", "Chemistry", "Physics"],
-    zscore=0.8,  # Low score, can only access Agriculture (cutoff ~0.697)
-    interests="any biological program",
-)
-print_test_case("02.2 - Bio Science, Z=0.8 (Low, only Agriculture)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 02.3: Physical Science with HIGH Z-score
-test_profile = StudentProfile(
-    stream="Physical Science",
-    subjects=["Combined Mathematics", "Physics", "Chemistry"],
-    zscore=2.2,  # High score
-    interests="any engineering or CS program",
-)
-print_test_case("02.3 - Physical Science, Z=2.2 (High)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 02.4: Commerce with MEDIUM Z-score
-test_profile = StudentProfile(
-    stream="Commerce",
-    subjects=["Accounting", "Business Studies", "Economics"],
-    zscore=1.5,  # Medium score
-    interests="business programs",
-)
-print_test_case("02.4 - Commerce, Z=1.5 (Medium)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# ============================================================================
-# SCENARIO 03: Interests-only search (infer stream from interests)
-# ============================================================================
-print_scenario_header(3, "Interests-Only Search (Infer Stream)")
-
-print("\n[Scenario 03 Logic]")
-print("  - DON'T rely on Stream field")
-print("  - Use interests to find relevant courses")
-print("  - System should find courses matching interests")
-print("  - May span multiple streams if interests are cross-disciplinary")
-
-# Test 03.1: Medical interests (should find Medicine/Health programs)
-test_profile = StudentProfile(
-    stream="Any",  # Stream not used
-    subjects=["Any"],
-    zscore=0.0,  # Z-score not used
-    interests="I want to be a doctor and work in healthcare. Medicine and surgery interest me.",
-)
-print_test_case("03.1 - Medical Interests (No Stream)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 03.2: Engineering interests (should find Engineering/Tech programs)
-test_profile = StudentProfile(
-    stream="Any",
-    subjects=["Any"],
-    zscore=0.0,
-    interests="I love building bridges and structures. Civil engineering and construction fascinate me.",
-)
-print_test_case("03.2 - Engineering Interests (No Stream)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 03.3: Business interests (should find Management/Commerce programs)
-test_profile = StudentProfile(
-    stream="Any",
-    subjects=["Any"],
-    zscore=0.0,
-    interests="I want to start a business and become an entrepreneur. Finance and management interest me.",
-)
-print_test_case("03.3 - Business Interests (No Stream)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 03.4: Law/Justice interests (should find Law programs)
-test_profile = StudentProfile(
-    stream="Any",
-    subjects=["Any"],
-    zscore=0.0,
-    interests="I'm passionate about law, justice, and human rights. I want to become a lawyer.",
-)
-print_test_case("03.4 - Law Interests (No Stream)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# ============================================================================
-# SCENARIO 04: Stream + Interests search
-# ============================================================================
-print_scenario_header(4, "Stream + Interests Search")
-
-print("\n[Scenario 04 Logic]")
-print("  - Filter by stream (hard constraint)")
-print("  - Rank by interests (secondary)")
-print("  - Only courses in stream are eligible")
-print("  - Highest interest matches ranked first")
-
-# Test 04.1: Bio Science student interested in Medicine
-test_profile = StudentProfile(
-    stream="Biological Science",
-    subjects=["Biology", "Chemistry", "Physics"],
-    zscore=0.0,  # Z-score ignored
-    interests="I want to be a doctor. Medicine and healthcare are my passion.",
-)
-print_test_case("04.1 - Bio Science + Medical Interests", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 04.2: Physical Science student interested in CS
-test_profile = StudentProfile(
-    stream="Physical Science",
-    subjects=["Combined Mathematics", "Physics", "Chemistry"],
-    zscore=0.0,
-    interests="I love programming, AI, and building software systems. Computer Science is my goal.",
-)
-print_test_case("04.2 - Physical Science + CS Interests", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 04.3: Arts student interested in Law
-test_profile = StudentProfile(
-    stream="Arts",
-    subjects=["Sinhala", "English", "History"],
-    zscore=0.0,
-    interests="I want to study law and become a lawyer. Justice and human rights are important to me.",
-)
-print_test_case("04.3 - Arts + Law Interests", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 04.4: Commerce student interested in Accounting
-test_profile = StudentProfile(
-    stream="Commerce",
-    subjects=["Accounting", "Business Studies", "Economics"],
-    zscore=0.0,
-    interests="I'm skilled with numbers and want to be a chartered accountant.",
-)
-print_test_case("04.4 - Commerce + Accounting Interests", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# ============================================================================
-# SCENARIO 05: Stream + Z-Score + Interests search (FULL FILTERING)
-# ============================================================================
-print_scenario_header(5, "Stream + Z-Score + Interests (Full Filtering)")
-
-print("\n[Scenario 05 Logic]")
-print("  - Stream: Hard filter (only eligible stream)")
-print("  - Z-Score: Hard filter (must meet cutoff)")
-print("  - Interests: Soft ranking (within eligible courses)")
-print("  - Interest matching is nice-to-have, not required")
-
-# Test 05.1: Bio Science, Z=2.0, Medical interests (MATCH)
-test_profile = StudentProfile(
-    stream="Biological Science",
-    subjects=["Biology", "Chemistry", "Physics"],
-    zscore=2.0,  # Eligible for Medicine
-    interests="I want to be a doctor and study medicine.",
-)
-print_test_case("05.1 - Bio Science, Z=2.0, Medical Interests (MATCH)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 05.2: Bio Science, Z=0.8, Medical interests (MISMATCH - too low Z)
-test_profile = StudentProfile(
-    stream="Biological Science",
-    subjects=["Biology", "Chemistry", "Physics"],
-    zscore=0.8,  # Too low for Medicine, can access Agriculture
-    interests="I want to be a doctor but my scores are low.",
-)
-print_test_case("05.2 - Bio Science, Z=0.8, Medical Interests (MISMATCH)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 05.3: Arts, Z=2.0, Engineering interests (MISMATCH - wrong stream)
-test_profile = StudentProfile(
-    stream="Arts",
-    subjects=["Sinhala", "English", "History"],
-    zscore=2.0,  # High Z-score but wrong stream
-    interests="I love engineering and want to build bridges.",
-)
-print_test_case("05.3 - Arts, Z=2.0, Engineering Interests (MISMATCH)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 05.4: Physical Science, Z=2.0, CS interests (MATCH)
-test_profile = StudentProfile(
-    stream="Physical Science",
-    subjects=["Combined Mathematics", "Physics", "Chemistry"],
-    zscore=2.0,
-    interests="I love programming and AI. Computer Science is my passion.",
-)
-print_test_case("05.4 - Physical Science, Z=2.0, CS Interests (MATCH)", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 05.5: Commerce, Z=1.5, different interests (acceptable)
-test_profile = StudentProfile(
-    stream="Commerce",
-    subjects=["Accounting", "Business Studies", "Economics"],
-    zscore=1.5,
-    interests="I'm interested in banking and finance but also like HR management.",
-)
-print_test_case("05.5 - Commerce, Z=1.5, Mixed Interests", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# Test 05.6: Physical Science, Z=1.5, Engineering interests
-test_profile = StudentProfile(
-    stream="Physical Science",
-    subjects=["Combined Mathematics", "Physics", "Chemistry"],
-    zscore=1.5,
-    interests="I'm fascinated by machinery and want to be a mechanical engineer.",
-)
-print_test_case("05.6 - Physical Science, Z=1.5, Engineering Interests", test_profile)
-result = pipeline.recommend(test_profile, "COLOMBO", is_al_student=True, max_results=5)
-print_results(result)
-
-# ============================================================================
-# SUMMARY
-# ============================================================================
-print("\n" + "=" * 80)
-print("COMPREHENSIVE TEST SUITE COMPLETE")
-print("=" * 80)
-print(
-    """
-Scenario Summary:
-  01 [OK] Stream-only search
-  02 [OK] Stream + Z-score search  
-  03 [OK] Interests-only search
-  04 [OK] Stream + Interests search
-  05 [OK] Stream + Z-score + Interests (full filtering)
-
-Expected Behavior:
-  - All scenarios should show "all_eligible_courses" list
-  - Scenario 01: Eligible count by stream
-  - Scenario 02: Eligible count reduced by Z-score filter
-  - Scenario 03: Courses matched to interests (may cross streams)
-  - Scenario 04: Eligible by stream, ranked by interests
-  - Scenario 05: Eligible by stream+Z-score, ranked by interests
-           Mismatches show dream vs reality explanation
-
-[OK] All test cases completed successfully
-"""
-)
+if __name__ == "__main__":
+    main()
