@@ -194,3 +194,125 @@ async def explain_career(req: ExplainRequest):
         "next_role_title": req.next_role_title,
         "explanation": explanation,
     }
+
+# =============================================================================
+# Enhanced Career Ladder Additions
+# =============================================================================
+
+from pydantic import BaseModel
+from typing import List
+import json
+import pandas as pd
+from config import ML_DIR
+from services import (
+    get_career_ladder,
+    analyze_career_progression,
+    compare_career_paths
+)
+
+# Request schemas
+class CareerProgressionRequest(BaseModel):
+    user_skill_ids: List[str]
+    current_role_id: str = None
+    target_domain: str
+
+class ComparePathsRequest(BaseModel):
+    user_skill_ids: List[str]
+    domains: List[str]
+
+
+# Endpoints
+@app.get("/career_ladder/{domain}")
+def get_career_ladder_endpoint(domain: str):
+    """
+    Get complete career ladder structure for a domain
+    """
+    try:
+        ladder = get_career_ladder(domain.upper())
+        return ladder
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/career_ladders/list")
+def list_all_career_ladders():
+    """
+    List all available career domains
+    """
+    try:
+        enhanced_path = ML_DIR / 'career_path' / 'career_ladders_enhanced.json'
+        with open(enhanced_path, 'r') as f:
+            ladders = json.load(f)
+        
+        return {
+            'domains': [
+                {
+                    'domain_id': domain_id,
+                    'domain_name': ladder['domain_name'],
+                    'total_jobs': ladder['total_jobs_in_domain'],
+                    'total_levels': len(ladder['levels'])
+                }
+                for domain_id, ladder in ladders.items()
+            ]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/analyze_career_progression")
+def analyze_progression_endpoint(req: CareerProgressionRequest):
+    """
+    Analyze user's career progression in a specific domain
+    """
+    try:
+        result = analyze_career_progression(
+            user_skill_ids=req.user_skill_ids,
+            current_role_id=req.current_role_id,
+            target_domain=req.target_domain.upper()
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/compare_career_paths")
+def compare_paths_endpoint(req: ComparePathsRequest):
+    """
+    Compare user's fit across multiple career paths
+    """
+    try:
+        result = compare_career_paths(
+            user_skill_ids=req.user_skill_ids,
+            domains=[d.upper() for d in req.domains]
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/skill_details/{skill_id}")
+def get_skill_details(skill_id: str):
+    """
+    Get detailed information about a skill
+    """
+    try:
+        skills_csv = ML_DIR / 'data' / 'processed' / 'skills_cleaned.csv'
+        skills_df = pd.read_csv(skills_csv)
+        skill = skills_df[skills_df['skill_id'] == skill_id.upper()]
+        
+        if skill.empty:
+            raise HTTPException(status_code=404, detail="Skill not found")
+        
+        return {
+            'skill_id': skill.iloc[0]['skill_id'],
+            'name': skill.iloc[0]['name'],
+            'category': skill.iloc[0]['category'] if 'category' in skill.columns else 'Unknown',
+            'type': skill.iloc[0]['type'] if 'type' in skill.columns else 'Unknown',
+            'aliases': skill.iloc[0]['aliases'].split('|') if ('aliases' in skill.columns and pd.notna(skill.iloc[0]['aliases'])) else []
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
