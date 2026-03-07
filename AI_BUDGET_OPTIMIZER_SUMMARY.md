@@ -203,4 +203,9 @@ Your AI-Powered Student Budget Optimizer is now fully implemented and ready for 
 
 source "/Users/shehansalitha/Desktop/research implementation/Uni-Finder/.venv/bin/activate"
 cd budget_optimizer_service
-python3 app_budget_enhanced.py
+python3 app.py
+
+
+
+//kill
+lsof -ti :5002 | xargs kill -9 2>/dev/null; echo "Port cleared"
