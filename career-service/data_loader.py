@@ -1,7 +1,10 @@
-"""Data loading utilities for startup"""
-import pandas as pd
+"""Data loading utilities for startup – supports V1 / V2 data toggle"""
 import json
+import os
+
 import joblib
+import pandas as pd
+
 from config import (
     ROLE_PROFILE_CSV,
     CAREER_LADDERS_JSON,
@@ -11,11 +14,20 @@ from config import (
     ROLE_ENHANCED_PROFILES_CSV,
     ENHANCED_FEATURE_COLUMNS_JSON,
     JOBS_ENHANCED_FEATURES_CSV,
+    DATA_VERSION,
 )
+
+# V2-only optional paths (may be None when DATA_VERSION=="v1")
+try:
+    from config import ROLE_METADATA_JSON, SKILL_COLUMNS_PKL
+except ImportError:
+    ROLE_METADATA_JSON = None
+    SKILL_COLUMNS_PKL = None
 
 
 class DataStore:
     """Central data store for all loaded data"""
+    data_version: str = DATA_VERSION
     role_profiles_df: pd.DataFrame = None
     role_skill_matrix: pd.DataFrame = None
     career_ladders: dict = {}
@@ -23,6 +35,9 @@ class DataStore:
     skill_columns: list = []
     role_id_to_title: dict = {}
     skill_id_to_name: dict = {}
+    # V2 extras
+    role_metadata: list = []          # full role_metadata.json (175 entries)
+    skills_df: pd.DataFrame = None    # full skills CSV for API queries
     # Enhanced features (multi-feature recommendation)
     role_enhanced_profiles: pd.DataFrame = None
     enhanced_feature_meta: dict = {}
@@ -72,36 +87,65 @@ def load_role_classifier():
 
 
 def load_skill_columns():
-    """Load skill columns from training data"""
+    """Load skill columns – prefer saved pkl (V2), fallback to CSV header."""
     try:
-        df = pd.read_csv(JOB_SKILL_VECTORS_CSV, nrows=1)
-        DataStore.skill_columns = [c for c in df.columns if c.startswith("skill_")]
-        print(f"[startup] Loaded {len(DataStore.skill_columns)} skill columns")
+        # V2: use the saved column-order pkl from training
+        if SKILL_COLUMNS_PKL and SKILL_COLUMNS_PKL.exists():
+            DataStore.skill_columns = joblib.load(SKILL_COLUMNS_PKL)
+            print(f"[startup] Loaded {len(DataStore.skill_columns)} skill columns from pkl")
+        else:
+            df = pd.read_csv(JOB_SKILL_VECTORS_CSV, nrows=1)
+            DataStore.skill_columns = [c for c in df.columns if c.startswith("skill_")]
+            print(f"[startup] Loaded {len(DataStore.skill_columns)} skill columns from CSV header")
     except Exception as e:
         print(f"[startup] Failed to load skill columns: {e}")
         DataStore.skill_columns = []
 
 
 def load_role_titles():
-    """Load role ID to title mapping"""
+    """Load role ID → title mapping.
+
+    V2: prefers role_metadata.json (175 roles from expanded ladders).
+    Fallback: reads unique (role_id, role_title) from job-skill CSV.
+    """
     try:
-        df_roles = pd.read_csv(JOB_SKILL_VECTORS_CSV, usecols=["role_id", "role_title"])
-        DataStore.role_id_to_title = dict(zip(df_roles["role_id"], df_roles["role_title"]))
-        print(f"[startup] Loaded {len(DataStore.role_id_to_title)} role titles")
+        # V2: use role_metadata.json for full 175-role mapping
+        if ROLE_METADATA_JSON and ROLE_METADATA_JSON.exists():
+            with open(ROLE_METADATA_JSON, "r") as f:
+                DataStore.role_metadata = json.load(f)
+            DataStore.role_id_to_title = {
+                r["role_id"]: r["role_title"] for r in DataStore.role_metadata
+            }
+            print(f"[startup] Loaded {len(DataStore.role_id_to_title)} role titles "
+                  f"from role_metadata.json")
+        else:
+            df_roles = pd.read_csv(
+                JOB_SKILL_VECTORS_CSV, usecols=["role_id", "role_title"]
+            )
+            DataStore.role_id_to_title = dict(
+                zip(df_roles["role_id"], df_roles["role_title"])
+            )
+            print(f"[startup] Loaded {len(DataStore.role_id_to_title)} role titles "
+                  f"from job_skill_vectors CSV")
     except Exception as e:
         print(f"[startup] Failed to load role titles: {e}")
         DataStore.role_id_to_title = {}
 
 
 def load_skill_names():
-    """Load skill ID to name mapping"""
+    """Load skill ID → name mapping and cache the full skills DataFrame."""
     try:
         df_skills = pd.read_csv(SKILLS_CSV)
-        DataStore.skill_id_to_name = dict(zip(df_skills["skill_id"], df_skills["name"]))
-        print(f"[startup] Loaded {len(DataStore.skill_id_to_name)} skill names")
+        DataStore.skills_df = df_skills
+        DataStore.skill_id_to_name = dict(
+            zip(df_skills["skill_id"], df_skills["name"])
+        )
+        print(f"[startup] Loaded {len(DataStore.skill_id_to_name)} skill names "
+              f"(categories: {df_skills['category'].nunique() if 'category' in df_skills.columns else 'N/A'})")
     except Exception as e:
         print(f"[startup] Failed to load skill names: {e}")
         DataStore.skill_id_to_name = {}
+        DataStore.skills_df = pd.DataFrame()
 
 
 def load_enhanced_profiles():
@@ -166,6 +210,7 @@ def load_all_data():
     """Load all data at startup"""
     from config import BASE_DIR, ML_DIR, ROLE_CLASSIFIER_PKL
     
+    print(f"[startup] DATA_VERSION: {DATA_VERSION}")
     print(f"[startup] BASE_DIR: {BASE_DIR}")
     print(f"[startup] ML_DIR: {ML_DIR}")
     print(f"[startup] ROLE_CLASSIFIER_PKL: {ROLE_CLASSIFIER_PKL}")
@@ -182,3 +227,37 @@ def load_all_data():
     load_enhanced_feature_meta()
     load_jobs_enhanced_features()
     init_user_vectorizer()
+
+    # ── Post-load validation ─────────────────────────────────────────────
+    _validate_loaded_data()
+
+
+def _validate_loaded_data():
+    """Print a summary and warn about unexpected counts."""
+    version = DataStore.data_version
+    n_skills = len(DataStore.skill_columns)
+    n_roles  = len(DataStore.role_id_to_title)
+    n_names  = len(DataStore.skill_id_to_name)
+
+    print()
+    print(f"[startup] ─── Data-load summary ({version.upper()}) ───")
+    print(f"[startup]   skill_columns  : {n_skills:,}")
+    print(f"[startup]   role_id_to_title: {n_roles:,}")
+    print(f"[startup]   skill_id_to_name: {n_names:,}")
+    print(f"[startup]   career_ladders : {len(DataStore.career_ladders)} domains")
+    print(f"[startup]   role_metadata  : {len(DataStore.role_metadata)} entries")
+    if DataStore.role_classifier:
+        print(f"[startup]   classifier     : {type(DataStore.role_classifier).__name__} "
+              f"({DataStore.role_classifier.n_features_in_} features)")
+    else:
+        print("[startup]   classifier     : NOT LOADED")
+
+    # V2 expected counts
+    if version == "v2":
+        if n_skills < 1000:
+            print(f"[startup]   ⚠ Expected ≥1,000 skill columns for V2, got {n_skills}")
+        if n_roles < 150:
+            print(f"[startup]   ⚠ Expected ≥150 role titles for V2, got {n_roles}")
+        if n_names < 1000:
+            print(f"[startup]   ⚠ Expected ≥1,000 skill names for V2, got {n_names}")
+    print()
