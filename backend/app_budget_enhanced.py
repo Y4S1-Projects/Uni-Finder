@@ -351,8 +351,13 @@ def complete_budget_analysis():
         print(f"✅ Transport Budget: LKR {transport_budget['monthly_total']}")
         
         # Step 3: Prepare student data for ML prediction
+        # ── Include 'money from home' as additional income source ──
+        base_income  = data.get('monthly_income', 25000)
+        home_money   = data.get('home_money', 0)          # NEW: money sent from family
+        monthly_income_total = base_income + home_money   # effective total income
+        
         student_data = {
-            'monthly_income': data.get('monthly_income', 25000),
+            'monthly_income': monthly_income_total,
             'year_of_study': data.get('year_of_study', 'Second Year'),
             'field_of_study': data.get('field_of_study', 'IT'),
             'district': data.get('district', 'Colombo'),
@@ -364,7 +369,10 @@ def complete_budget_analysis():
             'food_type': data.get('food_type', 'Mixed'),
             'university': data.get('university', 'SLIIT'),
             'meals_per_day': data.get('meals_per_day', '3 meals'),
-            'home_visit_frequency': data.get('home_visit_frequency', 'Monthly')
+            'home_visit_frequency': data.get('home_visit_frequency', 'Monthly'),
+            'cooking_percentage': data.get('cooking_percentage', 60),
+            'diet_type': data.get('diet_type', 'Vegetarian'),
+            'distance_uni_accommodation': data.get('distance_uni_accommodation', 5)
         }
         
         # Step 4: Get ML predictions and risk assessment
@@ -392,7 +400,7 @@ def complete_budget_analysis():
             other
         )
         
-        monthly_income = data.get('monthly_income', 25000)
+        monthly_income = monthly_income_total   # use the combined income
         calculated_savings = monthly_income - calculated_total_expenses
         savings_rate = (calculated_savings / monthly_income * 100) if monthly_income > 0 else 0
         
@@ -444,6 +452,8 @@ def complete_budget_analysis():
             # Financial summary
             "financial_summary": {
                 "monthly_income": monthly_income,
+                "base_income": base_income,
+                "home_money": home_money,
                 "total_expenses": round(calculated_total_expenses, 2),
                 "monthly_savings": round(calculated_savings, 2),
                 "savings_rate": round(savings_rate, 1)
@@ -820,49 +830,61 @@ def get_ai_strategy():
         field        = student_profile.get('field_of_study', 'studies')
         acc_type     = student_profile.get('accommodation_type', 'rented room')
 
-        prompt = f"""You are a friendly, expert financial advisor specifically for Sri Lankan university students.
-A student has used our AI Budget Optimizer and got these results. Provide a clear, highly personalized strategy.
+        # Pull optimised target numbers
+        current_exp = optimal_strategy.get('current_situation', {}).get('total_expenses', total_exp)
+        target_exp  = optimal_strategy.get('optimal_target', {}).get('target_expenses', current_exp)
+        target_rate = optimal_strategy.get('optimal_target', {}).get('target_savings_rate', savings_rate)
+        gap         = max(current_exp - target_exp, 0)
 
-─── STUDENT PROFILE ───────────────────────────────────────
+        prompt = f"""You are an expert financial coach for Sri Lankan university students.
+A student used our AI Budget Optimizer. Generate a precise numbered step-by-step plan showing EXACTLY how they move from their CURRENT expenses to the OPTIMISED TARGET.
+
+─── STUDENT ────────────────────────────────────────────────
 University: {university} | Year: {year} | Field: {field}
 District: {district} | Accommodation: {acc_type}
-Food preference: {food_type} | Transport: {transport}
+Food: {food_type} | Transport: {transport}
 
-─── FINANCIAL SNAPSHOT ────────────────────────────────────
-Monthly Income : LKR {income:,.0f}
-Total Expenses : LKR {total_exp:,.0f}
-Monthly Savings: LKR {savings:,.0f} ({savings_rate}% savings rate)
-Financial Risk : {risk_level} ({risk_pct}% probability)
+─── MISSION: CLOSE THE GAP ─────────────────────────────────
+Current Expenses : LKR {current_exp:,.0f}/month
+Optimised Target : LKR {target_exp:,.0f}/month
+Gap to Close     : LKR {gap:,.0f}/month  ← THIS is what your steps must cover
+Target Savings   : {target_rate}% of income
 
-─── CURRENT EXPENSE BREAKDOWN ─────────────────────────────
+Expense Breakdown:
 {chr(10).join(expense_lines)}
 
-─── ML MODEL'S CURRENT ALTERNATIVES (from our AI) ─────────
+AI-identified alternatives:
 {chr(10).join(alt_lines) if alt_lines else '  • No critical alternatives flagged'}
-Maximum savings potential: LKR {max_savings:,.0f}/month
 
-─── YOUR TASK ──────────────────────────────────────────────
-Based on ALL the above data about this specific student, provide:
+─── OUTPUT FORMAT ──────────────────────────────────────────
+Use EXACTLY this structure. NO extra text outside this structure.
 
-1. **Overall Budget Assessment** (2-3 sentences, be direct and empathetic)
+GAP_SUMMARY: Reducing your spending by LKR {gap:,.0f} is achievable in [X] months by following these steps.
 
-2. **Top 3 Highest-Impact Actions** (specific to THIS student's situation)
-   - Each action must reference their actual numbers (e.g., "Your food delivery costs LKR X...")
-   - Provide exact LKR savings estimate for each
-   - Give a clear, actionable first step
+STEP 1: [Short action title e.g. Switch to home cooking 5 days/week]
+CATEGORY: [Food / Transport / Accommodation / Internet / Utilities / Study / Entertainment / Income]
+SAVE: LKR [amount]/month
+HOW: [One specific sentence on HOW to do it, Sri Lanka context, e.g. cook at home using Cargills groceries]
+TIMEFRAME: [This week / Week 2 / Week 3 / Month 2 / Month 3]
 
-3. **Hidden Opportunity** (1 smart insight the student might be missing, specific to Sri Lanka)
+STEP 2: [Short action title]
+CATEGORY: [...]
+SAVE: LKR [amount]/month
+HOW: [...]
+TIMEFRAME: [...]
 
-4. **30-Day Quick Win Plan** (4-5 bullet points, very practical for a Sri Lankan student)
+[Continue steps 3-5 in the same format. Generate enough steps so the SAVE amounts total to LKR {gap:,.0f}.]
 
-5. **Motivational Closing** (1-2 sentences, encouraging and realistic)
+QUICK_WIN: [One thing they can do TODAY that costs nothing and saves money immediately]
 
-─── FORMAT RULES ──────────────────────────────────────────
-- Be conversational, friendly, use "you/your"
-- Always mention LKR amounts
-- Sri Lanka specific (mention local options: Keells, Cargills, CTB buses, student ID discounts, etc.)
-- Keep total response under 500 words
-- Use clear section headers with emojis"""
+MOTIVATION: [One encouraging sentence referencing their specific target of LKR {target_exp:,.0f}]
+─── RULES ──────────────────────────────────────────────────
+- Use "you/your" throughout
+- Always use LKR amounts
+- Reference Sri Lanka specifics (CTB/intercity buses, Keells/Cargills/Arpico, student ID discounts, BOC/NSB accounts)
+- SAVE amounts in each step must be realistic and sum close to LKR {gap:,.0f}
+- Keep each HOW field to 1 sentence, very practical
+- Output ONLY the structured format above, nothing else"""
 
         # ── Call OpenAI API ────────────────────────────────────────
         success, content, error_msg = call_openai_with_retry(OPENAI_API_KEY, prompt)

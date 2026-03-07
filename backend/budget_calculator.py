@@ -142,31 +142,38 @@ class BudgetCalculator:
                 total_groceries += adjusted_cost
                 breakdown[item] = round(adjusted_cost, 2)
         
-        # If no items selected, use default estimation
+        # If no items selected, use realistic default estimation
         if total_groceries == 0:
             diet_type = food_data.get('diet_type', 'Vegetarian')
             meals_per_day = food_data.get('meals_per_day', '3 meals')
             
-            # Base monthly grocery budget estimates
+            # Realistic monthly grocery budget estimates for Sri Lanka (2024-2025)
+            # Based on: rice 10kg/month, vegetables, protein, condiments, etc.
             base_budget = {
-                'Vegetarian': 8000,
-                'Non-Vegetarian': 12000,
-                'Vegan': 7000
+                'Vegetarian': 11000,    # Rice, dhal, vegetables, eggs, oil, spices
+                'Non-Vegetarian': 15000, # + chicken/fish twice a week
+                'Vegan': 10000          # Plant-based, no dairy/meat
             }
             
             meal_multiplier = {
-                '2 meals': 0.7,
+                '2 meals': 0.75,
                 '3 meals': 1.0,
-                '3 meals + snacks': 1.3
+                '3 meals + snacks': 1.25
             }
             
-            total_groceries = base_budget.get(diet_type, 8000) * meal_multiplier.get(meals_per_day, 1.0) * multiplier
+            total_groceries = base_budget.get(diet_type, 11000) * meal_multiplier.get(meals_per_day, 1.0) * multiplier
+        
+        # Minimum floor: at least LKR 280/day for home cooking
+        minimum_monthly = 280 * 30
+        total_groceries = max(total_groceries, minimum_monthly)
         
         return {
             'monthly_total': round(total_groceries, 2),
             'food_type': 'Home Cooked',
             'breakdown': breakdown,
-            'daily_cost': round(total_groceries / 30, 2)
+            'daily_cost': round(total_groceries / 30, 2),
+            'grocery_monthly': round(total_groceries, 2),
+            'notes': f'Estimated grocery cost for {food_data.get("meals_per_day", "3 meals")} home-cooked per day'
         }
     
     def _calculate_delivery_budget(self, food_data):
@@ -247,11 +254,29 @@ class BudgetCalculator:
         # Monthly total
         monthly_total = weekly_cost * 4
         
-        # Add delivery fees (avg LKR 100 per order)
+        # Add delivery fees (avg LKR 120 per order)
         total_orders_per_week = breakfast_times + lunch_times + dinner_times + (snacks_times // 2)
-        delivery_fees = total_orders_per_week * 100 * 4
+        delivery_fees = total_orders_per_week * 120 * 4
         monthly_total += delivery_fees
         breakdown['delivery_fees'] = round(delivery_fees, 2)
+        
+        # If no items selected, use realistic fallback based on meals_per_day
+        if monthly_total <= delivery_fees:
+            meals_per_day = food_data.get('meals_per_day', '3 meals')
+            diet_type = food_data.get('diet_type', 'Non-Vegetarian')
+            district = food_data.get('district', 'Colombo')
+            
+            # Realistic outside meal costs per day
+            daily_outside_cost = {
+                '2 meals': {'Vegetarian': 700, 'Non-Vegetarian': 900, 'Vegan': 650},
+                '3 meals': {'Vegetarian': 1000, 'Non-Vegetarian': 1300, 'Vegan': 900},
+                '3 meals + snacks': {'Vegetarian': 1300, 'Non-Vegetarian': 1700, 'Vegan': 1150}
+            }
+            dist_multiplier = {'Colombo': 1.2, 'Gampaha': 1.1, 'Kandy': 1.0}.get(district, 1.0)
+            per_day = daily_outside_cost.get(meals_per_day, daily_outside_cost['3 meals'])
+            fallback_daily = per_day.get(diet_type, per_day['Vegetarian']) * dist_multiplier
+            monthly_total = round(fallback_daily * 30, 2)
+            breakdown['estimated_daily_outside'] = round(fallback_daily, 2)
         
         return {
             'monthly_total': round(monthly_total, 2),
@@ -265,24 +290,53 @@ class BudgetCalculator:
         
         cooking_percentage = food_data.get('cooking_percentage', 60)
         ordering_percentage = 100 - cooking_percentage
+        diet_type = food_data.get('diet_type', 'Non-Vegetarian')
+        meals_per_day = food_data.get('meals_per_day', '3 meals')
+        district = food_data.get('district', 'Colombo')
         
-        # Calculate grocery portion
-        grocery_budget = self._calculate_grocery_budget(food_data)
-        grocery_total = grocery_budget['monthly_total'] * (cooking_percentage / 100)
+        # ── Grocery portion ──────────────────────────────────────────
+        # Full-month grocery baseline (as if cooking 100% of the time)
+        full_grocery_base = {
+            'Vegetarian':     {'2 meals': 9000,  '3 meals': 11000, '3 meals + snacks': 13500},
+            'Non-Vegetarian': {'2 meals': 11500, '3 meals': 15000, '3 meals + snacks': 18500},
+            'Vegan':          {'2 meals': 8500,  '3 meals': 10000, '3 meals + snacks': 12500},
+        }
+        dist_multiplier = {'Colombo': 1.2, 'Gampaha': 1.1, 'Kandy': 1.0,
+                           'Galle': 0.95, 'Jaffna': 1.05}.get(district, 1.0)
+        full_grocery = full_grocery_base.get(diet_type, full_grocery_base['Vegetarian'])
+        full_grocery_monthly = full_grocery.get(meals_per_day, full_grocery['3 meals']) * dist_multiplier
         
-        # Calculate delivery portion
-        delivery_budget = self._calculate_delivery_budget(food_data)
-        delivery_total = delivery_budget['monthly_total'] * (ordering_percentage / 100)
+        # Scale by actual cooking percentage
+        grocery_total = full_grocery_monthly * (cooking_percentage / 100)
         
-        total = grocery_total + delivery_total
+        # ── Outside food portion ─────────────────────────────────────
+        # Cost when eating outside - weighted average of canteen + delivery
+        # (Not all-restaurant; most students mix canteen rice packets with occasional delivery)
+        outside_daily_cost = {
+            'Vegetarian':     {'2 meals': 450,  '3 meals': 650,  '3 meals + snacks': 870},
+            'Non-Vegetarian': {'2 meals': 560,  '3 meals': 800,  '3 meals + snacks': 1050},
+            'Vegan':          {'2 meals': 420,  '3 meals': 600,  '3 meals + snacks': 800},
+        }
+        outside_cost_map = outside_daily_cost.get(diet_type, outside_daily_cost['Vegetarian'])
+        outside_per_day = outside_cost_map.get(meals_per_day, outside_cost_map['3 meals']) * dist_multiplier
+        outside_monthly = outside_per_day * 30 * (ordering_percentage / 100)
+        
+        total = grocery_total + outside_monthly
+        
+        # Minimum floor: LKR 300/day total
+        minimum_monthly = 300 * 30
+        total = max(total, minimum_monthly)
         
         return {
             'monthly_total': round(total, 2),
             'food_type': 'Mixed',
             'breakdown': {
                 'groceries': round(grocery_total, 2),
-                'delivery': round(delivery_total, 2)
+                'outside_meals': round(outside_monthly, 2),
             },
+            'grocery_monthly': round(grocery_total, 2),
+            'grocery_note': f'Grocery for {cooking_percentage}% home cooking ({meals_per_day})',
+            'outside_note': f'Outside meals for {ordering_percentage}% ordering ({meals_per_day})',
             'daily_cost': round(total / 30, 2)
         }
     
@@ -375,91 +429,173 @@ class BudgetCalculator:
     
     def calculate_transport_budget(self, transport_data):
         """
-        Calculate monthly transport budget
-        
-        Args:
-            transport_data: Dictionary containing:
-                - distance_uni_accommodation: Distance in km
-                - distance_home_uni: Distance in km
-                - transport_method: Primary transport method
-                - days_per_week: University days
-                - home_visit_frequency: How often going home
-                - transport_method_home: Transport for home visits
-        
-        Returns:
-            Dictionary with transport budget breakdown
+        Calculate realistic monthly transport budget for Sri Lankan university students.
+
+        Real-world cost modelling (Sri Lanka 2024-2025):
+          Bus  : min LKR 60 + LKR 10/km  (CTB / private mix; regulated minimum fare)
+          Train: min LKR 30 + LKR  6/km  (2nd class; cheapest but slow)
+          Tuk-Tuk    : min LKR 130 + LKR 65/km  (metered / negotiated)
+          Ride-share : min LKR 200 + LKR 55/km  (PickMe / Uber)
+          Motorbike  : LKR 23/km (petrol) + LKR 2,500/month (fuel+maint base)
+          Car        : LKR 28/km (petrol) + LKR 5,000/month (fuel+maint base)
+          Uni Transport: fixed monthly pass  LKR 2,500–5,000
+          Bicycle    : LKR 500/month maintenance, essentially zero per trip
+          Walking    : free (practical only ≤ 2 km)
+          Mixed      : weighted 65% bus + 35% tuk-tuk
         """
-        
-        # Get distances
-        distance_uni = transport_data.get('distance_uni_accommodation', 5)
-        distance_home = transport_data.get('distance_home_uni', 50)
-        
-        # Get transport methods
+
+        # ── Inputs ──────────────────────────────────────────────────────
+        distance_uni  = float(transport_data.get('distance_uni_accommodation', 5))
+        distance_home = float(transport_data.get('distance_home_uni', 50))
         daily_transport = transport_data.get('transport_method', 'Bus')
-        home_transport = transport_data.get('transport_method_home', daily_transport)
-        
-        # Get frequencies
-        days_per_week = int(transport_data.get('days_per_week', '5').split()[0])
+        home_transport  = transport_data.get('transport_method_home', 'Bus')
+
+        days_str = str(transport_data.get('days_per_week', '5'))
+        days_per_week = int(days_str.split()[0]) if days_str[0].isdigit() else 5
+
         home_visit_freq = transport_data.get('home_visit_frequency', 'Monthly')
-        
-        # Transport rates (LKR per km or per trip)
-        transport_rates = {
-            'Walking': 0,
-            'Bicycle': 0,
-            'Bus': 3.5,  # Per km round trip
-            'Train': 2.5,
-            'Tuk-Tuk': 80,  # Fixed per trip
-            'Ride-share': 100,
-            'Personal Vehicle': 15,  # Petrol per km
-            'University Transport': 50,  # Per day
-            'Mixed': 4.5
+
+        # Effective commuting days per month (4.33 = avg weeks per month)
+        commute_days_per_month = round(days_per_week * 4.33)
+
+        # Visits per month (if 'Daily' the person commutes every day → already in commute cost)
+        visits_per_month_map = {
+            'Daily':              0,     # commuter — no separate home-visit cost
+            'Weekly':             4.33,
+            'Bi-weekly':          2.17,
+            'Monthly':            1,
+            'Once per semester':  0.25,
+            'Rarely/Never':       0,
         }
-        
-        # Calculate daily commute
-        daily_rate = transport_rates.get(daily_transport, 3.5)
-        
-        if daily_transport in ['Tuk-Tuk', 'Ride-share']:
-            daily_cost = daily_rate * 2  # Round trip
+        visits_per_month = visits_per_month_map.get(home_visit_freq, 1)
+
+        # ── One-way trip cost calculator ─────────────────────────────────
+        def one_way_cost(method, km):
+            km = max(0.5, float(km))          # avoid zero distances
+            if method == 'Walking':
+                return 0 if km <= 2 else max(60, 10 * km)   # walk if close, else bus
+            elif method == 'Bicycle':
+                return 0                                     # handled as monthly maintenance
+            elif method == 'Bus':
+                return max(60, 10 * km)                      # min LKR 60
+            elif method == 'Train':
+                return max(30, 6 * km)                       # min LKR 30
+            elif method == 'Tuk-Tuk':
+                return max(130, 65 * km)                     # min LKR 130
+            elif method == 'Ride-share':
+                return max(200, 55 * km)                     # min LKR 200
+            elif method == 'Personal Vehicle':
+                return 23 * km                               # petrol only; base handled below
+            elif method == 'University Transport':
+                return 0                                     # handled as monthly pass
+            elif method == 'Mixed':
+                return 0.65 * max(60, 10 * km) + 0.35 * max(130, 65 * km)
+            else:
+                return max(60, 10 * km)
+
+        # ── Daily commute cost ───────────────────────────────────────────
+        round_trip_cost = one_way_cost(daily_transport, distance_uni) * 2   # round trip
+        vehicle_monthly_base = 0    # fixed cost for personal vehicles / bicycle
+
+        if daily_transport == 'Bicycle':
+            round_trip_cost = 0
+            vehicle_monthly_base = 500          # monthly maintenance
+
         elif daily_transport == 'University Transport':
-            daily_cost = daily_rate
-        else:
-            daily_cost = distance_uni * daily_rate * 2  # Round trip
-        
-        # Monthly commute (4 weeks)
-        monthly_commute = daily_cost * days_per_week * 4
-        
-        # Home visit costs
-        home_visit_costs = {
-            'Weekly': 4,
-            'Bi-weekly': 2,
-            'Monthly': 1,
-            'Once per semester': 0.25,
-            'Rarely/Never': 0
+            # Monthly pass: LKR 2,500 base + LKR 100/km distance
+            round_trip_cost = 0
+            vehicle_monthly_base = max(2500, min(5000, 2500 + distance_uni * 100))
+
+        elif daily_transport == 'Personal Vehicle':
+            # Motorbike assumed (most students); LKR 2,500/month base for fuel+maintenance
+            vehicle_monthly_base = 2500
+
+        elif daily_transport == 'Walking' and distance_uni <= 2:
+            round_trip_cost = 0     # truly walking — no cost
+
+        monthly_commute = round_trip_cost * commute_days_per_month + vehicle_monthly_base
+
+        # ── Miscellaneous / incidental trips ────────────────────────────
+        # Public-transport users: occasional tuk-tuk (rain, late night, heavy bag)
+        # ~4 emergency trips per month; short ride ≤ 3 km
+        misc_monthly = 0
+        if daily_transport in ('Bus', 'Train', 'Mixed', 'Walking'):
+            emergency_ride = max(130, 65 * min(distance_uni, 3))   # short tuk-tuk
+            misc_monthly += 4 * emergency_ride                     # ~4/month
+            misc_monthly += 600                                    # weekend city trips
+        elif daily_transport in ('Bicycle',):
+            misc_monthly += 600     # occasional bus/tuk when it rains
+
+        # ── Home visit costs ─────────────────────────────────────────────
+        home_trip_cost = self._get_home_visit_cost(distance_home, home_transport, transport_data)
+        monthly_home = home_trip_cost * visits_per_month
+
+        # ── Total ────────────────────────────────────────────────────────
+        total = monthly_commute + misc_monthly + monthly_home
+        total = max(total, 1500)   # realistic floor: LKR 1,500/month minimum
+
+        # Human-readable method label
+        method_labels = {
+            'Bus':                  'CTB / Private Bus',
+            'Train':                'Train',
+            'Tuk-Tuk':              'Tuk-Tuk / Three-Wheeler',
+            'Ride-share':           'PickMe / Uber',
+            'Personal Vehicle':     'Personal Vehicle (Motorbike)',
+            'University Transport': 'University Transport Pass',
+            'Walking':              'Walking',
+            'Bicycle':              'Bicycle',
+            'Mixed':                'Mixed (Bus + Tuk-Tuk)',
         }
-        
-        visits_per_month = home_visit_costs.get(home_visit_freq, 0)
-        
-        # Home visit rate
-        home_rate = transport_rates.get(home_transport, 2.5)
-        if distance_home > 20:
-            home_rate = 2.5  # Assume bus/train for long distance
-        
-        monthly_home = distance_home * home_rate * 2 * visits_per_month
-        
-        # Total with 10% buffer
-        total_transport = monthly_commute + monthly_home
-        total_with_buffer = total_transport * 1.1
-        
+
         return {
-            'monthly_total': round(total_with_buffer, 2),
+            'monthly_total': round(total, 2),
             'breakdown': {
-                'daily_commute': round(monthly_commute, 2),
-                'home_visits': round(monthly_home, 2),
-                'buffer': round(total_with_buffer - total_transport, 2)
+                'daily_commute':   round(monthly_commute, 2),
+                'misc_trips':      round(misc_monthly, 2),
+                'home_visits':     round(monthly_home, 2),
             },
-            'daily_cost': round(daily_cost, 2),
-            'transport_method': daily_transport
+            'daily_cost':              round(round_trip_cost, 2),
+            'transport_method':        method_labels.get(daily_transport, daily_transport),
+            'commute_days_per_month':  commute_days_per_month,
+            'one_way_trip_cost':       round(one_way_cost(daily_transport, distance_uni), 2),
         }
+
+    def _get_home_visit_cost(self, distance_home, home_transport, transport_data):
+        """
+        Calculate round-trip cost for one home visit.
+        Prefers inter-district prices from the CSV where district info is available;
+        falls back to per-km estimation otherwise.
+        """
+        home_district = transport_data.get('home_district', '').strip()
+        uni_district  = transport_data.get('district', transport_data.get('uni_district', '')).strip()
+
+        # Try CSV lookup first
+        if (self.transport_costs is not None
+                and home_district and uni_district
+                and home_district.lower() != uni_district.lower()):
+            mask = (
+                (self.transport_costs['Source_District'].str.lower() == uni_district.lower()) &
+                (self.transport_costs['Destination_District'].str.lower() == home_district.lower())
+            )
+            row = self.transport_costs[mask]
+            if not row.empty:
+                if home_transport == 'Train':
+                    return float(row.iloc[0]['Bus_Price (LKR)']) * 0.65
+                elif home_transport == 'Personal Vehicle':
+                    return float(row.iloc[0]['Diesel_Car_Price (LKR)']) * 0.5   # motorbike ≈ half diesel-car cost
+                else:
+                    return float(row.iloc[0]['Bus_Price (LKR)'])   # bus round-trip price from CSV
+
+        # Fallback: per-km estimate for the round trip
+        per_km_one_way = {
+            'Bus':             10,
+            'Train':            6,
+            'Personal Vehicle': 23,
+            'Ride-share':       55,
+        }
+        rate = per_km_one_way.get(home_transport, 10)
+        one_way = max(60, rate * distance_home)
+        return one_way * 2   # round trip
     
     def calculate_distance(self, origin, destination):
         """
