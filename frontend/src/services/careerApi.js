@@ -6,25 +6,37 @@
 const CAREER_API = "http://localhost:5004";
 
 /**
- * Get career recommendations based on user skills
+ * Get career recommendations based on user skills and profile context
  * @param {string[]} skillIds - Array of skill IDs
  * @param {number} topN - Number of recommendations to return
+ * @param {Object} [careerContext] - Optional profile context fields
+ * @param {string} [careerContext.experience_level]
+ * @param {string} [careerContext.current_status]
+ * @param {string} [careerContext.education_level]
+ * @param {string} [careerContext.career_goal]
+ * @param {string} [careerContext.preferred_domain]
+ * @param {string} [careerContext.preferred_job_type]
  * @returns {Promise<Object>} Recommendations response
  */
-export async function getCareerRecommendations(skillIds, topN = 5) {
+export async function getCareerRecommendations(
+  skillIds,
+  topN = 5,
+  careerContext = {},
+) {
   const response = await fetch(`${CAREER_API}/recommend_careers`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       user_skill_ids: skillIds,
       top_n: topN,
+      ...(careerContext || {}),
     }),
   });
 
   if (!response.ok) {
     const body = await response.json().catch(() => ({}));
     throw new Error(
-      body.detail || body.message || "Failed to get recommendations"
+      body.detail || body.message || "Failed to get recommendations",
     );
   }
 

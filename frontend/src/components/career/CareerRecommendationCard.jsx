@@ -1,13 +1,19 @@
 /**
  * Career Recommendation Card Component
- * Displays a single career recommendation with all details
+ * Displays a single career recommendation with all details including
+ * readiness score, match score, domain, skill gap, and career progression.
  */
 import React from "react";
 import { ScoreCircle, ProgressBar } from "./ScoreDisplay";
 import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
 import { DomainBadge } from "./DomainBadge";
-import { FaStar, FaEye } from "react-icons/fa";
+import {
+  FaStar,
+  FaEye,
+  FaCheckCircle,
+  FaExclamationTriangle,
+} from "react-icons/fa";
 
 export function CareerRecommendationCard({
   recommendation,
@@ -25,6 +31,18 @@ export function CareerRecommendationCard({
     skill_gap,
   } = recommendation;
 
+  const readinessPercent = skill_gap
+    ? (skill_gap.readiness_score * 100).toFixed(0)
+    : null;
+
+  // Color for readiness badge
+  const readinessColor =
+    readinessPercent >= 70
+      ? "from-green-500 to-emerald-500"
+      : readinessPercent >= 40
+        ? "from-yellow-500 to-orange-400"
+        : "from-red-500 to-pink-500";
+
   return (
     <div
       className={`p-6 rounded-2xl mb-5 relative transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] ${
@@ -40,7 +58,7 @@ export function CareerRecommendationCard({
         </span>
       )}
 
-      {/* Header: Title, Domain, Score */}
+      {/* Header: Title, Domain, Scores */}
       <div className="flex justify-between items-start mb-4">
         <div>
           <h4 className="text-xl font-semibold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent mb-1">
@@ -48,13 +66,42 @@ export function CareerRecommendationCard({
           </h4>
           <DomainBadge domain={domain} />
         </div>
-        <ScoreCircle score={match_score} label="Match Score" />
+        <div className="flex items-center gap-3">
+          {/* Readiness Badge */}
+          {readinessPercent !== null && (
+            <div className="flex flex-col items-center">
+              <div
+                className={`text-lg font-bold text-white bg-gradient-to-r ${readinessColor} rounded-lg px-3 py-1 shadow-md`}
+              >
+                {readinessPercent}%
+              </div>
+              <span className="text-[10px] text-gray-500 mt-0.5">
+                Readiness
+              </span>
+            </div>
+          )}
+          <ScoreCircle score={match_score} label="Match Score" />
+        </div>
       </div>
 
       {/* Progress Bar */}
       <div className="mb-4">
         <ProgressBar score={match_score} />
       </div>
+
+      {/* Quick Stats Row */}
+      {skill_gap && (
+        <div className="flex gap-3 mb-4 text-xs">
+          <span className="flex items-center gap-1 bg-green-100 text-green-700 px-2 py-1 rounded-full">
+            <FaCheckCircle className="text-green-500" />
+            {skill_gap.matched_skills?.length || 0} skills matched
+          </span>
+          <span className="flex items-center gap-1 bg-orange-100 text-orange-700 px-2 py-1 rounded-full">
+            <FaExclamationTriangle className="text-orange-500" />
+            {skill_gap.missing_skills?.length || 0} skills to learn
+          </span>
+        </div>
+      )}
 
       {/* Next Career Step */}
       {next_role && (
@@ -66,14 +113,6 @@ export function CareerRecommendationCard({
       {/* Skill Gap Display */}
       {skill_gap && (
         <div className="flex gap-4 flex-wrap">
-          {/* Readiness */}
-          <div className="flex-1 min-w-[120px]">
-            <div className="text-xs text-gray-600 mb-1">Readiness</div>
-            <div className="font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent">
-              {(skill_gap.readiness_score * 100).toFixed(0)}%
-            </div>
-          </div>
-
           {/* Matched Skills */}
           <div className="flex-[2] min-w-[200px]">
             <SkillTagList
