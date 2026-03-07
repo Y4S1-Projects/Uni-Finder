@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaArrowRight, FaUniversity, FaPercent, FaHeart, FaBook, FaSpinner } from "react-icons/fa";
 import ProgressStepper from "../../components/degree/ProgressStepper";
@@ -197,6 +197,19 @@ export default function ALWizardFlow() {
 	const [error, setError] = useState("");
 	const [detectedScenario, setDetectedScenario] = useState(null);
 
+	// Stepper display state:
+	// - While submitting from step 3, show Results step as active.
+	// - Once results are shown, mark all steps as completed (show check on step 4).
+	const progressDisplayStep =
+		loading && currentStep === 2 ? 3
+		: currentStep === 3 ? 4
+		: currentStep;
+
+	// Scroll to top whenever step changes
+	useEffect(() => {
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	}, [currentStep]);
+
 	// Auto-detect scenario based on provided inputs
 	// Now that Z-Score is optional, all 4 scenarios are viable
 	const detectScenario = (data) => {
@@ -341,11 +354,6 @@ export default function ALWizardFlow() {
 		}
 	};
 
-	const handleSkipToResults = () => {
-		// Skip remaining steps and go straight to results
-		handleSubmit();
-	};
-
 	const handleBack = () => {
 		if (currentStep === 0) {
 			navigate("/degree-recommendations");
@@ -353,8 +361,10 @@ export default function ALWizardFlow() {
 			// From results, go back to step 0
 			setResults(null);
 			setCurrentStep(0);
+			window.scrollTo(0, 0);
 		} else {
 			setCurrentStep(currentStep - 1);
+			window.scrollTo(0, 0);
 		}
 	};
 
@@ -384,6 +394,7 @@ export default function ALWizardFlow() {
 			const data = await fetchDegreeRecommendations(payload);
 			setResults(data);
 			setCurrentStep(3); // Go to results step
+			window.scrollTo(0, 0);
 			setLoading(false);
 		} catch (err) {
 			let errorMessage = "Failed to fetch recommendations.";
@@ -414,34 +425,35 @@ export default function ALWizardFlow() {
 		if (currentStep === 0) {
 			// Stream & District Selection
 			return (
-				<div className='space-y-6'>
+				<div className='space-y-5'>
 					<div>
-						<h2 className='flex items-center gap-2 mb-2 text-2xl font-bold text-gray-900'>
-							<FaUniversity /> What's Your A/L Stream?
-						</h2>
+						<h2 className='flex items-center gap-2 mb-2 text-2xl font-bold text-gray-900'>What's Your A/L Stream?</h2>
 						<p className='text-gray-600'>Select the stream you're currently studying or plan to study.</p>
 					</div>
 
 					{/* Stream Grid */}
-					<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+					<div className='grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3'>
 						{ALABAMA_STREAMS.map((stream) => (
 							<button
 								key={stream.id}
 								onClick={() => handleStreamSelect(stream.id)}
 								className={`
-									relative p-6 rounded-2xl border-2 transition-all duration-300 text-left
+									relative p-4 rounded-xl border transition-all duration-300 text-left
 									${
 										formData.stream === stream.name ?
 											`border-purple-500 bg-gradient-to-br from-purple-50 to-blue-50 shadow-lg`
 										:	`border-gray-200 bg-white hover:border-purple-300 hover:shadow-md`
 									}
 								`}>
-								<div className={`inline-block text-3xl mb-3 p-2 rounded-lg bg-gradient-to-br ${stream.color}`}>
-									{stream.icon}
+								<div className='flex items-center gap-2'>
+									<div
+										className={`inline-flex items-center justify-center text-xl p-1.5 rounded-md bg-gradient-to-br ${stream.color}`}>
+										{stream.icon}
+									</div>
+									<h3 className='ml-4 text-sm font-semibold leading-tight text-gray-900'>{stream.name}</h3>
 								</div>
-								<h3 className='font-bold text-gray-900'>{stream.name}</h3>
 								{formData.stream === stream.name && (
-									<div className='absolute flex items-center justify-center w-6 h-6 text-sm font-bold text-white rounded-full top-3 right-3 bg-gradient-to-r from-purple-500 to-blue-500'>
+									<div className='absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full top-2 right-2 bg-gradient-to-r from-purple-500 to-blue-500'>
 										✓
 									</div>
 								)}
@@ -449,40 +461,21 @@ export default function ALWizardFlow() {
 						))}
 					</div>
 
-					{/* District Selection */}
-					<div>
-						<label className='block mb-3 text-sm font-bold text-gray-900'>
-							<FaBook className='inline mr-2' /> District of Residence
-						</label>
-						<select
-							value={formData.district}
-							onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-							className='w-full px-4 py-3 transition-colors border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none'>
-							<option value=''>Select your district...</option>
-							{SRI_LANKAN_DISTRICTS.map((district) => (
-								<option key={district} value={district}>
-									{district}
-								</option>
-							))}
-						</select>
-					</div>
-
 					{/* Subject Selection - Shows after stream is selected */}
 					{formData.stream && selectedStream && (
-						<div className='pt-8 mt-8 border-t-2 border-gray-200'>
-							<div className='mb-6'>
+						<div className='mt-4 border-t-2 border-gray-200 '>
+							<div className='mb-2'>
 								<div className='flex items-center justify-between'>
 									<div>
-										<h3 className='flex items-center gap-2 mb-2 text-xl font-bold text-gray-900'>
-											<FaBook className='text-purple-600' />
+										<h3 className='flex items-center gap-2 mb-1 text-lg font-bold text-gray-900'>
 											Select Your 3 Subjects
 										</h3>
-										<p className='text-sm text-gray-600'>
+										<p className='text-xs text-gray-600'>
 											Choose exactly 3 subjects from the {selectedStream.name} stream
 										</p>
 									</div>
 									<div
-										className={`text-2xl font-bold px-4 py-2 rounded-lg ${
+										className={`text-lg font-bold px-3 py-1.5 rounded-lg ${
 											formData.subjects.length === 3 ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"
 										}`}>
 										{formData.subjects.length}/3
@@ -491,7 +484,7 @@ export default function ALWizardFlow() {
 							</div>
 
 							{/* Subject Selector Grid */}
-							<div className='grid grid-cols-1 gap-3 md:grid-cols-2'>
+							<div className='grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3'>
 								{selectedStream.availableSubjects.map((subject) => (
 									<button
 										key={subject}
@@ -511,7 +504,7 @@ export default function ALWizardFlow() {
 											}
 										}}
 										className={`
-											p-4 rounded-xl border-2 transition-all duration-200 text-left font-semibold text-sm
+											p-2.5 rounded-lg  border transition-all duration-200 text-left font-semibold text-xs
 											${
 												formData.subjects.includes(subject) ?
 													"border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50 text-purple-900 shadow-md"
@@ -521,14 +514,14 @@ export default function ALWizardFlow() {
 											}
 										`}
 										disabled={formData.subjects.length >= 3 && !formData.subjects.includes(subject)}>
-										<div className='flex items-center gap-3'>
+										<div className='flex items-center gap-2'>
 											<div
-												className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+												className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${
 													formData.subjects.includes(subject) ? "border-purple-500 bg-purple-500" : "border-gray-300"
 												}`}>
-												{formData.subjects.includes(subject) && <span className='text-sm text-white'>✓</span>}
+												{formData.subjects.includes(subject) && <span className='text-xs text-white'>✓</span>}
 											</div>
-											<span>{subject}</span>
+											<span className='leading-tight'>{subject}</span>
 										</div>
 									</button>
 								))}
@@ -536,8 +529,8 @@ export default function ALWizardFlow() {
 
 							{/* Validation Messages */}
 							{formData.subjects.length < 3 && (
-								<div className='p-4 mt-4 border border-yellow-200 rounded-lg bg-yellow-50'>
-									<p className='text-sm text-yellow-800'>
+								<div className='px-3 pt-3 mt-3 border border-yellow-200 rounded-lg bg-yellow-50'>
+									<p className='text-xs text-yellow-800'>
 										<strong>
 											⚠️ Select {3 - formData.subjects.length} more subject
 											{3 - formData.subjects.length !== 1 ? "s" : ""}
@@ -548,8 +541,8 @@ export default function ALWizardFlow() {
 							)}
 
 							{formData.subjects.length === 3 && !subjectRuleError && (
-								<div className='p-4 mt-4 border border-green-200 rounded-lg bg-green-50'>
-									<p className='text-sm text-green-800'>
+								<div className='px-3 pt-3 mt-3 border border-green-200 rounded-lg bg-green-50'>
+									<p className='text-xs text-green-800'>
 										<strong>✓ Perfect!</strong> You've selected a valid 3-subject combination:{" "}
 										<span className='font-semibold'>{formData.subjects.join(", ")}</span>
 									</p>
@@ -557,14 +550,32 @@ export default function ALWizardFlow() {
 							)}
 
 							{formData.subjects.length === 3 && subjectRuleError && (
-								<div className='p-4 mt-4 border border-red-200 rounded-lg bg-red-50'>
-									<p className='text-sm text-red-800'>
+								<div className='px-3 pt-3 mt-3 border border-red-200 rounded-lg bg-red-50'>
+									<p className='text-xs text-red-800'>
 										<strong>⚠ Invalid combination:</strong> {subjectRuleError}
 									</p>
 								</div>
 							)}
 						</div>
 					)}
+
+					{/* District Selection */}
+					<div>
+						<label className='block mb-3 text-sm font-bold text-gray-900'>
+							<FaBook className='inline mr-2' /> District of Residence
+						</label>
+						<select
+							value={formData.district}
+							onChange={(e) => setFormData({ ...formData, district: e.target.value })}
+							className='w-full px-4 py-3 transition-colors border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none'>
+							<option value=''>Select your district...</option>
+							{SRI_LANKAN_DISTRICTS.map((district) => (
+								<option key={district} value={district}>
+									{district}
+								</option>
+							))}
+						</select>
+					</div>
 				</div>
 			);
 		}
@@ -575,7 +586,7 @@ export default function ALWizardFlow() {
 				<div className='space-y-6'>
 					<div>
 						<h2 className='flex items-center gap-2 mb-2 text-2xl font-bold text-gray-900'>
-							<FaPercent /> Your Z-Score <span className='text-sm font-normal text-gray-500'>(Optional)</span>
+							Enter Your Z-Score <span className='text-sm font-normal text-gray-500'>(Optional)</span>
 						</h2>
 						<p className='text-gray-600'>
 							Have your A/L results? Enter your Z-score to see courses you're eligible for. Or skip to view all courses
@@ -596,8 +607,7 @@ export default function ALWizardFlow() {
 						<p className='mt-2 text-xs text-gray-500'>Your Z-score determines which courses you can apply to</p>
 					</div>
 
-					<div className='flex items-center gap-3 p-4 border border-blue-200 rounded-lg bg-blue-50'>
-						<div className='text-2xl'>💡</div>
+					<div className='flex items-center gap-2 px-4 pt-2 border border-blue-200 rounded-lg bg-blue-50'>
 						<p className='text-sm text-gray-700'>
 							<strong>Don't have Z-score yet?</strong> Skip this to explore all available courses in your stream, or add
 							it later for accurate eligibility.
@@ -613,7 +623,7 @@ export default function ALWizardFlow() {
 				<div className='space-y-6'>
 					<div>
 						<h2 className='flex items-center gap-2 mb-2 text-2xl font-bold text-gray-900'>
-							<FaHeart /> Your Career Interests <span className='text-sm font-normal text-gray-500'>(Optional)</span>
+							Enter Your Career Interests <span className='text-sm font-normal text-gray-500'>(Optional)</span>
 						</h2>
 						<p className='text-gray-600'>
 							Want personalized recommendations? Tell us about your career goals and our AI will rank degrees that match
@@ -635,8 +645,7 @@ export default function ALWizardFlow() {
 						</p>
 					</div>
 
-					<div className='flex items-center gap-3 p-4 border border-purple-200 rounded-lg bg-purple-50'>
-						<div className='text-2xl'>✨</div>
+					<div className='flex items-center px-4 pt-3 border border-purple-200 rounded-lg bg-purple-50'>
 						<p className='text-sm text-gray-700'>
 							<strong>Why add interests?</strong> Our AI will analyze your goals and show you degrees with the highest
 							career match scores - helping you find your perfect fit!
@@ -650,35 +659,40 @@ export default function ALWizardFlow() {
 			// Results
 			return (
 				<div>
-					<StickySearchHeader
-						criteria={formData}
-						onEdit={() => {
-							setResults(null);
-							setCurrentStep(0);
-						}}
-					/>
-
 					<div className='max-w-6xl px-6 py-8 mx-auto'>
-						{/* Detected Scenario Badge */}
-						{detectedScenario && (
-							<div className='p-4 mb-6 border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl'>
-								<div className='flex items-start gap-3'>
-									<div className='text-2xl'>🎯</div>
-									<div>
-										<h3 className='mb-1 font-bold text-purple-900'>{detectedScenario.name}</h3>
-										<p className='text-sm text-gray-700'>{detectedScenario.description}</p>
-									</div>
-								</div>
-							</div>
-						)}
-
 						<div className='mb-8'>
 							<h2 className='mb-2 text-3xl font-bold text-gray-900'>Your Degree Recommendations</h2>
-							<p className='text-gray-600'>
-								Based on your {formData.stream} stream
-								{formData.zscore && Number(formData.zscore) > 0 && `, Z-Score: ${formData.zscore}`}
-								{formData.interests && formData.interests.length >= 10 && `, and career interests`}
-							</p>
+							<div className='p-4 border border-gray-200 rounded-xl bg-gray-50'>
+								<h3 className='mb-2 text-sm font-bold text-gray-800'>Your Input Details</h3>
+								<ul className='grid grid-cols-1 gap-2 text-sm text-gray-700 md:grid-cols-2'>
+									<li className='grid grid-cols-[100px_1fr] gap-2'>
+										<span className='font-semibold text-gray-900'>Stream:</span>
+										<span>{formData.stream || "Not provided"}</span>
+									</li>
+									<li className='grid grid-cols-[100px_1fr] gap-2'>
+										<span className='font-semibold text-gray-900'>District:</span>
+										<span>{formData.district || "Not provided"}</span>
+									</li>
+									<li className='grid grid-cols-[100px_1fr] gap-2'>
+										<span className='font-semibold text-gray-900'>Z-Score:</span>
+										<span>{formData.zscore ? formData.zscore : "Not provided"}</span>
+									</li>
+									<li className='grid grid-cols-[100px_1fr] gap-2 '>
+										<span className='font-semibold text-gray-900'>Subjects:</span>
+										<span>{formData.subjects.length > 0 ? formData.subjects.join(", ") : "Not provided"}</span>
+									</li>
+									<li className='grid grid-cols-[100px_1fr] gap-2 '>
+										<span className='font-semibold text-gray-900'>Interests:</span>
+										<span>
+											{formData.interests && formData.interests.trim().length > 0 ?
+												formData.interests.length > 140 ?
+													`${formData.interests.slice(0, 140)}...`
+												:	formData.interests
+											:	"Not provided"}
+										</span>
+									</li>
+								</ul>
+							</div>
 						</div>
 
 						{/* Display results - API returns array directly, sorted by score (highest first) */}
@@ -708,24 +722,22 @@ export default function ALWizardFlow() {
 
 	return (
 		<div className='min-h-screen bg-gradient-to-br from-slate-50 to-blue-50'>
-			{currentStep < 3 && (
-				<div className='p-6 text-white shadow-lg bg-gradient-to-r from-purple-600 to-blue-600'>
-					<div className='max-w-6xl mx-auto'>
-						<button
-							onClick={handleBack}
-							className='inline-flex items-center gap-2 px-4 py-2 mb-4 transition-all bg-white rounded-lg bg-opacity-20 hover:bg-opacity-30'>
-							<FaArrowLeft /> Back
-						</button>
+			{currentStep <= 3 && (
+				<div className='relative overflow-hidden text-white shadow-2xl bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700'>
+					{/* Animated background shapes */}
+					<div className='absolute top-0 right-0 w-40 h-40 bg-purple-400 rounded-full opacity-20 blur-3xl animate-blob'></div>
+					<div className='absolute bottom-0 left-0 w-40 h-40 bg-blue-400 rounded-full opacity-20 blur-3xl animate-blob animation-delay-2000'></div>
 
-						<h1 className='mb-6 text-4xl font-bold'>Find Your Perfect Degree</h1>
-						<p className='mb-6 text-purple-100'>
+					<div className='relative max-w-6xl px-4 mx-auto mt-20 sm:px-6 sm:py-5'>
+						<h1 className='mb-1 text-2xl font-bold leading-tight sm:text-3xl'>Find Your Perfect Degree</h1>
+						<p className='max-w-2xl text-sm text-white/80'>
 							Fill in your details step by step. You can skip optional fields - we'll automatically find the best
 							matches!
 						</p>
 
 						<ProgressStepper
 							steps={["Stream & District", "Z-Score (Optional)", "Interests (Optional)", "Results"]}
-							currentStep={currentStep}
+							currentStep={progressDisplayStep}
 						/>
 					</div>
 				</div>
@@ -762,7 +774,7 @@ export default function ALWizardFlow() {
 								)}
 
 								{/* Show "Find Degrees" earlier if they have minimum required info */}
-								{currentStep > 0 && formData.stream && formData.district && formData.subjects.length === 3 && (
+								{/* {currentStep > 0 && formData.stream && formData.district && formData.subjects.length === 3 && (
 									<button
 										onClick={handleSkipToResults}
 										disabled={loading}
@@ -772,7 +784,7 @@ export default function ALWizardFlow() {
 										:	"🎯"}{" "}
 										Find Degrees Now
 									</button>
-								)}
+								)} */}
 
 								{/* Next button */}
 								<button
