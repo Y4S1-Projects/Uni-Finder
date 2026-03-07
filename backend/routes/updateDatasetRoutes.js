@@ -1,5 +1,5 @@
 import express from "express";
-import { triggerUpdate, getStats } from "../controllers/updateDatasetController.js";
+import { triggerUpdate, getStats } from "../../scholarship_and_loan_recommendation_service/controllers/updateDatasetController.js";
 
 const router = express.Router();
 

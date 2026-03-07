@@ -1,5 +1,5 @@
 import express from "express";
-import { matchScholarships } from "../controllers/scholarshipMatcherController.js";
+import { matchScholarships } from "../../scholarship_and_loan_recommendation_service/controllers/scholarshipMatcherController.js";
 
 const router = express.Router();
 

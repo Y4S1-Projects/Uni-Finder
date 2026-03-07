@@ -107,7 +107,7 @@ def parse_args() -> argparse.Namespace:
         "--data-dir",
         type=Path,
         default=None,
-        help="Directory containing scholarships.csv and loans.csv (defaults to backend/data).",
+        help="Directory containing scholarships.csv and loans.csv (defaults to service data/).",
     )
     parser.add_argument(
         "--max-features",
