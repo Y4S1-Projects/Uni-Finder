@@ -90,6 +90,7 @@ class ExplanationEngine:
         student_input: str,
         ranked_courses: List[tuple[CourseRecommendation, float]],
         max_courses: int = 5,
+        ol_marks: Optional[dict] = None,
     ) -> dict:
         """
         Generate personalized explanations for top recommended courses.
@@ -98,6 +99,7 @@ class ExplanationEngine:
             student_input: Student's interests/skills description
             ranked_courses: List of (CourseRecommendation, similarity_score) tuples
             max_courses: Maximum number of courses to explain
+            ol_marks: Optional O/L subject marks organized by core + buckets
 
         Returns:
             Dictionary with course codes mapped to explanations
@@ -116,17 +118,20 @@ class ExplanationEngine:
             }
 
         # Batch all explanations in single API call to respect rate limits
-        explanations = self._call_gemini_batch(student_input, keyword_map)
+        explanations = self._call_gemini_batch(student_input, keyword_map, ol_marks)
 
         return explanations
 
-    def _call_gemini_batch(self, student_input: str, keyword_map: dict) -> dict:
+    def _call_gemini_batch(
+        self, student_input: str, keyword_map: dict, ol_marks: Optional[dict] = None
+    ) -> dict:
         """
         Call Gemini API once with batch explanation request.
 
         Args:
             student_input: Student's interests/skills
             keyword_map: Dict mapping course codes to keywords and metadata
+            ol_marks: Optional O/L subject marks
 
         Returns:
             Dictionary with course codes mapped to explanations
@@ -149,22 +154,61 @@ Career Paths: {', '.join(course.job_roles[:5]) if course.job_roles else 'N/A'}
 """
             )
 
-        prompt = f"""You are an educational career advisor. Generate concise, personalized explanations for why these courses match a student's interests.
+        # Build student profile section with O/L marks if available
+        student_profile = f"Career Interests: {student_input}"
+        if ol_marks:
+            student_profile += "\n\nO/L Subject Marks:"
+            if ol_marks.get("core"):
+                core_marks = ol_marks.get("core", {})
+                for subject, grade in core_marks.items():
+                    if grade and subject not in [
+                        "bucket_1_grade",
+                        "bucket_2_grade",
+                        "bucket_3_grade",
+                    ]:
+                        student_profile += (
+                            f"\n- {subject.replace('_', ' ').title()}: {grade}"
+                        )
 
-Student Profile: {student_input}
+            if ol_marks.get("bucket_1") and ol_marks.get("core", {}).get(
+                "bucket_1_grade"
+            ):
+                bucket_1_name = ol_marks.get("bucket_1", "").replace("_", " ").title()
+                bucket_1_grade = ol_marks.get("core", {}).get("bucket_1_grade")
+                student_profile += f"\n- {bucket_1_name} ({ol_marks.get('bucket_1')}): {bucket_1_grade}"
+
+            if ol_marks.get("bucket_2") and ol_marks.get("core", {}).get(
+                "bucket_2_grade"
+            ):
+                bucket_2_name = ol_marks.get("bucket_2", "").replace("_", " ").title()
+                bucket_2_grade = ol_marks.get("core", {}).get("bucket_2_grade")
+                student_profile += f"\n- {bucket_2_name} ({ol_marks.get('bucket_2')}): {bucket_2_grade}"
+
+            if ol_marks.get("bucket_3") and ol_marks.get("core", {}).get(
+                "bucket_3_grade"
+            ):
+                bucket_3_name = ol_marks.get("bucket_3", "").replace("_", " ").title()
+                bucket_3_grade = ol_marks.get("core", {}).get("bucket_3_grade")
+                student_profile += f"\n- {bucket_3_name} ({ol_marks.get('bucket_3')}): {bucket_3_grade}"
+
+        prompt = f"""You are an educational career advisor. Generate concise, personalized explanations for why these courses match a student's interests and academic background.
+
+Student Profile:
+{student_profile}
 
 Recommended Courses:
 {''.join(course_details)}
 
 For each course, provide a brief 2-3 sentence explanation (max 100 words) that:
 1. Highlights specific matched interests/skills
-2. Explains career relevance
-3. Makes the recommendation feel personalized
+2. References their O/L subject strengths if available (e.g., "Your strong {subject} grade is a great foundation for this course")
+3. Explains career relevance
+4. Makes the recommendation feel personalized and encouraging
 
 Format your response as:
 COURSE-CODE: <explanation>
 
-Be encouraging and specific. Avoid generic phrases."""
+Be encouraging and specific. Avoid generic phrases. If O/L marks are provided, use them to validate the student's readiness."""
 
         try:
             response = self.model.generate_content(prompt)

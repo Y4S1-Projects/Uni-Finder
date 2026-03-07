@@ -1,0 +1,166 @@
+{
+	"core_subjects": [
+		{
+			"id": "religion",
+			"name": "Religion",
+			"description": "Buddhism, Hinduism, Islam, Catholicism, or Christianity"
+		},
+		{
+			"id": "first_language",
+			"name": "First Language & Literature",
+			"description": "Sinhala or Tamil"
+		},
+		{
+			"id": "mathematics",
+			"name": "Mathematics",
+			"description": "Crucial for A/L Physical Science, Commerce, and Tech streams",
+			"critical": true
+		},
+		{
+			"id": "science",
+			"name": "Science",
+			"description": "Crucial for A/L Bio, Physical Science, and Tech streams",
+			"critical": true
+		},
+		{
+			"id": "english",
+			"name": "English Language",
+			"description": "Critical for degree eligibility across all streams",
+			"critical": true
+		},
+		{
+			"id": "history",
+			"name": "History",
+			"description": ""
+		}
+	],
+	"bucket_1": {
+		"name": "Business, Humanities & Languages",
+		"category": "Category I",
+		"description": "Helps test the waters for A/L Commerce and Arts streams",
+		"subjects": [
+			{
+				"id": "business_studies",
+				"name": "Business & Accounting Studies",
+				"indicator": "Strong indicator for A/L Commerce stream"
+			},
+			{
+				"id": "civic_education",
+				"name": "Civic Education",
+				"indicator": ""
+			},
+			{
+				"id": "geography",
+				"name": "Geography",
+				"indicator": ""
+			},
+			{
+				"id": "entrepreneurship",
+				"name": "Entrepreneurship Studies",
+				"indicator": ""
+			},
+			{
+				"id": "second_language",
+				"name": "Second Language (Sinhala/Tamil)",
+				"indicator": ""
+			},
+			{
+				"id": "classical_language",
+				"name": "Classical Language (Pali/Sanskrit)",
+				"indicator": ""
+			},
+			{
+				"id": "foreign_language",
+				"name": "Foreign Language (French, German, Japanese, etc.)",
+				"indicator": ""
+			}
+		]
+	},
+	"bucket_2": {
+		"name": "Aesthetics & Literature",
+		"category": "Category II",
+		"description": "Heavily linked to A/L Arts stream (Aesthetics basket)",
+		"subjects": [
+			{
+				"id": "art",
+				"name": "Art",
+				"indicator": "Strong indicator for A/L Arts stream"
+			},
+			{
+				"id": "dancing",
+				"name": "Dancing (Sinhala or Bharatha)",
+				"indicator": ""
+			},
+			{
+				"id": "music",
+				"name": "Music (Oriental, Carnatic, or Western)",
+				"indicator": ""
+			},
+			{
+				"id": "drama",
+				"name": "Drama & Theatre (Sinhala, Tamil, or English)",
+				"indicator": ""
+			},
+			{
+				"id": "literature",
+				"name": "Appreciation of Literary Texts (Sinhala/Tamil/English/Arabic)",
+				"indicator": ""
+			}
+		]
+	},
+	"bucket_3": {
+		"name": "Technology & Practical Skills",
+		"category": "Category III",
+		"description": "Stepping stone for A/L Technology streams (ET and BST)",
+		"subjects": [
+			{
+				"id": "ict",
+				"name": "Information & Communication Technology (ICT)",
+				"indicator": "Strong indicator for A/L Physical Science and Tech streams"
+			},
+			{
+				"id": "agriculture",
+				"name": "Agriculture & Food Technology",
+				"indicator": "Strong indicator for Bio-Systems Technology A/L stream"
+			},
+			{
+				"id": "home_economics",
+				"name": "Home Economics",
+				"indicator": ""
+			},
+			{
+				"id": "health_pe",
+				"name": "Health & Physical Education",
+				"indicator": ""
+			},
+			{
+				"id": "design_mechanical",
+				"name": "Design & Mechanical Technology",
+				"indicator": "Strong indicator for Engineering Technology A/L stream"
+			},
+			{
+				"id": "design_construction",
+				"name": "Design & Construction Technology",
+				"indicator": "Strong indicator for Engineering Technology A/L stream"
+			},
+			{
+				"id": "design_electrical",
+				"name": "Design & Electrical/Electronic Technology",
+				"indicator": "Strong indicator for Engineering Technology A/L stream"
+			},
+			{
+				"id": "arts_crafts",
+				"name": "Arts & Crafts",
+				"indicator": ""
+			}
+		]
+	},
+	"grading_scale": ["A", "B", "C", "S", "W"],
+	"grade_descriptions": {
+		"A": "Excellent",
+		"B": "Very Good",
+		"C": "Credit",
+		"S": "Satisfactory",
+		"W": "Poor/Incomplete"
+	}
+}

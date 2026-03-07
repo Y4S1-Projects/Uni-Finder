@@ -42,12 +42,24 @@ export async function fetchInterestOnlyRecommendations({
 	eligibleCourseCodes,
 	maxResults = 5,
 	explain = true,
+	olMarks = null,
 }) {
 	const response = await axios.post(`${DEGREE_SERVICE_URL}/recommend/interests`, {
 		student_input: studentInput,
 		eligible_courses: eligibleCourseCodes,
 		max_results: maxResults,
 		explain,
+		ol_marks: olMarks,
+	});
+
+	return response.data;
+}
+
+export async function fetchOLCareerTree({ studentInput, eligibleCourseCodes, olMarks = null }) {
+	const response = await axios.post(`${DEGREE_SERVICE_URL}/recommend/interests/career-tree`, {
+		student_input: studentInput,
+		eligible_courses: eligibleCourseCodes,
+		ol_marks: olMarks,
 	});
 
 	return response.data;

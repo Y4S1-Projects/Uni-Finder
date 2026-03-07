@@ -67,6 +67,26 @@ class InterestBasedRecommendationRequest(BaseModel):
         default=True,
         description="Whether to generate personalized explanations using Gemini API",
     )
+    ol_marks: Optional[dict] = Field(
+        default=None,
+        example={
+            "core": {
+                "mathematics": "A",
+                "science": "B",
+                "english": "B",
+                "first_language": "A",
+                "history": "C",
+                "religion": "A",
+                "bucket_1_grade": "",
+                "bucket_2_grade": "",
+                "bucket_3_grade": "",
+            },
+            "bucket_1": "business_studies",
+            "bucket_2": "",
+            "bucket_3": "ict",
+        },
+        description="Optional O/L subject marks organized by core subjects and elective buckets. Used to contextualize explanations with subject strengths.",
+    )
 
 
 class OLPathwayRequest(BaseModel):
