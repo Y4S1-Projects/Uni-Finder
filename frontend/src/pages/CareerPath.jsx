@@ -201,6 +201,7 @@ export default function CareerPath() {
       {recommendations && (
         <RecommendationsSection
           recommendations={recommendations}
+          userSkills={selectedSkills}
           onViewDetails={handleViewJob}
         />
       )}
@@ -226,7 +227,7 @@ function ErrorMessage({ message }) {
   );
 }
 
-function RecommendationsSection({ recommendations, onViewDetails }) {
+function RecommendationsSection({ recommendations, userSkills, onViewDetails }) {
   return (
     <div className="mt-8">
       {/* Summary */}
@@ -248,6 +249,7 @@ function RecommendationsSection({ recommendations, onViewDetails }) {
           rank={index + 1}
           isBestMatch={index === 0}
           onViewDetails={onViewDetails}
+          userSkills={userSkills}
         />
       ))}
 

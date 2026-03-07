@@ -4,6 +4,7 @@
  * readiness score, match score, domain, skill gap, and career progression.
  */
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { ScoreCircle, ProgressBar } from "./ScoreDisplay";
 import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
@@ -20,7 +21,9 @@ export function CareerRecommendationCard({
   rank,
   isBestMatch = false,
   onViewDetails,
+  userSkills,
 }) {
+  const navigate = useNavigate();
   const {
     role_id,
     role_title,
@@ -30,6 +33,16 @@ export function CareerRecommendationCard({
     next_role_title,
     skill_gap,
   } = recommendation;
+
+  const viewCareerLadder = () => {
+    navigate('/career-ladder', {
+      state: {
+        userSkills: userSkills,
+        selectedDomain: domain,
+        recommendations: [recommendation]
+      }
+    });
+  };
 
   const readinessPercent = skill_gap
     ? (skill_gap.readiness_score * 100).toFixed(0)
@@ -133,24 +146,33 @@ export function CareerRecommendationCard({
         </div>
       )}
 
-      {/* View Details Button */}
-      <button
-        onClick={() => onViewDetails(recommendation)}
-        className="mt-5 px-6 py-3 text-white rounded-xl text-sm font-semibold flex items-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
-        style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background =
-            "linear-gradient(135deg, #5568d3 0%, #65408b 100%)";
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background =
-            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
-        }}
-      >
-        <FaEye /> View Details & AI Explanation
-      </button>
+      {/* Action Buttons */}
+      <div className="mt-5 flex gap-3">
+        <button
+          onClick={() => onViewDetails(recommendation)}
+          className="flex-1 py-3 text-white rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105"
+          style={{
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background =
+              "linear-gradient(135deg, #5568d3 0%, #65408b 100%)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background =
+              "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+          }}
+        >
+          <FaEye /> View Details
+        </button>
+
+        <button
+          onClick={viewCareerLadder}
+          className="flex-1 py-3 bg-white text-purple-700 border-2 border-purple-200 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-all duration-300 shadow-sm hover:border-purple-400 hover:shadow-md"
+        >
+          View Career Ladder →
+        </button>
+      </div>
     </div>
   );
 }
