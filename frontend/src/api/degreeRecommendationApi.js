@@ -31,3 +31,24 @@ export async function fetchDegreeRecommendations(payload) {
 	const response = await axios.post(`${DEGREE_SERVICE_URL}/recommend`, payload);
 	return response.data;
 }
+
+export async function fetchAllDegreeCourses() {
+	const response = await axios.post(`${DEGREE_SERVICE_URL}/api/courses`, {});
+	return response.data;
+}
+
+export async function fetchInterestOnlyRecommendations({
+	studentInput,
+	eligibleCourseCodes,
+	maxResults = 5,
+	explain = true,
+}) {
+	const response = await axios.post(`${DEGREE_SERVICE_URL}/recommend/interests`, {
+		student_input: studentInput,
+		eligible_courses: eligibleCourseCodes,
+		max_results: maxResults,
+		explain,
+	});
+
+	return response.data;
+}

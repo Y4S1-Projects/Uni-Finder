@@ -1,0 +1,396 @@
+{
+  "timestamp": "2026-03-05T20:24:24.884476",
+  "duration_seconds": 177.857113,
+  "summary": {
+    "total": 33,
+    "passed": 21,
+    "failed": 12,
+    "errors": 0
+  },
+  "scenarios": {
+    "S1": {
+      "PASS": 3,
+      "FAIL": 2,
+      "ERROR": 0
+    },
+    "S2": {
+      "PASS": 5,
+      "FAIL": 1,
+      "ERROR": 0
+    },
+    "S4": {
+      "PASS": 3,
+      "FAIL": 2,
+      "ERROR": 0
+    },
+    "S5": {
+      "PASS": 4,
+      "FAIL": 1,
+      "ERROR": 0
+    },
+    "EDGE_CASE": {
+      "PASS": 3,
+      "FAIL": 6,
+      "ERROR": 0
+    },
+    "CROSS_STREAM": {
+      "PASS": 3,
+      "FAIL": 0,
+      "ERROR": 0
+    }
+  },
+  "detailed_results": [
+    {
+      "test_name": "S1.1 - Science Stream with Physics, Chemistry, Math",
+      "scenario": "S1",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:24:34.689083"
+    },
+    {
+      "test_name": "S1.2 - Arts Stream with History, Geography, Economics",
+      "scenario": "S1",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:24:42.285919"
+    },
+    {
+      "test_name": "S1.3 - Commerce Stream with Accounting, Business Studies, Economics",
+      "scenario": "S1",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:24:48.994261"
+    },
+    {
+      "test_name": "S1.4 - Science with different subject combo",
+      "scenario": "S1",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "Invalid subjects for Science stream: Biology, Statistics. Valid subjects for Science: Physics, Chemistry, Mathematics, Combined Mathematics, Logic & Scientific Method...",
+      "timestamp": "2026-03-05T20:24:49.005434"
+    },
+    {
+      "test_name": "S1.5 - Arts with different district (Jaffna)",
+      "scenario": "S1",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "Invalid subjects for Arts stream: English Literature, Buddhist Studies. Valid subjects for Arts: History, Geography, Political Science, Logic, Economics...",
+      "timestamp": "2026-03-05T20:24:49.013803"
+    },
+    {
+      "test_name": "S2.1 - Science with High Z-Score (2.5)",
+      "scenario": "S2",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:24:58.018213"
+    },
+    {
+      "test_name": "S2.2 - Science with Medium Z-Score (1.5)",
+      "scenario": "S2",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:25:05.243538"
+    },
+    {
+      "test_name": "S2.3 - Science with Low Z-Score (0.5)",
+      "scenario": "S2",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "Invalid subjects for Science stream: Biology. Valid subjects for Science: Physics, Chemistry, Mathematics, Combined Mathematics, Logic & Scientific Method...",
+      "timestamp": "2026-03-05T20:25:05.250928"
+    },
+    {
+      "test_name": "S2.4 - Arts with Z-Score (1.8)",
+      "scenario": "S2",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:25:11.992011"
+    },
+    {
+      "test_name": "S2.5 - Commerce with Negative Z-Score (-0.5)",
+      "scenario": "S2",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:25:19.371392"
+    },
+    {
+      "test_name": "S2.6 - Science with Z-Score = 0",
+      "scenario": "S2",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:25:26.196012"
+    },
+    {
+      "test_name": "S4.1 - Science with Engineering Interests",
+      "scenario": "S4",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:25:37.160979"
+    },
+    {
+      "test_name": "S4.2 - Science with Medicine Interests",
+      "scenario": "S4",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "Invalid subjects for Science stream: Biology. Valid subjects for Science: Physics, Chemistry, Mathematics, Combined Mathematics, Logic & Scientific Method...",
+      "timestamp": "2026-03-05T20:25:37.186519"
+    },
+    {
+      "test_name": "S4.3 - Arts with Literature and Language Interests",
+      "scenario": "S4",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "Invalid subjects for Arts stream: English Literature. Valid subjects for Arts: History, Geography, Political Science, Logic, Economics...",
+      "timestamp": "2026-03-05T20:25:37.194053"
+    },
+    {
+      "test_name": "S4.4 - Commerce with Business Management Interests",
+      "scenario": "S4",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:25:45.982821"
+    },
+    {
+      "test_name": "S4.5 - Science with IT/CS Interests",
+      "scenario": "S4",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:25:54.739340"
+    },
+    {
+      "test_name": "S5.1 - Science High Z-Score with Engineering Interests",
+      "scenario": "S5",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:26:05.726468"
+    },
+    {
+      "test_name": "S5.2 - Science Medium Z-Score with Medicine Interests",
+      "scenario": "S5",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "Invalid subjects for Science stream: Biology. Valid subjects for Science: Physics, Chemistry, Mathematics, Combined Mathematics, Logic & Scientific Method...",
+      "timestamp": "2026-03-05T20:26:05.734597"
+    },
+    {
+      "test_name": "S5.3 - Science Low Z-Score with IT Interests",
+      "scenario": "S5",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:26:13.969646"
+    },
+    {
+      "test_name": "S5.4 - Arts High Z-Score with Social Studies Interests",
+      "scenario": "S5",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:26:23.073519"
+    },
+    {
+      "test_name": "S5.5 - Commerce Medium Z-Score with Accounting Interests",
+      "scenario": "S5",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:26:31.420043"
+    },
+    {
+      "test_name": "EC1 - Invalid Stream",
+      "scenario": "EDGE_CASE",
+      "status": "FAIL",
+      "response_code": 422,
+      "has_results": false,
+      "error": [
+        {
+          "type": "value_error",
+          "loc": [
+            "body",
+            "student",
+            "stream"
+          ],
+          "msg": "Value error, Stream must be one of: Science, Biological Science, Arts, Commerce, Technology",
+          "input": "InvalidStream",
+          "ctx": {
+            "error": {}
+          }
+        }
+      ],
+      "timestamp": "2026-03-05T20:26:33.430534"
+    },
+    {
+      "test_name": "EC2 - Invalid District",
+      "scenario": "EDGE_CASE",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:26:41.594432"
+    },
+    {
+      "test_name": "EC3 - Z-Score out of range (3.5)",
+      "scenario": "EDGE_CASE",
+      "status": "FAIL",
+      "response_code": 422,
+      "has_results": false,
+      "error": [
+        {
+          "type": "less_than_equal",
+          "loc": [
+            "body",
+            "student",
+            "zscore"
+          ],
+          "msg": "Input should be less than or equal to 3",
+          "input": 3.5,
+          "ctx": {
+            "le": 3.0
+          }
+        }
+      ],
+      "timestamp": "2026-03-05T20:26:41.602300"
+    },
+    {
+      "test_name": "EC4 - Z-Score out of range (-3.5)",
+      "scenario": "EDGE_CASE",
+      "status": "FAIL",
+      "response_code": 422,
+      "has_results": false,
+      "error": [
+        {
+          "type": "greater_than_equal",
+          "loc": [
+            "body",
+            "student",
+            "zscore"
+          ],
+          "msg": "Input should be greater than or equal to -3",
+          "input": -3.5,
+          "ctx": {
+            "ge": -3.0
+          }
+        }
+      ],
+      "timestamp": "2026-03-05T20:26:41.626710"
+    },
+    {
+      "test_name": "EC5 - Invalid Subject for Stream",
+      "scenario": "EDGE_CASE",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "Invalid subjects for Science stream: Accounting, Business Studies, Economics. Valid subjects for Science: Physics, Chemistry, Mathematics, Combined Mathematics, Logic & Scientific Method...",
+      "timestamp": "2026-03-05T20:26:41.636297"
+    },
+    {
+      "test_name": "EC6 - Only 2 Subjects (should fail in frontend but test backend)",
+      "scenario": "EDGE_CASE",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:26:48.520523"
+    },
+    {
+      "test_name": "EC7 - Empty Subjects List",
+      "scenario": "EDGE_CASE",
+      "status": "FAIL",
+      "response_code": 400,
+      "has_results": false,
+      "error": "At least one subject is required",
+      "timestamp": "2026-03-05T20:26:48.528594"
+    },
+    {
+      "test_name": "EC8 - Negative max_results",
+      "scenario": "EDGE_CASE",
+      "status": "FAIL",
+      "response_code": 422,
+      "has_results": false,
+      "error": [
+        {
+          "type": "greater_than_equal",
+          "loc": [
+            "body",
+            "max_results"
+          ],
+          "msg": "Input should be greater than or equal to 1",
+          "input": -5,
+          "ctx": {
+            "ge": 1
+          }
+        }
+      ],
+      "timestamp": "2026-03-05T20:26:48.553689"
+    },
+    {
+      "test_name": "EC9 - Very high max_results (100)",
+      "scenario": "EDGE_CASE",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:26:55.059948"
+    },
+    {
+      "test_name": "CROSS1.1 - Science + Tech Interests",
+      "scenario": "CROSS_STREAM",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:27:05.726532"
+    },
+    {
+      "test_name": "CROSS1.2 - Commerce + Same Tech Interests",
+      "scenario": "CROSS_STREAM",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:27:13.868514"
+    },
+    {
+      "test_name": "CROSS1.3 - Arts + Same Tech Interests",
+      "scenario": "CROSS_STREAM",
+      "status": "PASS",
+      "response_code": 200,
+      "has_results": false,
+      "error": null,
+      "timestamp": "2026-03-05T20:27:22.730208"
+    }
+  ]
+}

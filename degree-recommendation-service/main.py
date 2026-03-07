@@ -16,7 +16,15 @@ def create_app() -> FastAPI:
         description="AI-based degree recommendation engine for Sri Lankan students",
     )
 
-    allowed_origins = (os.getenv("CORS_ORIGINS") or "http://localhost:3000").split(",")
+    default_origins = ",".join(
+        [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+        ]
+    )
+    allowed_origins = (os.getenv("CORS_ORIGINS") or default_origins).split(",")
     allowed_origins = [origin.strip() for origin in allowed_origins if origin.strip()]
 
     app.add_middleware(
