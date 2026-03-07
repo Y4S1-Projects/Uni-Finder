@@ -95,6 +95,20 @@ export default function DatasetUpdateControl() {
            null;
   };
 
+  const getNewScholarshipCount = () => {
+    if (!summary) return null;
+    return summary.cleaner_results?.scholarships?.new_unique_count ??
+           summary.cleaner_results?.scholarships?.new_count ??
+           null;
+  };
+
+  const getNewLoanCount = () => {
+    if (!summary) return null;
+    return summary.cleaner_results?.loans?.new_unique_count ??
+           summary.cleaner_results?.loans?.new_count ??
+           null;
+  };
+
   return (
     <div className="dataset-update-control">
       <div className="dataset-update-control__header">
@@ -127,7 +141,7 @@ export default function DatasetUpdateControl() {
             <h4 className="dataset-update-control__modal-title">Confirm dataset update</h4>
             <p className="dataset-update-control__modal-body">
               You are about to refresh the live scholarship and loan datasets. This process runs
-              a full scraping and cleaning pipeline and can take approximately 10–12 minutes to
+              a full scraping and cleaning pipeline and can take approximately 10–20 minutes to
               complete. During this time, the server will be busy but students can still browse
               using the existing data.
             </p>
@@ -198,15 +212,27 @@ export default function DatasetUpdateControl() {
             <strong>Newly added data</strong>
           </p>
           <div className="dataset-update-control__stats">
+            {getNewScholarshipCount() !== null && (
+              <div className="dataset-update-control__stat-item">
+                <span className="dataset-update-control__stat-label">New scholarships added:</span>
+                <span className="dataset-update-control__stat-value">{getNewScholarshipCount()}</span>
+              </div>
+            )}
             {getScholarshipCount() !== null && (
               <div className="dataset-update-control__stat-item">
-                <span className="dataset-update-control__stat-label">Scholarships:</span>
+                <span className="dataset-update-control__stat-label">Total scholarships now:</span>
                 <span className="dataset-update-control__stat-value">{getScholarshipCount()}</span>
+              </div>
+            )}
+            {getNewLoanCount() !== null && (
+              <div className="dataset-update-control__stat-item">
+                <span className="dataset-update-control__stat-label">New loans added:</span>
+                <span className="dataset-update-control__stat-value">{getNewLoanCount()}</span>
               </div>
             )}
             {getLoanCount() !== null && (
               <div className="dataset-update-control__stat-item">
-                <span className="dataset-update-control__stat-label">Loans:</span>
+                <span className="dataset-update-control__stat-label">Total loans now:</span>
                 <span className="dataset-update-control__stat-value">{getLoanCount()}</span>
               </div>
             )}

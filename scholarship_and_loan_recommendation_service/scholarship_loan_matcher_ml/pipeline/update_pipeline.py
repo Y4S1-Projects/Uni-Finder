@@ -110,13 +110,22 @@ def run_full_update() -> Dict[str, Any]:
         scholarship_count = len(scraper_output.get("scholarships", []))
         loan_count = len(scraper_output.get("loans", []))
 
-        # Rename files to standardized names if master scraper used different names
+        # Rename/overwrite files to standardized names if master scraper used different names.
+        # Use .replace() so we don't fail when the destination already exists (Windows-friendly).
         if MASTER_SCRAPER_SCHOLARSHIPS.exists() and MASTER_SCRAPER_SCHOLARSHIPS != RAW_SCHOLARSHIPS_PATH:
-            logger.info("Renaming %s to %s", MASTER_SCRAPER_SCHOLARSHIPS.name, RAW_SCHOLARSHIPS_PATH.name)
-            MASTER_SCRAPER_SCHOLARSHIPS.rename(RAW_SCHOLARSHIPS_PATH)
+            logger.info(
+                "Moving %s to %s (overwriting if exists)",
+                MASTER_SCRAPER_SCHOLARSHIPS.name,
+                RAW_SCHOLARSHIPS_PATH.name,
+            )
+            MASTER_SCRAPER_SCHOLARSHIPS.replace(RAW_SCHOLARSHIPS_PATH)
         if MASTER_SCRAPER_LOANS.exists() and MASTER_SCRAPER_LOANS != RAW_LOANS_PATH:
-            logger.info("Renaming %s to %s", MASTER_SCRAPER_LOANS.name, RAW_LOANS_PATH.name)
-            MASTER_SCRAPER_LOANS.rename(RAW_LOANS_PATH)
+            logger.info(
+                "Moving %s to %s (overwriting if exists)",
+                MASTER_SCRAPER_LOANS.name,
+                RAW_LOANS_PATH.name,
+            )
+            MASTER_SCRAPER_LOANS.replace(RAW_LOANS_PATH)
 
         summary["scraper_results"] = {
             "success": True,
