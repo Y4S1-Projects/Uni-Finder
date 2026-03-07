@@ -41,7 +41,7 @@ export default function DatasetStatus() {
 
   return (
     <div className="dataset-status">
-      <h3 className="dataset-status__title">Funding Dataset Status</h3>
+      <h3 className="dataset-status__title"> Scholarships and Funding Dataset Status</h3>
       <p className="dataset-status__body">
         {isLoadingStats
           ? 'Checking the latest update time…'
