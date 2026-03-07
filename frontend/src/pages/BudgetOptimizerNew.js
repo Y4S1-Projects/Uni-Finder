@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar } from 'react-bootstrap';
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import './BudgetOptimizerNew.css';
 
@@ -21,6 +21,9 @@ const BudgetOptimizerNew = () => {
   const [geminiError, setGeminiError] = useState(null);
   const [aiProvider, setAiProvider] = useState(null); // Track which AI was used
   const aiSectionRef = useRef(null); // Target for scroll-to-AI button
+
+  // Distance warning modal state
+  const [distanceWarning, setDistanceWarning] = useState({ show: false, pendingValue: '' });
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -87,7 +90,7 @@ const BudgetOptimizerNew = () => {
       [name]: ['monthly_income', 'home_money', 'rent', 'distance_uni_accommodation', 'distance_home_uni', 
                'cooking_percentage', 'internet', 'study_materials', 'entertainment', 
                'utilities', 'healthcare', 'other'].includes(name) 
-        ? parseInt(value) || 0 
+        ? (value === '' ? '' : (parseInt(value) || 0))
         : value
     }));
   };
@@ -151,6 +154,25 @@ const BudgetOptimizerNew = () => {
     } finally {
       setGeminiLoading(false);
     }
+  };
+
+  const handleDistanceHomeChange = (e) => {
+    const val = e.target.value;
+    const num = parseInt(val) || 0;
+    if (num > 800) {
+      setDistanceWarning({ show: true, pendingValue: val === '' ? '' : num });
+    } else {
+      setFormData(prev => ({ ...prev, distance_home_uni: val === '' ? '' : num }));
+    }
+  };
+
+  const confirmDistanceWarning = () => {
+    setFormData(prev => ({ ...prev, distance_home_uni: distanceWarning.pendingValue }));
+    setDistanceWarning({ show: false, pendingValue: '' });
+  };
+
+  const cancelDistanceWarning = () => {
+    setDistanceWarning({ show: false, pendingValue: '' });
   };
 
   const nextStep = () => {
@@ -324,15 +346,35 @@ const BudgetOptimizerNew = () => {
       <div className="step-indicator mb-4">
         <ProgressBar now={(currentStep / 7) * 100} className="mb-3" />
         <div className="d-flex justify-content-between">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className={`step-item ${currentStep === index + 1 ? 'active' : ''} ${currentStep > index + 1 ? 'completed' : ''}`}
-            >
-              <div className="step-number">{index + 1}</div>
-              <div className="step-label">{step}</div>
-            </div>
-          ))}
+          {steps.map((step, index) => {
+            const stepNum = index + 1;
+            const isCompleted = currentStep > stepNum;
+            const isActive = currentStep === stepNum;
+            const isClickable = isCompleted;
+            return (
+              <div
+                key={index}
+                className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isClickable ? 'clickable' : ''}`}
+                onClick={() => isClickable && setCurrentStep(stepNum)}
+                title={isClickable ? `Go back to Step ${stepNum}: ${step}` : undefined}
+              >
+                <div className="step-number">
+                  {isCompleted ? (
+                    <span className="step-done">
+                      <span className="step-check">✓</span>
+                      <span className="step-num-badge">{stepNum}</span>
+                    </span>
+                  ) : (
+                    stepNum
+                  )}
+                </div>
+                <div className="step-label">
+                  <span className="step-num-text">Step {stepNum}</span>
+                  <span className="step-name-text">{step}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -473,6 +515,7 @@ const BudgetOptimizerNew = () => {
               name="monthly_income"
               value={formData.monthly_income}
               onChange={handleInputChange}
+              onFocus={e => e.target.select()}
               required
             />
             <Form.Text className="text-muted">
@@ -487,6 +530,7 @@ const BudgetOptimizerNew = () => {
               name="home_money"
               value={formData.home_money}
               onChange={handleInputChange}
+              onFocus={e => e.target.select()}
               placeholder="0"
             />
             <Form.Text className="text-muted">
@@ -518,6 +562,7 @@ const BudgetOptimizerNew = () => {
               name="rent"
               value={formData.rent}
               onChange={handleInputChange}
+              onFocus={e => e.target.select()}
               required
             />
             <Form.Text className="text-muted">
@@ -615,6 +660,7 @@ const BudgetOptimizerNew = () => {
                   name="distance_uni_accommodation"
                   value={formData.distance_uni_accommodation}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -625,7 +671,9 @@ const BudgetOptimizerNew = () => {
                   type="number"
                   name="distance_home_uni"
                   value={formData.distance_home_uni}
-                  onChange={handleInputChange}
+                  onChange={handleDistanceHomeChange}
+                  onFocus={e => e.target.select()}
+                  isInvalid={Number(formData.distance_home_uni) > 800}
                 />
               </Form.Group>
             </Col>
@@ -706,6 +754,7 @@ const BudgetOptimizerNew = () => {
                   name="internet"
                   value={formData.internet}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -717,6 +766,7 @@ const BudgetOptimizerNew = () => {
                   name="study_materials"
                   value={formData.study_materials}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -731,6 +781,7 @@ const BudgetOptimizerNew = () => {
                   name="entertainment"
                   value={formData.entertainment}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -742,6 +793,7 @@ const BudgetOptimizerNew = () => {
                   name="utilities"
                   value={formData.utilities}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -756,6 +808,7 @@ const BudgetOptimizerNew = () => {
                   name="healthcare"
                   value={formData.healthcare}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -767,6 +820,7 @@ const BudgetOptimizerNew = () => {
                   name="other"
                   value={formData.other}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -868,37 +922,81 @@ const BudgetOptimizerNew = () => {
 
         {/* Expense Breakdown */}
         <Card className="shadow-lg border-0 mb-4">
-          <Card.Header className="bg-gradient-primary text-white">
-            <h4 className="mb-0">📊 Expense Breakdown</h4>
+          <Card.Header style={{background:'linear-gradient(135deg,#667eea 0%,#764ba2 100%)'}} className="text-white">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 className="mb-0">📊 Expense Breakdown</h4>
+                <small style={{opacity:0.85}}>Where your money goes each month</small>
+              </div>
+              <div className="text-end">
+                <div style={{fontSize:'0.8rem',opacity:0.85}}>Total Monthly</div>
+                <div style={{fontSize:'1.5rem',fontWeight:700}}>LKR {expense_breakdown.total_expenses?.toLocaleString()}</div>
+              </div>
+            </div>
           </Card.Header>
           <Card.Body className="p-4">
             <Row>
               <Col md={6}>
-                <h5 className="mb-3">Monthly Expenses</h5>
-                {Object.entries(expense_breakdown).map(([category, amount]) => {
-                  if (category === 'total_expenses') return null;
-                  const percentage = ((amount / expense_breakdown.total_expenses) * 100).toFixed(1);
-                  return (
-                    <div key={category} className="d-flex justify-content-between align-items-center py-2 border-bottom">
-                      <span className="text-capitalize"><strong>{category.replace('_', ' ')}:</strong></span>
-                      <span>
-                        LKR {amount.toLocaleString()} 
-                        <span className="text-muted ms-2">({percentage}%)</span>
-                      </span>
-                    </div>
-                  );
-                })}
-                <div className="d-flex justify-content-between align-items-center py-2 mt-3">
-                  <span><strong>TOTAL:</strong></span>
-                  <span className="fs-5 fw-bold text-primary">
-                    LKR {expense_breakdown.total_expenses.toLocaleString()}
+                <h5 className="mb-3 fw-bold" style={{color:'#4a5568'}}>💸 Monthly Expenses</h5>
+                {(() => {
+                  const icons = {
+                    accommodation: {icon:'🏠', color:'#6c63ff'},
+                    food:          {icon:'🍽️', color:'#38b2ac'},
+                    transport:     {icon:'🚌', color:'#ed8936'},
+                    education:     {icon:'📚', color:'#4299e1'},
+                    entertainment: {icon:'🎉', color:'#ed64a6'},
+                    utilities:     {icon:'💡', color:'#ecc94b'},
+                    healthcare:    {icon:'🏥', color:'#fc8181'},
+                    other:         {icon:'📦', color:'#a0aec0'},
+                    internet:      {icon:'📶', color:'#667eea'},
+                    study_materials:{icon:'✏️', color:'#4299e1'},
+                  };
+                  const total = expense_breakdown.total_expenses || 1;
+                  return Object.entries(expense_breakdown)
+                    .filter(([k]) => k !== 'total_expenses' && expense_breakdown[k] > 0)
+                    .sort(([,a],[,b]) => b - a)
+                    .map(([category, amount]) => {
+                      const pct = ((amount / total) * 100).toFixed(1);
+                      const meta = icons[category] || {icon:'💰', color:'#718096'};
+                      const label = category.replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+                      return (
+                        <div key={category} className="mb-3">
+                          <div className="d-flex justify-content-between align-items-center mb-1">
+                            <span style={{fontWeight:600, color:'#2d3748'}}>
+                              {meta.icon} {label}
+                            </span>
+                            <span style={{fontWeight:700, color: meta.color}}>
+                              LKR {amount.toLocaleString()}
+                              <span className="ms-2 text-muted fw-normal" style={{fontSize:'0.8rem'}}>({pct}%)</span>
+                            </span>
+                          </div>
+                          <div style={{background:'#edf2f7', borderRadius:'999px', height:'8px', overflow:'hidden'}}>
+                            <div style={{
+                              width: `${Math.min(pct, 100)}%`,
+                              height:'100%',
+                              background: meta.color,
+                              borderRadius:'999px',
+                              transition:'width 0.8s ease'
+                            }}/>
+                          </div>
+                        </div>
+                      );
+                    });
+                })()}
+                <div className="d-flex justify-content-between align-items-center mt-4 pt-3"
+                     style={{borderTop:'2px dashed #e2e8f0'}}>
+                  <span style={{fontWeight:700, fontSize:'1rem', color:'#2d3748'}}>TOTAL EXPENSES</span>
+                  <span style={{fontWeight:800, fontSize:'1.2rem',
+                    background:'linear-gradient(135deg,#667eea,#764ba2)',
+                    WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent'}}>
+                    LKR {expense_breakdown.total_expenses?.toLocaleString()}
                   </span>
                 </div>
               </Col>
               <Col md={6}>
-                <h5 className="mb-3">Auto-Calculated Budgets</h5>
+                <h5 className="mb-3 fw-bold" style={{color:'#4a5568'}}>🤖 Calculated Budgets</h5>
                 {calculated_budgets.food && (
-                  <div className="mb-3 p-3 bg-light rounded">
+                  <div className="mb-3 p-3 rounded" style={{background:'#f0fff4', border:'1px solid #9ae6b4'}}>
                     <div className="d-flex justify-content-between align-items-center mb-1">
                       <span><strong>🍽️ Food Budget:</strong></span>
                       <span className="text-success fw-bold fs-6">
@@ -935,7 +1033,7 @@ const BudgetOptimizerNew = () => {
                   </div>
                 )}
                 {calculated_budgets.transport && (
-                  <div className="mb-3 p-3 bg-light rounded">
+                  <div className="mb-3 p-3 rounded" style={{background:'#eff6ff', border:'1px solid #bfdbfe'}}>
                     {/* Header row */}
                     <div className="d-flex justify-content-between align-items-center mb-2">
                       <span><strong>🚌 Transport Budget:</strong></span>
@@ -1750,12 +1848,306 @@ const BudgetOptimizerNew = () => {
           <Button variant="outline-primary" onClick={() => setCurrentStep(1)} className="me-2">
             📝 Edit Profile
           </Button>
-          <Button variant="primary" onClick={() => window.print()}>
-            🖨️ Print Report
+          <Button variant="primary" onClick={handlePrintReport}>
+            🖨️ Print Full Report
           </Button>
         </div>
       </div>
     );
+  };
+
+  const handlePrintReport = () => {
+    if (!analysisResult) return;
+    const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment, recommendation } = analysisResult;
+    const strategy = analysisResult.optimal_strategy;
+    const date = new Date().toLocaleDateString('en-LK', { year:'numeric', month:'long', day:'numeric' });
+
+    const catIcons = { accommodation:'🏠', food:'🍽️', transport:'🚌', education:'📚',
+      entertainment:'🎉', utilities:'💡', healthcare:'🏥', internet:'📱', study_materials:'✏️', other:'📦' };
+
+    const expRows = Object.entries(expense_breakdown)
+      .filter(([k,v]) => k !== 'total_expenses' && v > 0)
+      .sort(([,a],[,b]) => b - a)
+      .map(([k,v]) => {
+        const pct = ((v / expense_breakdown.total_expenses) * 100).toFixed(1);
+        const label = k.replace(/_/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+        return `<tr>
+          <td>${catIcons[k] || '💰'} ${label}</td>
+          <td style="text-align:right;font-weight:600">LKR ${v.toLocaleString()}</td>
+          <td style="text-align:right;color:#666">${pct}%</td>
+          <td style="width:140px;padding-left:8px">
+            <div style="background:#edf2f7;border-radius:6px;height:10px">
+              <div style="width:${Math.min(pct,100)}%;height:100%;background:#667eea;border-radius:6px"></div>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+
+    const riskRecs = (risk_assessment?.recommendations || [])
+      .map(r => `<li><strong>${r.category}:</strong> ${r.message}${r.potential_savings>0 ? ` <span style="color:#28a745">(Save LKR ${r.potential_savings.toLocaleString()}/mo)</span>` : ''}</li>`)
+      .join('');
+
+    const altRows = (strategy?.optimal_alternatives || [])
+      .map(a => `<tr>
+        <td>${a.category||''}</td>
+        <td>${a.current_method||''}</td>
+        <td>${a.alternative||a.recommendation||''}</td>
+        <td style="color:#e53e3e;text-align:right">LKR ${(a.current_cost||0).toLocaleString()}</td>
+        <td style="color:#28a745;text-align:right">LKR ${(a.optimised_cost||a.target_cost||0).toLocaleString()}</td>
+        <td style="color:#28a745;font-weight:700;text-align:right">${a.savings_percentage||a.potential_savings_pct||''}%</td>
+      </tr>`).join('');
+
+    const actionSteps = (recommendation?.action_steps || [])
+      .map((s,i) => `<li style="margin-bottom:6px"><strong>Step ${i+1}:</strong> ${s}</li>`).join('');
+
+    const foodInfo = calculated_budgets?.food;
+    const transInfo = calculated_budgets?.transport;
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Student Budget Report - ${formData.full_name || 'Student'}</title>
+<style>
+  * { box-sizing: border-box; margin:0; padding:0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #2d3748; background: #fff; font-size:13px; }
+  .page { max-width:900px; margin:0 auto; padding:30px 30px; }
+  /* Header */
+  .report-header { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white;
+    border-radius:12px; padding:28px 32px; margin-bottom:24px; }
+  .report-header h1 { font-size:22px; font-weight:800; margin-bottom:4px; }
+  .report-header .sub { opacity:0.88; font-size:13px; }
+  .report-header .meta { margin-top:14px; display:flex; gap:30px; flex-wrap:wrap; }
+  .report-header .meta span { font-size:12px; opacity:0.9; }
+  .report-header .meta strong { display:block; font-size:14px; opacity:1; }
+  /* Section */
+  .section { margin-bottom:24px; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden; }
+  .section-header { padding:12px 18px; font-weight:700; font-size:14px; color:white; }
+  .section-body { padding:18px; }
+  .green { background: linear-gradient(135deg,#38b2ac,#2c7a7b); }
+  .purple { background: linear-gradient(135deg,#667eea,#764ba2); }
+  .orange { background: linear-gradient(135deg,#ed8936,#c05621); }
+  .danger { background: linear-gradient(135deg,#fc8181,#c53030); }
+  .success-bg { background: linear-gradient(135deg,#68d391,#276749); }
+  /* Summary boxes */
+  .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .summary-box { border:1px solid #e2e8f0; border-radius:8px; padding:14px; text-align:center; }
+  .summary-box .label { font-size:11px; color:#718096; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+  .summary-box .value { font-size:18px; font-weight:800; }
+  .blue { color:#667eea; } .red { color:#e53e3e; } .green-c { color:#28a745; }
+  /* Table */
+  table { width:100%; border-collapse:collapse; }
+  th { background:#f7fafc; font-size:11px; text-transform:uppercase; letter-spacing:.5px; 
+       color:#718096; padding:8px 10px; border-bottom:2px solid #e2e8f0; text-align:left; }
+  td { padding:8px 10px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  /* 2-col */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .detail-box { background:#f7fafc; border-radius:8px; padding:14px; }
+  .detail-box h4 { font-size:13px; font-weight:700; margin-bottom:10px; }
+  .detail-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed #e2e8f0; font-size:12px; }
+  .detail-row:last-child { border-bottom:none; font-weight:700; font-size:13px; }
+  /* Strategy */
+  .strategy-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-bottom:16px; }
+  .strategy-box { border-radius:8px; padding:14px; text-align:center; }
+  .s-current { background:#fff5f5; border:1px solid #fed7d7; }
+  .s-target { background:#f0fff4; border:1px solid #9ae6b4; }
+  .s-improve { background:#fffbf0; border:1px solid #fbd38d; }
+  .strategy-box .s-label { font-size:11px; color:#718096; margin-bottom:4px; }
+  .strategy-box .s-value { font-size:20px; font-weight:800; }
+  /* Risk */
+  .risk-high { background:#fff5f5; border:2px solid #fc8181; border-radius:8px; padding:14px; }
+  .risk-low  { background:#f0fff4; border:2px solid #9ae6b4; border-radius:8px; padding:14px; }
+  /* Gemini */
+  .ai-box { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:16px; font-size:12px; line-height:1.7; }
+  /* Tip */
+  .alert-box { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:12px 14px; margin-bottom:12px; font-size:12px; }
+  /* Footer */
+  .footer { text-align:center; margin-top:30px; font-size:11px; color:#a0aec0; border-top:1px solid #e2e8f0; padding-top:14px; }
+  ul { padding-left:18px; }
+  li { margin-bottom:4px; }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding:10px 16px; }
+    .no-print { display:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <h1>🎓 Student Budget Analysis Report</h1>
+    <div class="sub">AI-Powered Financial Insights — UniFinder LK</div>
+    <div class="meta">
+      <div><span>Student</span><strong>${formData.full_name || '—'}</strong></div>
+      <div><span>University</span><strong>${formData.university || '—'}</strong></div>
+      <div><span>Year / Field</span><strong>${formData.year_of_study} · ${formData.field_of_study}</strong></div>
+      <div><span>District</span><strong>${formData.district}</strong></div>
+      <div><span>Report Date</span><strong>${date}</strong></div>
+      <div><span>Accuracy</span><strong>86.89% ML Model</strong></div>
+    </div>
+  </div>
+
+  <!-- FINANCIAL SUMMARY -->
+  <div class="section">
+    <div class="section-header green">💰 Financial Summary</div>
+    <div class="section-body">
+      <div class="summary-grid">
+        <div class="summary-box">
+          <div class="label">Monthly Income</div>
+          <div class="value blue">LKR ${financial_summary.monthly_income.toLocaleString()}</div>
+          ${financial_summary.home_money > 0 ? `<div style="font-size:11px;color:#888;margin-top:3px">Base: LKR ${(financial_summary.base_income||0).toLocaleString()} + Family: LKR ${financial_summary.home_money.toLocaleString()}</div>` : ''}
+        </div>
+        <div class="summary-box">
+          <div class="label">Total Expenses</div>
+          <div class="value red">LKR ${financial_summary.total_expenses.toLocaleString()}</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Monthly Savings</div>
+          <div class="value ${financial_summary.monthly_savings >= 0 ? 'green-c' : 'red'}">LKR ${financial_summary.monthly_savings.toLocaleString()}</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Savings Rate</div>
+          <div class="value ${financial_summary.savings_rate >= 0 ? 'green-c' : 'red'}">${financial_summary.savings_rate}%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPENSE BREAKDOWN -->
+  <div class="section">
+    <div class="section-header purple">📊 Expense Breakdown</div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Category</th><th style="text-align:right">Amount</th><th style="text-align:right">Share</th><th>Distribution</th></tr></thead>
+        <tbody>${expRows}</tbody>
+        <tfoot>
+          <tr style="background:#f7fafc;font-weight:700;font-size:14px">
+            <td>TOTAL EXPENSES</td>
+            <td style="text-align:right;color:#667eea">LKR ${expense_breakdown.total_expenses.toLocaleString()}</td>
+            <td style="text-align:right">100%</td><td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- AI CALCULATED BUDGETS -->
+  <div class="section">
+    <div class="section-header orange">🤖 AI-Calculated Budgets</div>
+    <div class="section-body">
+      <div class="two-col">
+        ${foodInfo ? `<div class="detail-box">
+          <h4>🍽️ Food Budget — LKR ${foodInfo.monthly_total.toLocaleString()}/month</h4>
+          <div class="detail-row"><span>Food Type</span><span>${foodInfo.food_type}</span></div>
+          <div class="detail-row"><span>Daily Average</span><span>LKR ${foodInfo.daily_cost.toLocaleString()}</span></div>
+          ${foodInfo.breakdown?.groceries !== undefined ? `<div class="detail-row"><span>🛒 Groceries (cooking)</span><span>LKR ${Math.round(foodInfo.breakdown.groceries).toLocaleString()}</span></div>` : ''}
+          ${foodInfo.breakdown?.outside_meals !== undefined ? `<div class="detail-row"><span>🍜 Outside meals</span><span>LKR ${Math.round(foodInfo.breakdown.outside_meals).toLocaleString()}</span></div>` : ''}
+          <div class="detail-row"><span>Monthly Total</span><span>LKR ${foodInfo.monthly_total.toLocaleString()}</span></div>
+        </div>` : '<div class="detail-box"><h4>🍽️ Food Budget</h4><p style="color:#999">Not available</p></div>'}
+        ${transInfo ? `<div class="detail-box">
+          <h4>🚌 Transport Budget — LKR ${transInfo.monthly_total.toLocaleString()}/month</h4>
+          <div class="detail-row"><span>Method</span><span>${transInfo.transport_method}</span></div>
+          <div class="detail-row"><span>Commute Days/Month</span><span>${transInfo.commute_days_per_month || '~22'}</span></div>
+          <div class="detail-row"><span>Round-trip Fare</span><span>LKR ${transInfo.daily_cost.toLocaleString()}</span></div>
+          ${transInfo.one_way_trip_cost > 0 ? `<div class="detail-row"><span>One-way Fare</span><span>LKR ${transInfo.one_way_trip_cost.toLocaleString()}</span></div>` : ''}
+          ${transInfo.breakdown?.daily_commute > 0 ? `<div class="detail-row"><span>🏫 Campus Commute</span><span>LKR ${transInfo.breakdown.daily_commute.toLocaleString()}</span></div>` : ''}
+          ${transInfo.breakdown?.misc_trips > 0 ? `<div class="detail-row"><span>🌧️ Emergency Trips</span><span>LKR ${transInfo.breakdown.misc_trips.toLocaleString()}</span></div>` : ''}
+          ${transInfo.breakdown?.home_visits > 0 ? `<div class="detail-row"><span>🏡 Home Visits</span><span>LKR ${transInfo.breakdown.home_visits.toLocaleString()}</span></div>` : ''}
+          <div class="detail-row"><span>Monthly Total</span><span>LKR ${transInfo.monthly_total.toLocaleString()}</span></div>
+        </div>` : '<div class="detail-box"><h4>🚌 Transport Budget</h4><p style="color:#999">Not available</p></div>'}
+      </div>
+    </div>
+  </div>
+
+  <!-- RISK ASSESSMENT -->
+  ${risk_assessment ? `<div class="section">
+    <div class="section-header ${risk_assessment.risk_level === 'High Risk' ? 'danger' : 'success-bg'}">${risk_assessment.risk_level === 'High Risk' ? '⚠️' : '✅'} Risk Assessment — ${risk_assessment.risk_level}</div>
+    <div class="section-body">
+      <div class="${risk_assessment.risk_level === 'High Risk' ? 'risk-high' : 'risk-low'}" style="margin-bottom:${riskRecs ? '14px' : '0'}">
+        <strong>Risk Probability: ${risk_assessment.risk_probability}%</strong>
+        <span style="margin-left:16px;font-size:12px;color:#555">${risk_assessment.risk_level === 'High Risk' ? 'Your current spending puts you at financial risk. Review the recommendations below.' : 'Your financial situation looks healthy. Keep maintaining good spending habits!'}</span>
+      </div>
+      ${riskRecs ? `<h5 style="font-size:13px;margin-bottom:8px;font-weight:700">📋 Risk Recommendations:</h5><ul>${riskRecs}</ul>` : ''}
+    </div>
+  </div>` : ''}
+
+  <!-- OPTIMAL STRATEGY -->
+  ${strategy ? `<div class="section">
+    <div class="section-header success-bg">🎯 Personalised Optimal Budget Strategy</div>
+    <div class="section-body">
+      <div class="strategy-grid" style="margin-bottom:18px">
+        <div class="strategy-box s-current">
+          <div class="s-label">📊 Current Expenses</div>
+          <div class="s-value red">LKR ${strategy.current_situation.total_expenses.toLocaleString()}</div>
+          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.current_situation.savings_rate}% savings now</div>
+        </div>
+        <div class="strategy-box s-target">
+          <div class="s-label">🎯 Optimised Target</div>
+          <div class="s-value green-c">LKR ${strategy.optimal_target.target_expenses.toLocaleString()}</div>
+          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.optimal_target.target_savings_rate}% savings rate</div>
+        </div>
+        <div class="strategy-box s-improve">
+          <div class="s-label">💰 Potential Saving</div>
+          <div class="s-value ${strategy.potential_improvement.extra_savings > 0 ? 'green-c' : 'blue'}">
+            ${strategy.potential_improvement.extra_savings > 0 ? '+LKR ' + strategy.potential_improvement.extra_savings.toLocaleString() : 'Already Optimised ✅'}
+          </div>
+          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.potential_improvement.extra_savings > 0 ? 'extra/month possible' : 'Well done!'}</div>
+        </div>
+      </div>
+      ${altRows ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:10px">🔄 Optimisation Alternatives:</h5>
+      <table>
+        <thead><tr><th>Category</th><th>Current</th><th>Alternative</th><th style="text-align:right">Current Cost</th><th style="text-align:right">Target Cost</th><th style="text-align:right">Savings</th></tr></thead>
+        <tbody>${altRows}</tbody>
+      </table>` : ''}
+    </div>
+  </div>` : ''}
+
+  <!-- RECOMMENDATIONS -->
+  ${recommendation ? `<div class="section">
+    <div class="section-header purple">💡 Personalised Recommendations</div>
+    <div class="section-body">
+      ${recommendation.primary_advice ? `<div class="alert-box" style="margin-bottom:14px"><strong>📌 Primary Advice:</strong> ${recommendation.primary_advice}</div>` : ''}
+      ${actionSteps ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:8px">✅ Action Steps:</h5><ul>${actionSteps}</ul>` : ''}
+    </div>
+  </div>` : ''}
+
+  <!-- STUDENT PROFILE SUMMARY -->
+  <div class="section">
+    <div class="section-header" style="background:linear-gradient(135deg,#a0aec0,#718096)">👤 Student Profile</div>
+    <div class="section-body">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px">
+        <div><span style="color:#718096">University:</span> <strong>${formData.university}</strong></div>
+        <div><span style="color:#718096">Year:</span> <strong>${formData.year_of_study}</strong></div>
+        <div><span style="color:#718096">Field:</span> <strong>${formData.field_of_study}</strong></div>
+        <div><span style="color:#718096">District:</span> <strong>${formData.district}</strong></div>
+        <div><span style="color:#718096">Accommodation:</span> <strong>${formData.accommodation_type}</strong></div>
+        <div><span style="color:#718096">Transport:</span> <strong>${formData.transport_method}</strong></div>
+        <div><span style="color:#718096">Distance to Uni:</span> <strong>${formData.distance_uni_accommodation} km</strong></div>
+        <div><span style="color:#718096">Distance Home:</span> <strong>${formData.distance_home_uni} km</strong></div>
+        <div><span style="color:#718096">Home Visits:</span> <strong>${formData.home_visit_frequency}</strong></div>
+        <div><span style="color:#718096">Food Type:</span> <strong>${formData.food_type}</strong></div>
+        <div><span style="color:#718096">Diet:</span> <strong>${formData.diet_type}</strong></div>
+        <div><span style="color:#718096">Meals/Day:</span> <strong>${formData.meals_per_day}</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Generated by <strong>UniFinder LK — AI Student Budget Optimizer</strong> &nbsp;|&nbsp; ${date} &nbsp;|&nbsp; Model Accuracy: 86.89%</p>
+    <p style="margin-top:4px">This report is for financial guidance purposes only. Actual costs may vary.</p>
+  </div>
+
+</div>
+<script>window.onload = () => window.print();</script>
+</body>
+</html>`;
+
+    const win = window.open('', '_blank', 'width=1000,height=800');
+    win.document.write(html);
+    win.document.close();
   };
 
   const renderNavigationButtons = () => {
@@ -1873,6 +2265,41 @@ const BudgetOptimizerNew = () => {
           </Col>
         </Row>
       </Container>
+
+      {/* Distance Warning Modal */}
+      <Modal show={distanceWarning.show} onHide={cancelDistanceWarning} centered>
+        <Modal.Header closeButton className="border-0 pb-0">
+          <Modal.Title className="d-flex align-items-center gap-2">
+            <span style={{fontSize:'1.5rem'}}>⚠️</span>
+            <span>Unusual Distance Detected</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="pt-2">
+          <div className="alert alert-warning mb-3" style={{borderRadius:'10px'}}>
+            <strong>Are you sure?</strong>
+          </div>
+          <p className="mb-1">
+            You entered <strong>{distanceWarning.pendingValue} km</strong> for <em>Home to University</em>.
+          </p>
+          <p className="text-muted" style={{fontSize:'0.9rem'}}>
+            Sri Lanka's maximum end-to-end distance is about <strong>~430 km</strong>.
+            A value over <strong>800 km</strong> is unusual for a student commute.
+            Please double-check the distance.
+          </p>
+          <p className="mb-0" style={{fontSize:'0.9rem', color:'#555'}}>
+            If you travel abroad or have a special case, you can confirm below.
+          </p>
+        </Modal.Body>
+        <Modal.Footer className="border-0">
+          <Button variant="outline-secondary" onClick={cancelDistanceWarning}>
+            ✏️ Correct it
+          </Button>
+          <Button variant="warning" onClick={confirmDistanceWarning}>
+            ✅ Yes, it's correct
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 };
