@@ -12,7 +12,7 @@ DATA_FILENAMES = {
     "loans": "loans.csv",
 }
 
-# backend/scholarship_loan_matcher_ml/preprocessing -> parents[2] == backend
+# scholarship_loan_matcher_ml/preprocessing -> parents[2] == service root
 DEFAULT_DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 
 

@@ -22,10 +22,10 @@ function runUpdatePipeline() {
       'from scholarship_loan_matcher_ml.pipeline.update_pipeline import run_full_update',
       'try:',
       '    summary = run_full_update()',
-      '    print(json.dumps({"success": True, "summary": summary}))',
+      '    print(json.dumps({"success": True, "summary": summary}, default=str))',
       'except Exception as exc:',
       '    err = {"success": False, "error": str(exc), "details": traceback.format_exc()}',
-      '    print(json.dumps(err))',
+      '    print(json.dumps(err, default=str))',
     ].join('\n');
 
 		const child = spawn(PYTHON_BIN, ["-c", code], {
