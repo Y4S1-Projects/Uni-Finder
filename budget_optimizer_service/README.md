@@ -96,3 +96,18 @@ This service is completely self-contained:
 - All reference data is in `data/*.csv`
 - All ML models are in `data/*.pkl`
 - API keys only needed for the optional OpenAI AI strategy feature
+
+
+
+
+
+**python model run 
+
+source "/Users/shehansalitha/Desktop/research implementation/Uni-Finder/.venv/bin/activate"
+cd budget_optimizer_service
+python3 app.py
+
+
+
+//kill
+lsof -ti :5002 | xargs kill -9 2>/dev/null; echo "Port cleared"

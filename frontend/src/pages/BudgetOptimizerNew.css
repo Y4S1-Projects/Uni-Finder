@@ -55,25 +55,82 @@
   border-color: #28a745;
 }
 
-.step-item.completed .step-number::after {
-  content: '✓';
-  position: absolute;
+.step-done {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+
+.step-check {
+  font-size: 1.1rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.step-num-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  opacity: 0.85;
+  margin-top: 1px;
+  line-height: 1;
 }
 
 .step-label {
-  font-size: 0.9rem;
-  color: #6c757d;
-  font-weight: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
-.step-item.active .step-label {
+.step-num-text {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+}
+
+.step-name-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.step-item.active .step-num-text {
+  color: #667eea;
+}
+
+.step-item.active .step-name-text {
   color: #667eea;
   font-weight: bold;
 }
 
-.step-item.completed .step-label {
+.step-item.completed .step-num-text {
   color: #28a745;
+}
+
+.step-item.completed .step-name-text {
+  color: #28a745;
+}
+
+.step-item.clickable {
+  cursor: pointer;
+}
+
+.step-item.clickable:hover .step-number {
+  background: #218838;
+  border-color: #218838;
+  transform: scale(1.15);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.45);
+}
+
+.step-item.clickable:hover .step-name-text,
+.step-item.clickable:hover .step-num-text {
+  color: #218838;
+  font-weight: bold;
 }
 
 /* Card Styles */
