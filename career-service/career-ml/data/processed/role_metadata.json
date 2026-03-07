@@ -1,0 +1,4675 @@
+[
+  {
+    "role_id": "INTERN_SE",
+    "role_title": "Software Engineering Intern",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 1,
+    "ladder_length": 14,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "JR_SE",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "JR_SE",
+    "role_title": "Junior Software Engineer",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 2,
+    "ladder_length": 14,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "SE_I",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "SE_I",
+    "role_title": "Software Engineer I",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 3,
+    "ladder_length": 14,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SE_II",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "SE_II",
+    "role_title": "Software Engineer II",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 4,
+    "ladder_length": 14,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_SE",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "SENIOR_SE",
+    "role_title": "Senior Software Engineer",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 5,
+    "ladder_length": 14,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_ENGINEER",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "STAFF_ENGINEER",
+    "role_title": "Staff Engineer",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 6,
+    "ladder_length": 14,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "TECH_LEAD",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "TECH_LEAD",
+    "role_title": "Tech Lead",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 7,
+    "ladder_length": 14,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_ENGINEER",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_ENGINEER",
+    "role_title": "Principal Engineer",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 8,
+    "ladder_length": 14,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "DISTINGUISHED_ENGINEER",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "DISTINGUISHED_ENGINEER",
+    "role_title": "Distinguished Engineer",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 9,
+    "ladder_length": 14,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "ENGINEERING_MANAGER",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "ENGINEERING_MANAGER",
+    "role_title": "Engineering Manager",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 10,
+    "ladder_length": 14,
+    "seniority_level": 8,
+    "seniority_label": "management",
+    "typical_experience_years": "10-18 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "SR_ENGINEERING_MANAGER",
+    "typical_salary_lkr_min": 5400000,
+    "typical_salary_lkr_max": 14400000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "SR_ENGINEERING_MANAGER",
+    "role_title": "Senior Engineering Manager",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 11,
+    "ladder_length": 14,
+    "seniority_level": 8,
+    "seniority_label": "management",
+    "typical_experience_years": "10-18 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_ENGINEERING",
+    "typical_salary_lkr_min": 5400000,
+    "typical_salary_lkr_max": 14400000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_ENGINEERING",
+    "role_title": "Director of Engineering",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 12,
+    "ladder_length": 14,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "VP_ENGINEERING",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "VP_ENGINEERING",
+    "role_title": "VP of Engineering",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 13,
+    "ladder_length": 14,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "CTO",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "CTO",
+    "role_title": "Chief Technology Officer",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 14,
+    "ladder_length": 14,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  },
+  {
+    "role_id": "JR_FE_DEV",
+    "role_title": "Junior Frontend Developer",
+    "domain": "FRONTEND_ENGINEERING",
+    "ladder_position": 1,
+    "ladder_length": 7,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "FE_DEV",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "e-commerce",
+      "saas",
+      "media",
+      "adtech",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Meta Front-End Developer",
+      "AWS Cloud Practitioner"
+    ]
+  },
+  {
+    "role_id": "FE_DEV",
+    "role_title": "Frontend Developer",
+    "domain": "FRONTEND_ENGINEERING",
+    "ladder_position": 2,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_FE_DEV",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "e-commerce",
+      "saas",
+      "media",
+      "adtech",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Meta Front-End Developer",
+      "AWS Cloud Practitioner"
+    ]
+  },
+  {
+    "role_id": "SENIOR_FE_DEV",
+    "role_title": "Senior Frontend Developer",
+    "domain": "FRONTEND_ENGINEERING",
+    "ladder_position": 3,
+    "ladder_length": 7,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_FE_DEV",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "e-commerce",
+      "saas",
+      "media",
+      "adtech",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Meta Front-End Developer",
+      "AWS Cloud Practitioner"
+    ]
+  },
+  {
+    "role_id": "STAFF_FE_DEV",
+    "role_title": "Staff Frontend Developer",
+    "domain": "FRONTEND_ENGINEERING",
+    "ladder_position": 4,
+    "ladder_length": 7,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "LEAD_FE_DEV",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "e-commerce",
+      "saas",
+      "media",
+      "adtech",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Meta Front-End Developer",
+      "AWS Cloud Practitioner"
+    ]
+  },
+  {
+    "role_id": "LEAD_FE_DEV",
+    "role_title": "Lead Frontend Developer",
+    "domain": "FRONTEND_ENGINEERING",
+    "ladder_position": 5,
+    "ladder_length": 7,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "FRONTEND_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "e-commerce",
+      "saas",
+      "media",
+      "adtech",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Meta Front-End Developer",
+      "AWS Cloud Practitioner"
+    ]
+  },
+  {
+    "role_id": "FRONTEND_ARCHITECT",
+    "role_title": "Frontend Architect",
+    "domain": "FRONTEND_ENGINEERING",
+    "ladder_position": 6,
+    "ladder_length": 7,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_FRONTEND",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "e-commerce",
+      "saas",
+      "media",
+      "adtech",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Meta Front-End Developer",
+      "AWS Cloud Practitioner"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_FRONTEND",
+    "role_title": "Director of Frontend Engineering",
+    "domain": "FRONTEND_ENGINEERING",
+    "ladder_position": 7,
+    "ladder_length": 7,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "e-commerce",
+      "saas",
+      "media",
+      "adtech",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Meta Front-End Developer",
+      "AWS Cloud Practitioner"
+    ]
+  },
+  {
+    "role_id": "JR_BE_DEV",
+    "role_title": "Junior Backend Developer",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 1,
+    "ladder_length": 8,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "BE_DEV",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "BE_DEV",
+    "role_title": "Backend Developer",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 2,
+    "ladder_length": 8,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_BE_DEV",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "SENIOR_BE_DEV",
+    "role_title": "Senior Backend Developer",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 3,
+    "ladder_length": 8,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_BE_DEV",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "STAFF_BE_DEV",
+    "role_title": "Staff Backend Developer",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 4,
+    "ladder_length": 8,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "LEAD_BE_DEV",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "LEAD_BE_DEV",
+    "role_title": "Lead Backend Developer",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 5,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "BACKEND_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "BACKEND_ARCHITECT",
+    "role_title": "Backend Architect",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 6,
+    "ladder_length": 8,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "SYSTEMS_ARCHITECT",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "SYSTEMS_ARCHITECT",
+    "role_title": "Systems Architect",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 7,
+    "ladder_length": 8,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_BACKEND",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_BACKEND",
+    "role_title": "Director of Backend Engineering",
+    "domain": "BACKEND_ENGINEERING",
+    "ladder_position": 8,
+    "ladder_length": 8,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "fintech",
+      "enterprise",
+      "cloud_services",
+      "saas",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Oracle Certified Java"
+    ]
+  },
+  {
+    "role_id": "JR_FS_DEV",
+    "role_title": "Junior Full-Stack Developer",
+    "domain": "FULLSTACK_ENGINEERING",
+    "ladder_position": 1,
+    "ladder_length": 6,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "FS_DEV",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "startups",
+      "saas",
+      "e-commerce",
+      "consulting",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "MongoDB Developer"
+    ]
+  },
+  {
+    "role_id": "FS_DEV",
+    "role_title": "Full-Stack Developer",
+    "domain": "FULLSTACK_ENGINEERING",
+    "ladder_position": 2,
+    "ladder_length": 6,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_FS_DEV",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "startups",
+      "saas",
+      "e-commerce",
+      "consulting",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "MongoDB Developer"
+    ]
+  },
+  {
+    "role_id": "SENIOR_FS_DEV",
+    "role_title": "Senior Full-Stack Developer",
+    "domain": "FULLSTACK_ENGINEERING",
+    "ladder_position": 3,
+    "ladder_length": 6,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_FS_DEV",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "startups",
+      "saas",
+      "e-commerce",
+      "consulting",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "MongoDB Developer"
+    ]
+  },
+  {
+    "role_id": "STAFF_FS_DEV",
+    "role_title": "Staff Full-Stack Developer",
+    "domain": "FULLSTACK_ENGINEERING",
+    "ladder_position": 4,
+    "ladder_length": 6,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "LEAD_FS_DEV",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "startups",
+      "saas",
+      "e-commerce",
+      "consulting",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "MongoDB Developer"
+    ]
+  },
+  {
+    "role_id": "LEAD_FS_DEV",
+    "role_title": "Lead Full-Stack Developer",
+    "domain": "FULLSTACK_ENGINEERING",
+    "ladder_position": 5,
+    "ladder_length": 6,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "FULLSTACK_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "startups",
+      "saas",
+      "e-commerce",
+      "consulting",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "MongoDB Developer"
+    ]
+  },
+  {
+    "role_id": "FULLSTACK_ARCHITECT",
+    "role_title": "Full-Stack Architect",
+    "domain": "FULLSTACK_ENGINEERING",
+    "ladder_position": 6,
+    "ladder_length": 6,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "startups",
+      "saas",
+      "e-commerce",
+      "consulting",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "MongoDB Developer"
+    ]
+  },
+  {
+    "role_id": "DATA_ANALYST_INT",
+    "role_title": "Data Analyst (Entry Level)",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 1,
+    "ladder_length": 13,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "DATA_ENGINEER_INT",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "DATA_ENGINEER_INT",
+    "role_title": "Data Engineer (Entry Level)",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 2,
+    "ladder_length": 13,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "JR_DATA_ANALYST",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "JR_DATA_ANALYST",
+    "role_title": "Junior Data Analyst",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 3,
+    "ladder_length": 13,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "JR_DATA_ENGINEER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "JR_DATA_ENGINEER",
+    "role_title": "Junior Data Engineer",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 4,
+    "ladder_length": 13,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "DATA_ANALYST",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "DATA_ANALYST",
+    "role_title": "Data Analyst",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 5,
+    "ladder_length": 13,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "DATA_ENGINEER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "DATA_ENGINEER",
+    "role_title": "Data Engineer",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 6,
+    "ladder_length": 13,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_DATA_ANALYST",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "SENIOR_DATA_ANALYST",
+    "role_title": "Senior Data Analyst",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 7,
+    "ladder_length": 13,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "SENIOR_DATA_ENGINEER",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "SENIOR_DATA_ENGINEER",
+    "role_title": "Senior Data Engineer",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 8,
+    "ladder_length": 13,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_DATA_ENGINEER",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "STAFF_DATA_ENGINEER",
+    "role_title": "Staff Data Engineer",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 9,
+    "ladder_length": 13,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "LEAD_DATA_ANALYST",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "LEAD_DATA_ANALYST",
+    "role_title": "Lead Data Analyst",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 10,
+    "ladder_length": 13,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_DATA_ENGINEER",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_DATA_ENGINEER",
+    "role_title": "Principal Data Engineer",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 11,
+    "ladder_length": 13,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "DATA_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "DATA_ARCHITECT",
+    "role_title": "Data Architect",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 12,
+    "ladder_length": 13,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_DATA",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_DATA",
+    "role_title": "Director of Data Engineering",
+    "domain": "DATA_ENGINEERING",
+    "ladder_position": 13,
+    "ladder_length": 13,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "fintech",
+      "banking",
+      "telecom",
+      "insurance",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Data Engineer",
+      "Databricks Data Engineer",
+      "AWS Data Analytics"
+    ]
+  },
+  {
+    "role_id": "DATA_SCIENTIST_INT",
+    "role_title": "Data Scientist (Entry Level)",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 1,
+    "ladder_length": 9,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "JR_DATA_SCIENTIST",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "JR_DATA_SCIENTIST",
+    "role_title": "Junior Data Scientist",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 2,
+    "ladder_length": 9,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "DATA_SCIENTIST",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "DATA_SCIENTIST",
+    "role_title": "Data Scientist",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 3,
+    "ladder_length": 9,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "RESEARCH_SCIENTIST",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "RESEARCH_SCIENTIST",
+    "role_title": "Research Scientist",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 4,
+    "ladder_length": 9,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_DATA_SCIENTIST",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "SENIOR_DATA_SCIENTIST",
+    "role_title": "Senior Data Scientist",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 5,
+    "ladder_length": 9,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_DATA_SCIENTIST",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "STAFF_DATA_SCIENTIST",
+    "role_title": "Staff Data Scientist",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 6,
+    "ladder_length": 9,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_DATA_SCIENTIST",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_DATA_SCIENTIST",
+    "role_title": "Principal Data Scientist",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 7,
+    "ladder_length": 9,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "DIRECTOR_DATA_SCIENCE",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_DATA_SCIENCE",
+    "role_title": "Director of Data Science",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 8,
+    "ladder_length": 9,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "HEAD_OF_DATA_SCIENCE",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "HEAD_OF_DATA_SCIENCE",
+    "role_title": "Head of Data Science",
+    "domain": "DATA_SCIENCE",
+    "ladder_position": 9,
+    "ladder_length": 9,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "healthtech",
+      "telecom",
+      "retail"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "IBM Data Science",
+      "Google Data Analytics",
+      "Coursera ML Specialization"
+    ]
+  },
+  {
+    "role_id": "AI_ML_ENGINEER_INT",
+    "role_title": "AI / ML Engineer (Entry Level)",
+    "domain": "AI_ML",
+    "ladder_position": 1,
+    "ladder_length": 10,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "JR_ML_ENGINEER",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "JR_ML_ENGINEER",
+    "role_title": "Junior ML Engineer",
+    "domain": "AI_ML",
+    "ladder_position": 2,
+    "ladder_length": 10,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "ML_ENGINEER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "ML_ENGINEER",
+    "role_title": "ML Engineer",
+    "domain": "AI_ML",
+    "ladder_position": 3,
+    "ladder_length": 10,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "ML_RESEARCH_SCIENTIST",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "ML_RESEARCH_SCIENTIST",
+    "role_title": "ML Research Scientist",
+    "domain": "AI_ML",
+    "ladder_position": 4,
+    "ladder_length": 10,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_ML_ENGINEER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "SENIOR_ML_ENGINEER",
+    "role_title": "Senior ML Engineer",
+    "domain": "AI_ML",
+    "ladder_position": 5,
+    "ladder_length": 10,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_ML_ENGINEER",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "STAFF_ML_ENGINEER",
+    "role_title": "Staff ML Engineer",
+    "domain": "AI_ML",
+    "ladder_position": 6,
+    "ladder_length": 10,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_ML_ENGINEER",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_ML_ENGINEER",
+    "role_title": "Principal ML Engineer",
+    "domain": "AI_ML",
+    "ladder_position": 7,
+    "ladder_length": 10,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "AI_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "AI_ARCHITECT",
+    "role_title": "AI Architect",
+    "domain": "AI_ML",
+    "ladder_position": 8,
+    "ladder_length": 10,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_AI_ML",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_AI_ML",
+    "role_title": "Director of AI / ML",
+    "domain": "AI_ML",
+    "ladder_position": 9,
+    "ladder_length": 10,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "HEAD_OF_AI",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "HEAD_OF_AI",
+    "role_title": "Head of AI",
+    "domain": "AI_ML",
+    "ladder_position": 10,
+    "ladder_length": 10,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "fintech",
+      "healthtech",
+      "autonomous_systems",
+      "adtech",
+      "research"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "TensorFlow Developer Certificate",
+      "AWS ML Specialty",
+      "Databricks ML Professional"
+    ]
+  },
+  {
+    "role_id": "DEVOPS_TRAINEE",
+    "role_title": "DevOps Trainee",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 1,
+    "ladder_length": 13,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "JR_DEVOPS_ENG",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "JR_DEVOPS_ENG",
+    "role_title": "Junior DevOps Engineer",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 2,
+    "ladder_length": 13,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "JR_SRE",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "JR_SRE",
+    "role_title": "Junior Site Reliability Engineer",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 3,
+    "ladder_length": 13,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "DEVOPS_ENGINEER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "DEVOPS_ENGINEER",
+    "role_title": "DevOps Engineer",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 4,
+    "ladder_length": 13,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SRE",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "SRE",
+    "role_title": "Site Reliability Engineer",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 5,
+    "ladder_length": 13,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_DEVOPS_ENG",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "SENIOR_DEVOPS_ENG",
+    "role_title": "Senior DevOps Engineer",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 6,
+    "ladder_length": 13,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "SENIOR_SRE",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "SENIOR_SRE",
+    "role_title": "Senior SRE",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 7,
+    "ladder_length": 13,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_DEVOPS_ENG",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "STAFF_DEVOPS_ENG",
+    "role_title": "Staff DevOps Engineer",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 8,
+    "ladder_length": 13,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "STAFF_SRE",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "STAFF_SRE",
+    "role_title": "Staff SRE",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 9,
+    "ladder_length": 13,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "LEAD_DEVOPS_ENG",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "LEAD_DEVOPS_ENG",
+    "role_title": "Lead DevOps Engineer",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 10,
+    "ladder_length": 13,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_SRE",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_SRE",
+    "role_title": "Principal SRE",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 11,
+    "ladder_length": 13,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "DEVOPS_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "DEVOPS_ARCHITECT",
+    "role_title": "DevOps Architect",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 12,
+    "ladder_length": 13,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_INFRASTRUCTURE",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_INFRASTRUCTURE",
+    "role_title": "Director of Infrastructure",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 13,
+    "ladder_length": 13,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "JR_CLOUD_ENG",
+    "role_title": "Junior Cloud Engineer",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 1,
+    "ladder_length": 8,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "CLOUD_ENGINEER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "CLOUD_ENGINEER",
+    "role_title": "Cloud Engineer",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 2,
+    "ladder_length": 8,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_CLOUD_ENG",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "SENIOR_CLOUD_ENG",
+    "role_title": "Senior Cloud Engineer",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 3,
+    "ladder_length": 8,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_CLOUD_ENG",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "STAFF_CLOUD_ENG",
+    "role_title": "Staff Cloud Engineer",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 4,
+    "ladder_length": 8,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_CLOUD_ARCHITECT",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_CLOUD_ARCHITECT",
+    "role_title": "Principal Cloud Architect",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 5,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "CLOUD_PLATFORM_LEAD",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "CLOUD_PLATFORM_LEAD",
+    "role_title": "Cloud Platform Lead",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 6,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "CLOUD_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "CLOUD_ARCHITECT",
+    "role_title": "Cloud Architect",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 7,
+    "ladder_length": 8,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_CLOUD",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_CLOUD",
+    "role_title": "Director of Cloud Engineering",
+    "domain": "CLOUD_ENGINEERING",
+    "ladder_position": 8,
+    "ladder_length": 8,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "cloud_services",
+      "enterprise",
+      "fintech",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Azure Solutions Architect",
+      "GCP Cloud Engineer"
+    ]
+  },
+  {
+    "role_id": "SECURITY_ANALYST_INT",
+    "role_title": "Security Analyst (Entry Level)",
+    "domain": "SECURITY",
+    "ladder_position": 1,
+    "ladder_length": 11,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "JR_SECURITY_ANALYST",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "JR_SECURITY_ANALYST",
+    "role_title": "Junior Security Analyst",
+    "domain": "SECURITY",
+    "ladder_position": 2,
+    "ladder_length": 11,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "SECURITY_ANALYST",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "SECURITY_ANALYST",
+    "role_title": "Security Analyst",
+    "domain": "SECURITY",
+    "ladder_position": 3,
+    "ladder_length": 11,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SECURITY_ENGINEER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "SECURITY_ENGINEER",
+    "role_title": "Security Engineer",
+    "domain": "SECURITY",
+    "ladder_position": 4,
+    "ladder_length": 11,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_SECURITY_ENG",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "SENIOR_SECURITY_ENG",
+    "role_title": "Senior Security Engineer",
+    "domain": "SECURITY",
+    "ladder_position": 5,
+    "ladder_length": 11,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_SECURITY_ENG",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "STAFF_SECURITY_ENG",
+    "role_title": "Staff Security Engineer",
+    "domain": "SECURITY",
+    "ladder_position": 6,
+    "ladder_length": 11,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "LEAD_SECURITY_ENG",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "LEAD_SECURITY_ENG",
+    "role_title": "Lead Security Engineer",
+    "domain": "SECURITY",
+    "ladder_position": 7,
+    "ladder_length": 11,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_SECURITY_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_SECURITY_ARCHITECT",
+    "role_title": "Principal Security Architect",
+    "domain": "SECURITY",
+    "ladder_position": 8,
+    "ladder_length": 11,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "SECURITY_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "SECURITY_ARCHITECT",
+    "role_title": "Security Architect",
+    "domain": "SECURITY",
+    "ladder_position": 9,
+    "ladder_length": 11,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_SECURITY",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_SECURITY",
+    "role_title": "Director of Security",
+    "domain": "SECURITY",
+    "ladder_position": 10,
+    "ladder_length": 11,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "CISO",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "CISO",
+    "role_title": "Chief Information Security Officer",
+    "domain": "SECURITY",
+    "ladder_position": 11,
+    "ladder_length": 11,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "banking",
+      "government",
+      "defense",
+      "fintech",
+      "enterprise"
+    ],
+    "required_certifications": [
+      "CompTIA Security+"
+    ],
+    "nice_to_have_certifications": [
+      "CISSP",
+      "CEH",
+      "CompTIA Security+",
+      "OSCP"
+    ]
+  },
+  {
+    "role_id": "JR_QA_ENG",
+    "role_title": "QA Engineer (Entry Level)",
+    "domain": "QA_TESTING",
+    "ladder_position": 1,
+    "ladder_length": 8,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "QA_ENGINEER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "QA_ENGINEER",
+    "role_title": "QA Engineer",
+    "domain": "QA_TESTING",
+    "ladder_position": 2,
+    "ladder_length": 8,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "QA_AUTOMATION_ENG",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "QA_AUTOMATION_ENG",
+    "role_title": "QA Automation Engineer",
+    "domain": "QA_TESTING",
+    "ladder_position": 3,
+    "ladder_length": 8,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_QA_ENG",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "SENIOR_QA_ENG",
+    "role_title": "Senior QA Engineer",
+    "domain": "QA_TESTING",
+    "ladder_position": 4,
+    "ladder_length": 8,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "SENIOR_QA_AUTOMATION",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "SENIOR_QA_AUTOMATION",
+    "role_title": "Senior QA Automation Engineer",
+    "domain": "QA_TESTING",
+    "ladder_position": 5,
+    "ladder_length": 8,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "LEAD_QA_ENG",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "LEAD_QA_ENG",
+    "role_title": "Lead QA Engineer",
+    "domain": "QA_TESTING",
+    "ladder_position": 6,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "QA_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "QA_ARCHITECT",
+    "role_title": "QA Architect",
+    "domain": "QA_TESTING",
+    "ladder_position": 7,
+    "ladder_length": 8,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_QA",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_QA",
+    "role_title": "Director of QA",
+    "domain": "QA_TESTING",
+    "ladder_position": 8,
+    "ladder_length": 8,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "gaming",
+      "e-commerce",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ISTQB Foundation",
+      "Selenium Certification",
+      "Cypress Certification"
+    ]
+  },
+  {
+    "role_id": "JR_MOBILE_DEV",
+    "role_title": "Junior Mobile Developer",
+    "domain": "MOBILE_ENGINEERING",
+    "ladder_position": 1,
+    "ladder_length": 7,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "MOBILE_DEV",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "e-commerce",
+      "fintech",
+      "media",
+      "healthtech",
+      "transport"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Android Developer",
+      "Apple Swift Certification"
+    ]
+  },
+  {
+    "role_id": "MOBILE_DEV",
+    "role_title": "Mobile Developer",
+    "domain": "MOBILE_ENGINEERING",
+    "ladder_position": 2,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_MOBILE_DEV",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "e-commerce",
+      "fintech",
+      "media",
+      "healthtech",
+      "transport"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Android Developer",
+      "Apple Swift Certification"
+    ]
+  },
+  {
+    "role_id": "SENIOR_MOBILE_DEV",
+    "role_title": "Senior Mobile Developer",
+    "domain": "MOBILE_ENGINEERING",
+    "ladder_position": 3,
+    "ladder_length": 7,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_MOBILE_DEV",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "e-commerce",
+      "fintech",
+      "media",
+      "healthtech",
+      "transport"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Android Developer",
+      "Apple Swift Certification"
+    ]
+  },
+  {
+    "role_id": "STAFF_MOBILE_DEV",
+    "role_title": "Staff Mobile Developer",
+    "domain": "MOBILE_ENGINEERING",
+    "ladder_position": 4,
+    "ladder_length": 7,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "LEAD_MOBILE_DEV",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "e-commerce",
+      "fintech",
+      "media",
+      "healthtech",
+      "transport"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Android Developer",
+      "Apple Swift Certification"
+    ]
+  },
+  {
+    "role_id": "LEAD_MOBILE_DEV",
+    "role_title": "Lead Mobile Developer",
+    "domain": "MOBILE_ENGINEERING",
+    "ladder_position": 5,
+    "ladder_length": 7,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "MOBILE_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "e-commerce",
+      "fintech",
+      "media",
+      "healthtech",
+      "transport"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Android Developer",
+      "Apple Swift Certification"
+    ]
+  },
+  {
+    "role_id": "MOBILE_ARCHITECT",
+    "role_title": "Mobile Architect",
+    "domain": "MOBILE_ENGINEERING",
+    "ladder_position": 6,
+    "ladder_length": 7,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_MOBILE",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "e-commerce",
+      "fintech",
+      "media",
+      "healthtech",
+      "transport"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Android Developer",
+      "Apple Swift Certification"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_MOBILE",
+    "role_title": "Director of Mobile Engineering",
+    "domain": "MOBILE_ENGINEERING",
+    "ladder_position": 7,
+    "ladder_length": 7,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "e-commerce",
+      "fintech",
+      "media",
+      "healthtech",
+      "transport"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google Android Developer",
+      "Apple Swift Certification"
+    ]
+  },
+  {
+    "role_id": "JR_UI_UX_DESIGNER",
+    "role_title": "UI/UX Designer (Entry Level)",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 1,
+    "ladder_length": 8,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "UI_UX_DESIGNER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "UI_UX_DESIGNER",
+    "role_title": "UI/UX Designer",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 2,
+    "ladder_length": 8,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_UI_UX_DESIGNER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "SENIOR_UI_UX_DESIGNER",
+    "role_title": "Senior UI/UX Designer",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 3,
+    "ladder_length": 8,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "LEAD_UI_UX_DESIGNER",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "LEAD_UI_UX_DESIGNER",
+    "role_title": "Lead UI/UX Designer",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 4,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_DESIGNER",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_DESIGNER",
+    "role_title": "Principal Designer",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 5,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "DESIGN_MANAGER",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "DESIGN_MANAGER",
+    "role_title": "Design Manager",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 6,
+    "ladder_length": 8,
+    "seniority_level": 8,
+    "seniority_label": "management",
+    "typical_experience_years": "10-18 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_DESIGN",
+    "typical_salary_lkr_min": 5400000,
+    "typical_salary_lkr_max": 14400000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_DESIGN",
+    "role_title": "Director of Design",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 7,
+    "ladder_length": 8,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "HEAD_OF_DESIGN",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "HEAD_OF_DESIGN",
+    "role_title": "Head of Design",
+    "domain": "UI_UX_DESIGN",
+    "ladder_position": 8,
+    "ladder_length": 8,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "e-commerce",
+      "media",
+      "saas",
+      "fintech",
+      "healthtech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Google UX Design Certificate",
+      "Nielsen Norman UX"
+    ]
+  },
+  {
+    "role_id": "ASSOCIATE_PM",
+    "role_title": "Associate Product Manager",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 1,
+    "ladder_length": 9,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "PRODUCT_MANAGER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "PRODUCT_MANAGER",
+    "role_title": "Product Manager",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 2,
+    "ladder_length": 9,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_PM",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "SENIOR_PM",
+    "role_title": "Senior Product Manager",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 3,
+    "ladder_length": 9,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "LEAD_PM",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "LEAD_PM",
+    "role_title": "Lead Product Manager",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 4,
+    "ladder_length": 9,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_PM",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_PM",
+    "role_title": "Principal Product Manager",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 5,
+    "ladder_length": 9,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "GROUP_PM",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "GROUP_PM",
+    "role_title": "Group Product Manager",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 6,
+    "ladder_length": 9,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "DIRECTOR_PRODUCT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_PRODUCT",
+    "role_title": "Director of Product",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 7,
+    "ladder_length": 9,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "VP_PRODUCT",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "VP_PRODUCT",
+    "role_title": "VP of Product",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 8,
+    "ladder_length": 9,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "CPO",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "CPO",
+    "role_title": "Chief Product Officer",
+    "domain": "PRODUCT_MANAGEMENT",
+    "ladder_position": 9,
+    "ladder_length": 9,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "saas",
+      "e-commerce",
+      "fintech",
+      "media",
+      "enterprise"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CSPO",
+      "Pragmatic Marketing",
+      "AIPMM"
+    ]
+  },
+  {
+    "role_id": "JR_BUSINESS_ANALYST",
+    "role_title": "Business Analyst (Entry Level)",
+    "domain": "BUSINESS_ANALYSIS",
+    "ladder_position": 1,
+    "ladder_length": 7,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "BUSINESS_ANALYST",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "enterprise",
+      "consulting",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CBAP",
+      "CCBA",
+      "PMI-PBA"
+    ]
+  },
+  {
+    "role_id": "BUSINESS_ANALYST",
+    "role_title": "Business Analyst",
+    "domain": "BUSINESS_ANALYSIS",
+    "ladder_position": 2,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_BA",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "enterprise",
+      "consulting",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CBAP",
+      "CCBA",
+      "PMI-PBA"
+    ]
+  },
+  {
+    "role_id": "SENIOR_BA",
+    "role_title": "Senior Business Analyst",
+    "domain": "BUSINESS_ANALYSIS",
+    "ladder_position": 3,
+    "ladder_length": 7,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "LEAD_BA",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "enterprise",
+      "consulting",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CBAP",
+      "CCBA",
+      "PMI-PBA"
+    ]
+  },
+  {
+    "role_id": "LEAD_BA",
+    "role_title": "Lead Business Analyst",
+    "domain": "BUSINESS_ANALYSIS",
+    "ladder_position": 4,
+    "ladder_length": 7,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "PRINCIPAL_BA",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "enterprise",
+      "consulting",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CBAP",
+      "CCBA",
+      "PMI-PBA"
+    ]
+  },
+  {
+    "role_id": "PRINCIPAL_BA",
+    "role_title": "Principal Business Analyst",
+    "domain": "BUSINESS_ANALYSIS",
+    "ladder_position": 5,
+    "ladder_length": 7,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "BUSINESS_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "enterprise",
+      "consulting",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CBAP",
+      "CCBA",
+      "PMI-PBA"
+    ]
+  },
+  {
+    "role_id": "BUSINESS_ARCHITECT",
+    "role_title": "Business Architect",
+    "domain": "BUSINESS_ANALYSIS",
+    "ladder_position": 6,
+    "ladder_length": 7,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_BUSINESS_ANALYSIS",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "enterprise",
+      "consulting",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CBAP",
+      "CCBA",
+      "PMI-PBA"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_BUSINESS_ANALYSIS",
+    "role_title": "Director of Business Analysis",
+    "domain": "BUSINESS_ANALYSIS",
+    "ladder_position": 7,
+    "ladder_length": 7,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "banking",
+      "insurance",
+      "enterprise",
+      "consulting",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "CBAP",
+      "CCBA",
+      "PMI-PBA"
+    ]
+  },
+  {
+    "role_id": "JR_PROJECT_MANAGER",
+    "role_title": "Junior Project Manager",
+    "domain": "PROJECT_MANAGEMENT",
+    "ladder_position": 1,
+    "ladder_length": 7,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "PROJECT_MANAGER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "enterprise",
+      "consulting",
+      "government",
+      "banking",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "PMP",
+      "PRINCE2",
+      "CSM"
+    ]
+  },
+  {
+    "role_id": "PROJECT_MANAGER",
+    "role_title": "Project Manager",
+    "domain": "PROJECT_MANAGEMENT",
+    "ladder_position": 2,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "PROGRAM_MANAGER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "enterprise",
+      "consulting",
+      "government",
+      "banking",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "PMP",
+      "PRINCE2",
+      "CSM"
+    ]
+  },
+  {
+    "role_id": "PROGRAM_MANAGER",
+    "role_title": "Program Manager",
+    "domain": "PROJECT_MANAGEMENT",
+    "ladder_position": 3,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_PROJECT_MANAGER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "enterprise",
+      "consulting",
+      "government",
+      "banking",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "PMP",
+      "PRINCE2",
+      "CSM"
+    ]
+  },
+  {
+    "role_id": "SENIOR_PROJECT_MANAGER",
+    "role_title": "Senior Project Manager",
+    "domain": "PROJECT_MANAGEMENT",
+    "ladder_position": 4,
+    "ladder_length": 7,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "SENIOR_PROGRAM_MANAGER",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "enterprise",
+      "consulting",
+      "government",
+      "banking",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "PMP",
+      "PRINCE2",
+      "CSM"
+    ]
+  },
+  {
+    "role_id": "SENIOR_PROGRAM_MANAGER",
+    "role_title": "Senior Program Manager",
+    "domain": "PROJECT_MANAGEMENT",
+    "ladder_position": 5,
+    "ladder_length": 7,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "DIRECTOR_PMO",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "enterprise",
+      "consulting",
+      "government",
+      "banking",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "PMP",
+      "PRINCE2",
+      "CSM"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_PMO",
+    "role_title": "Director of PMO",
+    "domain": "PROJECT_MANAGEMENT",
+    "ladder_position": 6,
+    "ladder_length": 7,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": "VP_PROJECT_MANAGEMENT",
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "enterprise",
+      "consulting",
+      "government",
+      "banking",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "PMP",
+      "PRINCE2",
+      "CSM"
+    ]
+  },
+  {
+    "role_id": "VP_PROJECT_MANAGEMENT",
+    "role_title": "VP of Project Management",
+    "domain": "PROJECT_MANAGEMENT",
+    "ladder_position": 7,
+    "ladder_length": 7,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "enterprise",
+      "consulting",
+      "government",
+      "banking",
+      "telecom"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "PMP",
+      "PRINCE2",
+      "CSM"
+    ]
+  },
+  {
+    "role_id": "JR_TECH_WRITER",
+    "role_title": "Junior Technical Writer",
+    "domain": "TECHNICAL_WRITING",
+    "ladder_position": 1,
+    "ladder_length": 6,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "TECH_WRITER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "saas",
+      "enterprise",
+      "cloud_services",
+      "open_source",
+      "developer_tools"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Society for Technical Communication (STC)"
+    ]
+  },
+  {
+    "role_id": "TECH_WRITER",
+    "role_title": "Technical Writer",
+    "domain": "TECHNICAL_WRITING",
+    "ladder_position": 2,
+    "ladder_length": 6,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_TECH_WRITER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "saas",
+      "enterprise",
+      "cloud_services",
+      "open_source",
+      "developer_tools"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Society for Technical Communication (STC)"
+    ]
+  },
+  {
+    "role_id": "SENIOR_TECH_WRITER",
+    "role_title": "Senior Technical Writer",
+    "domain": "TECHNICAL_WRITING",
+    "ladder_position": 3,
+    "ladder_length": 6,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "LEAD_TECH_WRITER",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "saas",
+      "enterprise",
+      "cloud_services",
+      "open_source",
+      "developer_tools"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Society for Technical Communication (STC)"
+    ]
+  },
+  {
+    "role_id": "LEAD_TECH_WRITER",
+    "role_title": "Lead Technical Writer",
+    "domain": "TECHNICAL_WRITING",
+    "ladder_position": 4,
+    "ladder_length": 6,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "DOCUMENTATION_MANAGER",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "saas",
+      "enterprise",
+      "cloud_services",
+      "open_source",
+      "developer_tools"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Society for Technical Communication (STC)"
+    ]
+  },
+  {
+    "role_id": "DOCUMENTATION_MANAGER",
+    "role_title": "Documentation Manager",
+    "domain": "TECHNICAL_WRITING",
+    "ladder_position": 5,
+    "ladder_length": 6,
+    "seniority_level": 8,
+    "seniority_label": "management",
+    "typical_experience_years": "10-18 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_DOCUMENTATION",
+    "typical_salary_lkr_min": 5400000,
+    "typical_salary_lkr_max": 14400000,
+    "common_industries": [
+      "saas",
+      "enterprise",
+      "cloud_services",
+      "open_source",
+      "developer_tools"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Society for Technical Communication (STC)"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_DOCUMENTATION",
+    "role_title": "Director of Documentation",
+    "domain": "TECHNICAL_WRITING",
+    "ladder_position": 6,
+    "ladder_length": 6,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "saas",
+      "enterprise",
+      "cloud_services",
+      "open_source",
+      "developer_tools"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Society for Technical Communication (STC)"
+    ]
+  },
+  {
+    "role_id": "BLOCKCHAIN_DEV_INT",
+    "role_title": "Blockchain Developer (Entry Level)",
+    "domain": "BLOCKCHAIN_WEB3",
+    "ladder_position": 1,
+    "ladder_length": 7,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "BLOCKCHAIN_DEVELOPER",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "defi",
+      "nft",
+      "cryptocurrency",
+      "supply_chain",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Certified Blockchain Developer",
+      "Ethereum Developer"
+    ]
+  },
+  {
+    "role_id": "BLOCKCHAIN_DEVELOPER",
+    "role_title": "Blockchain Developer",
+    "domain": "BLOCKCHAIN_WEB3",
+    "ladder_position": 2,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "WEB3_ENGINEER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "defi",
+      "nft",
+      "cryptocurrency",
+      "supply_chain",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Certified Blockchain Developer",
+      "Ethereum Developer"
+    ]
+  },
+  {
+    "role_id": "WEB3_ENGINEER",
+    "role_title": "Web3 Engineer",
+    "domain": "BLOCKCHAIN_WEB3",
+    "ladder_position": 3,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_BLOCKCHAIN_DEV",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "defi",
+      "nft",
+      "cryptocurrency",
+      "supply_chain",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Certified Blockchain Developer",
+      "Ethereum Developer"
+    ]
+  },
+  {
+    "role_id": "SENIOR_BLOCKCHAIN_DEV",
+    "role_title": "Senior Blockchain Developer",
+    "domain": "BLOCKCHAIN_WEB3",
+    "ladder_position": 4,
+    "ladder_length": 7,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "LEAD_BLOCKCHAIN",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "defi",
+      "nft",
+      "cryptocurrency",
+      "supply_chain",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Certified Blockchain Developer",
+      "Ethereum Developer"
+    ]
+  },
+  {
+    "role_id": "LEAD_BLOCKCHAIN",
+    "role_title": "Lead Blockchain Engineer",
+    "domain": "BLOCKCHAIN_WEB3",
+    "ladder_position": 5,
+    "ladder_length": 7,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "BLOCKCHAIN_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "defi",
+      "nft",
+      "cryptocurrency",
+      "supply_chain",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Certified Blockchain Developer",
+      "Ethereum Developer"
+    ]
+  },
+  {
+    "role_id": "BLOCKCHAIN_ARCHITECT",
+    "role_title": "Blockchain Architect",
+    "domain": "BLOCKCHAIN_WEB3",
+    "ladder_position": 6,
+    "ladder_length": 7,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_BLOCKCHAIN",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "defi",
+      "nft",
+      "cryptocurrency",
+      "supply_chain",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Certified Blockchain Developer",
+      "Ethereum Developer"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_BLOCKCHAIN",
+    "role_title": "Director of Blockchain",
+    "domain": "BLOCKCHAIN_WEB3",
+    "ladder_position": 7,
+    "ladder_length": 7,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "defi",
+      "nft",
+      "cryptocurrency",
+      "supply_chain",
+      "fintech"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Certified Blockchain Developer",
+      "Ethereum Developer"
+    ]
+  },
+  {
+    "role_id": "JR_GAME_DEV",
+    "role_title": "Junior Game Developer",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 1,
+    "ladder_length": 8,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": "GAME_DEVELOPER",
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "GAME_DEVELOPER",
+    "role_title": "Game Developer",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 2,
+    "ladder_length": 8,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "GAME_DESIGNER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "GAME_DESIGNER",
+    "role_title": "Game Designer",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 3,
+    "ladder_length": 8,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_GAME_DEV",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "SENIOR_GAME_DEV",
+    "role_title": "Senior Game Developer",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 4,
+    "ladder_length": 8,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "LEAD_GAME_DEV",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "LEAD_GAME_DEV",
+    "role_title": "Lead Game Developer",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 5,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "TECHNICAL_GAME_DESIGNER",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "TECHNICAL_GAME_DESIGNER",
+    "role_title": "Technical Game Designer",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 6,
+    "ladder_length": 8,
+    "seniority_level": 6,
+    "seniority_label": "lead",
+    "typical_experience_years": "7-12 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "GAME_ARCHITECT",
+    "typical_salary_lkr_min": 3000000,
+    "typical_salary_lkr_max": 7200000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "GAME_ARCHITECT",
+    "role_title": "Game Architect",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 7,
+    "ladder_length": 8,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "GAME_DIRECTOR",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "GAME_DIRECTOR",
+    "role_title": "Game Director",
+    "domain": "GAME_DEVELOPMENT",
+    "ladder_position": 8,
+    "ladder_length": 8,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "gaming",
+      "vr_ar",
+      "simulation",
+      "education",
+      "entertainment"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Unity Certified Developer",
+      "Unreal Authorized Instructor"
+    ]
+  },
+  {
+    "role_id": "EMBEDDED_ENG_INT",
+    "role_title": "Embedded Engineer (Entry Level)",
+    "domain": "EMBEDDED_SYSTEMS",
+    "ladder_position": 1,
+    "ladder_length": 7,
+    "seniority_level": 1,
+    "seniority_label": "intern",
+    "typical_experience_years": "0-1 years",
+    "avg_progression_months_to_next": 12,
+    "next_role_in_ladder": "EMBEDDED_ENGINEER",
+    "typical_salary_lkr_min": 300000,
+    "typical_salary_lkr_max": 600000,
+    "common_industries": [
+      "automotive",
+      "iot",
+      "consumer_electronics",
+      "industrial",
+      "aerospace"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ARM Accredited Engineer",
+      "Certified LabVIEW Developer"
+    ]
+  },
+  {
+    "role_id": "EMBEDDED_ENGINEER",
+    "role_title": "Embedded Engineer",
+    "domain": "EMBEDDED_SYSTEMS",
+    "ladder_position": 2,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "FIRMWARE_ENGINEER",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "automotive",
+      "iot",
+      "consumer_electronics",
+      "industrial",
+      "aerospace"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ARM Accredited Engineer",
+      "Certified LabVIEW Developer"
+    ]
+  },
+  {
+    "role_id": "FIRMWARE_ENGINEER",
+    "role_title": "Firmware Engineer",
+    "domain": "EMBEDDED_SYSTEMS",
+    "ladder_position": 3,
+    "ladder_length": 7,
+    "seniority_level": 3,
+    "seniority_label": "mid",
+    "typical_experience_years": "2-4 years",
+    "avg_progression_months_to_next": 24,
+    "next_role_in_ladder": "SENIOR_EMBEDDED_ENG",
+    "typical_salary_lkr_min": 900000,
+    "typical_salary_lkr_max": 2400000,
+    "common_industries": [
+      "automotive",
+      "iot",
+      "consumer_electronics",
+      "industrial",
+      "aerospace"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ARM Accredited Engineer",
+      "Certified LabVIEW Developer"
+    ]
+  },
+  {
+    "role_id": "SENIOR_EMBEDDED_ENG",
+    "role_title": "Senior Embedded Engineer",
+    "domain": "EMBEDDED_SYSTEMS",
+    "ladder_position": 4,
+    "ladder_length": 7,
+    "seniority_level": 4,
+    "seniority_label": "senior",
+    "typical_experience_years": "4-7 years",
+    "avg_progression_months_to_next": 30,
+    "next_role_in_ladder": "STAFF_EMBEDDED_ENG",
+    "typical_salary_lkr_min": 1500000,
+    "typical_salary_lkr_max": 3600000,
+    "common_industries": [
+      "automotive",
+      "iot",
+      "consumer_electronics",
+      "industrial",
+      "aerospace"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ARM Accredited Engineer",
+      "Certified LabVIEW Developer"
+    ]
+  },
+  {
+    "role_id": "STAFF_EMBEDDED_ENG",
+    "role_title": "Staff Embedded Engineer",
+    "domain": "EMBEDDED_SYSTEMS",
+    "ladder_position": 5,
+    "ladder_length": 7,
+    "seniority_level": 5,
+    "seniority_label": "staff",
+    "typical_experience_years": "6-9 years",
+    "avg_progression_months_to_next": 36,
+    "next_role_in_ladder": "EMBEDDED_ARCHITECT",
+    "typical_salary_lkr_min": 2400000,
+    "typical_salary_lkr_max": 5400000,
+    "common_industries": [
+      "automotive",
+      "iot",
+      "consumer_electronics",
+      "industrial",
+      "aerospace"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ARM Accredited Engineer",
+      "Certified LabVIEW Developer"
+    ]
+  },
+  {
+    "role_id": "EMBEDDED_ARCHITECT",
+    "role_title": "Embedded Architect",
+    "domain": "EMBEDDED_SYSTEMS",
+    "ladder_position": 6,
+    "ladder_length": 7,
+    "seniority_level": 7,
+    "seniority_label": "architect",
+    "typical_experience_years": "10-15 years",
+    "avg_progression_months_to_next": 48,
+    "next_role_in_ladder": "DIRECTOR_EMBEDDED",
+    "typical_salary_lkr_min": 4200000,
+    "typical_salary_lkr_max": 9600000,
+    "common_industries": [
+      "automotive",
+      "iot",
+      "consumer_electronics",
+      "industrial",
+      "aerospace"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ARM Accredited Engineer",
+      "Certified LabVIEW Developer"
+    ]
+  },
+  {
+    "role_id": "DIRECTOR_EMBEDDED",
+    "role_title": "Director of Embedded Systems",
+    "domain": "EMBEDDED_SYSTEMS",
+    "ladder_position": 7,
+    "ladder_length": 7,
+    "seniority_level": 9,
+    "seniority_label": "executive",
+    "typical_experience_years": "15+ years",
+    "avg_progression_months_to_next": 0,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 9600000,
+    "typical_salary_lkr_max": 30000000,
+    "common_industries": [
+      "automotive",
+      "iot",
+      "consumer_electronics",
+      "industrial",
+      "aerospace"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "ARM Accredited Engineer",
+      "Certified LabVIEW Developer"
+    ]
+  },
+  {
+    "role_id": "JR_SYS_ADMIN",
+    "role_title": "Junior System Administrator",
+    "domain": "DEVOPS_SRE",
+    "ladder_position": 0,
+    "ladder_length": 0,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "cloud_services",
+      "fintech",
+      "enterprise",
+      "telecom",
+      "saas"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "Kubernetes CKA",
+      "AWS DevOps Engineer",
+      "HashiCorp Terraform Associate"
+    ]
+  },
+  {
+    "role_id": "JR_IT_SUPPORT",
+    "role_title": "Junior IT Support",
+    "domain": "SOFTWARE_ENGINEERING",
+    "ladder_position": 0,
+    "ladder_length": 0,
+    "seniority_level": 2,
+    "seniority_label": "junior",
+    "typical_experience_years": "0-2 years",
+    "avg_progression_months_to_next": 18,
+    "next_role_in_ladder": null,
+    "typical_salary_lkr_min": 480000,
+    "typical_salary_lkr_max": 1200000,
+    "common_industries": [
+      "enterprise",
+      "fintech",
+      "healthtech",
+      "saas",
+      "e-commerce"
+    ],
+    "required_certifications": [],
+    "nice_to_have_certifications": [
+      "AWS Solutions Architect",
+      "Kubernetes CKA"
+    ]
+  }
+]

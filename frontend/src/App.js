@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from "react-route
 import HomePage from "./pages/HomePage";
 import SignInPage from "./pages/SignInPage";
 import CareerPath from "./pages/CareerPath";
-import CareerLadder from "./pages/CareerLadder";
+import CareerLadderPage from "./pages/CareerLadderPage";
 import BudgetOptimizer from "./pages/BudgetOptimizer"; // Import Budget Optimizer
 import BudgetOptimizerNew from "./pages/BudgetOptimizerNew"; // Import New Budget Optimizer
 import Header from "./components/Header";
@@ -42,7 +42,7 @@ function AppContent() {
 					<Route path='/' element={<HomePage />} />
 					<Route path='/signin' element={<SignInPage />} />
 					<Route path='/career' element={<CareerPath />} />
-					<Route path='/career-ladder' element={<CareerLadder />} />
+					<Route path='/career-ladder' element={<CareerLadderPage />} />
 					<Route path='/degree-recommendations' element={<OnboardingGateway />} />
 					<Route path='/degree-recommendations/al-students' element={<ALWizardFlow />} />
 					<Route path='/degree-recommendations/all-students' element={<OLExplorerFlow />} />

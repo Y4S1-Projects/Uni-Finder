@@ -1,0 +1,107 @@
+==============================================================================
+  EXPANDED CAREER LADDERS v2 — REPORT
+==============================================================================
+
+─── 1. SUMMARY ──────────────────────────────────────────────
+  Domains:             20
+  Unique roles:        173
+  Metadata entries:    175
+  Data-backed roles:   13 / 15 existing
+
+─── 2. DOMAIN BREAKDOWN ─────────────────────────────────────
+  #   Domain                        Roles  Ladder
+  ─── ──────────────────────────── ──────  ──────────────────────────────────────────────────
+  1   SOFTWARE_ENGINEERING             14  INTERN_SE → JR_SE → SE_I → …
+  2   FRONTEND_ENGINEERING              7  JR_FE_DEV → FE_DEV → SENIOR_FE_DEV → …
+  3   BACKEND_ENGINEERING               8  JR_BE_DEV → BE_DEV → SENIOR_BE_DEV → …
+  4   FULLSTACK_ENGINEERING             6  JR_FS_DEV → FS_DEV → SENIOR_FS_DEV → …
+  5   DATA_ENGINEERING                 13  DATA_ANALYST_INT → DATA_ENGINEER_INT → JR_DATA_ANALYST → …
+  6   DATA_SCIENCE                      9  DATA_SCIENTIST_INT → JR_DATA_SCIENTIST → DATA_SCIENTIST → …
+  7   AI_ML                            10  AI_ML_ENGINEER_INT → JR_ML_ENGINEER → ML_ENGINEER → …
+  8   DEVOPS_SRE                       13  DEVOPS_TRAINEE → JR_DEVOPS_ENG → JR_SRE → …
+  9   CLOUD_ENGINEERING                 8  JR_CLOUD_ENG → CLOUD_ENGINEER → SENIOR_CLOUD_ENG → …
+  10  SECURITY                         11  SECURITY_ANALYST_INT → JR_SECURITY_ANALYST → SECURITY_ANALYST → …
+  11  QA_TESTING                        8  JR_QA_ENG → QA_ENGINEER → QA_AUTOMATION_ENG → …
+  12  MOBILE_ENGINEERING                7  JR_MOBILE_DEV → MOBILE_DEV → SENIOR_MOBILE_DEV → …
+  13  UI_UX_DESIGN                      8  JR_UI_UX_DESIGNER → UI_UX_DESIGNER → SENIOR_UI_UX_DESIGNER → …
+  14  PRODUCT_MANAGEMENT                9  ASSOCIATE_PM → PRODUCT_MANAGER → SENIOR_PM → …
+  15  BUSINESS_ANALYSIS                 7  JR_BUSINESS_ANALYST → BUSINESS_ANALYST → SENIOR_BA → …
+  16  PROJECT_MANAGEMENT                7  JR_PROJECT_MANAGER → PROJECT_MANAGER → PROGRAM_MANAGER → …
+  17  TECHNICAL_WRITING                 6  JR_TECH_WRITER → TECH_WRITER → SENIOR_TECH_WRITER → …
+  18  BLOCKCHAIN_WEB3                   7  BLOCKCHAIN_DEV_INT → BLOCKCHAIN_DEVELOPER → WEB3_ENGINEER → …
+  19  GAME_DEVELOPMENT                  8  JR_GAME_DEV → GAME_DEVELOPER → GAME_DESIGNER → …
+  20  EMBEDDED_SYSTEMS                  7  EMBEDDED_ENG_INT → EMBEDDED_ENGINEER → FIRMWARE_ENGINEER → …
+
+─── 3. SENIORITY DISTRIBUTION ───────────────────────────────
+  intern             9  (  5.1%)
+  junior            22  ( 12.6%)
+  mid               31  ( 17.7%)
+  senior            24  ( 13.7%)
+  staff             13  (  7.4%)
+  lead              28  ( 16.0%)
+  architect         16  (  9.1%)
+  management         4  (  2.3%)
+  executive         28  ( 16.0%)
+
+─── 4. SALARY RANGES (LKR/year) ─────────────────────────────
+  Level                     Min            Max
+  ────────────── ────────────── ──────────────
+  intern                300,000        600,000
+  junior                480,000      1,200,000
+  mid                   900,000      2,400,000
+  senior              1,500,000      3,600,000
+  staff               2,400,000      5,400,000
+  lead                3,000,000      7,200,000
+  architect           4,200,000      9,600,000
+  management          5,400,000     14,400,000
+  executive           9,600,000     30,000,000
+
+─── 5. EXISTING DATA-BACKED ROLES ───────────────────────────
+  AI_ML_ENGINEER_INT       → AI_ML                     L1 (intern)
+  DATA_ANALYST_INT         → DATA_ENGINEERING          L1 (intern)
+  DATA_ENGINEER_INT        → DATA_ENGINEERING          L1 (intern)
+  DEVOPS_TRAINEE           → DEVOPS_SRE                L1 (intern)
+  INTERN_SE                → SOFTWARE_ENGINEERING      L1 (intern)
+  JR_BE_DEV                → BACKEND_ENGINEERING       L2 (junior)
+  JR_BUSINESS_ANALYST      → BUSINESS_ANALYSIS         L2 (junior)
+  JR_FE_DEV                → FRONTEND_ENGINEERING      L2 (junior)
+  JR_FS_DEV                → FULLSTACK_ENGINEERING     L2 (junior)
+  JR_IT_SUPPORT            → SOFTWARE_ENGINEERING      L2 (junior)
+  JR_MOBILE_DEV            → MOBILE_ENGINEERING        L2 (junior)
+  JR_QA_ENG                → QA_TESTING                L2 (junior)
+  JR_SE                    → SOFTWARE_ENGINEERING      L2 (junior)
+  JR_SYS_ADMIN             → DEVOPS_SRE                L2 (junior)
+  JR_UI_UX_DESIGNER        → UI_UX_DESIGN              L2 (junior)
+
+─── 6. DOMAIN MIGRATION MAP (old → new) ─────────────────────
+  SOFTWARE_ENGINEERING      → SOFTWARE_ENGINEERING
+  DATA                      → DATA_ENGINEERING
+  AI_ML                     → AI_ML
+  DEVOPS                    → DEVOPS_SRE
+  QA                        → QA_TESTING
+  MOBILE                    → MOBILE_ENGINEERING
+  UI_UX                     → UI_UX_DESIGN
+
+─── 7. CERTIFICATIONS PER DOMAIN (nice-to-have) ─────────────
+  AI_ML                        → TensorFlow Developer Certificate, AWS ML Specialty, Databricks ML Professional
+  BACKEND_ENGINEERING          → AWS Solutions Architect, Oracle Certified Java
+  BLOCKCHAIN_WEB3              → Certified Blockchain Developer, Ethereum Developer
+  BUSINESS_ANALYSIS            → CBAP, CCBA, PMI-PBA
+  CLOUD_ENGINEERING            → AWS Solutions Architect, Azure Solutions Architect, GCP Cloud Engineer
+  DATA_ENGINEERING             → Google Data Engineer, Databricks Data Engineer, AWS Data Analytics
+  DATA_SCIENCE                 → IBM Data Science, Google Data Analytics, Coursera ML Specialization
+  DEVOPS_SRE                   → Kubernetes CKA, AWS DevOps Engineer, HashiCorp Terraform Associate
+  EMBEDDED_SYSTEMS             → ARM Accredited Engineer, Certified LabVIEW Developer
+  FRONTEND_ENGINEERING         → Meta Front-End Developer, AWS Cloud Practitioner
+  FULLSTACK_ENGINEERING        → AWS Solutions Architect, MongoDB Developer
+  GAME_DEVELOPMENT             → Unity Certified Developer, Unreal Authorized Instructor
+  MOBILE_ENGINEERING           → Google Android Developer, Apple Swift Certification
+  PRODUCT_MANAGEMENT           → CSPO, Pragmatic Marketing, AIPMM
+  PROJECT_MANAGEMENT           → PMP, PRINCE2, CSM
+  QA_TESTING                   → ISTQB Foundation, Selenium Certification, Cypress Certification
+  SECURITY                     → CISSP, CEH, CompTIA Security+…
+  SOFTWARE_ENGINEERING         → AWS Solutions Architect, Kubernetes CKA
+  TECHNICAL_WRITING            → Society for Technical Communication (STC)
+  UI_UX_DESIGN                 → Google UX Design Certificate, Nielsen Norman UX
+
+==============================================================================

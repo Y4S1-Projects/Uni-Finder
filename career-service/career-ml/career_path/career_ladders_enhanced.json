@@ -1,0 +1,417 @@
+{
+  "SOFTWARE_ENGINEERING": {
+    "domain_id": "SOFTWARE_ENGINEERING",
+    "domain_name": "Software Engineering",
+    "total_jobs_in_domain": 3637,
+    "levels": [
+      {
+        "level": 1,
+        "level_name": "Entry Level",
+        "role_id": "INTERN_SE",
+        "role_title": "Software Engineering Intern",
+        "experience_range": "0-1 years",
+        "avg_salary_range": "$30k-$50k",
+        "sample_job_titles": [
+          "Software Engineering Intern"
+        ],
+        "top_skills": [
+          "SK057",
+          "SK124",
+          "SK041",
+          "SK225"
+        ],
+        "skill_count": 4,
+        "jobs_in_role": 6
+      },
+      {
+        "level": 2,
+        "level_name": "Junior",
+        "role_id": "JR_MOBILE_DEV",
+        "role_title": "Junior Mobile Developer",
+        "experience_range": "1-3 years",
+        "avg_salary_range": "$50k-$75k",
+        "sample_job_titles": [
+          "Junior Mobile Developer",
+          "Junior Software Engineer",
+          "Data Engineer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK146",
+          "SK243",
+          "SK078",
+          "SK055",
+          "SK116",
+          "SK070",
+          "SK143",
+          "SK151",
+          "SK142",
+          "SK081"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 3631
+      },
+      {
+        "level": 3,
+        "level_name": "Mid-Level",
+        "role_id": "DATA_ENGINEER_INT",
+        "role_title": "Data Engineer (Entry Level)",
+        "experience_range": "3-5 years",
+        "avg_salary_range": "$75k-$100k",
+        "sample_job_titles": [
+          "Data Engineer (Entry Level)",
+          "AI / ML Engineer (Entry Level)",
+          "QA Engineer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK192",
+          "SK060",
+          "SK085",
+          "SK043",
+          "SK004",
+          "SK106",
+          "SK129",
+          "SK003",
+          "SK039",
+          "SK177"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 739
+      }
+    ],
+    "alternate_paths": [],
+    "related_domains": []
+  },
+  "DATA": {
+    "domain_id": "DATA",
+    "domain_name": "Data",
+    "total_jobs_in_domain": 2923,
+    "levels": [
+      {
+        "level": 2,
+        "level_name": "Junior",
+        "role_id": "JR_MOBILE_DEV",
+        "role_title": "Junior Mobile Developer",
+        "experience_range": "1-3 years",
+        "avg_salary_range": "$50k-$75k",
+        "sample_job_titles": [
+          "Junior Mobile Developer",
+          "Business Analyst (Entry Level)",
+          "Data Engineer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK146",
+          "SK243",
+          "SK078",
+          "SK055",
+          "SK116",
+          "SK070",
+          "SK143",
+          "SK151",
+          "SK142",
+          "SK081"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 2923
+      },
+      {
+        "level": 3,
+        "level_name": "Mid-Level",
+        "role_id": "JR_BUSINESS_ANALYST",
+        "role_title": "Business Analyst (Entry Level)",
+        "experience_range": "3-5 years",
+        "avg_salary_range": "$75k-$100k",
+        "sample_job_titles": [
+          "Business Analyst (Entry Level)",
+          "Data Engineer (Entry Level)",
+          "Data Analyst (Entry Level)"
+        ],
+        "top_skills": [
+          "SK145",
+          "SK263",
+          "SK241",
+          "SK266",
+          "SK226",
+          "SK148",
+          "SK296",
+          "SK067",
+          "SK177",
+          "SK284"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 1598
+      }
+    ],
+    "alternate_paths": [],
+    "related_domains": []
+  },
+  "AI_ML": {
+    "domain_id": "AI_ML",
+    "domain_name": "Ai Ml",
+    "total_jobs_in_domain": 731,
+    "levels": [
+      {
+        "level": 1,
+        "level_name": "Entry Level",
+        "role_id": "DEVOPS_TRAINEE",
+        "role_title": "DevOps / Cloud Trainee",
+        "experience_range": "0-1 years",
+        "avg_salary_range": "$30k-$50k",
+        "sample_job_titles": [
+          "DevOps / Cloud Trainee"
+        ],
+        "top_skills": [
+          "SK029",
+          "SK024",
+          "SK011",
+          "SK182",
+          "SK112",
+          "SK004",
+          "SK259",
+          "SK227",
+          "SK220",
+          "SK150"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 620
+      },
+      {
+        "level": 2,
+        "level_name": "Junior",
+        "role_id": "AI_ML_ENGINEER_INT",
+        "role_title": "AI / ML Engineer (Entry Level)",
+        "experience_range": "1-3 years",
+        "avg_salary_range": "$50k-$75k",
+        "sample_job_titles": [
+          "AI / ML Engineer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK031",
+          "SK277",
+          "SK004",
+          "SK034",
+          "SK091",
+          "SK060",
+          "SK011",
+          "SK029",
+          "SK043",
+          "SK244"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 111
+      },
+      {
+        "level": 3,
+        "level_name": "Mid-Level",
+        "role_id": "AI_ML_ENGINEER_INT",
+        "role_title": "AI / ML Engineer (Entry Level)",
+        "experience_range": "3-5 years",
+        "avg_salary_range": "$75k-$100k",
+        "sample_job_titles": [
+          "AI / ML Engineer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK031",
+          "SK277",
+          "SK004",
+          "SK034",
+          "SK091",
+          "SK060",
+          "SK011",
+          "SK029",
+          "SK043",
+          "SK244"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 111
+      }
+    ],
+    "alternate_paths": [],
+    "related_domains": []
+  },
+  "DEVOPS": {
+    "domain_id": "DEVOPS",
+    "domain_name": "Devops",
+    "total_jobs_in_domain": 620,
+    "levels": [
+      {
+        "level": 1,
+        "level_name": "Entry Level",
+        "role_id": "DEVOPS_TRAINEE",
+        "role_title": "DevOps / Cloud Trainee",
+        "experience_range": "0-1 years",
+        "avg_salary_range": "$30k-$50k",
+        "sample_job_titles": [
+          "DevOps / Cloud Trainee"
+        ],
+        "top_skills": [
+          "SK029",
+          "SK024",
+          "SK011",
+          "SK182",
+          "SK112",
+          "SK004",
+          "SK259",
+          "SK227",
+          "SK220",
+          "SK150"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 620
+      }
+    ],
+    "alternate_paths": [],
+    "related_domains": []
+  },
+  "QA": {
+    "domain_id": "QA",
+    "domain_name": "Qa",
+    "total_jobs_in_domain": 47,
+    "levels": [
+      {
+        "level": 2,
+        "level_name": "Junior",
+        "role_id": "JR_QA_ENG",
+        "role_title": "QA Engineer (Entry Level)",
+        "experience_range": "1-3 years",
+        "avg_salary_range": "$50k-$75k",
+        "sample_job_titles": [
+          "QA Engineer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK286",
+          "SK021",
+          "SK122",
+          "SK135",
+          "SK261",
+          "SK200",
+          "SK285",
+          "SK258",
+          "SK003",
+          "SK206"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 47
+      },
+      {
+        "level": 3,
+        "level_name": "Mid-Level",
+        "role_id": "JR_QA_ENG",
+        "role_title": "QA Engineer (Entry Level)",
+        "experience_range": "3-5 years",
+        "avg_salary_range": "$75k-$100k",
+        "sample_job_titles": [
+          "QA Engineer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK286",
+          "SK021",
+          "SK122",
+          "SK135",
+          "SK261",
+          "SK200",
+          "SK285",
+          "SK258",
+          "SK003",
+          "SK206"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 47
+      }
+    ],
+    "alternate_paths": [],
+    "related_domains": []
+  },
+  "MOBILE": {
+    "domain_id": "MOBILE",
+    "domain_name": "Mobile",
+    "total_jobs_in_domain": 1325,
+    "levels": [
+      {
+        "level": 2,
+        "level_name": "Junior",
+        "role_id": "JR_MOBILE_DEV",
+        "role_title": "Junior Mobile Developer",
+        "experience_range": "1-3 years",
+        "avg_salary_range": "$50k-$75k",
+        "sample_job_titles": [
+          "Junior Mobile Developer"
+        ],
+        "top_skills": [
+          "SK146",
+          "SK243",
+          "SK078",
+          "SK055",
+          "SK116",
+          "SK070",
+          "SK143",
+          "SK151",
+          "SK142",
+          "SK081"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 1325
+      }
+    ],
+    "alternate_paths": [],
+    "related_domains": []
+  },
+  "UIUX": {
+    "domain_id": "UIUX",
+    "domain_name": "Uiux",
+    "total_jobs_in_domain": 33,
+    "levels": [
+      {
+        "level": 2,
+        "level_name": "Junior",
+        "role_id": "JR_UI_UX_DESIGNER",
+        "role_title": "UI/UX Designer (Entry Level)",
+        "experience_range": "1-3 years",
+        "avg_salary_range": "$50k-$75k",
+        "sample_job_titles": [
+          "UI/UX Designer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK022",
+          "SK238",
+          "SK055",
+          "SK070",
+          "SK202",
+          "SK007",
+          "SK288",
+          "SK048",
+          "SK270",
+          "SK273"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 33
+      },
+      {
+        "level": 3,
+        "level_name": "Mid-Level",
+        "role_id": "JR_UI_UX_DESIGNER",
+        "role_title": "UI/UX Designer (Entry Level)",
+        "experience_range": "3-5 years",
+        "avg_salary_range": "$75k-$100k",
+        "sample_job_titles": [
+          "UI/UX Designer (Entry Level)"
+        ],
+        "top_skills": [
+          "SK022",
+          "SK238",
+          "SK055",
+          "SK070",
+          "SK202",
+          "SK007",
+          "SK288",
+          "SK048",
+          "SK270",
+          "SK273"
+        ],
+        "skill_count": 10,
+        "jobs_in_role": 33
+      }
+    ],
+    "alternate_paths": [],
+    "related_domains": []
+  }
+}
