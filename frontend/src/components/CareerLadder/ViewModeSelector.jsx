@@ -1,34 +1,36 @@
 import React from 'react';
-import { FaStream, FaNetworkWired, FaBalanceScale } from 'react-icons/fa';
+import { FaNetworkWired, FaBalanceScale } from 'react-icons/fa';
 
 export default function ViewModeSelector({ mode, onChange }) {
   const modes = [
-    { id: 'timeline', label: 'Timeline', icon: <FaStream /> },
-    { id: 'network', label: 'Network Graph', icon: <FaNetworkWired /> },
-    { id: 'comparison', label: 'Compare Paths', icon: <FaBalanceScale /> }
+    { id: 'network', label: 'Ecosystem Map', icon: <FaNetworkWired /> },
+    { id: 'comparison', label: 'Market Benchmark', icon: <FaBalanceScale /> }
   ];
   
   return (
-    <div>
-      <label className="block text-sm font-semibold text-gray-700 mb-2">
-        View Mode
-      </label>
-      <div className="flex gap-2">
-        {modes.map((m) => (
+    <div className="flex items-center gap-1">
+      {modes.map((m) => {
+        const isActive = mode === m.id;
+        return (
           <button
             key={m.id}
             onClick={() => onChange(m.id)}
-            className={`flex-1 px-4 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
-              mode === m.id
-                ? 'bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg'
-                : 'bg-white border-2 border-gray-200 text-gray-700 hover:border-purple-300'
-            }`}
+            className={`
+              relative px-6 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center gap-3 overflow-hidden
+              ${isActive 
+                ? 'text-white shadow-lg shadow-blue-500/20' 
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+              }
+            `}
           >
-            {m.icon}
-            {m.label}
+            {isActive && (
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 animate-in fade-in zoom-in duration-300" />
+            )}
+            <span className="relative z-10 text-lg">{m.icon}</span>
+            <span className="relative z-10 uppercase tracking-widest text-[10px]">{m.label}</span>
           </button>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }
