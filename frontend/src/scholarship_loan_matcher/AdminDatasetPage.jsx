@@ -6,11 +6,11 @@ export default function AdminDatasetPage() {
     <div className="matcher-landing">
       <section className="matcher-landing__hero matcher-landing__hero--admin">
         <p className="matcher-page__eyebrow">Admin Workspace</p>
-        <h1>Scholarship & Loan Dataset Admin</h1>
+        <h1>Scholarship & Loan Dataset Update</h1>
         <p className="matcher-page__lead">
           This page is intended for administrators who manage the live funding datasets.
           Running a full update will trigger web scraping, cleaning, and merging, and can take
-          around 10–12 minutes to complete.
+          around 10–20 minutes to complete.
         </p>
         <p className="matcher-landing__meta">
           Use this tool only when you need to refresh the underlying data sources.
@@ -29,7 +29,7 @@ export default function AdminDatasetPage() {
             <li>Persist the final CSVs that power all scholarship and loan recommendations.</li>
           </ul>
           <p className="matcher-landing__warning">
-            This process is resource-intensive and can take approximately 10–12 minutes.
+            This process is resource-intensive and can take approximately 10–20 minutes.
             Avoid running multiple updates back-to-back.
           </p>
         </article>

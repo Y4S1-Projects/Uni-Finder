@@ -141,7 +141,7 @@ export default function DatasetUpdateControl() {
             <h4 className="dataset-update-control__modal-title">Confirm dataset update</h4>
             <p className="dataset-update-control__modal-body">
               You are about to refresh the live scholarship and loan datasets. This process runs
-              a full scraping and cleaning pipeline and can take approximately 10–12 minutes to
+              a full scraping and cleaning pipeline and can take approximately 10–20 minutes to
               complete. During this time, the server will be busy but students can still browse
               using the existing data.
             </p>
