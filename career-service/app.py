@@ -133,9 +133,20 @@ def predict_role(req: PredictRoleRequest):
 def recommend_careers(req: RecommendRequest):
     """
     Recommend best-fit career roles based on cosine similarity.
+    Uses enhanced 330-dim vectors when extra profile fields are provided,
+    otherwise falls back to legacy 300-dim skill-only mode.
     """
     try:
-        result = recommend_careers_for_user(req.user_skill_ids, req.top_n)
+        result = recommend_careers_for_user(
+            req.user_skill_ids,
+            req.top_n,
+            experience_level=req.experience_level,
+            current_status=req.current_status,
+            education_level=req.education_level,
+            career_goal=req.career_goal,
+            preferred_domain=req.preferred_domain,
+            preferred_job_type=req.preferred_job_type,
+        )
         return result
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -8,6 +8,9 @@ from config import (
     ROLE_CLASSIFIER_PKL,
     JOB_SKILL_VECTORS_CSV,
     SKILLS_CSV,
+    ROLE_ENHANCED_PROFILES_CSV,
+    ENHANCED_FEATURE_COLUMNS_JSON,
+    JOBS_ENHANCED_FEATURES_CSV,
 )
 
 
@@ -20,6 +23,11 @@ class DataStore:
     skill_columns: list = []
     role_id_to_title: dict = {}
     skill_id_to_name: dict = {}
+    # Enhanced features (multi-feature recommendation)
+    role_enhanced_profiles: pd.DataFrame = None
+    enhanced_feature_meta: dict = {}
+    jobs_enhanced_features: pd.DataFrame = None
+    user_vectorizer = None
 
 
 def load_role_profiles():
@@ -96,6 +104,64 @@ def load_skill_names():
         DataStore.skill_id_to_name = {}
 
 
+def load_enhanced_profiles():
+    """Load enhanced role profiles and feature metadata"""
+    try:
+        if ROLE_ENHANCED_PROFILES_CSV.exists():
+            DataStore.role_enhanced_profiles = pd.read_csv(
+                ROLE_ENHANCED_PROFILES_CSV, index_col=0
+            )
+            print(f"[startup] Loaded role_enhanced_profiles: {DataStore.role_enhanced_profiles.shape}")
+        else:
+            print(f"[startup] Enhanced profiles not found: {ROLE_ENHANCED_PROFILES_CSV}")
+            DataStore.role_enhanced_profiles = None
+    except Exception as e:
+        print(f"[startup] Failed to load enhanced profiles: {e}")
+        DataStore.role_enhanced_profiles = None
+
+
+def load_enhanced_feature_meta():
+    """Load enhanced feature column metadata"""
+    import json
+    try:
+        if ENHANCED_FEATURE_COLUMNS_JSON.exists():
+            with open(ENHANCED_FEATURE_COLUMNS_JSON, "r") as f:
+                DataStore.enhanced_feature_meta = json.load(f)
+            print(f"[startup] Loaded enhanced feature metadata: "
+                  f"{len(DataStore.enhanced_feature_meta.get('all_feature_columns', []))} features")
+        else:
+            print(f"[startup] Enhanced feature metadata not found: {ENHANCED_FEATURE_COLUMNS_JSON}")
+    except Exception as e:
+        print(f"[startup] Failed to load enhanced feature metadata: {e}")
+
+
+def load_jobs_enhanced_features():
+    """Load enhanced job features for display purposes"""
+    try:
+        if JOBS_ENHANCED_FEATURES_CSV.exists():
+            DataStore.jobs_enhanced_features = pd.read_csv(JOBS_ENHANCED_FEATURES_CSV)
+            print(f"[startup] Loaded jobs_enhanced_features: {len(DataStore.jobs_enhanced_features)} rows")
+        else:
+            print(f"[startup] Enhanced features not found: {JOBS_ENHANCED_FEATURES_CSV}")
+    except Exception as e:
+        print(f"[startup] Failed to load enhanced features: {e}")
+
+
+def init_user_vectorizer():
+    """Initialize the user vectorizer"""
+    from config import SKILLS_CSV
+    try:
+        if ENHANCED_FEATURE_COLUMNS_JSON.exists() and SKILLS_CSV.exists():
+            from services.user_vectorizer import UserVectorizer
+            DataStore.user_vectorizer = UserVectorizer(
+                ENHANCED_FEATURE_COLUMNS_JSON, SKILLS_CSV
+            )
+        else:
+            print("[startup] Cannot init user vectorizer: missing feature metadata or skills CSV")
+    except Exception as e:
+        print(f"[startup] Failed to init user vectorizer: {e}")
+
+
 def load_all_data():
     """Load all data at startup"""
     from config import BASE_DIR, ML_DIR, ROLE_CLASSIFIER_PKL
@@ -111,3 +177,8 @@ def load_all_data():
     load_skill_columns()
     load_role_titles()
     load_skill_names()
+    # Enhanced features
+    load_enhanced_profiles()
+    load_enhanced_feature_meta()
+    load_jobs_enhanced_features()
+    init_user_vectorizer()

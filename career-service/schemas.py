@@ -17,6 +17,13 @@ class PredictRoleRequest(BaseModel):
 class RecommendRequest(BaseModel):
     user_skill_ids: List[str]
     top_n: Optional[int] = 5
+    # Enhanced profile fields (optional for backward compatibility)
+    experience_level: Optional[str] = None   # "student", "0-1", "1-3", "3-5", "5+"
+    current_status: Optional[str] = None     # "student", "graduate", "working"
+    education_level: Optional[str] = None    # "al", "diploma", "hnd", "bachelors", "masters"
+    career_goal: Optional[str] = None        # "first_job", "switch_career", "get_promoted"
+    preferred_domain: Optional[str] = None   # "software_engineering", "data", "ai_ml", etc.
+    preferred_job_type: Optional[str] = None # "full_time", "part_time", etc.
 
 
 class ExplainRequest(BaseModel):
