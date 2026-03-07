@@ -1,11 +1,11 @@
 .matcher-page {
-  margin-top: 50px;
+  margin-top: -1.5rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 6rem 1.5rem 4rem;
+  padding: 0 1.5rem 4rem;
   max-width: 1200px;
-  /* margin: 0 auto; */
+
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   min-height: 100vh;
   background: #ffffff;
@@ -331,8 +331,8 @@
 
 .matcher-landing {
   max-width: 1200px;
-  margin: 50px auto;
-  padding: 6rem 1.5rem 4rem;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 4rem;
   display: flex;
   flex-direction: column;
   gap: 2rem;
