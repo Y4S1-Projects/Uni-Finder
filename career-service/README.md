@@ -39,7 +39,25 @@ python -m uvicorn app:app --reload --host 127.0.0.1 --port 5004
 
 ## Data/model dependencies
 
-This service reads its artifacts from the `career-ml/` folder (CSV/JSON/PKL). If you move folders around, update the paths in `career-service/config.py`.
+This service includes the `career-ml/` folder containing all ML artifacts (CSV/JSON/PKL). The folder structure is:
+
+```
+career-service/
+├── career-ml/           # ML data, models, and scripts
+│   ├── data/
+│   │   ├── expanded/    # skills_v2.csv
+│   │   ├── processed/   # role profiles, job vectors, career ladders
+│   │   └── reports/     # analytics reports
+│   ├── models/          # trained classifiers (.pkl)
+│   └── scripts/         # training & data processing scripts
+├── services/            # recommender, explainer, vectorizer
+├── app.py               # FastAPI entry point
+├── config.py            # path configuration
+├── data_loader.py       # startup data loading
+└── requirements.txt
+```
+
+Paths are configured in `config.py`. Use `DATA_VERSION=v2` (default) or `DATA_VERSION=v1` to toggle between V2 and V1 datasets.
 
 ## Environment & configuration
 

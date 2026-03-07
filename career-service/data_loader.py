@@ -208,10 +208,10 @@ def init_user_vectorizer():
 
 def load_all_data():
     """Load all data at startup"""
-    from config import BASE_DIR, ML_DIR, ROLE_CLASSIFIER_PKL
+    from config import SERVICE_DIR, ML_DIR, ROLE_CLASSIFIER_PKL
     
     print(f"[startup] DATA_VERSION: {DATA_VERSION}")
-    print(f"[startup] BASE_DIR: {BASE_DIR}")
+    print(f"[startup] SERVICE_DIR: {SERVICE_DIR}")
     print(f"[startup] ML_DIR: {ML_DIR}")
     print(f"[startup] ROLE_CLASSIFIER_PKL: {ROLE_CLASSIFIER_PKL}")
     print(f"[startup] Model file exists: {ROLE_CLASSIFIER_PKL.exists()}")

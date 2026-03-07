@@ -3,8 +3,9 @@ from pathlib import Path
 import os
 
 # Directory paths
-BASE_DIR = Path(__file__).resolve().parent.parent
-ML_DIR = BASE_DIR / "career-ml"
+# career-ml is now inside career-service (restructured for deployment)
+SERVICE_DIR = Path(__file__).resolve().parent          # career-service/
+ML_DIR = SERVICE_DIR / "career-ml"                     # career-service/career-ml/
 
 # ── Data version toggle (set DATA_VERSION=v1 to revert) ─────────────────────
 DATA_VERSION = os.getenv("DATA_VERSION", "v2").lower()
@@ -41,8 +42,8 @@ JOBS_ENHANCED_FEATURES_CSV = ML_DIR / "data" / "processed" / "jobs_enhanced_feat
 try:
 	from dotenv import load_dotenv
 
-	# Load .env from the career-service directory (one level above this file)
-	env_path = BASE_DIR / "career-service" / ".env"
+	# Load .env from the career-service directory
+	env_path = SERVICE_DIR / ".env"
 	if env_path.exists():
 		load_dotenv(env_path)
 		print(f"[config] Loaded environment from {env_path}")
