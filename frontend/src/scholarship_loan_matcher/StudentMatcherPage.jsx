@@ -25,10 +25,10 @@ export default function StudentMatcherPage() {
     <div className="matcher-landing">
       <section className="matcher-landing__hero">
         <p className="matcher-page__eyebrow">Funding Discovery Workspace</p>
-        <h1>Scholarship & Financial Aid Matching</h1>
+        <h1>Find Your Perfect Scholarship & Funding Match</h1><br></br>
         <p className="matcher-page__lead">
-          Explore the latest education funding opportunities, then jump into the dedicated flows for
-          either scholarships or education loans based on your current priority.
+        Tell us about your academic profile and financial goals, and our AI system will match you with
+        scholarships and loans tailored to your unique situation. Every opportunity is ranked by relevance.
         </p>
         <div className="matcher-landing__cta">
           <Link className="matcher-landing__btn matcher-landing__btn--primary" to="/scholarship-matcher/scholarships">
