@@ -202,5 +202,5 @@ Your AI-Powered Student Budget Optimizer is now fully implemented and ready for 
 **python model run 
 
 source "/Users/shehansalitha/Desktop/research implementation/Uni-Finder/.venv/bin/activate"
-cd backend
+cd budget_optimizer_service
 python3 app_budget_enhanced.py
