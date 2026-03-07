@@ -1,0 +1,605 @@
+[
+  {
+    "role_id": "AI_ML_ENGINEER_INT",
+    "role_title": "AI / ML Engineer (Entry Level)",
+    "total_jobs_analyzed": 432,
+    "total_skills": 1147,
+    "core_skills": [],
+    "important_skills": [
+      "SK031:machine learning",
+      "SK004:python",
+      "SK124:data analyst"
+    ],
+    "nice_to_have": [
+      "SK041:software engineer",
+      "SK067:business analyst",
+      "SK034:algorithms",
+      "SK225:it manager",
+      "SK028:problem solving",
+      "SK107:network",
+      "SK057:network engineer",
+      "SK948:analytical thinking",
+      "SK117:system administrator",
+      "SK285:programming",
+      "SK239:computer science",
+      "SK091:artificial intelligence",
+      "SK135:testing",
+      "SK531:tensorflow",
+      "SK095:hardware",
+      "SK161:agile",
+      "SK277:data science",
+      "SK934:accountability"
+    ],
+    "core_count": 0,
+    "important_count": 3,
+    "nice_to_have_count": 18,
+    "optional_count": 1126,
+    "avg_skill_count": 17.3,
+    "top_skill_categories": [
+      "other",
+      "ml_ai"
+    ]
+  },
+  {
+    "role_id": "DATA_ANALYST_INT",
+    "role_title": "Data Analyst (Entry Level)",
+    "total_jobs_analyzed": 1327,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK124:data analyst",
+      "SK004:python",
+      "SK003:sql"
+    ],
+    "important_skills": [
+      "SK067:business analyst",
+      "SK043:big data",
+      "SK242:data engineer",
+      "SK948:analytical thinking"
+    ],
+    "nice_to_have": [
+      "SK591:apache spark",
+      "SK192:etl",
+      "SK060:hadoop",
+      "SK031:machine learning",
+      "SK001:java",
+      "SK041:software engineer",
+      "SK273:data visualization",
+      "SK239:computer science",
+      "SK285:programming",
+      "SK012:database",
+      "SK225:it manager",
+      "SK181:aws",
+      "SK102:project manager",
+      "SK934:accountability",
+      "SK028:problem solving"
+    ],
+    "core_count": 3,
+    "important_count": 4,
+    "nice_to_have_count": 15,
+    "optional_count": 1125,
+    "avg_skill_count": 20.1,
+    "top_skill_categories": [
+      "other",
+      "database",
+      "communication"
+    ]
+  },
+  {
+    "role_id": "DATA_ENGINEER_INT",
+    "role_title": "Data Engineer (Entry Level)",
+    "total_jobs_analyzed": 910,
+    "total_skills": 1147,
+    "core_skills": [],
+    "important_skills": [
+      "SK003:sql",
+      "SK012:database",
+      "SK124:data analyst",
+      "SK117:system administrator",
+      "SK041:software engineer",
+      "SK016:security"
+    ],
+    "nice_to_have": [
+      "SK225:it manager",
+      "SK107:network",
+      "SK282:implementation",
+      "SK057:network engineer",
+      "SK008:mysql",
+      "SK753:database backup recovery",
+      "SK026:web developer",
+      "SK934:accountability",
+      "SK950:debugging skills",
+      "SK067:business analyst",
+      "SK102:project manager",
+      "SK032:oracle",
+      "SK271:troubleshooting",
+      "SK001:java",
+      "SK948:analytical thinking",
+      "SK135:testing",
+      "SK184:technical requirements",
+      "SK285:programming",
+      "SK011:infrastructure",
+      "SK909:mentoring"
+    ],
+    "core_count": 0,
+    "important_count": 6,
+    "nice_to_have_count": 22,
+    "optional_count": 1119,
+    "avg_skill_count": 23.1,
+    "top_skill_categories": [
+      "other",
+      "database"
+    ]
+  },
+  {
+    "role_id": "DEVOPS_TRAINEE",
+    "role_title": "DevOps Trainee",
+    "total_jobs_analyzed": 1665,
+    "total_skills": 1147,
+    "core_skills": [],
+    "important_skills": [
+      "SK041:software engineer",
+      "SK011:infrastructure",
+      "SK181:aws",
+      "SK024:devops",
+      "SK016:security",
+      "SK004:python"
+    ],
+    "nice_to_have": [
+      "SK009:git",
+      "SK655:jenkins",
+      "SK107:network",
+      "SK057:network engineer",
+      "SK117:system administrator",
+      "SK020:linux",
+      "SK029:docker",
+      "SK124:data analyst",
+      "SK182:configuration",
+      "SK067:business analyst",
+      "SK225:it manager",
+      "SK646:kubernetes",
+      "SK950:debugging skills",
+      "SK934:accountability",
+      "SK239:computer science",
+      "SK671:ansible",
+      "SK132:networking",
+      "SK161:agile",
+      "SK135:testing",
+      "SK320:bash scripting"
+    ],
+    "core_count": 0,
+    "important_count": 6,
+    "nice_to_have_count": 29,
+    "optional_count": 1112,
+    "avg_skill_count": 26.2,
+    "top_skill_categories": [
+      "other",
+      "cloud",
+      "devops"
+    ]
+  },
+  {
+    "role_id": "INTERN_SE",
+    "role_title": "Software Engineering Intern",
+    "total_jobs_analyzed": 5,
+    "total_skills": 1147,
+    "core_skills": [],
+    "important_skills": [
+      "SK028:problem solving"
+    ],
+    "nice_to_have": [
+      "SK003:sql",
+      "SK004:python",
+      "SK132:networking",
+      "SK619:excel analytics"
+    ],
+    "core_count": 0,
+    "important_count": 1,
+    "nice_to_have_count": 4,
+    "optional_count": 1142,
+    "avg_skill_count": 5.4,
+    "top_skill_categories": [
+      "soft_skill"
+    ]
+  },
+  {
+    "role_id": "JR_BE_DEV",
+    "role_title": "Junior Backend Developer",
+    "total_jobs_analyzed": 3357,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK001:java"
+    ],
+    "important_skills": [
+      "SK010:java developer",
+      "SK003:sql",
+      "SK018:spring",
+      "SK013:rest",
+      "SK041:software engineer",
+      "SK026:web developer"
+    ],
+    "nice_to_have": [
+      "SK002:javascript",
+      "SK135:testing",
+      "SK025:hibernate",
+      "SK021:api",
+      "SK006:html",
+      "SK009:git",
+      "SK005:css",
+      "SK161:agile",
+      "SK124:data analyst",
+      "SK030:j2ee",
+      "SK285:programming",
+      "SK067:business analyst",
+      "SK973:agile methodology",
+      "SK036:spring boot",
+      "SK122:software development",
+      "SK008:mysql",
+      "SK012:database",
+      "SK037:mvc",
+      "SK239:computer science"
+    ],
+    "core_count": 1,
+    "important_count": 6,
+    "nice_to_have_count": 19,
+    "optional_count": 1121,
+    "avg_skill_count": 21.6,
+    "top_skill_categories": [
+      "backend",
+      "other",
+      "database"
+    ]
+  },
+  {
+    "role_id": "JR_BUSINESS_ANALYST",
+    "role_title": "Business Analyst (Entry Level)",
+    "total_jobs_analyzed": 622,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK067:business analyst"
+    ],
+    "important_skills": [
+      "SK948:analytical thinking",
+      "SK102:project manager"
+    ],
+    "nice_to_have": [
+      "SK881:documentation",
+      "SK135:testing",
+      "SK225:it manager",
+      "SK041:software engineer",
+      "SK124:data analyst",
+      "SK148:business requirements",
+      "SK161:agile",
+      "SK145:business analysis",
+      "SK003:sql",
+      "SK973:agile methodology",
+      "SK117:system administrator",
+      "SK282:implementation",
+      "SK028:problem solving",
+      "SK619:excel analytics",
+      "SK934:accountability",
+      "SK068:solution architect"
+    ],
+    "core_count": 1,
+    "important_count": 2,
+    "nice_to_have_count": 16,
+    "optional_count": 1128,
+    "avg_skill_count": 14.1,
+    "top_skill_categories": [
+      "other",
+      "communication"
+    ]
+  },
+  {
+    "role_id": "JR_FE_DEV",
+    "role_title": "Junior Frontend Developer",
+    "total_jobs_analyzed": 2808,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK002:javascript",
+      "SK005:css",
+      "SK006:html",
+      "SK026:web developer"
+    ],
+    "important_skills": [
+      "SK003:sql",
+      "SK351:react"
+    ],
+    "nice_to_have": [
+      "SK041:software engineer",
+      "SK312:typescript",
+      "SK017:php",
+      "SK013:rest",
+      "SK353:angular",
+      "SK015:jquery",
+      "SK022:html5",
+      "SK021:api",
+      "SK285:programming",
+      "SK009:git",
+      "SK008:mysql",
+      "SK135:testing",
+      "SK124:data analyst",
+      "SK001:java",
+      "SK934:accountability",
+      "SK042:bootstrap",
+      "SK007:mobile",
+      "SK067:business analyst"
+    ],
+    "core_count": 4,
+    "important_count": 2,
+    "nice_to_have_count": 18,
+    "optional_count": 1123,
+    "avg_skill_count": 19.8,
+    "top_skill_categories": [
+      "frontend",
+      "other",
+      "database"
+    ]
+  },
+  {
+    "role_id": "JR_FS_DEV",
+    "role_title": "Junior Full-Stack Developer",
+    "total_jobs_analyzed": 44,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK003:sql",
+      "SK013:rest",
+      "SK002:javascript",
+      "SK005:css",
+      "SK006:html"
+    ],
+    "important_skills": [
+      "SK026:web developer",
+      "SK012:database"
+    ],
+    "nice_to_have": [
+      "SK124:data analyst",
+      "SK041:software engineer",
+      "SK117:system administrator",
+      "SK225:it manager",
+      "SK950:debugging skills",
+      "SK076:node.js",
+      "SK008:mysql",
+      "SK205:design patterns",
+      "SK102:project manager",
+      "SK067:business analyst",
+      "SK001:java",
+      "SK152:web services",
+      "SK271:troubleshooting",
+      "SK037:mvc",
+      "SK009:git"
+    ],
+    "core_count": 5,
+    "important_count": 2,
+    "nice_to_have_count": 15,
+    "optional_count": 1125,
+    "avg_skill_count": 18.2,
+    "top_skill_categories": [
+      "frontend",
+      "database",
+      "other"
+    ]
+  },
+  {
+    "role_id": "JR_IT_SUPPORT",
+    "role_title": "Junior IT Support",
+    "total_jobs_analyzed": 28,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK225:it manager",
+      "SK061:windows",
+      "SK271:troubleshooting",
+      "SK950:debugging skills"
+    ],
+    "important_skills": [
+      "SK028:problem solving"
+    ],
+    "nice_to_have": [
+      "SK132:networking",
+      "SK020:linux",
+      "SK117:system administrator"
+    ],
+    "core_count": 4,
+    "important_count": 1,
+    "nice_to_have_count": 3,
+    "optional_count": 1139,
+    "avg_skill_count": 8.9,
+    "top_skill_categories": [
+      "other",
+      "communication",
+      "soft_skill"
+    ]
+  },
+  {
+    "role_id": "JR_MOBILE_DEV",
+    "role_title": "Junior Mobile Developer",
+    "total_jobs_analyzed": 2475,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK265:android"
+    ],
+    "important_skills": [
+      "SK007:mobile",
+      "SK070:android developer",
+      "SK055:ios",
+      "SK001:java"
+    ],
+    "nice_to_have": [
+      "SK041:software engineer",
+      "SK026:web developer",
+      "SK013:rest",
+      "SK124:data analyst",
+      "SK071:ios developer",
+      "SK019:json",
+      "SK009:git",
+      "SK081:android sdk",
+      "SK285:programming",
+      "SK078:swift",
+      "SK239:computer science",
+      "SK028:problem solving"
+    ],
+    "core_count": 1,
+    "important_count": 4,
+    "nice_to_have_count": 12,
+    "optional_count": 1130,
+    "avg_skill_count": 17.3,
+    "top_skill_categories": [
+      "mobile",
+      "other",
+      "backend"
+    ]
+  },
+  {
+    "role_id": "JR_QA_ENG",
+    "role_title": "QA Engineer (Entry Level)",
+    "total_jobs_analyzed": 160,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK135:testing"
+    ],
+    "important_skills": [
+      "SK041:software engineer",
+      "SK161:agile",
+      "SK007:mobile"
+    ],
+    "nice_to_have": [
+      "SK026:web developer",
+      "SK973:agile methodology",
+      "SK021:api",
+      "SK028:problem solving",
+      "SK102:project manager",
+      "SK919:team building",
+      "SK117:system administrator",
+      "SK225:it manager",
+      "SK003:sql",
+      "SK067:business analyst",
+      "SK427:selenium",
+      "SK286:software testing",
+      "SK974:scrum framework",
+      "SK122:software development",
+      "SK909:mentoring",
+      "SK261:jira",
+      "SK996:jira management",
+      "SK882:code review skills",
+      "SK991:quality assurance process"
+    ],
+    "core_count": 1,
+    "important_count": 3,
+    "nice_to_have_count": 19,
+    "optional_count": 1124,
+    "avg_skill_count": 15.3,
+    "top_skill_categories": [
+      "other"
+    ]
+  },
+  {
+    "role_id": "JR_SE",
+    "role_title": "Junior Software Engineer",
+    "total_jobs_analyzed": 1177,
+    "total_skills": 1147,
+    "core_skills": [],
+    "important_skills": [
+      "SK102:project manager",
+      "SK911:people management",
+      "SK880:stakeholder management"
+    ],
+    "nice_to_have": [
+      "SK041:software engineer",
+      "SK107:network",
+      "SK057:network engineer",
+      "SK225:it manager",
+      "SK067:business analyst",
+      "SK124:data analyst",
+      "SK117:system administrator",
+      "SK111:project management",
+      "SK028:problem solving",
+      "SK934:accountability",
+      "SK161:agile"
+    ],
+    "core_count": 0,
+    "important_count": 3,
+    "nice_to_have_count": 11,
+    "optional_count": 1133,
+    "avg_skill_count": 12.3,
+    "top_skill_categories": [
+      "other",
+      "leadership",
+      "communication"
+    ]
+  },
+  {
+    "role_id": "JR_SYS_ADMIN",
+    "role_title": "Junior System Administrator",
+    "total_jobs_analyzed": 184,
+    "total_skills": 1147,
+    "core_skills": [
+      "SK016:security"
+    ],
+    "important_skills": [
+      "SK107:network",
+      "SK057:network engineer",
+      "SK117:system administrator",
+      "SK225:it manager"
+    ],
+    "nice_to_have": [
+      "SK028:problem solving",
+      "SK774:network security",
+      "SK159:protocols",
+      "SK041:software engineer",
+      "SK124:data analyst",
+      "SK095:hardware",
+      "SK777:cryptography",
+      "SK934:accountability",
+      "SK011:infrastructure",
+      "SK282:implementation",
+      "SK950:debugging skills",
+      "SK948:analytical thinking",
+      "SK271:troubleshooting",
+      "SK135:testing",
+      "SK067:business analyst",
+      "SK182:configuration",
+      "SK126:wan",
+      "SK944:time management leadership"
+    ],
+    "core_count": 1,
+    "important_count": 4,
+    "nice_to_have_count": 18,
+    "optional_count": 1124,
+    "avg_skill_count": 17.9,
+    "top_skill_categories": [
+      "other"
+    ]
+  },
+  {
+    "role_id": "JR_UI_UX_DESIGNER",
+    "role_title": "UI/UX Designer (Entry Level)",
+    "total_jobs_analyzed": 36,
+    "total_skills": 1147,
+    "core_skills": [],
+    "important_skills": [
+      "SK028:problem solving",
+      "SK007:mobile"
+    ],
+    "nice_to_have": [
+      "SK041:software engineer",
+      "SK944:time management leadership",
+      "SK953:critical thinking",
+      "SK1011:user experience focus",
+      "SK026:web developer",
+      "SK161:agile",
+      "SK973:agile methodology",
+      "SK919:team building",
+      "SK225:it manager",
+      "SK067:business analyst",
+      "SK909:mentoring"
+    ],
+    "core_count": 0,
+    "important_count": 2,
+    "nice_to_have_count": 11,
+    "optional_count": 1134,
+    "avg_skill_count": 10.1,
+    "top_skill_categories": [
+      "soft_skill",
+      "other"
+    ]
+  }
+]

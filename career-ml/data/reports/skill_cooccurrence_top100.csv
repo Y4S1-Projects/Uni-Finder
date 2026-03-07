@@ -1,0 +1,101 @@
+skill_a_id,skill_a_name,skill_b_id,skill_b_name,co_occurrence_count
+SK005,css,SK006,html,2698
+SK002,javascript,SK005,css,2685
+SK002,javascript,SK006,html,2613
+SK001,java,SK003,sql,2194
+SK001,java,SK010,java developer,2074
+SK001,java,SK018,spring,2002
+SK002,javascript,SK026,web developer,1997
+SK002,javascript,SK003,sql,1871
+SK070,android developer,SK265,android,1700
+SK003,sql,SK008,mysql,1697
+SK005,css,SK026,web developer,1693
+SK001,java,SK013,rest,1687
+SK006,html,SK026,web developer,1667
+SK057,network engineer,SK107,network,1625
+SK003,sql,SK012,database,1602
+SK041,software engineer,SK122,software development,1591
+SK001,java,SK002,javascript,1577
+SK010,java developer,SK018,spring,1529
+SK003,sql,SK026,web developer,1490
+SK001,java,SK041,software engineer,1487
+SK003,sql,SK004,python,1481
+SK067,business analyst,SK124,data analyst,1456
+SK002,javascript,SK015,jquery,1407
+SK003,sql,SK124,data analyst,1391
+SK041,software engineer,SK124,data analyst,1359
+SK003,sql,SK013,rest,1332
+SK003,sql,SK006,html,1321
+SK003,sql,SK005,css,1315
+SK161,agile,SK973,agile methodology,1313
+SK001,java,SK135,testing,1307
+SK041,software engineer,SK135,testing,1296
+SK007,mobile,SK265,android,1295
+SK001,java,SK026,web developer,1291
+SK013,rest,SK021,api,1283
+SK002,javascript,SK013,rest,1277
+SK026,web developer,SK041,software engineer,1264
+SK001,java,SK285,programming,1237
+SK001,java,SK012,database,1209
+SK004,python,SK124,data analyst,1190
+SK002,javascript,SK017,php,1189
+SK041,software engineer,SK239,computer science,1176
+SK001,java,SK007,mobile,1172
+SK001,java,SK009,git,1172
+SK041,software engineer,SK067,business analyst,1161
+SK003,sql,SK135,testing,1160
+SK001,java,SK025,hibernate,1152
+SK003,sql,SK041,software engineer,1151
+SK002,javascript,SK008,mysql,1135
+SK003,sql,SK285,programming,1131
+SK001,java,SK161,agile,1122
+SK001,java,SK122,software development,1113
+SK001,java,SK006,html,1105
+SK001,java,SK265,android,1105
+SK002,javascript,SK022,html5,1104
+SK017,php,SK026,web developer,1089
+SK001,java,SK005,css,1079
+SK041,software engineer,SK285,programming,1078
+SK005,css,SK015,jquery,1077
+SK003,sql,SK018,spring,1075
+SK007,mobile,SK070,android developer,1072
+SK135,testing,SK161,agile,1071
+SK002,javascript,SK351,react,1070
+SK001,java,SK021,api,1067
+SK002,javascript,SK041,software engineer,1065
+SK003,sql,SK021,api,1065
+SK067,business analyst,SK102,project manager,1061
+SK018,spring,SK025,hibernate,1055
+SK001,java,SK030,j2ee,1045
+SK041,software engineer,SK161,agile,1040
+SK001,java,SK004,python,1036
+SK003,sql,SK010,java developer,1034
+SK001,java,SK008,mysql,1022
+SK013,rest,SK026,web developer,1016
+SK006,html,SK015,jquery,1013
+SK041,software engineer,SK102,project manager,1001
+SK007,mobile,SK041,software engineer,998
+SK001,java,SK070,android developer,994
+SK002,javascript,SK021,api,992
+SK007,mobile,SK055,ios,975
+SK001,java,SK239,computer science,973
+SK002,javascript,SK009,git,972
+SK003,sql,SK067,business analyst,970
+SK009,git,SK161,agile,967
+SK005,css,SK013,rest,964
+SK005,css,SK017,php,954
+SK016,security,SK107,network,950
+SK004,python,SK181,aws,948
+SK006,html,SK017,php,948
+SK007,mobile,SK026,web developer,945
+SK001,java,SK124,data analyst,944
+SK041,software engineer,SK117,system administrator,943
+SK003,sql,SK161,agile,942
+SK002,javascript,SK285,programming,940
+SK006,html,SK013,rest,929
+SK013,rest,SK018,spring,925
+SK002,javascript,SK012,database,923
+SK002,javascript,SK353,angular,920
+SK010,java developer,SK025,hibernate,918
+SK005,css,SK351,react,914
+SK003,sql,SK017,php,909

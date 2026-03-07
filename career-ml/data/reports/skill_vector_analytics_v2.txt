@@ -1,0 +1,191 @@
+==============================================================================
+  JOB-SKILL VECTOR ANALYTICS  (v2)
+==============================================================================
+
+─── 1. OVERVIEW ──────────────────────────────────────────────
+  Jobs:              15,230
+  Skills:            1,147
+  Total matrix cells:17,468,810
+  Ones (1):          300,136
+  Zeros (0):         17,168,674
+
+─── 2. SPARSITY ─────────────────────────────────────────────
+  Sparsity (% zeros): 98.28%
+  Density  (% ones):  1.72%
+
+─── 3. SKILLS PER JOB ───────────────────────────────────────
+  Min:    3
+  Max:    50
+  Mean:   19.7
+  Median: 18
+  Std:    10.2
+
+─── 4. MOST COMMON SKILLS (top 30) ─────────────────────────
+  Rank  Skill ID     Name                                   Jobs       %
+  ───── ──────────── ─────────────────────────────────── ─────── ───────
+  1     SK041        software engineer                     6,241   41.0%
+  2     SK003        sql                                   5,787   38.0%
+  3     SK026        web developer                         5,503   36.1%
+  4     SK124        data analyst                          5,492   36.1%
+  5     SK001        java                                  5,336   35.0%
+  6     SK002        javascript                            4,598   30.2%
+  7     SK067        business analyst                      4,495   29.5%
+  8     SK013        rest                                  3,977   26.1%
+  9     SK006        html                                  3,896   25.6%
+  10    SK005        css                                   3,874   25.4%
+  11    SK135        testing                               3,828   25.1%
+  12    SK009        git                                   3,530   23.2%
+  13    SK102        project manager                       3,461   22.7%
+  14    SK285        programming                           3,405   22.4%
+  15    SK225        it manager                            3,345   22.0%
+  16    SK161        agile                                 3,305   21.7%
+  17    SK934        accountability                        3,293   21.6%
+  18    SK007        mobile                                3,156   20.7%
+  19    SK004        python                                3,104   20.4%
+  20    SK117        system administrator                  3,005   19.7%
+  21    SK028        problem solving                       2,999   19.7%
+  22    SK948        analytical thinking                   2,998   19.7%
+  23    SK239        computer science                      2,937   19.3%
+  24    SK021        api                                   2,804   18.4%
+  25    SK973        agile methodology                     2,760   18.1%
+  26    SK012        database                              2,705   17.8%
+  27    SK016        security                              2,694   17.7%
+  28    SK122        software development                  2,498   16.4%
+  29    SK950        debugging skills                      2,403   15.8%
+  30    SK282        implementation                        2,281   15.0%
+
+─── 5. LEAST COMMON SKILLS (bottom 30) ────────────────────
+  Rank  Skill ID     Name                                   Jobs       %
+  ───── ──────────── ─────────────────────────────────── ─────── ───────
+  1     SK516        google artifact registry                  0    0.0%
+  2     SK505        google cloud run                          0    0.0%
+  3     SK1132       comptia a+                                0    0.0%
+  4     SK906        architecture decision records             0    0.0%
+  5     SK1046       gcp professional architect                0    0.0%
+  6     SK1045       gcp cloud engineer                        0    0.0%
+  7     SK1123       sap s/4hana                               0    0.0%
+  8     SK1121       salesforce consultant                     0    0.0%
+  9     SK492        azure cdn                                 0    0.0%
+  10    SK519        google cloud cdn                          0    0.0%
+  11    SK931        diversity inclusion                       0    0.0%
+  12    SK1120       salesforce architect                      0    0.0%
+  13    SK1134       comptia linux+                            0    0.0%
+  14    SK1089       safe agilist                              0    0.0%
+  15    SK499        azure terraform                           0    0.0%
+  16    SK497        azure static web apps                     0    0.0%
+  17    SK496        azure openai service                      0    0.0%
+  18    SK494        azure redis cache                         0    0.0%
+  19    SK491        azure front door                          0    0.0%
+  20    SK426        puppeteer                                 0    0.0%
+  21    SK470        aws organizations                         0    0.0%
+  22    SK479        azure virtual machines                    0    0.0%
+  23    SK1126       servicenow certified app developer        0    0.0%
+  24    SK458        aws secrets manager                       0    0.0%
+  25    SK429        vitest                                    0    0.0%
+  26    SK1127       servicenow certified implementation specialist       0    0.0%
+  27    SK947        scaling teams                             0    0.0%
+  28    SK1129       cisco ccnp enterprise                     0    0.0%
+  29    SK1140       unreal authorized instructor              0    0.0%
+  30    SK1143       palo alto pcnsa                           0    0.0%
+
+─── 6. ZERO-FREQUENCY SKILLS ─────────────────────────────
+  Skills with ZERO jobs: 207
+  (showing first 50)
+    SK1032: aws data analytics specialty
+    SK738: weaviate
+    SK014: c
+    SK740: chroma
+    SK741: qdrant
+    SK742: pgvector
+    SK992: technical debt tracking
+    SK744: supabase
+    SK745: planetscale
+    SK746: neon
+    SK759: burp suite
+    SK760: metasploit
+    SK714: feature flags
+    SK718: postgresql advanced
+    SK739: milvus
+    SK361: qwik
+    SK360: solid.js
+    SK359: astro
+    SK358: remix
+    SK357: sveltekit
+    SK348: openmp
+    SK703: traefik
+    SK346: hlsl
+    SK345: glsl
+    SK333: gdscript
+    SK737: pinecone
+    SK736: questdb
+    SK725: mongodb advanced
+    SK697: splunk observability
+    SK690: zipkin
+    SK364: alpine.js
+    SK672: pulumi
+    SK664: buildkite
+    SK376: turbopack
+    SK673: cloudformation advanced
+    SK1055: cks
+    SK323: lisp
+    SK679: crossplane
+    SK365: htmx
+    SK1048: gcp ml engineer
+    SK1049: gcp devops engineer
+    SK1050: gcp security engineer
+    SK1051: hashicorp terraform associate
+    SK1052: hashicorp vault associate
+    SK662: aws codepipeline advanced
+    SK699: linkerd
+    SK779: forensics
+    SK1068: casp+
+    SK1067: pentest+
+    SK1063: gpen
+
+─── 7. SKILL DISTRIBUTION BY JOB CATEGORY ────────────────
+  Category          Avg Skills   Density
+  ──────────────── ─────────── ─────────
+  ai_ml                   17.3     1.51%
+  backend                 21.6     1.88%
+  cloud                   24.6     2.14%
+  data                    19.4     1.69%
+  database                22.6     1.97%
+  devops                  26.2     2.28%
+  frontend                19.8     1.73%
+  fullstack               18.3     1.59%
+  general                 10.2     0.89%
+  management              15.5     1.36%
+  mobile                  17.3     1.51%
+  qa                      15.2     1.32%
+  security                17.9     1.56%
+  ui_ux                   10.1     0.88%
+
+─── 8. SKILL DISTRIBUTION BY SENIORITY LEVEL ─────────────
+  Level           Avg Skills   Density
+  ────────────── ─────────── ─────────
+  director              15.6     1.36%
+  intern                 5.4     0.47%
+  junior                18.1     1.57%
+  lead                  27.5     2.40%
+  mid                   19.0     1.65%
+  principal             33.3     2.90%
+  senior                26.7     2.32%
+  staff                 30.1     2.63%
+
+─── 9. TOP 5 SKILLS PER JOB CATEGORY ─────────────────────
+  ai_ml            → machine learning (286), python (266), data analyst (263), business analyst (174), software engineer (166)
+  backend          → java (2587), java developer (2140), sql (1870), spring (1779), rest (1747)
+  cloud            → aws (201), system design (129), data analyst (128), technical requirements (126), business analyst (123)
+  data             → data analyst (1329), sql (1038), python (980), business analyst (892), analytical thinking (638)
+  database         → sql (680), database (555), data analyst (516), system administrator (468), software engineer (438)
+  devops           → infrastructure (777), software engineer (774), devops (738), security (656), aws (637)
+  frontend         → javascript (2502), css (2415), html (2390), web developer (2224), sql (1312)
+  fullstack        → sql (44), rest (44), javascript (40), css (40), html (40)
+  general          → network engineer (403), network (403), business analyst (375), software engineer (348), it manager (313)
+  management       → people management (476), stakeholder management (463), project manager (460), project management (294), business analyst (207)
+  mobile           → android (1737), mobile (1667), android developer (1650), ios (1131), java (1027)
+  qa               → testing (146), software engineer (106), agile (83), mobile (71), web developer (64)
+  security         → security (137), network (111), network engineer (105), it manager (84), system administrator (84)
+  ui_ux            → problem solving (20), mobile (19), software engineer (14), time management leadership (13), critical thinking (13)
+
+==============================================================================
