@@ -16,7 +16,7 @@ export default function OnboardingGateway() {
 				style={{ animationDelay: "4s" }}></div>
 
 			{/* Main container */}
-			<div className='relative z-10 w-full max-w-5xl'>
+			<div className='relative z-10 w-full max-w-5xl mt-24'>
 				{/* Header section */}
 				<div className='mb-16 text-center'>
 					<div className='inline-flex items-center justify-center gap-2 px-4 py-2 mb-6 bg-white border border-purple-200 rounded-full shadow-sm'>

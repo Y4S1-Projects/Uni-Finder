@@ -1,16 +1,21 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 
-export default function AIExplanationBox({ explanation = "" }) {
+export default function AIExplanationBox({ explanation = "", olMarks = null }) {
 	if (!explanation || explanation.trim().length === 0) {
 		return null;
 	}
 
 	// Improved UX: Makes keywords look like they were highlighted with a marker pen
 	const highlightKeywords = (text) => {
-		// Note: Ideally, your backend should wrap matched keywords in <strong> tags before sending.
-		// This is a fallback frontend parser.
-		const keywords = [
+		const sanitizedText = text
+			.replace(/<[^>]*>/g, "")
+			.replace(/&lt;[^&]*&gt;/g, "")
+			.replace(/\s+/g, " ")
+			.trim();
+
+		// Base keywords to always highlight
+		let keywords = [
 			"AI",
 			"interest",
 			"match",
@@ -29,7 +34,34 @@ export default function AIExplanationBox({ explanation = "" }) {
 			"best",
 			"top",
 		];
-		let highlightedText = text;
+
+		// Add student's selected subject names to highlighted keywords
+		if (olMarks) {
+			if (olMarks.core) {
+				Object.keys(olMarks.core).forEach((key) => {
+					if (key !== "bucket_1_grade" && key !== "bucket_2_grade" && key !== "bucket_3_grade") {
+						const subjectName = key.replace(/_/g, " ");
+						keywords.push(subjectName);
+					}
+				});
+			}
+
+			// Add selected bucket subject names
+			if (olMarks.bucket_1) {
+				const bucketSubject = olMarks.bucket_1.replace(/_/g, " ");
+				keywords.push(bucketSubject);
+			}
+			if (olMarks.bucket_2) {
+				const bucketSubject = olMarks.bucket_2.replace(/_/g, " ");
+				keywords.push(bucketSubject);
+			}
+			if (olMarks.bucket_3) {
+				const bucketSubject = olMarks.bucket_3.replace(/_/g, " ");
+				keywords.push(bucketSubject);
+			}
+		}
+
+		let highlightedText = sanitizedText;
 
 		keywords.forEach((keyword) => {
 			const regex = new RegExp(`\\b(${keyword}s?)\\b`, "gi");

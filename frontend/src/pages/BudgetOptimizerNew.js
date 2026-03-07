@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import './BudgetOptimizerNew.css';
@@ -20,6 +20,7 @@ const BudgetOptimizerNew = () => {
   const [geminiLoading, setGeminiLoading] = useState(false);
   const [geminiError, setGeminiError] = useState(null);
   const [aiProvider, setAiProvider] = useState(null); // Track which AI was used
+  const aiSectionRef = useRef(null); // Target for scroll-to-AI button
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -37,6 +38,7 @@ const BudgetOptimizerNew = () => {
     
     // Financial Basics
     monthly_income: 30000,
+    home_money: 0,           // Money received from family/home
     accommodation_type: 'Rented Room',
     rent: 10000,
     
@@ -82,7 +84,7 @@ const BudgetOptimizerNew = () => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: ['monthly_income', 'rent', 'distance_uni_accommodation', 'distance_home_uni', 
+      [name]: ['monthly_income', 'home_money', 'rent', 'distance_uni_accommodation', 'distance_home_uni', 
                'cooking_percentage', 'internet', 'study_materials', 'entertainment', 
                'utilities', 'healthcare', 'other'].includes(name) 
         ? parseInt(value) || 0 
@@ -157,6 +159,12 @@ const BudgetOptimizerNew = () => {
 
   const prevStep = () => {
     setCurrentStep(prev => Math.max(prev - 1, 1));
+  };
+
+  const scrollToAISection = () => {
+    if (aiSectionRef.current) {
+      aiSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   // ── Streaming Text Effect (like ChatGPT) ─────────────────────
@@ -473,6 +481,26 @@ const BudgetOptimizerNew = () => {
           </Form.Group>
 
           <Form.Group className="mb-3">
+            <Form.Label><strong>💌 Money Received from Home / Family (LKR)</strong></Form.Label>
+            <Form.Control
+              type="number"
+              name="home_money"
+              value={formData.home_money}
+              onChange={handleInputChange}
+              placeholder="0"
+            />
+            <Form.Text className="text-muted">
+              Enter the monthly amount your family sends you (leave 0 if none). 
+              This will be added to your effective income.
+            </Form.Text>
+            {formData.home_money > 0 && (
+              <div className="alert alert-info mt-2 py-1 px-3 mb-0" style={{fontSize:'0.85rem'}}>
+                💡 Effective total income: <strong>LKR {(Number(formData.monthly_income) + Number(formData.home_money)).toLocaleString()}</strong>/month
+              </div>
+            )}
+          </Form.Group>
+
+          <Form.Group className="mb-3">
             <Form.Label><strong>Accommodation Type *</strong></Form.Label>
             <Form.Select name="accommodation_type" value={formData.accommodation_type} onChange={handleInputChange}>
               <option value="University Hostel">University Hostel</option>
@@ -777,6 +805,12 @@ const BudgetOptimizerNew = () => {
                   <div className="summary-value text-primary">
                     LKR {financial_summary.monthly_income.toLocaleString()}
                   </div>
+                  {financial_summary.home_money > 0 && (
+                    <div style={{fontSize:'0.72rem',color:'#777',marginTop:2}}>
+                      Base: LKR {(financial_summary.base_income||0).toLocaleString()} + 
+                      Family: LKR {financial_summary.home_money.toLocaleString()}
+                    </div>
+                  )}
                 </div>
               </Col>
               <Col md={3} className="text-center mb-3">
@@ -832,16 +866,6 @@ const BudgetOptimizerNew = () => {
           </Alert>
         )}
 
-        {/* AI Recommendation */}
-        <Card className="shadow-lg border-0 mb-4">
-          <Card.Header className="bg-gradient-info text-white">
-            <h4 className="mb-0">🎯 AI Recommendation</h4>
-          </Card.Header>
-          <Card.Body className="p-4">
-            <p className="lead mb-0">{recommendation}</p>
-          </Card.Body>
-        </Card>
-
         {/* Expense Breakdown */}
         <Card className="shadow-lg border-0 mb-4">
           <Card.Header className="bg-gradient-primary text-white">
@@ -874,41 +898,128 @@ const BudgetOptimizerNew = () => {
               <Col md={6}>
                 <h5 className="mb-3">Auto-Calculated Budgets</h5>
                 {calculated_budgets.food && (
-                  <div className="mb-3">
-                    <div className="d-flex justify-content-between align-items-center">
+                  <div className="mb-3 p-3 bg-light rounded">
+                    <div className="d-flex justify-content-between align-items-center mb-1">
                       <span><strong>🍽️ Food Budget:</strong></span>
-                      <span className="text-success fw-bold">
+                      <span className="text-success fw-bold fs-6">
                         LKR {calculated_budgets.food.monthly_total.toLocaleString()}
                       </span>
                     </div>
-                    <small className="text-muted">
-                      Type: {calculated_budgets.food.food_type} | 
-                      Daily: LKR {calculated_budgets.food.daily_cost.toLocaleString()}
-                    </small>
+                    <div className="d-flex justify-content-between">
+                      <small className="text-muted">Type: {calculated_budgets.food.food_type}</small>
+                      <small className="text-muted">Daily avg: LKR {calculated_budgets.food.daily_cost.toLocaleString()}</small>
+                    </div>
+                    {/* Grocery / Outside split */}
+                    {calculated_budgets.food.breakdown && (
+                      <div className="mt-2 ps-2 border-start border-success border-2">
+                        {calculated_budgets.food.breakdown.groceries !== undefined && (
+                          <small className="text-muted d-block">
+                            🛒 Grocery (cooking portion): <strong>LKR {Math.round(calculated_budgets.food.breakdown.groceries).toLocaleString()}</strong>
+                            {calculated_budgets.food.grocery_note && <span className="ms-1 text-secondary">({calculated_budgets.food.grocery_note})</span>}
+                          </small>
+                        )}
+                        {calculated_budgets.food.breakdown.outside_meals !== undefined && (
+                          <small className="text-muted d-block">
+                            🍜 Outside meals: <strong>LKR {Math.round(calculated_budgets.food.breakdown.outside_meals).toLocaleString()}</strong>
+                            {calculated_budgets.food.outside_note && <span className="ms-1 text-secondary">({calculated_budgets.food.outside_note})</span>}
+                          </small>
+                        )}
+                        {calculated_budgets.food.breakdown.daily_commute === undefined && 
+                         calculated_budgets.food.breakdown.estimate_based_on_income !== undefined && (
+                          <small className="text-muted d-block">
+                            📊 Estimated from income profile
+                          </small>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
                 {calculated_budgets.transport && (
-                  <div className="mb-3">
-                    <div className="d-flex justify-content-between align-items-center">
+                  <div className="mb-3 p-3 bg-light rounded">
+                    {/* Header row */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
                       <span><strong>🚌 Transport Budget:</strong></span>
-                      <span className="text-success fw-bold">
+                      <span className="text-success fw-bold fs-6">
                         LKR {calculated_budgets.transport.monthly_total.toLocaleString()}
+                        <small className="text-muted fw-normal">/month</small>
                       </span>
                     </div>
-                    <small className="text-muted">
-                      Method: {calculated_budgets.transport.transport_method} | 
-                      Daily: LKR {calculated_budgets.transport.daily_cost.toLocaleString()}
-                    </small>
-                    {calculated_budgets.transport.breakdown && (
-                      <div className="mt-2">
-                        <small className="text-muted d-block">
-                          Daily Commute: LKR {calculated_budgets.transport.breakdown.daily_commute.toLocaleString()}
-                        </small>
-                        <small className="text-muted d-block">
-                          Home Visits: LKR {calculated_budgets.transport.breakdown.home_visits.toLocaleString()}
-                        </small>
+
+                    {/* Mode badge */}
+                    <div className="mb-2">
+                      <span className="badge bg-secondary me-1">
+                        {calculated_budgets.transport.transport_method}
+                      </span>
+                      {calculated_budgets.transport.commute_days_per_month && (
+                        <span className="badge bg-light text-dark border">
+                          {calculated_budgets.transport.commute_days_per_month} commute days/month
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Per-trip cost — clearly labelled */}
+                    {calculated_budgets.transport.daily_cost > 0 && (
+                      <div className="d-flex align-items-center gap-2 mb-2 p-2 rounded"
+                           style={{background:'#e8f4fd', border:'1px solid #bee3f8'}}>
+                        <span style={{fontSize:'1.1rem'}}>🔄</span>
+                        <div className="flex-grow-1">
+                          <div style={{fontSize:'0.78rem', color:'#4a5568', fontWeight:600}}>
+                            Round-trip fare &nbsp;
+                            <span style={{fontWeight:400, color:'#718096'}}>
+                              (Accommodation → Campus → Accommodation)
+                            </span>
+                          </div>
+                          <div style={{fontSize:'0.82rem', color:'#2d3748'}}>
+                            <strong>LKR {calculated_budgets.transport.daily_cost.toLocaleString()}</strong>
+                            &nbsp;per trip
+                            {calculated_budgets.transport.one_way_trip_cost > 0 && (
+                              <span className="text-muted ms-2">
+                                (one-way: LKR {calculated_budgets.transport.one_way_trip_cost.toLocaleString()})
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
+
+                    {/* Monthly breakdown */}
+                    {calculated_budgets.transport.breakdown && (
+                      <div className="ps-2 border-start border-primary border-2">
+                        {calculated_budgets.transport.breakdown.daily_commute > 0 && (
+                          <div className="d-flex justify-content-between">
+                            <small className="text-muted">
+                              🏫 Campus commute
+                              <span className="ms-1 text-muted" style={{fontSize:'0.73rem'}}>
+                                (round-trip × {calculated_budgets.transport.commute_days_per_month || '~22'} days)
+                              </span>
+                            </small>
+                            <small><strong>LKR {calculated_budgets.transport.breakdown.daily_commute.toLocaleString()}</strong></small>
+                          </div>
+                        )}
+                        {calculated_budgets.transport.breakdown.misc_trips > 0 && (
+                          <div className="d-flex justify-content-between">
+                            <small className="text-muted">
+                              🌧️ Emergency / weekend trips
+                              <span className="ms-1 text-muted" style={{fontSize:'0.73rem'}}>(rain, late nights, city)</span>
+                            </small>
+                            <small><strong>LKR {calculated_budgets.transport.breakdown.misc_trips.toLocaleString()}</strong></small>
+                          </div>
+                        )}
+                        {calculated_budgets.transport.breakdown.home_visits > 0 && (
+                          <div className="d-flex justify-content-between">
+                            <small className="text-muted">🏡 Home visits</small>
+                            <small><strong>LKR {calculated_budgets.transport.breakdown.home_visits.toLocaleString()}</strong></small>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+                {/* Show home_money contribution if present */}
+                {financial_summary.home_money > 0 && (
+                  <div className="alert alert-info py-2 px-3 mb-0" style={{fontSize:'0.82rem'}}>
+                    💌 Includes LKR {financial_summary.home_money.toLocaleString()} family support
+                    {' '}(base: LKR {financial_summary.base_income.toLocaleString()} + home: LKR {financial_summary.home_money.toLocaleString()})
                   </div>
                 )}
               </Col>
@@ -928,34 +1039,48 @@ const BudgetOptimizerNew = () => {
               <Row className="mb-4">
                 <Col md={4}>
                   <div className="text-center p-3 bg-light rounded">
-                    <h6 className="text-muted">Current Situation</h6>
+                    <h6 className="text-muted">📊 Current Expenses</h6>
                     <h4 className="text-danger mb-0">
                       LKR {analysisResult.optimal_strategy.current_situation.total_expenses.toLocaleString()}
                     </h4>
                     <small className="text-muted">
-                      {analysisResult.optimal_strategy.current_situation.savings_rate}% savings rate
+                      {analysisResult.optimal_strategy.current_situation.savings_rate}% savings now
                     </small>
                   </div>
                 </Col>
                 <Col md={4}>
                   <div className="text-center p-3 bg-success text-white rounded">
-                    <h6>Optimal Target</h6>
+                    <h6>🎯 Optimised Target</h6>
                     <h4 className="mb-0">
                       LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
                     </h4>
                     <small>
                       {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% savings rate
                     </small>
+                    <div style={{fontSize:'0.72rem',opacity:0.85,marginTop:3}}>
+                      (what you could spend after optimising)
+                    </div>
                   </div>
                 </Col>
                 <Col md={4}>
-                  <div className="text-center p-3 bg-warning rounded">
-                    <h6 className="text-dark">Potential Improvement</h6>
-                    <h4 className="text-success mb-0">
-                      +LKR {analysisResult.optimal_strategy.potential_improvement.extra_savings.toLocaleString()}
-                    </h4>
-                    <small className="text-dark">Extra savings/month</small>
-                  </div>
+                  {analysisResult.optimal_strategy.potential_improvement.extra_savings > 0 ? (
+                    <div className="text-center p-3 bg-warning rounded">
+                      <h6 className="text-dark">💰 Potential Improvement</h6>
+                      <h4 className="text-success mb-0">
+                        +LKR {analysisResult.optimal_strategy.potential_improvement.extra_savings.toLocaleString()}
+                      </h4>
+                      <small className="text-dark">Extra you could save/month</small>
+                      <div style={{fontSize:'0.72rem',color:'#555',marginTop:3}}>
+                        Expense reduction: LKR {analysisResult.optimal_strategy.potential_improvement.expense_reduction.toLocaleString()}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center p-3 bg-info text-white rounded">
+                      <h6>✅ Already Optimised!</h6>
+                      <h5 className="mb-0">Great Budget</h5>
+                      <small>Your spending is well-controlled</small>
+                    </div>
+                  )}
                 </Col>
               </Row>
 
@@ -967,6 +1092,88 @@ const BudgetOptimizerNew = () => {
                 </Alert>
               )}
 
+              {/* ── Journey to Optimised Target flow strip ── */}
+              {analysisResult.optimal_strategy.optimal_alternatives &&
+               analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
+                <div className="opt-journey-wrap">
+                  <div className="opt-journey-header">
+                    <span className="opt-journey-badge">Step 1</span>
+                    <span className="opt-journey-title">🗺️ Your Path to the Optimised Target</span>
+                    <span className="opt-journey-hint">
+                      Follow these changes first; then let the AI build your detailed action plan.
+                    </span>
+                  </div>
+
+                  {/* Step nodes rail (no percentage text) */}
+                  <div className="opt-step-rail">
+                    {analysisResult.optimal_strategy.optimal_alternatives.slice(0, 5).map((alt, idx) => (
+                      <React.Fragment key={idx}>
+                        <div className={`opt-step-node opt-step-node--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
+                          <div className="opt-step-num">{idx + 1}</div>
+                          <div className="opt-step-icon">
+                            {alt.category.toLowerCase().includes('food')   ? '🍱' :
+                             alt.category.toLowerCase().includes('trans')  ? '🚌' :
+                             alt.category.toLowerCase().includes('accom')  ? '🏠' :
+                             alt.category.toLowerCase().includes('internet')? '📶' :
+                             alt.category.toLowerCase().includes('util')   ? '💡' :
+                             alt.category.toLowerCase().includes('study') || alt.category.toLowerCase().includes('material') ? '📚' :
+                             alt.category.toLowerCase().includes('entertain')? '🎮' :
+                             alt.category.toLowerCase().includes('health')  ? '🏥' :
+                             alt.category.toLowerCase().includes('income') || alt.category.toLowerCase().includes('earn') ? '💼' : '⚡'}
+                          </div>
+                          <div className="opt-step-name">{alt.category}</div>
+                          {alt.estimated_savings > 0 && (
+                            <div className="opt-step-save">-LKR {alt.estimated_savings.toLocaleString()}/mo</div>
+                          )}
+                          <div className={`opt-step-priority opt-step-priority--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
+                            {alt.priority}
+                          </div>
+                        </div>
+                        {idx < Math.min(analysisResult.optimal_strategy.optimal_alternatives.length, 5) - 1 && (
+                          <div className="opt-step-connector">
+                            <div className="opt-connector-line" />
+                            <div className="opt-connector-arrow">▶</div>
+                          </div>
+                        )}
+                      </React.Fragment>
+                    ))}
+                    {/* Final target node */}
+                    <div className="opt-step-connector">
+                      <div className="opt-connector-line" />
+                      <div className="opt-connector-arrow">▶</div>
+                    </div>
+                    <div className="opt-step-node opt-step-node--target">
+                      <div className="opt-step-num opt-step-num--target">🎯</div>
+                      <div className="opt-step-icon" style={{fontSize:'1.5rem'}}>✅</div>
+                      <div className="opt-step-name" style={{fontWeight:700, color:'#155724'}}>Optimised!</div>
+                      <div className="opt-step-save" style={{color:'#155724',fontWeight:700}}>
+                        LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+                      </div>
+                      <div className="opt-step-priority opt-step-priority--target">
+                        {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% saved
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="opt-journey-footer">
+                    <p className="opt-journey-footer-text">
+                      When you are ready for a guided plan, jump to the
+                      <strong> OpenAI AI Enhanced Strategy</strong> section. There the AI will convert this path
+                      into a clear, step-by-step routine you can follow.
+                    </p>
+                    <div className="opt-journey-footer-btn">
+                      <Button
+                        size="sm"
+                        variant="success"
+                        onClick={scrollToAISection}
+                      >
+                        Go to OpenAI AI Enhanced Strategy 🚀
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Optimal Alternatives */}
               {analysisResult.optimal_strategy.optimal_alternatives && 
                analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
@@ -976,7 +1183,7 @@ const BudgetOptimizerNew = () => {
                     <Card key={index} className={`mb-3 border-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'}`}>
                       <Card.Body>
                         <Row>
-                          <Col md={8}>
+                          <Col md={12}>
                             <div className="d-flex align-items-start mb-2">
                               <span className={`badge bg-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'} me-2`}>
                                 {alt.priority} Priority
@@ -1010,20 +1217,6 @@ const BudgetOptimizerNew = () => {
                                 <small><strong>Note:</strong> {alt.note}</small>
                               </p>
                             )}
-                          </Col>
-                          <Col md={4} className="text-center border-start">
-                            <div className="p-3">
-                              <h6 className="text-muted mb-2">Potential Savings</h6>
-                              <h3 className="text-success mb-0">
-                                LKR {alt.estimated_savings.toLocaleString()}
-                              </h3>
-                              <small className="text-muted d-block mt-1">/month</small>
-                              {alt.payback_period && (
-                                <small className="d-block mt-2 text-info">
-                                  <strong>Payback:</strong> {alt.payback_period}
-                                </small>
-                              )}
-                            </div>
                           </Col>
                         </Row>
                       </Card.Body>
@@ -1109,40 +1302,31 @@ const BudgetOptimizerNew = () => {
                 </div>
               )}
 
-              {/* Success Metrics */}
-              {analysisResult.optimal_strategy.success_metrics && (
-                <Card className="bg-light border-0">
-                  <Card.Body>
-                    <h5 className="mb-3">📈 Track Your Progress</h5>
-                    <Row>
-                      <Col md={4} className="mb-2">
-                        <strong>1 Month Goal:</strong>
-                        <p className="mb-0">{analysisResult.optimal_strategy.success_metrics.target_1_month}</p>
-                      </Col>
-                      <Col md={4} className="mb-2">
-                        <strong>3 Month Goal:</strong>
-                        <p className="mb-0">{analysisResult.optimal_strategy.success_metrics.target_3_months}</p>
-                      </Col>
-                      <Col md={4} className="mb-2">
-                        <strong>6 Month Goal:</strong>
-                        <p className="mb-0">{analysisResult.optimal_strategy.success_metrics.target_6_months}</p>
-                      </Col>
-                    </Row>
-                    <hr />
-                    <p className="text-muted mb-0">
-                      <strong>💡 Tip:</strong> {analysisResult.optimal_strategy.success_metrics.tracking}
-                    </p>
-                  </Card.Body>
-                </Card>
-              )}
+              {/* ── AI strategy connector bridge ── */}
+              <div className="opt-ai-bridge">
+                <div className="opt-ai-bridge-left">
+                  <div className="opt-ai-bridge-icon">✨</div>
+                  <div>
+                    <div className="opt-ai-bridge-heading">Want a Deeper, Step-by-Step Action Plan?</div>
+                    <div className="opt-ai-bridge-sub">
+                      The <strong>AI Enhanced Strategy</strong> below will generate personalised guidance — exactly how to execute each step above based on your full profile.
+                    </div>
+                  </div>
+                </div>
+                <div className="opt-ai-bridge-arrow">
+                  <div className="opt-ai-bridge-arrow-line" />
+                  <div className="opt-ai-bridge-arrow-bounce">↓ Scroll down</div>
+                </div>
+              </div>
+
             </Card.Body>
           </Card>
         )}
 
         {/* ════════════════════════════════════════════════════════ */}
-        {/*   ✨ GEMINI AI ENHANCED STRATEGY                        */}
+        {/*   ✨ GEMINI / OPENAI AI ENHANCED STRATEGY               */}
         {/* ════════════════════════════════════════════════════════ */}
-        <div className="gemini-section mb-4">
+        <div className="gemini-section mb-4" ref={aiSectionRef}>
           {/* Header */}
           <div className="gemini-header">
             <div className="gemini-logo-wrap">
@@ -1179,35 +1363,75 @@ const BudgetOptimizerNew = () => {
             </div>
           )}
 
-          {/* Initial state - show button to get AI insights */}
+          {/* Initial state - attractive flow CTA */}
           {!geminiInsight && !geminiLoading && !geminiError && (
-            <div className="text-center py-5">
-              <div className="mb-3">
-                <svg width="48" height="48" viewBox="0 0 28 28" fill="none">
+            <div className="ai-cta-zone">
+              {/* Title */}
+              <div className="ai-cta-title-row">
+                <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
                   <defs>
-                    <linearGradient id="aiGrad" x1="0" y1="0" x2="1" y2="1">
+                    <linearGradient id="aiGrad2" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stopColor="#4285F4"/>
-                      <stop offset="33%" stopColor="#EA4335"/>
-                      <stop offset="66%" stopColor="#FBBC05"/>
+                      <stop offset="50%" stopColor="#FBBC05"/>
                       <stop offset="100%" stopColor="#34A853"/>
                     </linearGradient>
                   </defs>
                   <path d="M14 3 L14 25 M3 14 L25 14 M6.5 6.5 L21.5 21.5 M21.5 6.5 L6.5 21.5"
-                    stroke="url(#aiGrad)" strokeWidth="2.5" strokeLinecap="round"/>
+                    stroke="url(#aiGrad2)" strokeWidth="2.5" strokeLinecap="round"/>
                 </svg>
+                <div>
+                  <h5 className="ai-cta-heading">Unlock Your Personalized Strategy</h5>
+                  <p className="ai-cta-sub">AI will analyse your full financial profile and craft a step-by-step enhancement plan</p>
+                </div>
               </div>
-              <h5 className="mb-3">Get Personalized AI Strategy</h5>
-              <p className="text-muted mb-4">
-                Click below to generate AI-powered financial advice tailored to your specific situation
-              </p>
-              <Button 
-                variant="primary" 
-                size="lg"
-                onClick={() => fetchGeminiInsight(analysisResult)}
-                className="px-5"
-              >
-                🤖 Generate AI Insights
-              </Button>
+
+              {/* 3-step flow diagram */}
+              <div className="ai-flow-row">
+                <div className="ai-flow-node">
+                  <div className="ai-flow-icon">📊</div>
+                  <div className="ai-flow-label">Your Budget Data</div>
+                  <div className="ai-flow-desc">Income · Expenses · Goals</div>
+                </div>
+                <div className="ai-flow-connector">
+                  <div className="ai-flow-arrow-line"/>
+                  <div className="ai-flow-arrow-head">▶</div>
+                </div>
+                <div className="ai-flow-node ai-flow-node--center">
+                  <div className="ai-flow-icon ai-flow-icon--glow">🤖</div>
+                  <div className="ai-flow-label">AI Deep Analysis</div>
+                  <div className="ai-flow-desc">Patterns · Risks · Opportunities</div>
+                </div>
+                <div className="ai-flow-connector">
+                  <div className="ai-flow-arrow-line"/>
+                  <div className="ai-flow-arrow-head">▶</div>
+                </div>
+                <div className="ai-flow-node ai-flow-node--out">
+                  <div className="ai-flow-icon">🗺️</div>
+                  <div className="ai-flow-label">Strategy Roadmap</div>
+                  <div className="ai-flow-desc">Steps · Targets · Timeline</div>
+                </div>
+              </div>
+
+              {/* Feature pills */}
+              <div className="ai-features-row">
+                <div className="ai-feature-pill"><span>💰</span> Savings Opportunities</div>
+                <div className="ai-feature-pill"><span>📉</span> Risk Reduction Plan</div>
+                <div className="ai-feature-pill"><span>🎯</span> Action Steps</div>
+                <div className="ai-feature-pill"><span>🔮</span> Future Projections</div>
+                <div className="ai-feature-pill"><span>🏦</span> Investment Hints</div>
+              </div>
+
+              {/* Generate button */}
+              <div className="ai-cta-btn-wrap">
+                <button
+                  className="ai-generate-btn"
+                  onClick={() => fetchGeminiInsight(analysisResult)}
+                >
+                  <span className="ai-generate-btn-glow"/>
+                  <span className="ai-generate-btn-text">✨ Generate AI Enhanced Strategy</span>
+                </button>
+                <p className="ai-cta-hint">Powered by {aiProvider ? `${aiProvider} AI` : 'Gemini / OpenAI'} · Usually takes 5-10 seconds</p>
+              </div>
             </div>
           )}
 
@@ -1315,82 +1539,210 @@ const BudgetOptimizerNew = () => {
             </div>
           )}
 
-          {/* Gemini Response */}
-          {(geminiInsight || displayedText) && !geminiLoading && (
-            <div className="gemini-response">
-              <div className="gemini-response-meta">
-                <span className="gemini-badge">
-                  {aiProvider === 'Gemini' && '✨'}
-                  {aiProvider === 'OpenAI' && '🚀'}
-                  {!aiProvider && '🤖'}
-                  {' '}AI Generated
-                </span>
-                <span className="gemini-model-tag">
-                  {aiProvider === 'Gemini' && 'gemini-2.0-flash'}
-                  {aiProvider === 'OpenAI' && 'gpt-4o-mini'}
-                  {!aiProvider && 'AI Model'}
-                </span>
-              </div>
-              <div className="gemini-content">
-                {(isStreaming ? displayedText : geminiInsight).split('\n').map((line, i) => {
-                  if (!line.trim()) return <div key={i} style={{height:'10px'}} />;
-                  // Bold headers (lines starting with ** or #)
-                  if (line.startsWith('**') && line.endsWith('**')) {
-                    return (
-                      <h5 key={i} className="gemini-section-head">
-                        {line.replace(/\*\*/g, '')}
-                      </h5>
-                    );
-                  }
-                  // Inline bold (e.g. **text**)
-                  if (line.includes('**')) {
-                    const parts = line.split(/\*\*(.*?)\*\*/g);
-                    return (
-                      <p key={i} className="gemini-para">
-                        {parts.map((part, pi) => pi % 2 === 1 ? <strong key={pi}>{part}</strong> : part)}
-                      </p>
-                    );
-                  }
-                  // Bullet points
-                  if (line.trim().startsWith('- ') || line.trim().startsWith('• ')) {
-                    return (
-                      <div key={i} className="gemini-bullet">
-                        <span className="gemini-bullet-dot">•</span>
-                        <span>{line.replace(/^[-•]\s*/, '')}</span>
+          {/* AI Response */}
+          {(geminiInsight || displayedText) && !geminiLoading && (() => {
+            const rawText = isStreaming ? displayedText : geminiInsight;
+
+            // ── Try to parse structured STEP format ──────────────────
+            const isStructured = /STEP\s+\d+\s*:/i.test(rawText);
+
+            if (isStructured) {
+              // Parse GAP_SUMMARY
+              const gapMatch  = rawText.match(/GAP_SUMMARY\s*:\s*(.+)/i);
+              const gapSummary = gapMatch ? gapMatch[1].trim() : null;
+
+              // Parse all STEP blocks
+              const stepBlocks = [];
+              const stepRegex  = /STEP\s+(\d+)\s*:\s*([^\n]+)\nCATEGORY\s*:\s*([^\n]+)\nSAVE\s*:\s*([^\n]+)\nHOW\s*:\s*([^\n]+)\nTIMEFRAME\s*:\s*([^\n]+)/gi;
+              let m;
+              while ((m = stepRegex.exec(rawText)) !== null) {
+                stepBlocks.push({
+                  num:       m[1],
+                  title:     m[2].trim(),
+                  category:  m[3].trim(),
+                  save:      m[4].trim(),
+                  how:       m[5].trim(),
+                  timeframe: m[6].trim(),
+                });
+              }
+
+              const quickWinMatch  = rawText.match(/QUICK_WIN\s*:\s*(.+)/i);
+              const motivationMatch = rawText.match(/MOTIVATION\s*:\s*(.+)/i);
+              const quickWin   = quickWinMatch  ? quickWinMatch[1].trim()  : null;
+              const motivation = motivationMatch ? motivationMatch[1].trim() : null;
+
+              const catIcon = (cat) => {
+                const c = cat.toLowerCase();
+                if (c.includes('food'))   return '🍱';
+                if (c.includes('trans'))  return '🚌';
+                if (c.includes('accom'))  return '🏠';
+                if (c.includes('internet') || c.includes('phone')) return '📶';
+                if (c.includes('util'))   return '💡';
+                if (c.includes('study') || c.includes('material')) return '📚';
+                if (c.includes('entertain')) return '🎮';
+                if (c.includes('health'))    return '🏥';
+                if (c.includes('income') || c.includes('earn')) return '�';
+                return '⚡';
+              };
+
+              const timeColor = (tf) => {
+                const t = tf.toLowerCase();
+                if (t.includes('this week') || t.includes('today') || t.includes('week 1')) return 'ai-tl-node--now';
+                if (t.includes('week 2') || t.includes('week 3')) return 'ai-tl-node--soon';
+                return 'ai-tl-node--later';
+              };
+
+              return (
+                <div className="ai-tl-wrap">
+                  {/* Header meta */}
+                  <div className="gemini-response-meta">
+                    <span className="gemini-badge">
+                      {aiProvider === 'OpenAI' ? '🚀' : '✨'} AI Step Plan
+                    </span>
+                    <span className="gemini-model-tag">
+                      {aiProvider === 'OpenAI' ? 'gpt-4o-mini' : aiProvider === 'Gemini' ? 'gemini-2.0-flash' : 'AI'}
+                    </span>
+                    <span className="ai-tl-gap-badge">
+                      {stepBlocks.length} steps to your target
+                    </span>
+                  </div>
+
+                  {/* Gap summary bar */}
+                  {gapSummary && (
+                    <div className="ai-tl-gap-summary">
+                      <span className="ai-tl-gap-icon">🎯</span>
+                      <span>{gapSummary}</span>
+                    </div>
+                  )}
+
+                  {/* Timeline steps */}
+                  <div className="ai-tl-body">
+                    <div className="ai-tl-spine" />
+                    {stepBlocks.map((step, idx) => (
+                      <div
+                        key={idx}
+                        className={`ai-tl-node ${timeColor(step.timeframe)}`}
+                        style={{ animationDelay: `${idx * 0.12}s` }}
+                      >
+                        {/* Left: number dot on spine */}
+                        <div className="ai-tl-dot">
+                          <span>{step.num}</span>
+                        </div>
+
+                        {/* Card */}
+                        <div className="ai-tl-card">
+                          <div className="ai-tl-card-header">
+                            <span className="ai-tl-cat-icon">{catIcon(step.category)}</span>
+                            <div className="ai-tl-card-titles">
+                              <div className="ai-tl-card-title">{step.title}</div>
+                              <div className="ai-tl-card-cat">{step.category}</div>
+                            </div>
+                            <div className="ai-tl-save-pill">
+                              <div className="ai-tl-save-amt">{step.save}</div>
+                              <div className="ai-tl-save-label">monthly saving</div>
+                            </div>
+                          </div>
+                          <div className="ai-tl-card-how">
+                            <span className="ai-tl-how-label">How:</span> {step.how}
+                          </div>
+                          <div className="ai-tl-card-footer">
+                            <span className="ai-tl-timeframe-tag">🗓 {step.timeframe}</span>
+                          </div>
+                        </div>
                       </div>
-                    );
-                  }
-                  // Numbered list
-                  if (/^\d+\./.test(line.trim())) {
-                    return (
-                      <div key={i} className="gemini-num-item">
-                        <span className="gemini-num">{line.match(/^\d+/)[0]}</span>
-                        <span>{line.replace(/^\d+\.\s*/, '')}</span>
+                    ))}
+
+                    {/* Target reached node */}
+                    {!isStreaming && stepBlocks.length > 0 && (
+                      <div
+                        className="ai-tl-node ai-tl-node--target"
+                        style={{ animationDelay: `${stepBlocks.length * 0.12}s` }}
+                      >
+                        <div className="ai-tl-dot ai-tl-dot--target">✅</div>
+                        <div className="ai-tl-card ai-tl-card--target">
+                          <div className="ai-tl-target-title">🎯 Optimised Target Reached!</div>
+                          {analysisResult?.optimal_strategy?.optimal_target && (
+                            <div className="ai-tl-target-sub">
+                              LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}/month
+                              · {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% savings rate
+                            </div>
+                          )}
+                          {motivation && <div className="ai-tl-motivation">"{motivation}"</div>}
+                        </div>
                       </div>
-                    );
-                  }
-                  // Heading with #
-                  if (line.startsWith('#')) {
-                    return <h5 key={i} className="gemini-section-head">{line.replace(/^#+\s*/, '')}</h5>;
-                  }
-                  return <p key={i} className="gemini-para">{line}</p>;
-                })}
-                {/* Blinking cursor during streaming */}
-                {isStreaming && <span className="streaming-cursor">▊</span>}
+                    )}
+                  </div>
+
+                  {/* Quick Win banner */}
+                  {quickWin && !isStreaming && (
+                    <div className="ai-tl-quickwin">
+                      <span className="ai-tl-qw-icon">⚡</span>
+                      <div>
+                        <div className="ai-tl-qw-label">Do This TODAY — Quick Win</div>
+                        <div className="ai-tl-qw-text">{quickWin}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Footer */}
+                  <div className="gemini-footer-note">
+                    <span>💡 Generated by {aiProvider || 'AI'} · personalised to your profile</span>
+                    {!isStreaming && (
+                      <Button size="sm" variant="link" className="ms-3 p-0 gemini-retry-btn"
+                        onClick={() => fetchGeminiInsight(analysisResult, true)}>
+                        🔄 Regenerate
+                      </Button>
+                    )}
+                  </div>
+
+                  {isStreaming && <span className="streaming-cursor" style={{margin:'12px 32px',display:'block'}}>▊</span>}
+                </div>
+              );
+            }
+
+            // ── Fallback: plain text renderer ────────────────────────
+            return (
+              <div className="gemini-response">
+                <div className="gemini-response-meta">
+                  <span className="gemini-badge">
+                    {aiProvider === 'Gemini' && '✨'}
+                    {aiProvider === 'OpenAI' && '🚀'}
+                    {!aiProvider && '🤖'}
+                    {' '}AI Generated
+                  </span>
+                  <span className="gemini-model-tag">
+                    {aiProvider === 'Gemini' && 'gemini-2.0-flash'}
+                    {aiProvider === 'OpenAI' && 'gpt-4o-mini'}
+                    {!aiProvider && 'AI Model'}
+                  </span>
+                </div>
+                <div className="gemini-content">
+                  {rawText.split('\n').map((line, i) => {
+                    if (!line.trim()) return <div key={i} style={{height:'10px'}} />;
+                    if (line.startsWith('**') && line.endsWith('**'))
+                      return <h5 key={i} className="gemini-section-head">{line.replace(/\*\*/g, '')}</h5>;
+                    if (line.includes('**')) {
+                      const parts = line.split(/\*\*(.*?)\*\*/g);
+                      return <p key={i} className="gemini-para">{parts.map((p, pi) => pi % 2 === 1 ? <strong key={pi}>{p}</strong> : p)}</p>;
+                    }
+                    if (line.trim().startsWith('- ') || line.trim().startsWith('• '))
+                      return <div key={i} className="gemini-bullet"><span className="gemini-bullet-dot">•</span><span>{line.replace(/^[-•]\s*/, '')}</span></div>;
+                    if (line.startsWith('#'))
+                      return <h5 key={i} className="gemini-section-head">{line.replace(/^#+\s*/, '')}</h5>;
+                    return <p key={i} className="gemini-para">{line}</p>;
+                  })}
+                  {isStreaming && <span className="streaming-cursor">▊</span>}
+                </div>
+                <div className="gemini-footer-note">
+                  <span>💡 This analysis was generated by {aiProvider || 'AI'} based on your specific financial data</span>
+                  {!isStreaming && (
+                    <Button size="sm" variant="link" className="ms-3 p-0 gemini-retry-btn"
+                      onClick={() => fetchGeminiInsight(analysisResult, true)}>🔄 Regenerate</Button>
+                  )}
+                </div>
               </div>
-              <div className="gemini-footer-note">
-                <span>💡 This analysis was generated by {aiProvider || 'AI'} based on your specific financial data</span>
-                {!isStreaming && (
-                  <Button
-                    size="sm" variant="link" className="ms-3 p-0 gemini-retry-btn"
-                    onClick={() => fetchGeminiInsight(analysisResult, true)}
-                  >
-                    🔄 Regenerate
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
+            );
+          })()}
         </div>
 
         {/* Action Buttons */}
