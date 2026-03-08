@@ -18,6 +18,7 @@ export function CareerDetailModal({
   jobDetail,
   isLoading,
   onViewPath,
+  userProfile,
 }) {
   if (!isOpen) return null;
 
@@ -44,7 +45,7 @@ export function CareerDetailModal({
         {isLoading ? (
           <AILoadingState />
         ) : jobDetail ? (
-          <CareerDetailContent jobDetail={jobDetail} onViewPath={onViewPath} />
+          <CareerDetailContent jobDetail={jobDetail} onViewPath={onViewPath} userProfile={userProfile} />
         ) : (
           <ErrorState />
         )}
@@ -66,7 +67,7 @@ function CloseButton({ onClick }) {
   );
 }
 
-function CareerDetailContent({ jobDetail, onViewPath }) {
+function CareerDetailContent({ jobDetail, onViewPath, userProfile }) {
   return (
     <>
       {/* Header */}
@@ -74,7 +75,30 @@ function CareerDetailContent({ jobDetail, onViewPath }) {
         <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
           {jobDetail.role_title || jobDetail.role_id}
         </h2>
-        <DomainBadge domain={jobDetail.domain} size="large" />
+        
+        <div className="flex flex-wrap items-center gap-3">
+          <DomainBadge domain={jobDetail.domain} size="large" />
+          
+          {userProfile && (
+            <div className="flex flex-wrap gap-2 items-center ml-2 border-l-2 border-slate-200 pl-4">
+              {userProfile.experienceLevel && (
+                <span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium whitespace-nowrap border border-slate-200 shadow-sm">
+                  <span className="opacity-75">Exp:</span> {userProfile.experienceLevel}
+                </span>
+              )}
+              {userProfile.educationLevel && (
+                <span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium whitespace-nowrap border border-slate-200 shadow-sm">
+                  <span className="opacity-75">Edu:</span> {userProfile.educationLevel}
+                </span>
+              )}
+              {userProfile.currentStatus && (
+                <span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium whitespace-nowrap border border-slate-200 shadow-sm">
+                   <span className="opacity-75">Status:</span> {userProfile.currentStatus}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Scores */}

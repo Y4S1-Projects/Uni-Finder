@@ -3,8 +3,8 @@ import { FaNetworkWired, FaBalanceScale } from 'react-icons/fa';
 
 export default function ViewModeSelector({ mode, onChange }) {
   const modes = [
-    { id: 'network', label: 'Ecosystem Map', icon: <FaNetworkWired /> },
-    { id: 'comparison', label: 'Market Benchmark', icon: <FaBalanceScale /> }
+    { id: 'network', label: 'Career Network', icon: <FaNetworkWired /> },
+    { id: 'comparison', label: 'Compare Paths', icon: <FaBalanceScale /> }
   ];
   
   return (

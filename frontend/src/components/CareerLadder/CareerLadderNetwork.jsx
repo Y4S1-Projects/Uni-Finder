@@ -153,7 +153,7 @@ const nodeTypes = {
   customRole: CustomRoleNode,
 };
 
-export default function CareerLadderNetwork({ allProgressions, userSkills }) {
+export default function CareerLadderNetwork({ allProgressions, userSkills, userProfile }) {
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
@@ -400,6 +400,7 @@ export default function CareerLadderNetwork({ allProgressions, userSkills }) {
         onClose={closeDetail}
         jobDetail={jobDetail}
         isLoading={detailLoading}
+        userProfile={userProfile}
       />
     </div>
   );

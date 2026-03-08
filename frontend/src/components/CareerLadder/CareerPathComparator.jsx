@@ -6,11 +6,11 @@ export default function CareerPathComparator({ comparisonData, userSkills }) {
   return (
     <div className="space-y-8">
       <div className="text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">
-          Compare Career Paths
+        <h2 className="text-2xl font-extrabold text-[#1e1b4b] mb-2 tracking-tight">
+          Sector Comparison Overview
         </h2>
-        <p className="text-gray-600">
-          See how you match across different career domains
+        <p className="text-[#4f46e5] font-medium tracking-wide text-sm bg-[#eef2ff] inline-block px-4 py-1.5 rounded-full shadow-sm">
+          See how your skills map to roles across different tech domains
         </p>
       </div>
       
@@ -65,30 +65,26 @@ function ComparisonCard({ comparison, rank, isBest }) {
         {Math.round(comparison.match_score * 100)}%
       </div>
       
-      <div className="space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span className="text-gray-600">Best Fit Level:</span>
-          <span className="font-bold text-gray-800">
+      <div className="space-y-3 text-sm">
+        <div className="flex justify-between items-start gap-4">
+          <span className="text-gray-500 shrink-0">Best Fit Level:</span>
+          <span className="font-bold text-gray-800 text-right">
             Level {comparison.best_fit_level}
           </span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">Role:</span>
-          <span className="font-bold text-gray-800">
+        <div className="flex justify-between items-start gap-4">
+          <span className="text-gray-500 shrink-0">Role:</span>
+          <span className="font-bold text-gray-800 text-right">
             {comparison.best_fit_role}
           </span>
         </div>
-        <div className="flex justify-between">
-          <span className="text-gray-600">Jobs Available:</span>
-          <span className="font-bold text-gray-800">
+        <div className="flex justify-between items-start gap-4">
+          <span className="text-gray-500 shrink-0">Jobs Available:</span>
+          <span className="font-bold text-gray-800 text-right">
             {comparison.jobs_available}
           </span>
         </div>
       </div>
-      
-      <button className="w-full mt-4 px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all">
-        View {comparison.domain_name} Ladder
-      </button>
     </div>
   );
 }
