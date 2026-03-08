@@ -1,0 +1,1148 @@
+skill_id,name,aliases,category,type
+SK001,java,java,backend,technical
+SK002,javascript,javascript,frontend,technical
+SK003,sql,sql,database,technical
+SK004,python,python,other,technical
+SK005,css,css,frontend,technical
+SK006,html,html,frontend,technical
+SK007,mobile,mobile,other,technical
+SK008,mysql,mysql,database,technical
+SK009,git,git,other,technical
+SK010,java developer,java developer,backend,technical
+SK011,infrastructure,infrastructure,other,technical
+SK012,database,database,database,technical
+SK013,rest,rest,other,technical
+SK014,c,c,other,technical
+SK015,jquery,jquery,other,technical
+SK016,security,security,other,technical
+SK017,php,php,backend,technical
+SK018,spring,spring,backend,technical
+SK019,json,json,frontend,technical
+SK020,linux,linux,other,technical
+SK021,api,api,other,technical
+SK022,html5,html5,frontend,technical
+SK023,xml,xml,ml_ai,technical
+SK024,devops,devops,devops,technical
+SK025,hibernate,hibernate,other,technical
+SK026,web developer,web developer,other,technical
+SK027,debugging,debugging,other,technical
+SK028,problem solving,problem solving,soft_skill,soft
+SK029,docker,docker,devops,technical
+SK030,j2ee,j2ee,other,technical
+SK031,machine learning,machine learning,ml_ai,technical
+SK032,oracle,oracle,database,technical
+SK033,ajax,ajax,other,technical
+SK034,algorithms,algorithms,other,technical
+SK035,storage,storage,other,technical
+SK036,spring boot,spring boot,backend,technical
+SK037,mvc,mvc,other,technical
+SK038,team player,team player,soft_skill,soft
+SK039,nosql,nosql,database,technical
+SK040,software engineering,software engineering,other,technical
+SK041,software engineer,software engineer,other,technical
+SK042,bootstrap,bootstrap,other,technical
+SK043,big data,big data,other,technical
+SK044,data structures,data structures,other,technical
+SK045,information technology,information technology,other,technical
+SK046,soap,soap,other,technical
+SK047,mongodb,mongodb,database,technical
+SK048,wordpress,wordpress,other,technical
+SK049,.net,.net,backend,technical
+SK050,written communication,written communication,soft_skill,soft
+SK051,maven,maven,other,technical
+SK052,web development,web development,other,technical
+SK053,laravel,laravel,backend,technical
+SK054,oops,oops,other,technical
+SK055,ios,ios,mobile,technical
+SK056,svn,svn,other,technical
+SK057,network engineer,network engineer,other,technical
+SK058,apache,apache,other,technical
+SK059,web technologies,web technologies,other,technical
+SK060,hadoop,hadoop,other,technical
+SK061,windows,windows,other,technical
+SK062,jsp,jsp,frontend,technical
+SK063,github,github,other,technical
+SK064,unix,unix,other,technical
+SK065,angularjs,angularjs,frontend,technical
+SK066,php developer,php developer,backend,technical
+SK067,business analyst,business analyst,other,technical
+SK068,solution architect,solution architect,other,technical
+SK069,spring mvc,spring mvc,backend,technical
+SK070,android developer,android developer,mobile,technical
+SK071,ios developer,ios developer,mobile,technical
+SK072,junit,junit,other,technical
+SK073,spring framework,spring framework,backend,technical
+SK074,fundamentals,fundamentals,other,technical
+SK075,rdbms,rdbms,other,technical
+SK076,node.js,node.js,frontend,technical
+SK077,postgresql,postgresql,database,technical
+SK078,swift,swift,mobile,technical
+SK079,struts,struts,other,technical
+SK080,technical skills,technical skills,other,technical
+SK081,android sdk,android sdk,mobile,technical
+SK082,rest api,rest api,other,technical
+SK083,android development,android development,mobile,technical
+SK084,jpa,jpa,other,technical
+SK085,scala,scala,other,technical
+SK086,eclipse,eclipse,other,technical
+SK087,messaging,messaging,other,technical
+SK088,ruby,ruby,other,technical
+SK089,gradle,gradle,other,technical
+SK090,jdbc,jdbc,other,technical
+SK091,artificial intelligence,artificial intelligence,devops,technical
+SK092,codeigniter,codeigniter,other,technical
+SK093,cisco,cisco,devops,technical
+SK094,oop,oop,other,technical
+SK095,hardware,hardware,other,technical
+SK096,software developer,software developer,other,technical
+SK097,software design,software design,other,technical
+SK098,mvvm,mvvm,other,technical
+SK099,magento,magento,other,technical
+SK100,memory management,memory management,other,technical
+SK101,cloud services,cloud services,cloud,technical
+SK102,project manager,project manager,other,technical
+SK103,asp.net,asp.net,backend,technical
+SK104,joomla,joomla,ml_ai,technical
+SK105,cassandra,cassandra,other,technical
+SK106,hive,hive,other,technical
+SK107,network,network,other,technical
+SK108,crm,crm,other,technical
+SK109,bug fixing,bug fixing,other,technical
+SK110,django,django,backend,technical
+SK111,project management,project management,other,technical
+SK112,orchestration,orchestration,other,technical
+SK113,react.js,react.js,frontend,technical
+SK114,multithreading,multithreading,other,technical
+SK115,data mining,data mining,other,technical
+SK116,cocoa touch,cocoa touch,other,technical
+SK117,system administrator,system administrator,other,technical
+SK118,san,san,other,technical
+SK119,java ee,java ee,backend,technical
+SK120,object oriented programming,object oriented programming,other,technical
+SK121,uml,uml,ml_ai,technical
+SK122,software development,software development,other,technical
+SK123,senior software engineer,senior software engineer,other,technical
+SK124,data analyst,data analyst,other,technical
+SK125,drupal,drupal,other,technical
+SK126,wan,wan,other,technical
+SK127,bgp,bgp,other,technical
+SK128,ospf,ospf,other,technical
+SK129,data warehousing,data warehousing,other,technical
+SK130,telecom,telecom,other,technical
+SK131,servlets,servlets,other,technical
+SK132,networking,networking,other,technical
+SK133,threading,threading,other,technical
+SK134,graphics,graphics,other,technical
+SK135,testing,testing,other,technical
+SK136,cloud computing,cloud computing,cloud,technical
+SK137,ccna,ccna,other,technical
+SK138,hardware engineer,hardware engineer,other,technical
+SK139,system engineer,system engineer,other,technical
+SK140,java programming,java programming,backend,technical
+SK141,forms,forms,other,technical
+SK142,mobile development,mobile development,other,technical
+SK143,ios development,ios development,mobile,technical
+SK144,hosting,hosting,other,technical
+SK145,business analysis,business analysis,other,technical
+SK146,objective c,objective c,other,technical
+SK147,jee,jee,other,technical
+SK148,business requirements,business requirements,other,technical
+SK149,switching,switching,other,technical
+SK150,perl,perl,other,technical
+SK151,xcode,xcode,other,technical
+SK152,web services,web services,other,technical
+SK153,data entry,data entry,other,technical
+SK154,ant,ant,other,technical
+SK155,gateway,gateway,other,technical
+SK156,routing,routing,other,technical
+SK157,application development,application development,other,technical
+SK158,android studio,android studio,mobile,technical
+SK159,protocols,protocols,other,technical
+SK160,ccnp,ccnp,other,technical
+SK161,agile,agile,other,technical
+SK162,lan,lan,other,technical
+SK163,data entry operator,data entry operator,other,technical
+SK164,consultant,consultant,other,technical
+SK165,firewall,firewall,other,technical
+SK166,coding,coding,other,technical
+SK167,shell scripting,shell scripting,other,technical
+SK168,vpn,vpn,other,technical
+SK169,network configuration maintenance,network configuration maintenance,ml_ai,technical
+SK170,routing protocols,routing protocols,other,technical
+SK171,jsf,jsf,frontend,technical
+SK172,computer operator,computer operator,other,technical
+SK173,dns,dns,other,technical
+SK174,microsoft azure,microsoft azure,cloud,technical
+SK175,hbase,hbase,other,technical
+SK176,sql database,sql database,database,technical
+SK177,data analysis,data analysis,analytics,technical
+SK178,web api,web api,other,technical
+SK179,soa,soa,other,technical
+SK180,iphone,iphone,other,technical
+SK181,aws,aws,cloud,technical
+SK182,configuration,configuration,other,technical
+SK183,weblogic,weblogic,other,technical
+SK184,technical requirements,technical requirements,other,technical
+SK185,elastic search,elastic search,other,technical
+SK186,mockito,mockito,other,technical
+SK187,operating system,operating system,other,technical
+SK188,project delivery,project delivery,other,technical
+SK189,spring security,spring security,backend,technical
+SK190,middleware,middleware,other,technical
+SK191,sybase,sybase,other,technical
+SK192,etl,etl,other,technical
+SK193,websphere,websphere,other,technical
+SK194,natural language processing,natural language processing,other,technical
+SK195,visual studio,visual studio,other,technical
+SK196,microsoft technologies,microsoft technologies,other,technical
+SK197,windows server,windows server,other,technical
+SK198,entity framework,entity framework,other,technical
+SK199,phonegap,phonegap,other,technical
+SK200,leadership skills,leadership skills,soft_skill,soft
+SK201,it hardware engineer,it hardware engineer,other,technical
+SK202,installation,installation,other,technical
+SK203,zend,zend,other,technical
+SK204,sqlite,sqlite,database,technical
+SK205,design patterns,design patterns,other,technical
+SK206,production support,production support,other,technical
+SK207,global delivery,global delivery,other,technical
+SK208,juniper,juniper,other,technical
+SK209,network administrator,network administrator,other,technical
+SK210,yii,yii,other,technical
+SK211,games,games,other,technical
+SK212,splunk,splunk,other,technical
+SK213,mvc framework,mvc framework,other,technical
+SK214,mpls,mpls,other,technical
+SK215,application performance,application performance,other,technical
+SK216,pmp,pmp,other,technical
+SK217,tableau,tableau,analytics,technical
+SK218,system architecture,system architecture,other,technical
+SK219,cakephp,cakephp,backend,technical
+SK220,groovy,groovy,other,technical
+SK221,eigrp,eigrp,other,technical
+SK222,j2ee technologies,j2ee technologies,other,technical
+SK223,technical support engineer,technical support engineer,other,technical
+SK224,authoring,authoring,other,technical
+SK225,it manager,it manager,other,technical
+SK226,use cases,use cases,other,technical
+SK227,iam,iam,other,technical
+SK228,image processing,image processing,other,technical
+SK229,web programming,web programming,other,technical
+SK230,technology consulting,technology consulting,other,technical
+SK231,ios sdk,ios sdk,mobile,technical
+SK232,senior network engineer,senior network engineer,other,technical
+SK233,program management,program management,other,technical
+SK234,database management,database management,database,technical
+SK235,ipsec,ipsec,other,technical
+SK236,router,router,other,technical
+SK237,ipad,ipad,other,technical
+SK238,multimedia,multimedia,other,technical
+SK239,computer science,computer science,devops,technical
+SK240,salesforce,salesforce,other,technical
+SK241,requirement gathering,requirement gathering,other,technical
+SK242,data engineer,data engineer,other,technical
+SK243,cocoa,cocoa,other,technical
+SK244,hdfs,hdfs,other,technical
+SK245,voip,voip,other,technical
+SK246,mvc architecture,mvc architecture,other,technical
+SK247,cli,cli,other,technical
+SK248,grunt,grunt,other,technical
+SK249,project life cycle,project life cycle,other,technical
+SK250,dhcp,dhcp,other,technical
+SK251,c ++,c ++,other,technical
+SK252,mqtt,mqtt,other,technical
+SK253,data analytics,data analytics,analytics,technical
+SK254,information systems,information systems,other,technical
+SK255,computer engineering,computer engineering,other,technical
+SK256,xamarin,xamarin,other,technical
+SK257,production environment,production environment,other,technical
+SK258,mobile application development,mobile application development,other,technical
+SK259,system administration,system administration,other,technical
+SK260,desktop support engineer,desktop support engineer,other,technical
+SK261,jira,jira,other,technical
+SK262,advanced java,advanced java,backend,technical
+SK263,brd,brd,other,technical
+SK264,soap web services,soap web services,other,technical
+SK265,android,android,mobile,technical
+SK266,functional requirements,functional requirements,other,technical
+SK267,apache tomcat,apache tomcat,other,technical
+SK268,security compliance,security compliance,other,technical
+SK269,intellij,intellij,other,technical
+SK270,dashboards,dashboards,other,technical
+SK271,troubleshooting,troubleshooting,other,technical
+SK272,database administrator,database administrator,database,technical
+SK273,data visualization,data visualization,other,technical
+SK274,pig,pig,other,technical
+SK275,oozie,oozie,other,technical
+SK276,cisco routers,cisco routers,devops,technical
+SK277,data science,data science,devops,technical
+SK278,triggers,triggers,other,technical
+SK279,mobile applications,mobile applications,other,technical
+SK280,senior web developer,senior web developer,other,technical
+SK281,system admin,system admin,other,technical
+SK282,implementation,implementation,other,technical
+SK283,stp,stp,other,technical
+SK284,user stories,user stories,other,technical
+SK285,programming,programming,other,technical
+SK286,software testing,software testing,other,technical
+SK287,ubuntu,ubuntu,other,technical
+SK288,desktop engineer,desktop engineer,other,technical
+SK289,mvp,mvp,other,technical
+SK290,operator,operator,other,technical
+SK291,ejb,ejb,other,technical
+SK292,director,director,other,technical
+SK293,java script,java script,backend,technical
+SK294,lamp,lamp,other,technical
+SK295,mentor,mentor,other,technical
+SK296,business process,business process,other,technical
+SK297,hsrp,hsrp,other,technical
+SK298,project plan,project plan,other,technical
+SK299,business applications,business applications,other,technical
+SK300,opencart,opencart,other,technical
+SK301,rust,"rust,rust-lang,rustlang",backend,technical
+SK302,go,"go,golang,go-lang",backend,technical
+SK303,kotlin,"kotlin,kt",backend,technical
+SK304,dart,"dart,dartlang",frontend,technical
+SK305,julia,"julia,julialang",data,technical
+SK306,elixir,"elixir,ex",backend,technical
+SK307,haskell,"haskell,hs",backend,technical
+SK308,clojure,"clojure,clj",backend,technical
+SK309,erlang,"erlang,erl",backend,technical
+SK310,f#,"fsharp,f#,f-sharp",backend,technical
+SK311,r programming,"r,r-lang,r programming,rstats",data,technical
+SK312,typescript,"typescript,ts",frontend,technical
+SK313,lua,lua,backend,technical
+SK314,fortran,fortran,backend,technical
+SK315,cobol,cobol,backend,technical
+SK316,assembly,"assembly,asm",embedded,technical
+SK317,matlab,"matlab,mat",data,technical
+SK318,vba,"vba,visual basic for applications",backend,technical
+SK319,powershell,"powershell,ps1,pwsh",devops,technical
+SK320,bash scripting,"bash,bash scripting,sh,shell",devops,technical
+SK321,solidity,"solidity,sol",blockchain,technical
+SK322,prolog,prolog,ai_ml,technical
+SK323,lisp,"lisp,common lisp",ai_ml,technical
+SK324,ocaml,"ocaml,ml",backend,technical
+SK325,zig,"zig,ziglang",backend,technical
+SK326,nim,"nim,nimlang",backend,technical
+SK327,crystal,"crystal,crystallang",backend,technical
+SK328,v lang,"vlang,v lang,v",backend,technical
+SK329,d language,"d,dlang,d language",backend,technical
+SK330,mojo,"mojo,mojo lang",ai_ml,technical
+SK331,carbon,"carbon,carbon language",backend,technical
+SK332,hack,"hack,hacklang",backend,technical
+SK333,gdscript,"gdscript,gd script",game_dev,technical
+SK334,verilog,"verilog,system verilog",embedded,technical
+SK335,vhdl,vhdl,embedded,technical
+SK336,tcl,"tcl,tcl/tk",backend,technical
+SK337,pascal,"pascal,delphi,object pascal",backend,technical
+SK338,scheme,"scheme,racket",backend,technical
+SK339,ada,ada,embedded,technical
+SK340,apex,"apex,salesforce apex",cloud,technical
+SK341,abap,"abap,sap abap",backend,technical
+SK342,groovy scripting,"groovy script,groovy scripting",devops,technical
+SK343,coffeescript,"coffeescript,coffee",frontend,technical
+SK344,wasm,"wasm,webassembly,web assembly",frontend,technical
+SK345,glsl,"glsl,opengl shading",game_dev,technical
+SK346,hlsl,"hlsl,high level shading",game_dev,technical
+SK347,cuda programming,"cuda,cuda programming,nvidia cuda",ai_ml,technical
+SK348,openmp,"openmp,open mp",backend,technical
+SK349,mpi,"mpi,message passing interface",backend,technical
+SK350,cython,cython,backend,technical
+SK351,react,"react,reactjs,react.js,react js",frontend,technical
+SK352,vue.js,"vue,vuejs,vue.js,vue 3",frontend,technical
+SK353,angular,"angular,angular 17,angular 18",frontend,technical
+SK354,next.js,"nextjs,next.js,next js",fullstack,technical
+SK355,nuxt.js,"nuxtjs,nuxt.js,nuxt",fullstack,technical
+SK356,svelte,"svelte,sveltejs",frontend,technical
+SK357,sveltekit,"sveltekit,svelte kit",fullstack,technical
+SK358,remix,"remix,remix run",fullstack,technical
+SK359,astro,"astro,astro build",frontend,technical
+SK360,solid.js,"solidjs,solid.js,solid js",frontend,technical
+SK361,qwik,"qwik,qwik js",frontend,technical
+SK362,ember.js,"ember,emberjs,ember.js",frontend,technical
+SK363,backbone.js,"backbone,backbonejs,backbone.js",frontend,technical
+SK364,alpine.js,"alpinejs,alpine.js,alpine js",frontend,technical
+SK365,htmx,htmx,frontend,technical
+SK366,tailwind css,"tailwind,tailwindcss,tailwind css",frontend,technical
+SK367,sass,"sass,scss",frontend,technical
+SK368,styled components,"styled-components,styled components,css-in-js",frontend,technical
+SK369,material ui,"mui,material ui,material-ui",frontend,technical
+SK370,chakra ui,"chakra,chakra ui,chakra-ui",frontend,technical
+SK371,ant design,"antd,ant design,ant-design",frontend,technical
+SK372,storybook,storybook,frontend,technical
+SK373,webpack,webpack,frontend,technical
+SK374,vite,"vite,vitejs",frontend,technical
+SK375,esbuild,esbuild,frontend,technical
+SK376,turbopack,turbopack,frontend,technical
+SK377,rollup,"rollup,rollupjs",frontend,technical
+SK378,parcel,"parcel,parceljs",frontend,technical
+SK379,flask,"flask,python flask",backend,technical
+SK380,fastapi,"fastapi,fast api,fast-api",backend,technical
+SK381,express.js,"express,expressjs,express.js",backend,technical
+SK382,nestjs,"nestjs,nest.js,nest js",backend,technical
+SK383,koa.js,"koa,koajs,koa.js",backend,technical
+SK384,hapi.js,"hapi,hapijs,hapi.js",backend,technical
+SK385,fastify,fastify,backend,technical
+SK386,adonis.js,"adonisjs,adonis.js,adonis",backend,technical
+SK387,ruby on rails,"rails,ruby on rails,ror",backend,technical
+SK388,sinatra,"sinatra,ruby sinatra",backend,technical
+SK389,asp.net core,"asp.net core,dotnet core,.net core",backend,technical
+SK390,blazor,"blazor,blazor wasm",fullstack,technical
+SK391,gin,"gin,gin-gonic,go gin",backend,technical
+SK392,echo go,"echo,go echo,echo framework",backend,technical
+SK393,fiber go,"fiber,go fiber,fiber framework",backend,technical
+SK394,actix web,"actix,actix-web,actix web",backend,technical
+SK395,rocket rust,"rocket,rust rocket",backend,technical
+SK396,phoenix,"phoenix,elixir phoenix",backend,technical
+SK397,play framework,"play,play framework,scala play",backend,technical
+SK398,micronaut,micronaut,backend,technical
+SK399,quarkus,"quarkus,quarkus io",backend,technical
+SK400,vert.x,"vertx,vert.x,eclipse vert.x",backend,technical
+SK401,graphql,"graphql,gql,graph ql",backend,technical
+SK402,apollo graphql,"apollo,apollo graphql,apollo server",backend,technical
+SK403,prisma,"prisma,prisma orm",backend,technical
+SK404,sequelize,sequelize,backend,technical
+SK405,typeorm,"typeorm,type orm",backend,technical
+SK406,drizzle orm,"drizzle,drizzle orm",backend,technical
+SK407,sqlalchemy,"sqlalchemy,sql alchemy",backend,technical
+SK408,deno,"deno,deno js",backend,technical
+SK409,bun,"bun,bunjs,bun runtime",backend,technical
+SK410,grpc,"grpc,grpc api,g-rpc",backend,technical
+SK411,trpc,"trpc,t-rpc,trpc api",fullstack,technical
+SK412,redux,"redux,redux toolkit,rtk",frontend,technical
+SK413,zustand,zustand,frontend,technical
+SK414,mobx,"mobx,mob-x",frontend,technical
+SK415,recoil,"recoil,recoiljs",frontend,technical
+SK416,pinia,pinia,frontend,technical
+SK417,tanstack query,"tanstack,react query,tanstack query",frontend,technical
+SK418,gatsby,"gatsby,gatsbyjs",frontend,technical
+SK419,eleventy,"eleventy,11ty",frontend,technical
+SK420,hugo,"hugo,gohugo",frontend,technical
+SK421,jekyll,jekyll,frontend,technical
+SK422,three.js,"threejs,three.js,three js,webgl",frontend,technical
+SK423,d3.js,"d3,d3js,d3.js,d3 visualization",frontend,technical
+SK424,cypress,"cypress,cypress io",frontend,technical
+SK425,playwright,"playwright,ms playwright",frontend,technical
+SK426,puppeteer,puppeteer,frontend,technical
+SK427,selenium,"selenium,selenium webdriver",frontend,technical
+SK428,jest,"jest,jestjs",frontend,technical
+SK429,vitest,vitest,frontend,technical
+SK430,mocha,"mocha,mochajs",frontend,technical
+SK431,aws lambda,"lambda,aws lambda,serverless,faas",cloud,technical
+SK432,aws s3,"s3,aws s3,simple storage service",cloud,technical
+SK433,aws ec2,"ec2,aws ec2,elastic compute cloud",cloud,technical
+SK434,aws rds,"rds,aws rds,relational database service",cloud,technical
+SK435,aws dynamodb,"dynamodb,aws dynamodb,dynamo db",cloud,technical
+SK436,aws cloudformation,"cloudformation,aws cloudformation,cfn",cloud,technical
+SK437,aws eks,"eks,aws eks,elastic kubernetes service",cloud,technical
+SK438,aws ecs,"ecs,aws ecs,elastic container service",cloud,technical
+SK439,aws fargate,"fargate,aws fargate",cloud,technical
+SK440,aws sqs,"sqs,aws sqs,simple queue service",cloud,technical
+SK441,aws sns,"sns,aws sns,simple notification service",cloud,technical
+SK442,aws kinesis,"kinesis,aws kinesis,data streams",cloud,technical
+SK443,aws step functions,"step functions,aws step functions,sfn",cloud,technical
+SK444,aws api gateway,"api gateway,aws api gateway,apigw",cloud,technical
+SK445,aws cloudwatch,"cloudwatch,aws cloudwatch",cloud,technical
+SK446,aws iam,"aws iam,iam policies,identity access management",cloud,technical
+SK447,aws vpc,"vpc,aws vpc,virtual private cloud",cloud,technical
+SK448,aws route 53,"route53,route 53,aws route 53,dns service",cloud,technical
+SK449,aws cloudfront,"cloudfront,aws cloudfront,cdn",cloud,technical
+SK450,aws elasticache,"elasticache,aws elasticache,redis aws",cloud,technical
+SK451,aws redshift,"redshift,aws redshift,data warehouse aws",cloud,technical
+SK452,aws glue,"glue,aws glue,etl aws",cloud,technical
+SK453,aws athena,"athena,aws athena,serverless sql",cloud,technical
+SK454,aws sagemaker,"sagemaker,aws sagemaker,ml aws",cloud,technical
+SK455,aws cdk,"cdk,aws cdk,cloud development kit",cloud,technical
+SK456,aws amplify,"amplify,aws amplify",cloud,technical
+SK457,aws cognito,"cognito,aws cognito,auth aws",cloud,technical
+SK458,aws secrets manager,"secrets manager,aws secrets manager",cloud,technical
+SK459,aws eventbridge,"eventbridge,aws eventbridge,event bus",cloud,technical
+SK460,aws codecommit,"codecommit,aws codecommit",cloud,technical
+SK461,aws codepipeline,"codepipeline,aws codepipeline,cicd aws",cloud,technical
+SK462,aws codebuild,"codebuild,aws codebuild",cloud,technical
+SK463,aws codedeploy,"codedeploy,aws codedeploy",cloud,technical
+SK464,aws elastic beanstalk,"elastic beanstalk,beanstalk,eb",cloud,technical
+SK465,aws aurora,"aurora,aws aurora,aurora db",cloud,technical
+SK466,aws documentdb,"documentdb,aws documentdb",cloud,technical
+SK467,aws emr,"emr,aws emr,elastic mapreduce",cloud,technical
+SK468,aws msk,"msk,aws msk,managed kafka",cloud,technical
+SK469,aws waf,"waf,aws waf,web application firewall",cloud,technical
+SK470,aws organizations,"aws organizations,aws org,multi-account",cloud,technical
+SK471,azure app service,"app service,azure app service,azure web app",cloud,technical
+SK472,azure functions,"azure functions,az functions,serverless azure",cloud,technical
+SK473,azure cosmos db,"cosmosdb,cosmos db,azure cosmos db",cloud,technical
+SK474,azure kubernetes service,"aks,azure kubernetes,azure aks",cloud,technical
+SK475,azure devops,"azure devops,ado,azure pipelines",cloud,technical
+SK476,azure sql database,"azure sql,azure sql database",cloud,technical
+SK477,azure blob storage,"blob storage,azure blob,azure storage",cloud,technical
+SK478,azure active directory,"azure ad,aad,entra id,azure active directory",cloud,technical
+SK479,azure virtual machines,"azure vm,azure virtual machines,az vm",cloud,technical
+SK480,azure container instances,"aci,azure container instances,az container",cloud,technical
+SK481,azure container apps,"azure container apps,aca",cloud,technical
+SK482,azure event hub,"event hub,azure event hub,eventhub",cloud,technical
+SK483,azure service bus,"service bus,azure service bus,asb",cloud,technical
+SK484,azure key vault,"key vault,azure key vault,akv",cloud,technical
+SK485,azure logic apps,"logic apps,azure logic apps",cloud,technical
+SK486,azure data factory,"data factory,adf,azure data factory",cloud,technical
+SK487,azure synapse analytics,"synapse,azure synapse,synapse analytics",cloud,technical
+SK488,azure machine learning,"azure ml,azure machine learning,azureml",cloud,technical
+SK489,azure cognitive services,"cognitive services,azure cognitive,ai services",cloud,technical
+SK490,azure monitor,"azure monitor,application insights,az monitor",cloud,technical
+SK491,azure front door,"front door,azure front door,afd",cloud,technical
+SK492,azure cdn,azure cdn,cloud,technical
+SK493,azure api management,"apim,azure api management,az apim",cloud,technical
+SK494,azure redis cache,"azure redis,azure redis cache",cloud,technical
+SK495,azure databricks,"databricks,azure databricks",cloud,technical
+SK496,azure openai service,"azure openai,azure gpt,aoai",cloud,technical
+SK497,azure static web apps,"static web apps,azure swa",cloud,technical
+SK498,azure bicep,"bicep,azure bicep,arm bicep",cloud,technical
+SK499,azure terraform,"azure terraform,terraform azure",cloud,technical
+SK500,azure sentinel,"sentinel,azure sentinel,siem azure",cloud,technical
+SK501,google compute engine,"compute engine,gce,google compute",cloud,technical
+SK502,google cloud functions,"cloud functions,gcf,google functions",cloud,technical
+SK503,google bigquery,"bigquery,bq,google bigquery",cloud,technical
+SK504,google kubernetes engine,"gke,google kubernetes,gke cluster",cloud,technical
+SK505,google cloud run,"cloud run,google cloud run,gcloud run",cloud,technical
+SK506,google cloud storage,"gcs,google cloud storage,cloud storage",cloud,technical
+SK507,google pub/sub,"pubsub,pub/sub,google pub sub",cloud,technical
+SK508,google cloud sql,"cloud sql,google cloud sql",cloud,technical
+SK509,google firestore,"firestore,google firestore,cloud firestore",cloud,technical
+SK510,google spanner,"spanner,cloud spanner,google spanner",cloud,technical
+SK511,google dataflow,"dataflow,google dataflow,apache beam gcp",cloud,technical
+SK512,google dataproc,"dataproc,google dataproc,hadoop gcp",cloud,technical
+SK513,google vertex ai,"vertex ai,google vertex,vertex ml",cloud,technical
+SK514,google cloud composer,"cloud composer,google composer,airflow gcp",cloud,technical
+SK515,google cloud build,"cloud build,google cloud build,gcb",cloud,technical
+SK516,google artifact registry,"artifact registry,gar,google artifact",cloud,technical
+SK517,google cloud armor,"cloud armor,google armor,ddos gcp",cloud,technical
+SK518,google cloud iam,"gcp iam,google cloud iam",cloud,technical
+SK519,google cloud cdn,"google cdn,cloud cdn,gcp cdn",cloud,technical
+SK520,google cloud logging,"cloud logging,stackdriver,gcp logging",cloud,technical
+SK521,google cloud monitoring,"cloud monitoring,gcp monitoring",cloud,technical
+SK522,google apigee,"apigee,google apigee,api management gcp",cloud,technical
+SK523,google anthos,"anthos,google anthos,hybrid cloud gcp",cloud,technical
+SK524,google cloud memorystore,"memorystore,gcp redis,gcp memcached",cloud,technical
+SK525,google alloydb,"alloydb,google alloydb",cloud,technical
+SK526,google cloud tasks,"cloud tasks,google tasks",cloud,technical
+SK527,google cloud scheduler,"cloud scheduler,google scheduler",cloud,technical
+SK528,google looker,"looker,google looker,looker studio",cloud,technical
+SK529,google firebase,"firebase,google firebase,fcm",cloud,technical
+SK530,google cloud endpoints,"cloud endpoints,google endpoints",cloud,technical
+SK531,tensorflow,"tensorflow,tf,tensorflow 2",ai_ml,technical
+SK532,pytorch,"pytorch,torch",ai_ml,technical
+SK533,keras,keras,ai_ml,technical
+SK534,scikit-learn,"sklearn,scikit-learn,scikit learn",ai_ml,technical
+SK535,hugging face transformers,"huggingface,hugging face,transformers,hf",ai_ml,technical
+SK536,jax,"jax,google jax",ai_ml,technical
+SK537,xgboost,"xgboost,xgb",ai_ml,technical
+SK538,lightgbm,"lightgbm,lgbm,light gbm",ai_ml,technical
+SK539,catboost,catboost,ai_ml,technical
+SK540,fastai,"fastai,fast.ai",ai_ml,technical
+SK541,onnx,"onnx,open neural network exchange",ai_ml,technical
+SK542,pandas,"pandas,pd",data,technical
+SK543,numpy,"numpy,np",data,technical
+SK544,scipy,scipy,data,technical
+SK545,matplotlib,"matplotlib,mpl",data,technical
+SK546,seaborn,"seaborn,sns",data,technical
+SK547,plotly,"plotly,plotly express",data,technical
+SK548,statsmodels,statsmodels,data,technical
+SK549,polars,polars,data,technical
+SK550,dask,"dask,dask distributed",data,technical
+SK551,large language models,"llm,large language models,llms",ai_ml,technical
+SK552,gpt models,"gpt,gpt-4,gpt-3.5,chatgpt,openai gpt",ai_ml,technical
+SK553,bert,"bert,distilbert,roberta",ai_ml,technical
+SK554,langchain,"langchain,lang chain",ai_ml,technical
+SK555,llamaindex,"llamaindex,llama index,gpt index",ai_ml,technical
+SK556,retrieval augmented generation,"rag,retrieval augmented generation",ai_ml,technical
+SK557,prompt engineering,"prompt engineering,prompt design,prompting",ai_ml,technical
+SK558,fine tuning llms,"fine tuning,fine-tuning,finetuning,lora,qlora",ai_ml,technical
+SK559,vector databases,"vector db,vector databases,vector store",ai_ml,technical
+SK560,embeddings,"embeddings,word embeddings,sentence embeddings",ai_ml,technical
+SK561,openai api,"openai api,openai,chatgpt api",ai_ml,technical
+SK562,anthropic claude,"claude,anthropic,claude api",ai_ml,technical
+SK563,stable diffusion,"stable diffusion,sd,diffusion models",ai_ml,technical
+SK564,midjourney,"midjourney,midjourney ai",ai_ml,technical
+SK565,ai agents,"ai agents,autonomous agents,agent framework",ai_ml,technical
+SK566,autogen,"autogen,microsoft autogen",ai_ml,technical
+SK567,crewai,"crewai,crew ai",ai_ml,technical
+SK568,semantic kernel,"semantic kernel,sk,microsoft semantic kernel",ai_ml,technical
+SK569,llama,"llama,llama 2,llama 3,meta llama",ai_ml,technical
+SK570,mistral,"mistral,mistral ai,mixtral",ai_ml,technical
+SK571,gemini api,"gemini,google gemini,gemini api",ai_ml,technical
+SK572,copilot integration,"copilot,github copilot,ai coding assistant",ai_ml,technical
+SK573,ai ethics,"ai ethics,responsible ai,ai fairness,ai bias",ai_ml,technical
+SK574,generative ai,"genai,generative ai,generative artificial intelligence",ai_ml,technical
+SK575,multimodal ai,"multimodal,multimodal ai,vision language model",ai_ml,technical
+SK576,mlflow,"mlflow,ml flow",ai_ml,technical
+SK577,kubeflow,"kubeflow,kube flow",ai_ml,technical
+SK578,weights and biases,"wandb,weights and biases,w&b",ai_ml,technical
+SK579,dvc,"dvc,data version control",ai_ml,technical
+SK580,feature store,"feature store,feast,tecton",ai_ml,technical
+SK581,model serving,"model serving,model deployment,model inference",ai_ml,technical
+SK582,triton inference server,"triton,triton inference,nvidia triton",ai_ml,technical
+SK583,bentoml,"bentoml,bento ml",ai_ml,technical
+SK584,seldon core,"seldon,seldon core",ai_ml,technical
+SK585,ml monitoring,"ml monitoring,model monitoring,data drift",ai_ml,technical
+SK586,experiment tracking,"experiment tracking,ml experiments",ai_ml,technical
+SK587,model registry,"model registry,ml model registry",ai_ml,technical
+SK588,label studio,"label studio,data labeling,annotation tool",ai_ml,technical
+SK589,great expectations,"great expectations,data validation,ge",data,technical
+SK590,evidently ai,"evidently,evidently ai,ml observability",ai_ml,technical
+SK591,apache spark,"spark,apache spark,pyspark,spark sql",data,technical
+SK592,apache kafka,"kafka,apache kafka,kafka streams",data,technical
+SK593,apache airflow,"airflow,apache airflow,dag",data,technical
+SK594,apache flink,"flink,apache flink,stream processing",data,technical
+SK595,apache beam,"beam,apache beam,dataflow sdk",data,technical
+SK596,apache nifi,"nifi,apache nifi,data flow",data,technical
+SK597,apache cassandra advanced,"cassandra tuning,cassandra data modeling",data,technical
+SK598,apache druid,"druid,apache druid,olap",data,technical
+SK599,apache iceberg,"iceberg,apache iceberg,table format",data,technical
+SK600,delta lake,"delta lake,delta,databricks delta",data,technical
+SK601,apache hudi,"hudi,apache hudi",data,technical
+SK602,presto,"presto,trino,presto sql",data,technical
+SK603,dbt,"dbt,data build tool,dbt core",data,technical
+SK604,snowflake,"snowflake,snowflake db,snowflake data cloud",data,technical
+SK605,databricks platform,"databricks,databricks platform,lakehouse",data,technical
+SK606,data lakehouse,"lakehouse,data lakehouse,lake house",data,technical
+SK607,data mesh,"data mesh,data domain,data as product",data,technical
+SK608,data governance,"data governance,data quality,data catalog",data,technical
+SK609,data pipeline,"data pipeline,etl pipeline,elt",data,technical
+SK610,streaming analytics,"streaming analytics,real-time analytics",data,technical
+SK611,power bi,"power bi,powerbi,pbi",analytics,technical
+SK612,looker,"looker,google looker,looker studio",analytics,technical
+SK613,metabase,metabase,analytics,technical
+SK614,apache superset,"superset,apache superset",analytics,technical
+SK615,qlik,"qlik,qlikview,qlik sense",analytics,technical
+SK616,sisense,sisense,analytics,technical
+SK617,grafana dashboards,"grafana dashboard,grafana viz",analytics,technical
+SK618,google data studio,"data studio,google data studio,looker studio",analytics,technical
+SK619,excel analytics,"excel,advanced excel,excel analytics,pivot tables",analytics,technical
+SK620,jupyter notebooks,"jupyter,jupyter notebook,jupyterlab,ipynb",data,technical
+SK621,opencv,"opencv,cv2,open cv",ai_ml,technical
+SK622,yolo,"yolo,yolov5,yolov8,ultralytics",ai_ml,technical
+SK623,object detection,"object detection,object recognition",ai_ml,technical
+SK624,image segmentation,"image segmentation,semantic segmentation,instance segmentation",ai_ml,technical
+SK625,ocr,"ocr,optical character recognition,tesseract",ai_ml,technical
+SK626,face recognition,"face recognition,face detection,facial recognition",ai_ml,technical
+SK627,image classification,"image classification,image recognition",ai_ml,technical
+SK628,pose estimation,"pose estimation,human pose,mediapipe",ai_ml,technical
+SK629,3d vision,"3d vision,point cloud,depth estimation",ai_ml,technical
+SK630,video analytics,"video analytics,video processing,video ai",ai_ml,technical
+SK631,spacy,"spacy,spacy nlp",ai_ml,technical
+SK632,nltk,"nltk,natural language toolkit",ai_ml,technical
+SK633,text classification,"text classification,sentiment analysis,text categorization",ai_ml,technical
+SK634,named entity recognition,"ner,named entity recognition,entity extraction",ai_ml,technical
+SK635,topic modeling,"topic modeling,lda,topic extraction",ai_ml,technical
+SK636,machine translation,"machine translation,neural translation,nmt",ai_ml,technical
+SK637,speech recognition,"speech recognition,asr,speech to text,stt",ai_ml,technical
+SK638,text generation,"text generation,language generation,nlg",ai_ml,technical
+SK639,question answering,"question answering,qa system,reading comprehension",ai_ml,technical
+SK640,chatbot development,"chatbot,conversational ai,dialog systems",ai_ml,technical
+SK641,text summarization,"text summarization,abstractive summarization,extractive summarization",ai_ml,technical
+SK642,information retrieval,"information retrieval,search ranking,document retrieval",ai_ml,technical
+SK643,knowledge graphs,"knowledge graph,ontology,knowledge base",ai_ml,technical
+SK644,text analytics,"text analytics,text mining,corpus analysis",ai_ml,technical
+SK645,tokenization,"tokenization,subword tokenization,bpe",ai_ml,technical
+SK646,kubernetes,"kubernetes,k8s,kube,container orchestration",devops,technical
+SK647,helm charts,"helm,helm charts,helm chart,k8s helm",devops,technical
+SK648,podman,"podman,pod manager",devops,technical
+SK649,containerd,"containerd,container runtime",devops,technical
+SK650,docker swarm,"docker swarm,swarm mode",devops,technical
+SK651,container security,"container security,image scanning,trivy",devops,technical
+SK652,openshift,"openshift,red hat openshift,ocp",devops,technical
+SK653,rancher,"rancher,rancher desktop",devops,technical
+SK654,k3s,"k3s,lightweight kubernetes",devops,technical
+SK655,jenkins,"jenkins,jenkins ci,jenkins pipeline",devops,technical
+SK656,gitlab ci,"gitlab ci,gitlab ci/cd,gitlab runner",devops,technical
+SK657,github actions,"github actions,gha,gh actions",devops,technical
+SK658,circleci,"circleci,circle ci",devops,technical
+SK659,argocd,"argocd,argo cd,argo gitops",devops,technical
+SK660,tekton,"tekton,tekton pipelines",devops,technical
+SK661,azure pipelines,"azure pipelines,ado pipelines",devops,technical
+SK662,aws codepipeline advanced,"codepipeline advanced,aws cicd",devops,technical
+SK663,drone ci,"drone,drone ci",devops,technical
+SK664,buildkite,buildkite,devops,technical
+SK665,spinnaker,"spinnaker,continuous delivery",devops,technical
+SK666,flux cd,"flux,fluxcd,flux cd,gitops",devops,technical
+SK667,harness,"harness,harness io,harness cd",devops,technical
+SK668,bamboo,"bamboo,atlassian bamboo",devops,technical
+SK669,travis ci,"travis,travis ci,travisci",devops,technical
+SK670,terraform,"terraform,tf,hcl,hashicorp terraform",devops,technical
+SK671,ansible,"ansible,ansible playbook,ansible automation",devops,technical
+SK672,pulumi,pulumi,devops,technical
+SK673,cloudformation advanced,"cloudformation advanced,cfn templates,aws iac",devops,technical
+SK674,chef,"chef,chef infra,chef cookbook",devops,technical
+SK675,puppet,"puppet,puppet enterprise",devops,technical
+SK676,saltstack,"saltstack,salt,salt automation",devops,technical
+SK677,vagrant,"vagrant,vagrantfile,hashicorp vagrant",devops,technical
+SK678,packer,"packer,hashicorp packer,image builder",devops,technical
+SK679,crossplane,"crossplane,k8s crossplane",devops,technical
+SK680,prometheus,"prometheus,prom,prometheus monitoring",devops,technical
+SK681,grafana,"grafana,grafana dashboard",devops,technical
+SK682,datadog,"datadog,dd,datadog monitoring",devops,technical
+SK683,new relic,"new relic,newrelic,nr",devops,technical
+SK684,elk stack,"elk,elk stack,elasticsearch logstash kibana",devops,technical
+SK685,kibana,kibana,devops,technical
+SK686,logstash,"logstash,log pipeline",devops,technical
+SK687,fluentd,"fluentd,fluentbit,fluent bit",devops,technical
+SK688,jaeger,"jaeger,jaeger tracing,distributed tracing",devops,technical
+SK689,opentelemetry,"opentelemetry,otel,observability",devops,technical
+SK690,zipkin,zipkin,devops,technical
+SK691,pagerduty,"pagerduty,incident management",devops,technical
+SK692,opsgenie,"opsgenie,ops genie",devops,technical
+SK693,nagios,"nagios,nagios monitoring",devops,technical
+SK694,zabbix,"zabbix,zabbix monitoring",devops,technical
+SK695,dynatrace,"dynatrace,dt",devops,technical
+SK696,appdynamics,"appdynamics,appd",devops,technical
+SK697,splunk observability,"splunk observability,splunk apm",devops,technical
+SK698,istio,"istio,istio mesh,istio service mesh",devops,technical
+SK699,linkerd,"linkerd,linkerd mesh",devops,technical
+SK700,consul,"consul,hashicorp consul,consul connect",devops,technical
+SK701,envoy proxy,"envoy,envoy proxy,envoyproxy",devops,technical
+SK702,nginx,"nginx,nginx proxy,nginx reverse proxy",devops,technical
+SK703,traefik,"traefik,traefik proxy",devops,technical
+SK704,haproxy,"haproxy,ha proxy,load balancer",devops,technical
+SK705,site reliability engineering,"sre,site reliability,site reliability engineering",devops,technical
+SK706,chaos engineering,"chaos engineering,chaos monkey,litmus",devops,technical
+SK707,platform engineering,"platform engineering,internal developer platform,idp",devops,technical
+SK708,infrastructure as code,"iac,infrastructure as code",devops,technical
+SK709,configuration management,"config management,configuration management",devops,technical
+SK710,release management,"release management,release engineering",devops,technical
+SK711,incident management,"incident management,incident response,postmortem",devops,technical
+SK712,capacity planning,"capacity planning,resource planning",devops,technical
+SK713,blue green deployment,"blue green,blue-green deployment,canary deployment",devops,technical
+SK714,feature flags,"feature flags,feature toggles,launchdarkly",devops,technical
+SK715,vault,"vault,hashicorp vault,secrets management",devops,technical
+SK716,service catalog,"service catalog,backstage,developer portal",devops,technical
+SK717,gitops,"gitops,git ops,gitops workflow",devops,technical
+SK718,postgresql advanced,"postgresql tuning,pg advanced,postgres optimization",database,technical
+SK719,mysql advanced,"mysql tuning,mysql optimization,mysql 8",database,technical
+SK720,oracle database,"oracle db,oracle database,oracle 19c",database,technical
+SK721,sql server,"sql server,mssql,microsoft sql server",database,technical
+SK722,mariadb,"mariadb,maria db",database,technical
+SK723,cockroachdb,"cockroachdb,cockroach db,crdb",database,technical
+SK724,vitess,"vitess,mysql sharding",database,technical
+SK725,mongodb advanced,"mongodb atlas,mongo aggregation,mongodb advanced",database,technical
+SK726,cassandra database,"cassandra db,apache cassandra,cql",database,technical
+SK727,redis,"redis,redis cache,redis cluster",database,technical
+SK728,elasticsearch,"elasticsearch,es,elastic search,opensearch",database,technical
+SK729,neo4j,"neo4j,graph database,cypher",database,technical
+SK730,dgraph,"dgraph,graph db",database,technical
+SK731,arangodb,"arangodb,arango db,multi-model db",database,technical
+SK732,couchdb,"couchdb,couch db,apache couchdb",database,technical
+SK733,couchbase,"couchbase,couchbase server",database,technical
+SK734,influxdb,"influxdb,influx db,time series db",database,technical
+SK735,timescaledb,"timescaledb,timescale db,timescale",database,technical
+SK736,questdb,"questdb,quest db",database,technical
+SK737,pinecone,"pinecone,pinecone db,vector search",database,technical
+SK738,weaviate,"weaviate,weaviate db",database,technical
+SK739,milvus,"milvus,milvus db,vector similarity",database,technical
+SK740,chroma,"chroma,chromadb,chroma db",database,technical
+SK741,qdrant,"qdrant,qdrant db",database,technical
+SK742,pgvector,"pgvector,pg vector,postgresql vector",database,technical
+SK743,fauna,"fauna,faunadb,fauna db",database,technical
+SK744,supabase,"supabase,supa base",database,technical
+SK745,planetscale,"planetscale,planet scale",database,technical
+SK746,neon,"neon,neon db,neon postgres",database,technical
+SK747,database design,"database design,db schema,normalization",database,technical
+SK748,database replication,"replication,db replication,master-slave",database,technical
+SK749,database sharding,"sharding,db sharding,horizontal scaling",database,technical
+SK750,database migration,"migration,db migration,schema migration,flyway,liquibase",database,technical
+SK751,sql optimization,"sql optimization,query optimization,query tuning,explain plan",database,technical
+SK752,stored procedures,"stored procedures,plpgsql,t-sql,pl/sql",database,technical
+SK753,database backup recovery,"backup,recovery,db backup,point in time recovery,pitr",database,technical
+SK754,memcached,"memcached,memory cache",database,technical
+SK755,graph databases,"graph databases,graph db concepts,property graph",database,technical
+SK756,data modeling,"data modeling,er diagram,dimensional modeling",database,technical
+SK757,database indexing,"indexing,db indexing,b-tree,hash index",database,technical
+SK758,owasp,"owasp,owasp top 10,web security",security,technical
+SK759,burp suite,"burp suite,burp,burpsuite",security,technical
+SK760,metasploit,"metasploit,msfconsole",security,technical
+SK761,wireshark,"wireshark,packet analysis",security,technical
+SK762,nmap,"nmap,network scanner,port scanning",security,technical
+SK763,penetration testing,"pentest,penetration testing,ethical hacking",security,technical
+SK764,vulnerability assessment,"vulnerability assessment,vuln scan,vulnerability scanning",security,technical
+SK765,siem,"siem,security information event management",security,technical
+SK766,zero trust architecture,"zero trust,ztna,zero trust architecture",security,technical
+SK767,identity access management,"iam,identity access management,access control",security,technical
+SK768,privileged access management,"pam,privileged access,cyberark",security,technical
+SK769,security operations,"secops,security operations,soc",security,technical
+SK770,threat modeling,"threat modeling,stride,attack surface",security,technical
+SK771,incident response,"incident response,ir,security incident",security,technical
+SK772,devsecops,"devsecops,dev sec ops,security pipeline",security,technical
+SK773,application security,"appsec,application security,secure coding",security,technical
+SK774,network security,"network security,netsec,network defense",security,technical
+SK775,cloud security,"cloud security,cspm,cloud security posture",security,technical
+SK776,endpoint security,"endpoint security,edr,endpoint detection",security,technical
+SK777,cryptography,"cryptography,encryption,crypto,tls,ssl",security,technical
+SK778,malware analysis,"malware analysis,reverse engineering,malware",security,technical
+SK779,forensics,"digital forensics,forensics,cyber forensics",security,technical
+SK780,security automation,"security automation,soar,automated security",security,technical
+SK781,api security,"api security,oauth,jwt,api auth",security,technical
+SK782,web application firewall,"waf,web application firewall,mod security",security,technical
+SK783,data loss prevention,"dlp,data loss prevention,data protection",security,technical
+SK784,security audit,"security audit,compliance audit,security review",security,technical
+SK785,soc2 compliance,"soc2,soc 2,service organization control",security,technical
+SK786,gdpr compliance,"gdpr,general data protection regulation,data privacy",security,technical
+SK787,hipaa compliance,"hipaa,health insurance portability",security,technical
+SK788,pci dss compliance,"pci dss,pci-dss,payment card industry",security,technical
+SK789,iso 27001,"iso 27001,isms,information security management",security,technical
+SK790,nist framework,"nist,nist cybersecurity,nist framework",security,technical
+SK791,fedramp,"fedramp,federal risk authorization",security,technical
+SK792,sox compliance,"sox,sarbanes oxley,sox compliance",security,technical
+SK793,container security scanning,"trivy,snyk container,aqua security",security,technical
+SK794,secret scanning,"secret scanning,git secrets,credential scanning",security,technical
+SK795,sast,"sast,static application security testing,code scanning",security,technical
+SK796,dast,"dast,dynamic application security testing",security,technical
+SK797,sbom,"sbom,software bill of materials,supply chain security",security,technical
+SK798,react native,"react native,rn,react-native",mobile,technical
+SK799,flutter,"flutter,flutter sdk,dart flutter",mobile,technical
+SK800,swiftui,"swiftui,swift ui",mobile,technical
+SK801,jetpack compose,"jetpack compose,compose,android compose",mobile,technical
+SK802,kotlin multiplatform,"kmp,kotlin multiplatform,kmm",mobile,technical
+SK803,ionic,"ionic,ionic framework",mobile,technical
+SK804,capacitor,"capacitor,capacitorjs",mobile,technical
+SK805,expo,"expo,expo react native",mobile,technical
+SK806,maui,"maui,.net maui,dotnet maui",mobile,technical
+SK807,app clips,"app clips,ios app clips",mobile,technical
+SK808,widgets ios,"widgetkit,ios widgets",mobile,technical
+SK809,arkit,"arkit,ar kit,augmented reality ios",mobile,technical
+SK810,arcore,"arcore,ar core,augmented reality android",mobile,technical
+SK811,core data,"core data,coredata,ios persistence",mobile,technical
+SK812,room database,"room,room database,android room",mobile,technical
+SK813,realm,"realm,realm db,realm mobile",mobile,technical
+SK814,firebase mobile,"firebase mobile,firebase sdk,crashlytics",mobile,technical
+SK815,push notifications,"push notifications,apns,fcm push",mobile,technical
+SK816,mobile ui testing,"xctest,espresso,mobile testing",mobile,technical
+SK817,mobile ci cd,"fastlane,mobile ci cd,app distribution",mobile,technical
+SK818,app store optimization,"aso,app store optimization,play store optimization",mobile,technical
+SK819,mobile analytics,"mobile analytics,firebase analytics,mixpanel",mobile,technical
+SK820,mobile performance,"mobile performance,app performance,battery optimization",mobile,technical
+SK821,cross platform development,"cross platform,multiplatform,cross-platform",mobile,technical
+SK822,responsive design,"responsive,responsive design,adaptive layout",mobile,technical
+SK823,pwa,"pwa,progressive web app,progressive web application",mobile,technical
+SK824,mobile security,"mobile security,app security,mobile encryption",mobile,technical
+SK825,wear os,"wear os,wearables,smartwatch dev",mobile,technical
+SK826,tvos development,"tvos,apple tv,tv development",mobile,technical
+SK827,mobile deep linking,"deep linking,universal links,app links",mobile,technical
+SK828,ethereum,"ethereum,eth,ethereum blockchain",blockchain,technical
+SK829,smart contracts,"smart contracts,smart contract development",blockchain,technical
+SK830,web3.js,"web3,web3.js,web3js",blockchain,technical
+SK831,ethers.js,"ethers,ethers.js,ethersjs",blockchain,technical
+SK832,hardhat,"hardhat,hardhat dev",blockchain,technical
+SK833,truffle,"truffle,truffle suite",blockchain,technical
+SK834,ipfs,"ipfs,interplanetary file system",blockchain,technical
+SK835,defi,"defi,decentralized finance",blockchain,technical
+SK836,nft development,"nft,nft development,erc-721",blockchain,technical
+SK837,dao,"dao,decentralized autonomous organization",blockchain,technical
+SK838,polygon,"polygon,matic,polygon network",blockchain,technical
+SK839,solana,"solana,sol",blockchain,technical
+SK840,avalanche,"avalanche,avax",blockchain,technical
+SK841,hyperledger,"hyperledger,hyperledger fabric",blockchain,technical
+SK842,cosmos blockchain,"cosmos,cosmos sdk,tendermint",blockchain,technical
+SK843,layer 2 solutions,"layer 2,l2,rollups,optimistic rollup,zk rollup",blockchain,technical
+SK844,tokenomics,"tokenomics,token economics,token design",blockchain,technical
+SK845,blockchain security,"smart contract audit,blockchain security",blockchain,technical
+SK846,rust blockchain,"rust blockchain,substrate,polkadot",blockchain,technical
+SK847,zero knowledge proofs,"zk proofs,zero knowledge,zkp,zk-snark",blockchain,technical
+SK848,unity,"unity,unity3d,unity game engine",game_dev,technical
+SK849,unreal engine,"unreal,unreal engine,ue5,ue4",game_dev,technical
+SK850,godot,"godot,godot engine",game_dev,technical
+SK851,game design,"game design,level design,game mechanics",game_dev,technical
+SK852,game physics,"game physics,physics engine,rigidbody",game_dev,technical
+SK853,shader programming,"shader,shader programming,compute shader",game_dev,technical
+SK854,3d modeling,"3d modeling,blender,maya,3ds max",game_dev,technical
+SK855,game ai,"game ai,pathfinding,behavior trees,npc ai",game_dev,technical
+SK856,multiplayer networking,"multiplayer,netcode,game networking",game_dev,technical
+SK857,procedural generation,"procedural generation,procgen,procedural content",game_dev,technical
+SK858,directx,"directx,dx12,direct3d",game_dev,technical
+SK859,vulkan,"vulkan,vulkan api",game_dev,technical
+SK860,opengl,"opengl,opengl es",game_dev,technical
+SK861,xr development,"xr,vr,ar,mixed reality,virtual reality",game_dev,technical
+SK862,game optimization,"game optimization,fps optimization,lod,occlusion culling",game_dev,technical
+SK863,arduino,"arduino,arduino ide,arduino programming",embedded,technical
+SK864,raspberry pi,"raspberry pi,rpi,raspi",embedded,technical
+SK865,rtos,"rtos,real time os,freertos,real-time operating system",embedded,technical
+SK866,firmware development,"firmware,firmware dev,firmware programming",embedded,technical
+SK867,embedded c,"embedded c,embedded c++,bare metal",embedded,technical
+SK868,iot protocols,"mqtt,coap,iot protocols,zigbee,ble",embedded,technical
+SK869,fpga,"fpga,field programmable gate array,xilinx",embedded,technical
+SK870,pcb design,"pcb,pcb design,circuit board,kicad",embedded,technical
+SK871,embedded linux,"embedded linux,yocto,buildroot",embedded,technical
+SK872,microcontrollers,"microcontroller,mcu,stm32,esp32,pic",embedded,technical
+SK873,can bus,"can bus,can protocol,automotive bus",embedded,technical
+SK874,signal processing,"dsp,digital signal processing,signal processing",embedded,technical
+SK875,sensor integration,"sensor,accelerometer,gyroscope,lidar",embedded,technical
+SK876,edge computing,"edge computing,edge ai,edge deployment",embedded,technical
+SK877,robotics,"robotics,ros,robot operating system",embedded,technical
+SK878,technical writing,"technical writing,tech writing,documentation writing",communication,soft
+SK879,presentation skills,"presentations,presentation skills,public speaking",communication,soft
+SK880,stakeholder management,"stakeholder management,stakeholder communication,stakeholder engagement",communication,soft
+SK881,documentation,"documentation,technical documentation,docs",communication,soft
+SK882,code review skills,"code review,peer review,code review skills",communication,soft
+SK883,active listening,"active listening,listening skills",communication,soft
+SK884,verbal communication,"verbal communication,oral communication",communication,soft
+SK885,cross functional communication,"cross functional,cross-functional communication,interdepartmental",communication,soft
+SK886,client communication,"client communication,client facing,customer communication",communication,soft
+SK887,email communication,"email communication,professional email,written correspondence",communication,soft
+SK888,negotiation skills,"negotiation,negotiation skills,deal making",communication,soft
+SK889,conflict resolution,"conflict resolution,dispute resolution,mediation",communication,soft
+SK890,feedback delivery,"feedback,giving feedback,constructive feedback",communication,soft
+SK891,storytelling,"storytelling,narrative,data storytelling",communication,soft
+SK892,facilitation,"facilitation,meeting facilitation,workshop facilitation",communication,soft
+SK893,persuasion,"persuasion,influence,convincing",communication,soft
+SK894,technical evangelism,"tech evangelism,developer advocacy,developer relations",communication,soft
+SK895,knowledge sharing,"knowledge sharing,knowledge transfer,brown bag",communication,soft
+SK896,report writing,"report writing,reporting,status reporting",communication,soft
+SK897,proposal writing,"proposal writing,rfp,business proposal",communication,soft
+SK898,intercultural communication,"intercultural,cross-cultural,global communication",communication,soft
+SK899,remote communication,"remote communication,async communication,virtual collaboration",communication,soft
+SK900,whiteboard sessions,"whiteboarding,whiteboard sessions,visual communication",communication,soft
+SK901,technical presentations,"tech talks,tech presentations,lightning talks",communication,soft
+SK902,api documentation,"api docs,api documentation,swagger docs",communication,soft
+SK903,user documentation,"user docs,user guides,end user documentation",communication,soft
+SK904,release notes,"release notes,changelog,version notes",communication,soft
+SK905,design documents,"design docs,design documents,rfc",communication,soft
+SK906,architecture decision records,"adr,architecture decision records,decision log",communication,soft
+SK907,runbook creation,"runbook,playbook,operational docs",communication,soft
+SK908,team leadership,"team leadership,team lead,tech lead",leadership,soft
+SK909,mentoring,"mentoring,coaching,mentorship",leadership,soft
+SK910,strategic thinking,"strategic thinking,strategy,strategic planning",leadership,soft
+SK911,people management,"people management,people manager,direct reports",leadership,soft
+SK912,change management,"change management,organizational change,transformation",leadership,soft
+SK913,engineering management,"engineering management,eng management,engineering manager",leadership,soft
+SK914,product vision,"product vision,product strategy,product thinking",leadership,soft
+SK915,talent development,"talent development,career development,growth plans",leadership,soft
+SK916,performance management,"performance management,performance reviews,1:1s",leadership,soft
+SK917,hiring and interviewing,"hiring,interviewing,talent acquisition,recruiting",leadership,soft
+SK918,delegation,"delegation,task delegation,empowerment",leadership,soft
+SK919,team building,"team building,team bonding,team culture",leadership,soft
+SK920,decision making,"decision making,data-driven decisions,decision framework",leadership,soft
+SK921,emotional intelligence,"emotional intelligence,eq,empathy,self-awareness",leadership,soft
+SK922,servant leadership,"servant leadership,servant leader",leadership,soft
+SK923,technical strategy,"technical strategy,tech strategy,technology roadmap",leadership,soft
+SK924,architectural leadership,"architectural leadership,tech direction",leadership,soft
+SK925,cross team collaboration,"cross team,cross-team collaboration,inter-team",leadership,soft
+SK926,stakeholder alignment,"stakeholder alignment,alignment,consensus building",leadership,soft
+SK927,budget management,"budget management,cost management,financial planning",leadership,soft
+SK928,vendor management,"vendor management,vendor selection,vendor evaluation",leadership,soft
+SK929,organizational design,"org design,organizational design,team structure",leadership,soft
+SK930,succession planning,"succession planning,leadership pipeline",leadership,soft
+SK931,diversity inclusion,"dei,diversity inclusion,diversity equity inclusion",leadership,soft
+SK932,executive communication,"executive communication,c-suite,board presentations",leadership,soft
+SK933,vision setting,"vision setting,mission,north star",leadership,soft
+SK934,accountability,"accountability,ownership,responsible",leadership,soft
+SK935,resilience,"resilience,adaptability,grit",leadership,soft
+SK936,innovation leadership,"innovation leadership,innovation culture,intrapreneurship",leadership,soft
+SK937,thought leadership,"thought leadership,industry expert,subject matter expert",leadership,soft
+SK938,crisis management,"crisis management,crisis leadership,emergency response",leadership,soft
+SK939,influence without authority,"influence,lateral leadership,influence without authority",leadership,soft
+SK940,coaching skills,"coaching,executive coaching,technical coaching",leadership,soft
+SK941,onboarding,"onboarding,new hire,ramp up",leadership,soft
+SK942,culture building,"culture building,engineering culture,team values",leadership,soft
+SK943,goal setting,"goal setting,smart goals,objectives",leadership,soft
+SK944,time management leadership,"time management,prioritization,focus",leadership,soft
+SK945,remote team leadership,"remote leadership,distributed team,remote-first",leadership,soft
+SK946,technical debt management,"tech debt,technical debt management,debt reduction",leadership,soft
+SK947,scaling teams,"scaling teams,team growth,hiring plan",leadership,soft
+SK948,analytical thinking,"analytical thinking,analytical skills,analysis",communication,soft
+SK949,system design,"system design,systems thinking,architecture design",communication,soft
+SK950,debugging skills,"debugging,troubleshooting,root cause",communication,soft
+SK951,root cause analysis,"rca,root cause analysis,5 whys,fishbone",communication,soft
+SK952,innovation,"innovation,creative thinking,ideation",communication,soft
+SK953,critical thinking,"critical thinking,logical thinking,reasoning",communication,soft
+SK954,hypothesis driven development,"hypothesis driven,experimentation,a/b testing",communication,soft
+SK955,first principles thinking,"first principles,fundamental analysis",communication,soft
+SK956,design thinking,"design thinking,human-centered design,hcd",communication,soft
+SK957,complexity management,"complexity management,simplification",communication,soft
+SK958,trade-off analysis,"trade-off analysis,trade-offs,pros cons",communication,soft
+SK959,pattern recognition,"pattern recognition,identifying patterns",communication,soft
+SK960,abstraction,"abstraction,abstraction skills,generalization",communication,soft
+SK961,decomposition,"decomposition,breaking down problems,modularization",communication,soft
+SK962,estimation skills,"estimation,effort estimation,story points",communication,soft
+SK963,technical research,"technical research,technology evaluation,poc",communication,soft
+SK964,brainstorming,"brainstorming,ideation session,mind mapping",communication,soft
+SK965,reverse engineering,"reverse engineering,decompilation,protocol analysis",communication,soft
+SK966,performance analysis,"performance analysis,bottleneck identification,profiling",communication,soft
+SK967,architecture evaluation,"architecture evaluation,adr,technology assessment",communication,soft
+SK968,cost optimization,"cost optimization,cloud cost,finops",communication,soft
+SK969,scalability planning,"scalability,scale planning,capacity planning",communication,soft
+SK970,disaster recovery planning,"disaster recovery,dr planning,business continuity",communication,soft
+SK971,risk assessment,"risk assessment,risk analysis,risk mitigation",communication,soft
+SK972,continuous improvement,"continuous improvement,kaizen,retrospective",communication,soft
+SK973,agile methodology,"agile,agile methodology,agile development",project_mgmt,soft
+SK974,scrum framework,"scrum,scrum framework,scrum master",project_mgmt,soft
+SK975,kanban,"kanban,kanban board,wip limits",project_mgmt,soft
+SK976,roadmap planning,"roadmap,roadmap planning,product roadmap",project_mgmt,soft
+SK977,risk management,"risk management,risk mitigation,risk register",project_mgmt,soft
+SK978,okr methodology,"okr,okrs,objectives key results",project_mgmt,soft
+SK979,sprint planning,"sprint planning,sprint,iteration planning",project_mgmt,soft
+SK980,backlog management,"backlog,backlog grooming,backlog refinement",project_mgmt,soft
+SK981,user story writing,"user stories,user story writing,acceptance criteria",project_mgmt,soft
+SK982,safe framework,"safe,scaled agile,safe framework",project_mgmt,soft
+SK983,lean methodology,"lean,lean methodology,waste reduction",project_mgmt,soft
+SK984,waterfall methodology,"waterfall,waterfall methodology,sequential",project_mgmt,soft
+SK985,release planning,"release planning,release train,pi planning",project_mgmt,soft
+SK986,resource allocation,"resource allocation,resource management",project_mgmt,soft
+SK987,project estimation,"project estimation,t-shirt sizing,planning poker",project_mgmt,soft
+SK988,status reporting,"status reporting,progress tracking,weekly updates",project_mgmt,soft
+SK989,dependency management,"dependency management,cross-team dependencies",project_mgmt,soft
+SK990,scope management,"scope management,scope creep,mvp definition",project_mgmt,soft
+SK991,quality assurance process,"qa process,quality assurance,quality gates",project_mgmt,soft
+SK992,technical debt tracking,"tech debt tracking,debt backlog,refactoring plan",project_mgmt,soft
+SK993,retrospectives,"retrospectives,retro,sprint retrospective",project_mgmt,soft
+SK994,daily standups,"standup,daily standup,daily scrum",project_mgmt,soft
+SK995,confluence,"confluence,wiki,knowledge base management",project_mgmt,soft
+SK996,jira management,"jira,jira management,atlassian jira",project_mgmt,soft
+SK997,trello,"trello,trello board",project_mgmt,soft
+SK998,asana,"asana,asana project",project_mgmt,soft
+SK999,notion,"notion,notion workspace",project_mgmt,soft
+SK1000,monday.com,"monday,monday.com,monday board",project_mgmt,soft
+SK1001,linear,"linear,linear app,linear issues",project_mgmt,soft
+SK1002,github projects,"github projects,github issues,github board",project_mgmt,soft
+SK1003,requirements gathering,"requirements gathering,requirements elicitation,brd",business,soft
+SK1004,product strategy,"product strategy,product management,product thinking",business,soft
+SK1005,customer empathy,"customer empathy,user empathy,customer focus",business,soft
+SK1006,market research,"market research,competitive analysis,market analysis",business,soft
+SK1007,value proposition,"value proposition,value prop,business value",business,soft
+SK1008,revenue modeling,"revenue modeling,business model,monetization",business,soft
+SK1009,kpi definition,"kpi,kpi definition,metrics,success metrics",business,soft
+SK1010,data driven decisions,"data driven,data-driven decisions,analytics driven",business,soft
+SK1011,user experience focus,"ux focus,user experience,user-centric",business,soft
+SK1012,go to market strategy,"gtm,go to market,launch strategy",business,soft
+SK1013,technical sales,"technical sales,solutions engineering,pre-sales",business,soft
+SK1014,roi analysis,"roi,roi analysis,return on investment",business,soft
+SK1015,process improvement,"process improvement,process optimization,bpm",business,soft
+SK1016,digital transformation,"digital transformation,digital strategy,modernization",business,soft
+SK1017,startup mindset,"startup,entrepreneurship,lean startup",business,soft
+SK1018,enterprise architecture,"enterprise architecture,togaf,ea",business,soft
+SK1019,business intelligence,"business intelligence,bi,bi strategy",business,soft
+SK1020,contract negotiation,"contract negotiation,sla,service agreement",business,soft
+SK1021,compliance management,"compliance,regulatory compliance,compliance management",business,soft
+SK1022,it governance,"it governance,itil,cobit",business,soft
+SK1023,technology evaluation,"technology evaluation,tech assessment,build vs buy",business,soft
+SK1024,privacy by design,"privacy by design,data privacy,privacy engineering",business,soft
+SK1025,accessibility,"accessibility,a11y,wcag,ada compliance",business,soft
+SK1026,sustainability tech,"sustainability,green tech,carbon footprint",business,soft
+SK1027,aws solutions architect associate,"aws saa,solutions architect associate,aws saa-c03",certification,credential
+SK1028,aws solutions architect professional,"aws sap,solutions architect professional,aws sap-c02",certification,credential
+SK1029,aws developer associate,"aws dva,developer associate,aws dva-c02",certification,credential
+SK1030,aws sysops administrator,"aws sysops,sysops administrator,aws soa-c02",certification,credential
+SK1031,aws devops engineer professional,"aws devops pro,devops engineer professional",certification,credential
+SK1032,aws data analytics specialty,"aws data analytics,das specialty",certification,credential
+SK1033,aws machine learning specialty,"aws ml specialty,machine learning specialty",certification,credential
+SK1034,aws security specialty,"aws security,security specialty,aws scs",certification,credential
+SK1035,aws cloud practitioner,"aws cloud practitioner,clf,aws clf-c02",certification,credential
+SK1036,aws database specialty,"aws database,database specialty,aws dbs",certification,credential
+SK1037,azure fundamentals az-900,"az-900,azure fundamentals",certification,credential
+SK1038,azure administrator az-104,"az-104,azure administrator",certification,credential
+SK1039,azure developer az-204,"az-204,azure developer",certification,credential
+SK1040,azure solutions architect az-305,"az-305,azure solutions architect",certification,credential
+SK1041,azure devops engineer az-400,"az-400,azure devops engineer",certification,credential
+SK1042,azure data engineer dp-203,"dp-203,azure data engineer",certification,credential
+SK1043,azure ai engineer ai-102,"ai-102,azure ai engineer",certification,credential
+SK1044,azure security engineer az-500,"az-500,azure security engineer",certification,credential
+SK1045,gcp cloud engineer,"gcp cloud engineer,associate cloud engineer",certification,credential
+SK1046,gcp professional architect,"gcp architect,professional cloud architect",certification,credential
+SK1047,gcp data engineer,"gcp data engineer,professional data engineer",certification,credential
+SK1048,gcp ml engineer,"gcp ml engineer,professional machine learning engineer",certification,credential
+SK1049,gcp devops engineer,"gcp devops,professional cloud devops engineer",certification,credential
+SK1050,gcp security engineer,"gcp security,professional cloud security engineer",certification,credential
+SK1051,hashicorp terraform associate,"terraform associate,hcta,terraform cert",certification,credential
+SK1052,hashicorp vault associate,"vault associate,vault cert",certification,credential
+SK1053,cka,"cka,certified kubernetes administrator",certification,credential
+SK1054,ckad,"ckad,certified kubernetes application developer",certification,credential
+SK1055,cks,"cks,certified kubernetes security specialist",certification,credential
+SK1056,cissp,"cissp,certified information systems security professional",certification,credential
+SK1057,ceh,"ceh,certified ethical hacker",certification,credential
+SK1058,oscp,"oscp,offensive security certified professional",certification,credential
+SK1059,security+,"security+,comptia security+,sec+",certification,credential
+SK1060,cisa,"cisa,certified information systems auditor",certification,credential
+SK1061,cism,"cism,certified information security manager",certification,credential
+SK1062,ccsp,"ccsp,certified cloud security professional",certification,credential
+SK1063,gpen,"gpen,giac penetration tester",certification,credential
+SK1064,gsec,"gsec,giac security essentials",certification,credential
+SK1065,sscp,"sscp,systems security certified practitioner",certification,credential
+SK1066,cysa+,"cysa+,comptia cysa,cybersecurity analyst",certification,credential
+SK1067,pentest+,"pentest+,comptia pentest",certification,credential
+SK1068,casp+,"casp+,comptia advanced security practitioner",certification,credential
+SK1069,crtp,"crtp,certified red team professional",certification,credential
+SK1070,oswe,"oswe,offensive security web expert",certification,credential
+SK1071,tensorflow developer certificate,"tensorflow developer,tensorflow cert",certification,credential
+SK1072,databricks certified data engineer,"databricks data engineer,databricks cert",certification,credential
+SK1073,databricks certified ml professional,"databricks ml,databricks ml professional",certification,credential
+SK1074,snowflake snowpro core,"snowpro core,snowflake cert",certification,credential
+SK1075,dbt analytics engineering,"dbt certification,dbt analytics",certification,credential
+SK1076,apache spark certification,"spark certification,databricks spark",certification,credential
+SK1077,cloudera data analyst,"cloudera analyst,cdp cert",certification,credential
+SK1078,microsoft data scientist dp-100,"dp-100,azure data scientist",certification,credential
+SK1079,microsoft power bi da-100,"da-100,pl-300,power bi certification",certification,credential
+SK1080,sas certified specialist,"sas certified,sas specialist",certification,credential
+SK1081,ibm data science professional,"ibm data science,ibm ds cert",certification,credential
+SK1082,google data analytics certificate,"google data analytics,google analytics cert",certification,credential
+SK1083,aws data engineer associate,"aws data engineer,dea-c01",certification,credential
+SK1084,nvidia deep learning institute,"nvidia dli,nvidia deep learning",certification,credential
+SK1085,tableau desktop specialist,"tableau certification,tableau specialist",certification,credential
+SK1086,pmp certification,"pmp,project management professional,pmi pmp",certification,credential
+SK1087,csm,"csm,certified scrum master",certification,credential
+SK1088,psm,"psm,professional scrum master",certification,credential
+SK1089,safe agilist,"safe agilist,sa,leading safe",certification,credential
+SK1090,prince2,"prince2,prince2 practitioner",certification,credential
+SK1091,pmi-acp,"pmi-acp,agile certified practitioner",certification,credential
+SK1092,cspo,"cspo,certified scrum product owner",certification,credential
+SK1093,itil foundation,"itil,itil foundation,itil v4",certification,credential
+SK1094,six sigma green belt,"six sigma,green belt,lean six sigma gb",certification,credential
+SK1095,six sigma black belt,"six sigma black belt,black belt,lean six sigma bb",certification,credential
+SK1096,togaf certification,"togaf,togaf 9,enterprise architecture cert",certification,credential
+SK1097,lean it foundation,"lean it,lean foundation",certification,credential
+SK1098,oracle certified professional java,"ocp java,oracle java cert,java certification",certification,credential
+SK1099,oracle certified associate java,"oca java,oracle java associate",certification,credential
+SK1100,microsoft certified azure developer,"microsoft azure developer,mcad",certification,credential
+SK1101,microsoft certified devops expert,microsoft devops expert,certification,credential
+SK1102,red hat certified engineer,"rhce,red hat certified,rhcsa",certification,credential
+SK1103,red hat openshift administrator,"openshift admin,ex280",certification,credential
+SK1104,linux foundation certified sysadmin,"lfcs,linux sysadmin cert",certification,credential
+SK1105,linux foundation certified engineer,"lfce,linux engineer cert",certification,credential
+SK1106,lpic-1,"lpic-1,lpic 1,linux professional institute",certification,credential
+SK1107,docker certified associate,"dca,docker certified",certification,credential
+SK1108,mongodb developer certification,"mongodb cert,mongodb developer",certification,credential
+SK1109,neo4j certified professional,"neo4j cert,graph db certification",certification,credential
+SK1110,confluent kafka certification,"kafka certification,confluent cert",certification,credential
+SK1111,github actions certification,"github cert,github actions cert",certification,credential
+SK1112,istio certified associate,"istio cert,ica",certification,credential
+SK1113,puppet certified professional,"puppet cert,puppet professional",certification,credential
+SK1114,ansible automation engineer,"ansible cert,red hat ansible",certification,credential
+SK1115,microsoft 365 developer,"ms-600,microsoft 365 developer",certification,credential
+SK1116,spring professional certification,"spring cert,pivotal spring",certification,credential
+SK1117,graphql certification,"graphql cert,apollo cert",certification,credential
+SK1118,salesforce administrator,"salesforce admin,sf admin",certification,credential
+SK1119,salesforce developer,"salesforce developer,sf developer,platform developer",certification,credential
+SK1120,salesforce architect,"salesforce architect,sf architect",certification,credential
+SK1121,salesforce consultant,"salesforce consultant,sf consultant",certification,credential
+SK1122,sap certified associate,"sap associate,sap certification",certification,credential
+SK1123,sap s/4hana,"sap s/4hana,sap hana cert",certification,credential
+SK1124,sap fiori,"sap fiori,sap ui5",certification,credential
+SK1125,servicenow certified system admin,"servicenow admin,servicenow csa",certification,credential
+SK1126,servicenow certified app developer,"servicenow developer,servicenow cad",certification,credential
+SK1127,servicenow certified implementation specialist,"servicenow cis,servicenow implementation",certification,credential
+SK1128,cisco ccna,"ccna certification,cisco ccna cert",certification,credential
+SK1129,cisco ccnp enterprise,"ccnp enterprise,cisco ccnp",certification,credential
+SK1130,cisco ccie,"ccie,cisco ccie,ccie certification",certification,credential
+SK1131,cisco devnet associate,"devnet associate,cisco devnet",certification,credential
+SK1132,comptia a+,"comptia a+,a+ certification",certification,credential
+SK1133,comptia network+,"network+,comptia network,net+",certification,credential
+SK1134,comptia linux+,"linux+,comptia linux",certification,credential
+SK1135,comptia cloud+,"cloud+,comptia cloud",certification,credential
+SK1136,comptia data+,"data+,comptia data",certification,credential
+SK1137,scrum@scale,"scrum at scale,scrum@scale practitioner",certification,credential
+SK1138,aws networking specialty,"aws networking,advanced networking specialty",certification,credential
+SK1139,unity certified developer,"unity cert,unity certified",certification,credential
+SK1140,unreal authorized instructor,"unreal cert,unreal instructor",certification,credential
+SK1141,vmware certified professional,"vcp,vmware certified,vsphere cert",certification,credential
+SK1142,fortinet nse,"fortinet,nse certification,fortinet nse",certification,credential
+SK1143,palo alto pcnsa,"pcnsa,palo alto cert,palo alto pcnsa",certification,credential
+SK1144,splunk certified power user,"splunk cert,splunk power user",certification,credential
+SK1145,elastic certified engineer,"elastic cert,elasticsearch cert",certification,credential
+SK1146,okta certified professional,"okta cert,okta professional",certification,credential
+SK1147,figma certification,"figma cert,figma certified",certification,credential
