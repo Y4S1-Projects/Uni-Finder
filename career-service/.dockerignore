@@ -18,3 +18,7 @@ README.md
 *.log
 .env
 .env.local
+.cache
+**/.cache
+career-ml/analysis/
+career-ml/models/*.ipynb
