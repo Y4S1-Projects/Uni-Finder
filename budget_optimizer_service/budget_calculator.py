@@ -447,8 +447,13 @@ class BudgetCalculator:
         # ── Inputs ──────────────────────────────────────────────────────
         distance_uni  = float(transport_data.get('distance_uni_accommodation', 5))
         distance_home = float(transport_data.get('distance_home_uni', 50))
-        daily_transport = transport_data.get('transport_method', 'Bus')
-        home_transport  = transport_data.get('transport_method_home', 'Bus')
+        daily_transport = transport_data.get('transport_method', 'Bus')   # Accommodation → University
+
+        # Home → Accommodation route: prefer new field, fall back to legacy transport_method_home
+        home_transport = transport_data.get(
+            'transport_method_home_accommodation',
+            transport_data.get('transport_method_home', 'Bus')
+        )
 
         days_str = str(transport_data.get('days_per_week', '5'))
         days_per_week = int(days_str.split()[0]) if days_str[0].isdigit() else 5
@@ -554,10 +559,16 @@ class BudgetCalculator:
                 'misc_trips':      round(misc_monthly, 2),
                 'home_visits':     round(monthly_home, 2),
             },
-            'daily_cost':              round(round_trip_cost, 2),
-            'transport_method':        method_labels.get(daily_transport, daily_transport),
-            'commute_days_per_month':  commute_days_per_month,
-            'one_way_trip_cost':       round(one_way_cost(daily_transport, distance_uni), 2),
+            'daily_cost':                round(round_trip_cost, 2),
+            # Route method labels — both routes exposed
+            'transport_method':          method_labels.get(daily_transport, daily_transport),
+            'accommodation_uni_method':  method_labels.get(daily_transport, daily_transport),
+            'home_accommodation_method': method_labels.get(home_transport, home_transport),
+            'commute_days_per_month':    commute_days_per_month,
+            'one_way_trip_cost':         round(one_way_cost(daily_transport, distance_uni), 2),
+            'home_visit_frequency':      home_visit_freq,
+            'distance_uni_km':           distance_uni,
+            'distance_home_km':          distance_home,
         }
 
     def _get_home_visit_cost(self, distance_home, home_transport, transport_data):
