@@ -1,26 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar } from 'react-bootstrap';
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import './BudgetOptimizerNew.css';
 
 const BudgetOptimizerNew = () => {
   // Get current user from Redux store
   const { currentUser } = useSelector((state) => state.user);
-  
+
   // Multi-step form state
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [analysisResult, setAnalysisResult] = useState(null);
 
   // Gemini AI Enhanced Strategy state
   const [geminiInsight, setGeminiInsight] = useState(null);
+  const [aiStrategyMeta, setAiStrategyMeta] = useState(null); // AI-computed budget numbers
+  const [aiFinalBudgetNums, setAiFinalBudgetNums] = useState(null); // parsed numbers from FINAL_BUDGET: line
+  const [showTransformation, setShowTransformation] = useState(false); // revealed by button
   const [displayedText, setDisplayedText] = useState(''); // For streaming effect
   const [isStreaming, setIsStreaming] = useState(false);
   const [geminiLoading, setGeminiLoading] = useState(false);
   const [geminiError, setGeminiError] = useState(null);
   const [aiProvider, setAiProvider] = useState(null); // Track which AI was used
   const aiSectionRef = useRef(null); // Target for scroll-to-AI button
+
+  // Distance warning modal state
+  const [distanceWarning, setDistanceWarning] = useState({ show: false, pendingValue: '' });
 
   // Form data state
   const [formData, setFormData] = useState({
@@ -30,33 +36,34 @@ const BudgetOptimizerNew = () => {
     full_name: currentUser?.username || '',
     phone: '',
     university: 'SLIIT',
-    
+
     // Academic Profile
     year_of_study: 'Second Year',
     field_of_study: 'IT',
     district: 'Colombo',
-    
+
     // Financial Basics
     monthly_income: 30000,
     home_money: 0,           // Money received from family/home
     accommodation_type: 'Rented Room',
     rent: 10000,
-    
+
     // Food Preferences
     food_type: 'Mixed',
     meals_per_day: '3 meals',
     diet_type: 'Non-Vegetarian',
     cooking_frequency: 'Most days',
     cooking_percentage: 60,
-    
+
     // Transport Details
     distance_uni_accommodation: 5,
     distance_home_uni: 80,
-    transport_method: 'Bus',
+    transport_method: 'Bus',                   // Accommodation → University (daily commute)
+    transport_method_home_accommodation: 'Bus', // Home → Accommodation (home visits)
     days_per_week: '5 days',
     home_visit_frequency: 'Monthly',
-    transport_method_home: 'Bus',
-    
+    transport_method_home: 'Bus',              // legacy — kept for backward compat
+
     // Additional Expenses
     internet: 1500,
     study_materials: 2000,
@@ -75,7 +82,7 @@ const BudgetOptimizerNew = () => {
   ];
 
   const universities = [
-    'SLIIT', 'University of Colombo', 'University of Moratuwa', 
+    'SLIIT', 'University of Colombo', 'University of Moratuwa',
     'University of Kelaniya', 'University of Peradeniya', 'NSBM Green University',
     'IIT Campus', 'Other'
   ];
@@ -84,10 +91,10 @@ const BudgetOptimizerNew = () => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: ['monthly_income', 'home_money', 'rent', 'distance_uni_accommodation', 'distance_home_uni', 
-               'cooking_percentage', 'internet', 'study_materials', 'entertainment', 
-               'utilities', 'healthcare', 'other'].includes(name) 
-        ? parseInt(value) || 0 
+      [name]: ['monthly_income', 'home_money', 'rent', 'distance_uni_accommodation', 'distance_home_uni',
+        'cooking_percentage', 'internet', 'study_materials', 'entertainment',
+        'utilities', 'healthcare', 'other'].includes(name)
+        ? (value === '' ? '' : (parseInt(value) || 0))
         : value
     }));
   };
@@ -98,21 +105,23 @@ const BudgetOptimizerNew = () => {
     setGeminiError(null);
     if (!isRetry) {
       setGeminiInsight(null);
+      setShowTransformation(false); // hide card when starting a fresh AI call
+      setAiFinalBudgetNums(null);
     }
     try {
       const payload = {
-        financial_summary:  result.financial_summary,
-        expense_breakdown:  result.expense_breakdown,
-        risk_assessment:    result.risk_assessment,
-        optimal_strategy:   result.optimal_strategy,
+        financial_summary: result.financial_summary,
+        expense_breakdown: result.expense_breakdown,
+        risk_assessment: result.risk_assessment,
+        optimal_strategy: result.optimal_strategy,
         student_profile: {
-          university:          formData.university,
-          year_of_study:       formData.year_of_study,
-          field_of_study:      formData.field_of_study,
-          district:            formData.district,
-          accommodation_type:  formData.accommodation_type,
-          food_type:           formData.food_type,
-          transport_method:    formData.transport_method
+          university: formData.university,
+          year_of_study: formData.year_of_study,
+          field_of_study: formData.field_of_study,
+          district: formData.district,
+          accommodation_type: formData.accommodation_type,
+          food_type: formData.food_type,
+          transport_method: formData.transport_method
         }
       };
       const resp = await fetch(`${backendUrl}/api/budget/gemini-strategy`, {
@@ -121,13 +130,15 @@ const BudgetOptimizerNew = () => {
         body: JSON.stringify(payload)
       });
       const data = await resp.json();
-      
+
       if (resp.ok && data.success) {
         const content = data.ai_strategy || data.gemini_strategy;
         setGeminiInsight(content); // Store full text
         setDisplayedText(''); // Reset displayed text
         setIsStreaming(true); // Start streaming animation
         setAiProvider(data.ai_provider || data.model_used || 'AI');
+        // Store the exact constraint numbers the AI strategy was built around
+        if (data.prompt_data) setAiStrategyMeta(data.prompt_data);
         if (data.cached) {
           console.log(`✅ Using cached ${data.ai_provider} response`);
         }
@@ -153,12 +164,31 @@ const BudgetOptimizerNew = () => {
     }
   };
 
+  const handleDistanceHomeChange = (e) => {
+    const val = e.target.value;
+    const num = parseInt(val) || 0;
+    if (num > 800) {
+      setDistanceWarning({ show: true, pendingValue: val === '' ? '' : num });
+    } else {
+      setFormData(prev => ({ ...prev, distance_home_uni: val === '' ? '' : num }));
+    }
+  };
+
+  const confirmDistanceWarning = () => {
+    setFormData(prev => ({ ...prev, distance_home_uni: distanceWarning.pendingValue }));
+    setDistanceWarning({ show: false, pendingValue: '' });
+  };
+
+  const cancelDistanceWarning = () => {
+    setDistanceWarning({ show: false, pendingValue: '' });
+  };
+
   const nextStep = () => {
     setCurrentStep(prev => Math.min(prev + 1, 7));
   };
 
   const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1));
+    setCurrentStep(prev => Math.max(prev - 1, 2));
   };
 
   const scrollToAISection = () => {
@@ -167,6 +197,33 @@ const BudgetOptimizerNew = () => {
     }
   };
 
+  // ── Parse FINAL_BUDGET numbers from AI response ─────────────
+  useEffect(() => {
+    if (!geminiInsight) { setAiFinalBudgetNums(null); return; }
+    const match = geminiInsight.match(/FINAL_BUDGET\s*:\s*(.+)/i);
+    if (!match) return;
+    const parseNum = (str) => {
+      if (!str) return null;
+      const n = parseFloat(str.replace(/[^0-9.]/g, ''));
+      return isNaN(n) ? null : n;
+    };
+    const items = match[1].split('|').map(s => {
+      const [label, ...rest] = s.split(':');
+      return { label: label.trim(), value: rest.join(':').trim() };
+    }).filter(x => x.label && x.value);
+    const totalItem   = items.find(x => x.label.toUpperCase() === 'TOTAL');
+    const savingsItem = items.find(x => x.label.toUpperCase() === 'SAVINGS');
+    const catItems    = items.filter(x =>
+      !['TOTAL','SAVINGS'].includes(x.label.toUpperCase()) &&
+      !x.label.toUpperCase().includes('FITS')
+    );
+    setAiFinalBudgetNums({
+      total:      parseNum(totalItem?.value),
+      savings:    parseNum(savingsItem?.value),
+      categories: catItems.map(c => ({ label: c.label, value: parseNum(c.value), raw: c.value })),
+    });
+  }, [geminiInsight]);
+
   // ── Streaming Text Effect (like ChatGPT) ─────────────────────
   useEffect(() => {
     if (!isStreaming || !geminiInsight) return;
@@ -174,14 +231,14 @@ const BudgetOptimizerNew = () => {
     let currentIndex = 0;
     const fullText = geminiInsight;
     const charsPerFrame = 3; // Characters to add per interval (adjust speed)
-    
+
     const streamInterval = setInterval(() => {
       if (currentIndex >= fullText.length) {
         setIsStreaming(false);
         clearInterval(streamInterval);
         return;
       }
-      
+
       currentIndex += charsPerFrame;
       setDisplayedText(fullText.substring(0, Math.min(currentIndex, fullText.length)));
     }, 30); // 30ms interval for smooth streaming
@@ -215,7 +272,7 @@ const BudgetOptimizerNew = () => {
         const result = await response.json();
         setAnalysisResult(result);
         // Don't automatically fetch AI insights - user must click button
-        
+
         // Step 2: Save to MongoDB directly via Node.js API (like SignUp does)
         try {
           const budgetSaveData = {
@@ -223,7 +280,7 @@ const BudgetOptimizerNew = () => {
             userId: currentUser?._id || null,
             username: currentUser?.username || formData.full_name,
             email: currentUser?.email || formData.email,
-            
+
             // Personal Information
             monthly_income: formData.monthly_income,
             year_of_study: formData.year_of_study,
@@ -231,7 +288,7 @@ const BudgetOptimizerNew = () => {
             university: formData.university,
             district: formData.district,
             accommodation_type: formData.accommodation_type,
-            
+
             // Budget Inputs
             rent: formData.rent,
             internet: formData.internet,
@@ -240,14 +297,14 @@ const BudgetOptimizerNew = () => {
             utilities: formData.utilities,
             healthcare: formData.healthcare,
             other: formData.other,
-            
+
             // Food Details
             food_type: formData.food_type,
             meals_per_day: formData.meals_per_day,
             diet_type: formData.diet_type,
             cooking_frequency: formData.cooking_frequency,
             cooking_percentage: formData.cooking_percentage,
-            
+
             // Transport Details
             distance_uni_accommodation: formData.distance_uni_accommodation,
             distance_home_uni: formData.distance_home_uni,
@@ -255,29 +312,29 @@ const BudgetOptimizerNew = () => {
             transport_method_home: formData.transport_method_home,
             days_per_week: formData.days_per_week,
             home_visit_frequency: formData.home_visit_frequency,
-            
+
             // Calculated Budgets from Flask response
             food_budget: result.calculated_budgets?.food || {},
             transport_budget: result.calculated_budgets?.transport || {},
-            
+
             // ML Prediction Results
             predicted_budget: result.ml_prediction?.predicted_budget || 0,
             ml_confidence: (result.ml_prediction?.confidence || 0) * 100,
             risk_level: result.risk_assessment?.risk_level || 'Medium Risk',
             risk_probability: (result.risk_assessment?.risk_probability || 0) * 100,
-            
+
             // Financial Summary
             total_expenses: result.financial_summary?.total_expenses || 0,
             calculated_savings: result.financial_summary?.monthly_savings || 0,
             savings_rate: result.financial_summary?.savings_rate || 0,
-            
+
             // Recommendations
             recommendations: result.recommendation?.key_recommendations || [],
             actionable_steps: result.recommendation?.action_steps || [],
-            
+
             // Expense Breakdown
             expense_breakdown: result.expense_breakdown || {},
-            
+
             // Metadata
             analysis_date: new Date().toISOString(),
             status: 'active'
@@ -302,7 +359,7 @@ const BudgetOptimizerNew = () => {
           console.warn('⚠️ MongoDB save error:', saveError.message);
           // Continue anyway - user still gets analysis results
         }
-        
+
         setCurrentStep(7); // Move to results step
       } else {
         const errorData = await response.json();
@@ -317,109 +374,52 @@ const BudgetOptimizerNew = () => {
 
   const renderStepIndicator = () => {
     const steps = [
-      'Account', 'Academic', 'Financial', 'Food', 'Transport', 'Additional', 'Results'
+      'Academic', 'Financial', 'Food', 'Transport', 'Additional', 'Results'
     ];
 
     return (
       <div className="step-indicator mb-4">
-        <ProgressBar now={(currentStep / 7) * 100} className="mb-3" />
+        <ProgressBar now={((currentStep - 2) / 5) * 100} className="mb-3" />
         <div className="d-flex justify-content-between">
-          {steps.map((step, index) => (
-            <div
-              key={index}
-              className={`step-item ${currentStep === index + 1 ? 'active' : ''} ${currentStep > index + 1 ? 'completed' : ''}`}
-            >
-              <div className="step-number">{index + 1}</div>
-              <div className="step-label">{step}</div>
-            </div>
-          ))}
+          {steps.map((step, index) => {
+            const stepNum = index + 2;      // actual step state value
+            const displayNum = index + 1;   // visible 1-6 label
+            const isCompleted = currentStep > stepNum;
+            const isActive = currentStep === stepNum;
+            const isClickable = isCompleted;
+            return (
+              <div
+                key={index}
+                className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isClickable ? 'clickable' : ''}`}
+                onClick={() => isClickable && setCurrentStep(stepNum)}
+                title={isClickable ? `Go back to Step ${displayNum}: ${step}` : undefined}
+              >
+                <div className="step-number">
+                  {isCompleted ? (
+                    <span className="step-done">
+                      <span className="step-check">✓</span>
+                      <span className="step-num-badge">{displayNum}</span>
+                    </span>
+                  ) : (
+                    displayNum
+                  )}
+                </div>
+                <div className="step-label">
+                  <span className="step-num-text">Step {displayNum}</span>
+                  <span className="step-name-text">{step}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
   };
 
-  const renderStep1 = () => (
-    <Card className="shadow-lg border-0">
-      <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">📝 Step 1: Account Information</h4>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Email Address *</strong></Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="student@email.com"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Password *</strong></Form.Label>
-                <Form.Control
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Min 8 characters"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Full Name *</strong></Form.Label>
-                <Form.Control
-                  type="text"
-                  name="full_name"
-                  value={formData.full_name}
-                  onChange={handleInputChange}
-                  placeholder="Your full name"
-                  required
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Phone Number *</strong></Form.Label>
-                <Form.Control
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  placeholder="+94 77 123 4567"
-                  required
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>University *</strong></Form.Label>
-            <Form.Select name="university" value={formData.university} onChange={handleInputChange}>
-              {universities.map(uni => (
-                <option key={uni} value={uni}>{uni}</option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        </Form>
-      </Card.Body>
-    </Card>
-  );
-
   const renderStep2 = () => (
     <Card className="shadow-lg border-0">
       <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">🎓 Step 2: Academic Profile</h4>
+        <h4 className="mb-0">🎓 Step 1: Academic Profile</h4>
       </Card.Header>
       <Card.Body className="p-4">
         <Form>
@@ -462,7 +462,7 @@ const BudgetOptimizerNew = () => {
   const renderStep3 = () => (
     <Card className="shadow-lg border-0">
       <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">💰 Step 3: Financial Basics</h4>
+        <h4 className="mb-0">💰 Step 2: Financial Basics</h4>
       </Card.Header>
       <Card.Body className="p-4">
         <Form>
@@ -473,6 +473,7 @@ const BudgetOptimizerNew = () => {
               name="monthly_income"
               value={formData.monthly_income}
               onChange={handleInputChange}
+              onFocus={e => e.target.select()}
               required
             />
             <Form.Text className="text-muted">
@@ -487,14 +488,15 @@ const BudgetOptimizerNew = () => {
               name="home_money"
               value={formData.home_money}
               onChange={handleInputChange}
+              onFocus={e => e.target.select()}
               placeholder="0"
             />
             <Form.Text className="text-muted">
-              Enter the monthly amount your family sends you (leave 0 if none). 
+              Enter the monthly amount your family sends you (leave 0 if none).
               This will be added to your effective income.
             </Form.Text>
             {formData.home_money > 0 && (
-              <div className="alert alert-info mt-2 py-1 px-3 mb-0" style={{fontSize:'0.85rem'}}>
+              <div className="alert alert-info mt-2 py-1 px-3 mb-0" style={{ fontSize: '0.85rem' }}>
                 💡 Effective total income: <strong>LKR {(Number(formData.monthly_income) + Number(formData.home_money)).toLocaleString()}</strong>/month
               </div>
             )}
@@ -518,6 +520,7 @@ const BudgetOptimizerNew = () => {
               name="rent"
               value={formData.rent}
               onChange={handleInputChange}
+              onFocus={e => e.target.select()}
               required
             />
             <Form.Text className="text-muted">
@@ -532,7 +535,7 @@ const BudgetOptimizerNew = () => {
   const renderStep4 = () => (
     <Card className="shadow-lg border-0">
       <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">🍽️ Step 4: Food Preferences</h4>
+        <h4 className="mb-0">🍽️ Step 3: Food Preferences</h4>
       </Card.Header>
       <Card.Body className="p-4">
         <Form>
@@ -602,7 +605,7 @@ const BudgetOptimizerNew = () => {
   const renderStep5 = () => (
     <Card className="shadow-lg border-0">
       <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">🚌 Step 5: Transport Details</h4>
+        <h4 className="mb-0">🚌 Step 4: Transport Details</h4>
       </Card.Header>
       <Card.Body className="p-4">
         <Form>
@@ -615,6 +618,7 @@ const BudgetOptimizerNew = () => {
                   name="distance_uni_accommodation"
                   value={formData.distance_uni_accommodation}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -625,64 +629,81 @@ const BudgetOptimizerNew = () => {
                   type="number"
                   name="distance_home_uni"
                   value={formData.distance_home_uni}
-                  onChange={handleInputChange}
+                  onChange={handleDistanceHomeChange}
+                  onFocus={e => e.target.select()}
+                  isInvalid={Number(formData.distance_home_uni) > 800}
                 />
               </Form.Group>
             </Col>
           </Row>
 
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Primary Transport Method *</strong></Form.Label>
-            <Form.Select name="transport_method" value={formData.transport_method} onChange={handleInputChange}>
-              <option value="Walking">Walking</option>
-              <option value="Bicycle">Bicycle</option>
-              <option value="Bus">Bus</option>
-              <option value="Train">Train</option>
-              <option value="Tuk-Tuk">Tuk-Tuk/Three-Wheeler</option>
-              <option value="Ride-share">Ride-share (Uber/PickMe)</option>
-              <option value="Personal Vehicle">Personal Vehicle</option>
-              <option value="University Transport">University Transport</option>
-              <option value="Mixed">Mixed</option>
-            </Form.Select>
-          </Form.Group>
+          {/* ── Route 1: Accommodation → University ── */}
+          <div className="p-3 mb-3 rounded" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
+            <div className="mb-2" style={{ fontWeight: 700, color: '#1e40af', fontSize: '0.92rem' }}>
+              🏫 Route 1: Accommodation → University (Daily Commute)
+            </div>
+            <Form.Group className="mb-0">
+              <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport method you use every day</Form.Label>
+              <Form.Select name="transport_method" value={formData.transport_method} onChange={handleInputChange}>
+                <option value="Walking">🚶 Walking</option>
+                <option value="Bicycle">🚲 Bicycle</option>
+                <option value="Bus">🚌 Bus (CTB / Private)</option>
+                <option value="Train">🚆 Train</option>
+                <option value="Tuk-Tuk">🛺 Tuk-Tuk / Three-Wheeler</option>
+                <option value="Ride-share">🚗 Ride-share (Uber / PickMe)</option>
+                <option value="Personal Vehicle">🏍️ Personal Vehicle (Motorbike/Car)</option>
+                <option value="University Transport">🎓 University Transport (Shuttle)</option>
+                <option value="Mixed">🔀 Mixed (Bus + Tuk-Tuk)</option>
+              </Form.Select>
+            </Form.Group>
+          </div>
 
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Days per Week at University</strong></Form.Label>
-                <Form.Select name="days_per_week" value={formData.days_per_week} onChange={handleInputChange}>
-                  <option value="1 day">1 day</option>
-                  <option value="2 days">2 days</option>
-                  <option value="3 days">3 days</option>
-                  <option value="4 days">4 days</option>
-                  <option value="5 days">5 days</option>
-                  <option value="6 days">6 days</option>
-                  <option value="7 days">7 days</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Home Visit Frequency</strong></Form.Label>
-                <Form.Select name="home_visit_frequency" value={formData.home_visit_frequency} onChange={handleInputChange}>
-                  <option value="Daily">Daily</option>
-                  <option value="Weekly">Weekly</option>
-                  <option value="Bi-weekly">Bi-weekly</option>
-                  <option value="Monthly">Monthly</option>
-                  <option value="Once per semester">Once per semester</option>
-                  <option value="Rarely/Never">Rarely/Never</option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
+          {/* ── Route 2: Home → Accommodation ── */}
+          <div className="p-3 mb-3 rounded" style={{ background: '#f0fff4', border: '1px solid #9ae6b4' }}>
+            <div className="mb-2" style={{ fontWeight: 700, color: '#276749', fontSize: '0.92rem' }}>
+              🏡 Route 2: Home → Accommodation (Home Visits)
+            </div>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-0">
+                  <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>How often do you visit home?</Form.Label>
+                  <Form.Select name="home_visit_frequency" value={formData.home_visit_frequency} onChange={handleInputChange}>
+                    <option value="Daily">Daily (Commuter)</option>
+                    <option value="Weekly">Weekly</option>
+                    <option value="Bi-weekly">Bi-weekly (Every 2 weeks)</option>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Once per semester">Once per semester</option>
+                    <option value="Rarely/Never">Rarely / Never</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-0">
+                  <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport method for this route</Form.Label>
+                  <Form.Select name="transport_method_home_accommodation" value={formData.transport_method_home_accommodation} onChange={handleInputChange}>
+                    <option value="Bus">🚌 Bus (CTB / Private / Express)</option>
+                    <option value="Train">🚆 Train</option>
+                    <option value="Personal Vehicle">🏍️ Personal Vehicle</option>
+                    <option value="Ride-share">🚗 Ride-share (Uber / PickMe)</option>
+                    <option value="Tuk-Tuk">🛺 Tuk-Tuk</option>
+                    <option value="Mixed">🔀 Mixed</option>
+                  </Form.Select>
+                </Form.Group>
+              </Col>
+            </Row>
+          </div>
 
+          {/* Days per week at uni */}
           <Form.Group className="mb-3">
-            <Form.Label><strong>Transport Method for Home Visits</strong></Form.Label>
-            <Form.Select name="transport_method_home" value={formData.transport_method_home} onChange={handleInputChange}>
-              <option value="Bus">Bus</option>
-              <option value="Train">Train</option>
-              <option value="Personal Vehicle">Personal Vehicle</option>
-              <option value="Ride-share">Ride-share</option>
+            <Form.Label><strong>Days per Week at University</strong></Form.Label>
+            <Form.Select name="days_per_week" value={formData.days_per_week} onChange={handleInputChange}>
+              <option value="1 day">1 day</option>
+              <option value="2 days">2 days</option>
+              <option value="3 days">3 days</option>
+              <option value="4 days">4 days</option>
+              <option value="5 days">5 days</option>
+              <option value="6 days">6 days</option>
+              <option value="7 days">7 days</option>
             </Form.Select>
           </Form.Group>
         </Form>
@@ -693,7 +714,7 @@ const BudgetOptimizerNew = () => {
   const renderStep6 = () => (
     <Card className="shadow-lg border-0">
       <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">📊 Step 6: Additional Expenses (Optional)</h4>
+        <h4 className="mb-0">📊 Step 5: Additional Expenses (Optional)</h4>
       </Card.Header>
       <Card.Body className="p-4">
         <Form>
@@ -706,6 +727,7 @@ const BudgetOptimizerNew = () => {
                   name="internet"
                   value={formData.internet}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -717,6 +739,7 @@ const BudgetOptimizerNew = () => {
                   name="study_materials"
                   value={formData.study_materials}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -731,6 +754,7 @@ const BudgetOptimizerNew = () => {
                   name="entertainment"
                   value={formData.entertainment}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -742,6 +766,7 @@ const BudgetOptimizerNew = () => {
                   name="utilities"
                   value={formData.utilities}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -756,6 +781,7 @@ const BudgetOptimizerNew = () => {
                   name="healthcare"
                   value={formData.healthcare}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -767,6 +793,7 @@ const BudgetOptimizerNew = () => {
                   name="other"
                   value={formData.other}
                   onChange={handleInputChange}
+                  onFocus={e => e.target.select()}
                 />
               </Form.Group>
             </Col>
@@ -806,8 +833,8 @@ const BudgetOptimizerNew = () => {
                     LKR {financial_summary.monthly_income.toLocaleString()}
                   </div>
                   {financial_summary.home_money > 0 && (
-                    <div style={{fontSize:'0.72rem',color:'#777',marginTop:2}}>
-                      Base: LKR {(financial_summary.base_income||0).toLocaleString()} + 
+                    <div style={{ fontSize: '0.72rem', color: '#777', marginTop: 2 }}>
+                      Base: LKR {(financial_summary.base_income || 0).toLocaleString()} +
                       Family: LKR {financial_summary.home_money.toLocaleString()}
                     </div>
                   )}
@@ -868,37 +895,83 @@ const BudgetOptimizerNew = () => {
 
         {/* Expense Breakdown */}
         <Card className="shadow-lg border-0 mb-4">
-          <Card.Header className="bg-gradient-primary text-white">
-            <h4 className="mb-0">📊 Expense Breakdown</h4>
+          <Card.Header style={{ background: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)' }} className="text-white">
+            <div className="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 className="mb-0">📊 Expense Breakdown</h4>
+                <small style={{ opacity: 0.85 }}>Where your money goes each month</small>
+              </div>
+              <div className="text-end">
+                <div style={{ fontSize: '0.8rem', opacity: 0.85 }}>Total Monthly</div>
+                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>LKR {expense_breakdown.total_expenses?.toLocaleString()}</div>
+              </div>
+            </div>
           </Card.Header>
           <Card.Body className="p-4">
             <Row>
               <Col md={6}>
-                <h5 className="mb-3">Monthly Expenses</h5>
-                {Object.entries(expense_breakdown).map(([category, amount]) => {
-                  if (category === 'total_expenses') return null;
-                  const percentage = ((amount / expense_breakdown.total_expenses) * 100).toFixed(1);
-                  return (
-                    <div key={category} className="d-flex justify-content-between align-items-center py-2 border-bottom">
-                      <span className="text-capitalize"><strong>{category.replace('_', ' ')}:</strong></span>
-                      <span>
-                        LKR {amount.toLocaleString()} 
-                        <span className="text-muted ms-2">({percentage}%)</span>
-                      </span>
-                    </div>
-                  );
-                })}
-                <div className="d-flex justify-content-between align-items-center py-2 mt-3">
-                  <span><strong>TOTAL:</strong></span>
-                  <span className="fs-5 fw-bold text-primary">
-                    LKR {expense_breakdown.total_expenses.toLocaleString()}
+                <h5 className="mb-3 fw-bold" style={{ color: '#4a5568' }}>💸 Monthly Expenses</h5>
+                {(() => {
+                  const icons = {
+                    accommodation: { icon: '🏠', color: '#6c63ff' },
+                    food: { icon: '🍽️', color: '#38b2ac' },
+                    transport: { icon: '🚌', color: '#ed8936' },
+                    education: { icon: '📚', color: '#4299e1' },
+                    entertainment: { icon: '🎉', color: '#ed64a6' },
+                    utilities: { icon: '💡', color: '#ecc94b' },
+                    healthcare: { icon: '🏥', color: '#fc8181' },
+                    other: { icon: '📦', color: '#a0aec0' },
+                    internet: { icon: '📶', color: '#667eea' },
+                    study_materials: { icon: '✏️', color: '#4299e1' },
+                  };
+                  const total = expense_breakdown.total_expenses || 1;
+                  return Object.entries(expense_breakdown)
+                    .filter(([k]) => k !== 'total_expenses' && expense_breakdown[k] > 0)
+                    .sort(([, a], [, b]) => b - a)
+                    .map(([category, amount]) => {
+                      const pct = ((amount / total) * 100).toFixed(1);
+                      const meta = icons[category] || { icon: '💰', color: '#718096' };
+                      const label = category.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                      return (
+                        <div key={category} className="mb-3">
+                          <div className="d-flex justify-content-between align-items-center mb-1">
+                            <span style={{ fontWeight: 600, color: '#2d3748' }}>
+                              {meta.icon} {label}
+                            </span>
+                            <span style={{ fontWeight: 700, color: meta.color }}>
+                              LKR {amount.toLocaleString()}
+                              <span className="ms-2 text-muted fw-normal" style={{ fontSize: '0.8rem' }}>({pct}%)</span>
+                            </span>
+                          </div>
+                          <div style={{ background: '#edf2f7', borderRadius: '999px', height: '8px', overflow: 'hidden' }}>
+                            <div style={{
+                              width: `${Math.min(pct, 100)}%`,
+                              height: '100%',
+                              background: meta.color,
+                              borderRadius: '999px',
+                              transition: 'width 0.8s ease'
+                            }} />
+                          </div>
+                        </div>
+                      );
+                    });
+                })()}
+                <div className="d-flex justify-content-between align-items-center mt-4 pt-3"
+                  style={{ borderTop: '2px dashed #e2e8f0' }}>
+                  <span style={{ fontWeight: 700, fontSize: '1rem', color: '#2d3748' }}>TOTAL EXPENSES</span>
+                  <span style={{
+                    fontWeight: 800, fontSize: '1.2rem',
+                    background: 'linear-gradient(135deg,#667eea,#764ba2)',
+                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
+                  }}>
+                    LKR {expense_breakdown.total_expenses?.toLocaleString()}
                   </span>
                 </div>
               </Col>
               <Col md={6}>
-                <h5 className="mb-3">Auto-Calculated Budgets</h5>
+                <h5 className="mb-3 fw-bold" style={{ color: '#4a5568' }}>🤖 Calculated Budgets</h5>
                 {calculated_budgets.food && (
-                  <div className="mb-3 p-3 bg-light rounded">
+                  <div className="mb-3 p-3 rounded" style={{ background: '#f0fff4', border: '1px solid #9ae6b4' }}>
                     <div className="d-flex justify-content-between align-items-center mb-1">
                       <span><strong>🍽️ Food Budget:</strong></span>
                       <span className="text-success fw-bold fs-6">
@@ -924,18 +997,18 @@ const BudgetOptimizerNew = () => {
                             {calculated_budgets.food.outside_note && <span className="ms-1 text-secondary">({calculated_budgets.food.outside_note})</span>}
                           </small>
                         )}
-                        {calculated_budgets.food.breakdown.daily_commute === undefined && 
-                         calculated_budgets.food.breakdown.estimate_based_on_income !== undefined && (
-                          <small className="text-muted d-block">
-                            📊 Estimated from income profile
-                          </small>
-                        )}
+                        {calculated_budgets.food.breakdown.daily_commute === undefined &&
+                          calculated_budgets.food.breakdown.estimate_based_on_income !== undefined && (
+                            <small className="text-muted d-block">
+                              📊 Estimated from income profile
+                            </small>
+                          )}
                       </div>
                     )}
                   </div>
                 )}
                 {calculated_budgets.transport && (
-                  <div className="mb-3 p-3 bg-light rounded">
+                  <div className="mb-3 p-3 rounded" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
                     {/* Header row */}
                     <div className="d-flex justify-content-between align-items-center mb-2">
                       <span><strong>🚌 Transport Budget:</strong></span>
@@ -945,31 +1018,57 @@ const BudgetOptimizerNew = () => {
                       </span>
                     </div>
 
-                    {/* Mode badge */}
-                    <div className="mb-2">
-                      <span className="badge bg-secondary me-1">
-                        {calculated_budgets.transport.transport_method}
-                      </span>
-                      {calculated_budgets.transport.commute_days_per_month && (
-                        <span className="badge bg-light text-dark border">
-                          {calculated_budgets.transport.commute_days_per_month} commute days/month
-                        </span>
+                    {/* Route method pills — both routes */}
+                    <div className="mb-2 d-flex flex-column gap-1">
+                      {/* Route 1 — Daily commute */}
+                      <div className="d-flex align-items-center gap-2 px-2 py-1 rounded"
+                        style={{ background: '#dbeafe', border: '1px solid #93c5fd' }}>
+                        <span style={{ fontSize: '0.85rem' }}>🏫</span>
+                        <div className="flex-grow-1" style={{ fontSize: '0.78rem', color: '#1e40af' }}>
+                          <strong>Accommodation → University</strong>
+                          <span className="ms-2 badge" style={{ background: '#1d4ed8', color: '#fff', fontWeight: 600 }}>
+                            {calculated_budgets.transport.accommodation_uni_method || calculated_budgets.transport.transport_method}
+                          </span>
+                        </div>
+                        {calculated_budgets.transport.commute_days_per_month && (
+                          <span className="badge bg-light text-dark border" style={{ fontSize: '0.7rem' }}>
+                            {calculated_budgets.transport.commute_days_per_month} days/mo
+                          </span>
+                        )}
+                      </div>
+                      {/* Route 2 — Home visits */}
+                      {calculated_budgets.transport.home_accommodation_method && (
+                        <div className="d-flex align-items-center gap-2 px-2 py-1 rounded"
+                          style={{ background: '#dcfce7', border: '1px solid #86efac' }}>
+                          <span style={{ fontSize: '0.85rem' }}>🏡</span>
+                          <div className="flex-grow-1" style={{ fontSize: '0.78rem', color: '#166534' }}>
+                            <strong>Home → Accommodation</strong>
+                            <span className="ms-2 badge" style={{ background: '#16a34a', color: '#fff', fontWeight: 600 }}>
+                              {calculated_budgets.transport.home_accommodation_method}
+                            </span>
+                          </div>
+                          {calculated_budgets.transport.home_visit_frequency && (
+                            <span className="badge bg-light text-dark border" style={{ fontSize: '0.7rem' }}>
+                              {calculated_budgets.transport.home_visit_frequency}
+                            </span>
+                          )}
+                        </div>
                       )}
                     </div>
 
                     {/* Per-trip cost — clearly labelled */}
                     {calculated_budgets.transport.daily_cost > 0 && (
                       <div className="d-flex align-items-center gap-2 mb-2 p-2 rounded"
-                           style={{background:'#e8f4fd', border:'1px solid #bee3f8'}}>
-                        <span style={{fontSize:'1.1rem'}}>🔄</span>
+                        style={{ background: '#e8f4fd', border: '1px solid #bee3f8' }}>
+                        <span style={{ fontSize: '1.1rem' }}>🔄</span>
                         <div className="flex-grow-1">
-                          <div style={{fontSize:'0.78rem', color:'#4a5568', fontWeight:600}}>
+                          <div style={{ fontSize: '0.78rem', color: '#4a5568', fontWeight: 600 }}>
                             Round-trip fare &nbsp;
-                            <span style={{fontWeight:400, color:'#718096'}}>
+                            <span style={{ fontWeight: 400, color: '#718096' }}>
                               (Accommodation → Campus → Accommodation)
                             </span>
                           </div>
-                          <div style={{fontSize:'0.82rem', color:'#2d3748'}}>
+                          <div style={{ fontSize: '0.82rem', color: '#2d3748' }}>
                             <strong>LKR {calculated_budgets.transport.daily_cost.toLocaleString()}</strong>
                             &nbsp;per trip
                             {calculated_budgets.transport.one_way_trip_cost > 0 && (
@@ -989,7 +1088,7 @@ const BudgetOptimizerNew = () => {
                           <div className="d-flex justify-content-between">
                             <small className="text-muted">
                               🏫 Campus commute
-                              <span className="ms-1 text-muted" style={{fontSize:'0.73rem'}}>
+                              <span className="ms-1 text-muted" style={{ fontSize: '0.73rem' }}>
                                 (round-trip × {calculated_budgets.transport.commute_days_per_month || '~22'} days)
                               </span>
                             </small>
@@ -1000,7 +1099,7 @@ const BudgetOptimizerNew = () => {
                           <div className="d-flex justify-content-between">
                             <small className="text-muted">
                               🌧️ Emergency / weekend trips
-                              <span className="ms-1 text-muted" style={{fontSize:'0.73rem'}}>(rain, late nights, city)</span>
+                              <span className="ms-1 text-muted" style={{ fontSize: '0.73rem' }}>(rain, late nights, city)</span>
                             </small>
                             <small><strong>LKR {calculated_budgets.transport.breakdown.misc_trips.toLocaleString()}</strong></small>
                           </div>
@@ -1017,7 +1116,7 @@ const BudgetOptimizerNew = () => {
                 )}
                 {/* Show home_money contribution if present */}
                 {financial_summary.home_money > 0 && (
-                  <div className="alert alert-info py-2 px-3 mb-0" style={{fontSize:'0.82rem'}}>
+                  <div className="alert alert-info py-2 px-3 mb-0" style={{ fontSize: '0.82rem' }}>
                     💌 Includes LKR {financial_summary.home_money.toLocaleString()} family support
                     {' '}(base: LKR {financial_summary.base_income.toLocaleString()} + home: LKR {financial_summary.home_money.toLocaleString()})
                   </div>
@@ -1057,7 +1156,7 @@ const BudgetOptimizerNew = () => {
                     <small>
                       {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% savings rate
                     </small>
-                    <div style={{fontSize:'0.72rem',opacity:0.85,marginTop:3}}>
+                    <div style={{ fontSize: '0.72rem', opacity: 0.85, marginTop: 3 }}>
                       (what you could spend after optimising)
                     </div>
                   </div>
@@ -1070,7 +1169,7 @@ const BudgetOptimizerNew = () => {
                         +LKR {analysisResult.optimal_strategy.potential_improvement.extra_savings.toLocaleString()}
                       </h4>
                       <small className="text-dark">Extra you could save/month</small>
-                      <div style={{fontSize:'0.72rem',color:'#555',marginTop:3}}>
+                      <div style={{ fontSize: '0.72rem', color: '#555', marginTop: 3 }}>
                         Expense reduction: LKR {analysisResult.optimal_strategy.potential_improvement.expense_reduction.toLocaleString()}
                       </div>
                     </div>
@@ -1084,223 +1183,146 @@ const BudgetOptimizerNew = () => {
                 </Col>
               </Row>
 
-              {/* Maximum Savings Potential */}
+              {/* Maximum Savings Potential
               {analysisResult.optimal_strategy.maximum_savings_potential > 0 && (
                 <Alert variant="success" className="mb-4">
                   <h5>💰 Total Savings Potential: LKR {analysisResult.optimal_strategy.maximum_savings_potential.toLocaleString()}/month</h5>
                   <p className="mb-0">By implementing all recommendations below, you could save this amount monthly!</p>
                 </Alert>
-              )}
+              )} */}
 
               {/* ── Journey to Optimised Target flow strip ── */}
               {analysisResult.optimal_strategy.optimal_alternatives &&
-               analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
-                <div className="opt-journey-wrap">
-                  <div className="opt-journey-header">
-                    <span className="opt-journey-badge">Step 1</span>
-                    <span className="opt-journey-title">🗺️ Your Path to the Optimised Target</span>
-                    <span className="opt-journey-hint">
-                      Follow these changes first; then let the AI build your detailed action plan.
-                    </span>
-                  </div>
+                analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
+                  <div className="opt-journey-wrap">
+                    <div className="opt-journey-header">
+                      <span className="opt-journey-badge">Step 1</span>
+                      <span className="opt-journey-title">🗺️ Your Path to the Optimised Target</span>
+                      <span className="opt-journey-hint">
+                        Follow these changes first; then let the AI build your detailed action plan.
+                      </span>
+                    </div>
 
-                  {/* Step nodes rail (no percentage text) */}
-                  <div className="opt-step-rail">
-                    {analysisResult.optimal_strategy.optimal_alternatives.slice(0, 5).map((alt, idx) => (
-                      <React.Fragment key={idx}>
-                        <div className={`opt-step-node opt-step-node--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
-                          <div className="opt-step-num">{idx + 1}</div>
-                          <div className="opt-step-icon">
-                            {alt.category.toLowerCase().includes('food')   ? '🍱' :
-                             alt.category.toLowerCase().includes('trans')  ? '🚌' :
-                             alt.category.toLowerCase().includes('accom')  ? '🏠' :
-                             alt.category.toLowerCase().includes('internet')? '📶' :
-                             alt.category.toLowerCase().includes('util')   ? '💡' :
-                             alt.category.toLowerCase().includes('study') || alt.category.toLowerCase().includes('material') ? '📚' :
-                             alt.category.toLowerCase().includes('entertain')? '🎮' :
-                             alt.category.toLowerCase().includes('health')  ? '🏥' :
-                             alt.category.toLowerCase().includes('income') || alt.category.toLowerCase().includes('earn') ? '💼' : '⚡'}
+                    {/* Step nodes rail (no percentage text) */}
+                    <div className="opt-step-rail">
+                      {analysisResult.optimal_strategy.optimal_alternatives.slice(0, 5).map((alt, idx) => (
+                        <React.Fragment key={idx}>
+                          <div className={`opt-step-node opt-step-node--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
+                            <div className="opt-step-num">{idx + 1}</div>
+                            <div className="opt-step-icon">
+                              {alt.category.toLowerCase().includes('food') ? '🍱' :
+                                alt.category.toLowerCase().includes('trans') ? '🚌' :
+                                  alt.category.toLowerCase().includes('accom') ? '🏠' :
+                                    alt.category.toLowerCase().includes('internet') ? '📶' :
+                                      alt.category.toLowerCase().includes('util') ? '💡' :
+                                        alt.category.toLowerCase().includes('study') || alt.category.toLowerCase().includes('material') ? '📚' :
+                                          alt.category.toLowerCase().includes('entertain') ? '🎮' :
+                                            alt.category.toLowerCase().includes('health') ? '🏥' :
+                                              alt.category.toLowerCase().includes('income') || alt.category.toLowerCase().includes('earn') ? '💼' : '⚡'}
+                            </div>
+                            <div className="opt-step-name">{alt.category}</div>
+                            {alt.estimated_savings > 0 && (
+                              <div className="opt-step-save">-LKR {alt.estimated_savings.toLocaleString()}/mo</div>
+                            )}
+                            <div className={`opt-step-priority opt-step-priority--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
+                              {alt.priority}
+                            </div>
                           </div>
-                          <div className="opt-step-name">{alt.category}</div>
-                          {alt.estimated_savings > 0 && (
-                            <div className="opt-step-save">-LKR {alt.estimated_savings.toLocaleString()}/mo</div>
+                          {idx < Math.min(analysisResult.optimal_strategy.optimal_alternatives.length, 5) - 1 && (
+                            <div className="opt-step-connector">
+                              <div className="opt-connector-line" />
+                              <div className="opt-connector-arrow">▶</div>
+                            </div>
                           )}
-                          <div className={`opt-step-priority opt-step-priority--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
-                            {alt.priority}
-                          </div>
+                        </React.Fragment>
+                      ))}
+                      {/* Final target node */}
+                      <div className="opt-step-connector">
+                        <div className="opt-connector-line" />
+                        <div className="opt-connector-arrow">▶</div>
+                      </div>
+                      <div className="opt-step-node opt-step-node--target">
+                        <div className="opt-step-num opt-step-num--target">🎯</div>
+                        <div className="opt-step-icon" style={{ fontSize: '1.5rem' }}>✅</div>
+                        <div className="opt-step-name" style={{ fontWeight: 700, color: '#155724' }}>Optimised!</div>
+                        <div className="opt-step-save" style={{ color: '#155724', fontWeight: 700 }}>
+                          LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
                         </div>
-                        {idx < Math.min(analysisResult.optimal_strategy.optimal_alternatives.length, 5) - 1 && (
-                          <div className="opt-step-connector">
-                            <div className="opt-connector-line" />
-                            <div className="opt-connector-arrow">▶</div>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ))}
-                    {/* Final target node */}
-                    <div className="opt-step-connector">
-                      <div className="opt-connector-line" />
-                      <div className="opt-connector-arrow">▶</div>
-                    </div>
-                    <div className="opt-step-node opt-step-node--target">
-                      <div className="opt-step-num opt-step-num--target">🎯</div>
-                      <div className="opt-step-icon" style={{fontSize:'1.5rem'}}>✅</div>
-                      <div className="opt-step-name" style={{fontWeight:700, color:'#155724'}}>Optimised!</div>
-                      <div className="opt-step-save" style={{color:'#155724',fontWeight:700}}>
-                        LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
-                      </div>
-                      <div className="opt-step-priority opt-step-priority--target">
-                        {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% saved
+                        <div className="opt-step-priority opt-step-priority--target">
+                          {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% saved
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="opt-journey-footer">
-                    <p className="opt-journey-footer-text">
-                      When you are ready for a guided plan, jump to the
-                      <strong> OpenAI AI Enhanced Strategy</strong> section. There the AI will convert this path
-                      into a clear, step-by-step routine you can follow.
-                    </p>
-                    <div className="opt-journey-footer-btn">
-                      <Button
-                        size="sm"
-                        variant="success"
-                        onClick={scrollToAISection}
-                      >
-                        Go to OpenAI AI Enhanced Strategy 🚀
-                      </Button>
+                    <div className="opt-journey-footer">
+                      <p className="opt-journey-footer-text">
+                        When you are ready for a guided plan, jump to the
+                        <strong> AI-Powered Optimization Strategy</strong> section. There the AI will convert this path
+                        into a clear, step-by-step routine you can follow.
+                      </p>
+                      <div className="opt-journey-footer-btn">
+                        <Button
+                          size="sm"
+                          variant="success"
+                          onClick={scrollToAISection}
+                        >
+                          Go to AI-Powered Optimization Strategy 🚀
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Optimal Alternatives */}
-              {analysisResult.optimal_strategy.optimal_alternatives && 
-               analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
-                <div className="mb-4">
-                  <h5 className="mb-3">🔄 Smart Budget Alternatives</h5>
-                  {analysisResult.optimal_strategy.optimal_alternatives.map((alt, index) => (
-                    <Card key={index} className={`mb-3 border-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'}`}>
-                      <Card.Body>
-                        <Row>
-                          <Col md={12}>
-                            <div className="d-flex align-items-start mb-2">
-                              <span className={`badge bg-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'} me-2`}>
-                                {alt.priority} Priority
-                              </span>
-                              <h6 className="mb-0">{alt.category}</h6>
-                            </div>
-                            <p className="mb-2">
-                              <strong>Current:</strong> {alt.current_choice}
-                            </p>
-                            <p className="mb-2 text-success">
-                              <strong>✨ Optimal:</strong> {alt.optimal_choice}
-                            </p>
-                            <p className="text-muted mb-3">
-                              <small><strong>Why?</strong> {alt.reasoning}</small>
-                            </p>
-                            
-                            {/* Action Steps */}
-                            {alt.action_steps && alt.action_steps.length > 0 && (
-                              <div>
-                                <strong>Action Steps:</strong>
-                                <ol className="mb-0 mt-2">
-                                  {alt.action_steps.map((step, idx) => (
-                                    <li key={idx}><small>{step}</small></li>
-                                  ))}
-                                </ol>
+              {analysisResult.optimal_strategy.optimal_alternatives &&
+                analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
+                  <div className="mb-4">
+                    <h5 className="mb-3">🔄 Smart Budget Alternatives</h5>
+                    {analysisResult.optimal_strategy.optimal_alternatives.map((alt, index) => (
+                      <Card key={index} className={`mb-3 border-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'}`}>
+                        <Card.Body>
+                          <Row>
+                            <Col md={12}>
+                              <div className="d-flex align-items-start mb-2">
+                                <span className={`badge bg-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'} me-2`}>
+                                  {alt.priority} Priority
+                                </span>
+                                <h6 className="mb-0">{alt.category}</h6>
                               </div>
-                            )}
-                            
-                            {alt.note && (
-                              <p className="text-info mt-2 mb-0">
-                                <small><strong>Note:</strong> {alt.note}</small>
+                              <p className="mb-2">
+                                <strong>Current:</strong> {alt.current_choice}
                               </p>
-                            )}
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
-                  ))}
-                </div>
-              )}
+                              <p className="mb-2 text-success">
+                                <strong>✨ Optimal:</strong> {alt.optimal_choice}
+                              </p>
+                              <p className="text-muted mb-3">
+                                <small><strong>Why?</strong> {alt.reasoning}</small>
+                              </p>
 
-              {/* Implementation Plan */}
-              {analysisResult.optimal_strategy.implementation_plan && (
-                <div className="mb-4">
-                  <h5 className="mb-3">� Your Action Plan</h5>
-                  <Row>
-                    {analysisResult.optimal_strategy.implementation_plan.immediate_actions && 
-                     analysisResult.optimal_strategy.implementation_plan.immediate_actions.length > 0 && (
-                      <Col md={4}>
-                        <Card className="border-danger mb-3">
-                          <Card.Header className="bg-danger text-white">
-                            <h6 className="mb-0">🚨 Immediate (This Week)</h6>
-                          </Card.Header>
-                          <Card.Body>
-                            <ul className="mb-0 ps-3">
-                              {analysisResult.optimal_strategy.implementation_plan.immediate_actions.map((action, idx) => (
-                                <li key={idx} className="mb-2">
-                                  <small>{action.action}</small>
-                                  <div className="text-success">
-                                    <small><strong>Save: LKR {action.savings.toLocaleString()}</strong></small>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    )}
-                    
-                    {analysisResult.optimal_strategy.implementation_plan.this_month_actions && 
-                     analysisResult.optimal_strategy.implementation_plan.this_month_actions.length > 0 && (
-                      <Col md={4}>
-                        <Card className="border-warning mb-3">
-                          <Card.Header className="bg-warning">
-                            <h6 className="mb-0">⏰ This Month</h6>
-                          </Card.Header>
-                          <Card.Body>
-                            <ul className="mb-0 ps-3">
-                              {analysisResult.optimal_strategy.implementation_plan.this_month_actions.map((action, idx) => (
-                                <li key={idx} className="mb-2">
-                                  <small>{action.action}</small>
-                                  <div className="text-success">
-                                    <small><strong>Save: LKR {action.savings.toLocaleString()}</strong></small>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    )}
-                    
-                    {analysisResult.optimal_strategy.implementation_plan.long_term_actions && 
-                     analysisResult.optimal_strategy.implementation_plan.long_term_actions.length > 0 && (
-                      <Col md={4}>
-                        <Card className="border-info mb-3">
-                          <Card.Header className="bg-info text-white">
-                            <h6 className="mb-0">🎯 Long-term (3-6 months)</h6>
-                          </Card.Header>
-                          <Card.Body>
-                            <ul className="mb-0 ps-3">
-                              {analysisResult.optimal_strategy.implementation_plan.long_term_actions.map((action, idx) => (
-                                <li key={idx} className="mb-2">
-                                  <small>{action.action}</small>
-                                  <div className="text-success">
-                                    <small><strong>Save: LKR {action.savings.toLocaleString()}</strong></small>
-                                  </div>
-                                </li>
-                              ))}
-                            </ul>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    )}
-                  </Row>
-                </div>
-              )}
+                              {/* Action Steps */}
+                              {alt.action_steps && alt.action_steps.length > 0 && (
+                                <div>
+                                  <strong>Action Steps:</strong>
+                                  <ol className="mb-0 mt-2">
+                                    {alt.action_steps.map((step, idx) => (
+                                      <li key={idx}><small>{step}</small></li>
+                                    ))}
+                                  </ol>
+                                </div>
+                              )}
+
+                              {alt.note && (
+                                <p className="text-info mt-2 mb-0">
+                                  <small><strong>Note:</strong> {alt.note}</small>
+                                </p>
+                              )}
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    ))}
+                  </div>
+                )}
 
               {/* ── AI strategy connector bridge ── */}
               <div className="opt-ai-bridge">
@@ -1324,7 +1346,7 @@ const BudgetOptimizerNew = () => {
         )}
 
         {/* ════════════════════════════════════════════════════════ */}
-        {/*   ✨ GEMINI / OPENAI AI ENHANCED STRATEGY               */}
+        {/*   ✨ GEMINI / AI-Powered Optimization Strategy              */}
         {/* ════════════════════════════════════════════════════════ */}
         <div className="gemini-section mb-4" ref={aiSectionRef}>
           {/* Header */}
@@ -1333,19 +1355,19 @@ const BudgetOptimizerNew = () => {
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
                 <defs>
                   <linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#4285F4"/>
-                    <stop offset="33%" stopColor="#EA4335"/>
-                    <stop offset="66%" stopColor="#FBBC05"/>
-                    <stop offset="100%" stopColor="#34A853"/>
+                    <stop offset="0%" stopColor="#4285F4" />
+                    <stop offset="33%" stopColor="#EA4335" />
+                    <stop offset="66%" stopColor="#FBBC05" />
+                    <stop offset="100%" stopColor="#34A853" />
                   </linearGradient>
                 </defs>
                 <path d="M14 3 L14 25 M3 14 L25 14 M6.5 6.5 L21.5 21.5 M21.5 6.5 L6.5 21.5"
-                  stroke="url(#gGrad)" strokeWidth="2.5" strokeLinecap="round"/>
+                  stroke="url(#gGrad)" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
             </div>
             <div>
               <h4 className="gemini-title mb-0">
-                {aiProvider ? `${aiProvider} AI` : 'AI'} Enhanced Strategy
+                AI Powered Optimization Strategy
                 {aiProvider === 'Gemini' && ' ✨'}
                 {aiProvider === 'OpenAI' && ' 🚀'}
               </h4>
@@ -1371,13 +1393,13 @@ const BudgetOptimizerNew = () => {
                 <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
                   <defs>
                     <linearGradient id="aiGrad2" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#4285F4"/>
-                      <stop offset="50%" stopColor="#FBBC05"/>
-                      <stop offset="100%" stopColor="#34A853"/>
+                      <stop offset="0%" stopColor="#4285F4" />
+                      <stop offset="50%" stopColor="#FBBC05" />
+                      <stop offset="100%" stopColor="#34A853" />
                     </linearGradient>
                   </defs>
                   <path d="M14 3 L14 25 M3 14 L25 14 M6.5 6.5 L21.5 21.5 M21.5 6.5 L6.5 21.5"
-                    stroke="url(#aiGrad2)" strokeWidth="2.5" strokeLinecap="round"/>
+                    stroke="url(#aiGrad2)" strokeWidth="2.5" strokeLinecap="round" />
                 </svg>
                 <div>
                   <h5 className="ai-cta-heading">Unlock Your Personalized Strategy</h5>
@@ -1393,7 +1415,7 @@ const BudgetOptimizerNew = () => {
                   <div className="ai-flow-desc">Income · Expenses · Goals</div>
                 </div>
                 <div className="ai-flow-connector">
-                  <div className="ai-flow-arrow-line"/>
+                  <div className="ai-flow-arrow-line" />
                   <div className="ai-flow-arrow-head">▶</div>
                 </div>
                 <div className="ai-flow-node ai-flow-node--center">
@@ -1402,7 +1424,7 @@ const BudgetOptimizerNew = () => {
                   <div className="ai-flow-desc">Patterns · Risks · Opportunities</div>
                 </div>
                 <div className="ai-flow-connector">
-                  <div className="ai-flow-arrow-line"/>
+                  <div className="ai-flow-arrow-line" />
                   <div className="ai-flow-arrow-head">▶</div>
                 </div>
                 <div className="ai-flow-node ai-flow-node--out">
@@ -1427,7 +1449,7 @@ const BudgetOptimizerNew = () => {
                   className="ai-generate-btn"
                   onClick={() => fetchGeminiInsight(analysisResult)}
                 >
-                  <span className="ai-generate-btn-glow"/>
+                  <span className="ai-generate-btn-glow" />
                   <span className="ai-generate-btn-text">✨ Generate AI Enhanced Strategy</span>
                 </button>
                 <p className="ai-cta-hint">Powered by {aiProvider ? `${aiProvider} AI` : 'Gemini / OpenAI'} · Usually takes 5-10 seconds</p>
@@ -1439,12 +1461,12 @@ const BudgetOptimizerNew = () => {
           {geminiError && !geminiLoading && (
             <div className="gemini-error-box">
               {(typeof geminiError === 'string' && (geminiError.includes('not configured') || geminiError.includes('GEMINI_API_KEY'))) ||
-               (typeof geminiError === 'object' && geminiError.message && geminiError.message.includes('not configured')) ? (
+                (typeof geminiError === 'object' && geminiError.message && geminiError.message.includes('not configured')) ? (
                 <>
                   <div className="gemini-error-icon">🔑</div>
                   <h5>Set Up AI Services (Free Options Available)</h5>
                   <p>Add an AI API key to <code>backend/.env</code> to unlock this feature.</p>
-                  
+
                   <div className="border rounded p-3 mb-3 bg-light">
                     <strong>Option 1: Google Gemini (Recommended - FREE)</strong>
                     <ol className="gemini-setup-steps mb-0 mt-2">
@@ -1454,7 +1476,7 @@ const BudgetOptimizerNew = () => {
                     </ol>
                     <p className="text-success small mb-0 mt-2">✅ 1,500 requests/day · No credit card needed</p>
                   </div>
-                  
+
                   <div className="border rounded p-3 bg-light">
                     <strong>Option 2: OpenAI (Paid Backup)</strong>
                     <ol className="gemini-setup-steps mb-0 mt-2">
@@ -1464,7 +1486,7 @@ const BudgetOptimizerNew = () => {
                     </ol>
                     <p className="text-info small mb-0 mt-2">💰 ~$0.0001 per request (gpt-4o-mini)</p>
                   </div>
-                  
+
                   <p className="text-muted small mb-0 mt-3">💡 Set both keys for automatic fallback when Gemini hits rate limits</p>
                 </>
               ) : typeof geminiError === 'object' && geminiError.isRateLimit ? (
@@ -1473,22 +1495,22 @@ const BudgetOptimizerNew = () => {
                   <h5>Rate Limit Exceeded</h5>
                   <p className="mb-3">{geminiError.message}</p>
                   <Alert variant="info" className="mb-3">
-                    <strong>What happened?</strong><br/>
+                    <strong>What happened?</strong><br />
                     The Gemini API free tier has daily/per-minute request limits. Your quota has been temporarily exceeded.
                   </Alert>
                   <Alert variant="success" className="mb-3">
                     <strong>✅ Good news:</strong> Your budget analysis is complete! The AI insights are just an extra bonus.
                   </Alert>
                   <div className="d-flex gap-2 justify-content-center">
-                    <Button 
-                      size="sm" 
-                      variant="primary" 
+                    <Button
+                      size="sm"
+                      variant="primary"
                       onClick={() => fetchGeminiInsight(analysisResult, true)}
                     >
                       🔄 Try Again
                     </Button>
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       variant="outline-secondary"
                       onClick={() => setGeminiError(null)}
                     >
@@ -1497,8 +1519,8 @@ const BudgetOptimizerNew = () => {
                   </div>
                   {geminiError.technical && (
                     <details className="mt-3">
-                      <summary className="text-muted small" style={{cursor: 'pointer'}}>Technical Details</summary>
-                      <pre className="text-muted small mt-2" style={{fontSize: '10px', maxHeight: '100px', overflow: 'auto'}}>
+                      <summary className="text-muted small" style={{ cursor: 'pointer' }}>Technical Details</summary>
+                      <pre className="text-muted small mt-2" style={{ fontSize: '10px', maxHeight: '100px', overflow: 'auto' }}>
                         {geminiError.technical}
                       </pre>
                     </details>
@@ -1510,15 +1532,15 @@ const BudgetOptimizerNew = () => {
                   <p>{typeof geminiError === 'string' ? geminiError : geminiError.message}</p>
                   {(typeof geminiError === 'object' && geminiError.canRetry) && (
                     <div className="d-flex gap-2 justify-content-center mt-3">
-                      <Button 
-                        size="sm" 
-                        variant="outline-primary" 
+                      <Button
+                        size="sm"
+                        variant="outline-primary"
                         onClick={() => fetchGeminiInsight(analysisResult, true)}
                       >
                         🔄 Retry
                       </Button>
-                      <Button 
-                        size="sm" 
+                      <Button
+                        size="sm"
                         variant="outline-secondary"
                         onClick={() => setGeminiError(null)}
                       >
@@ -1528,8 +1550,8 @@ const BudgetOptimizerNew = () => {
                   )}
                   {typeof geminiError === 'object' && geminiError.technical && (
                     <details className="mt-3">
-                      <summary className="text-muted small" style={{cursor: 'pointer'}}>Technical Details</summary>
-                      <pre className="text-muted small mt-2" style={{fontSize: '10px', maxHeight: '100px', overflow: 'auto'}}>
+                      <summary className="text-muted small" style={{ cursor: 'pointer' }}>Technical Details</summary>
+                      <pre className="text-muted small mt-2" style={{ fontSize: '10px', maxHeight: '100px', overflow: 'auto' }}>
                         {geminiError.technical}
                       </pre>
                     </details>
@@ -1548,39 +1570,57 @@ const BudgetOptimizerNew = () => {
 
             if (isStructured) {
               // Parse GAP_SUMMARY
-              const gapMatch  = rawText.match(/GAP_SUMMARY\s*:\s*(.+)/i);
+              const gapMatch = rawText.match(/GAP_SUMMARY\s*:\s*(.+)/i);
               const gapSummary = gapMatch ? gapMatch[1].trim() : null;
 
               // Parse all STEP blocks
               const stepBlocks = [];
-              const stepRegex  = /STEP\s+(\d+)\s*:\s*([^\n]+)\nCATEGORY\s*:\s*([^\n]+)\nSAVE\s*:\s*([^\n]+)\nHOW\s*:\s*([^\n]+)\nTIMEFRAME\s*:\s*([^\n]+)/gi;
+              const stepRegex = /STEP\s+(\d+)\s*:\s*([^\n]+)\nCATEGORY\s*:\s*([^\n]+)\nSAVE\s*:\s*([^\n]+)\nHOW\s*:\s*([^\n]+)\nTIMEFRAME\s*:\s*([^\n]+)/gi;
               let m;
               while ((m = stepRegex.exec(rawText)) !== null) {
                 stepBlocks.push({
-                  num:       m[1],
-                  title:     m[2].trim(),
-                  category:  m[3].trim(),
-                  save:      m[4].trim(),
-                  how:       m[5].trim(),
+                  num: m[1],
+                  title: m[2].trim(),
+                  category: m[3].trim(),
+                  save: m[4].trim(),
+                  how: m[5].trim(),
                   timeframe: m[6].trim(),
                 });
               }
 
-              const quickWinMatch  = rawText.match(/QUICK_WIN\s*:\s*(.+)/i);
+              const quickWinMatch = rawText.match(/QUICK_WIN\s*:\s*(.+)/i);
               const motivationMatch = rawText.match(/MOTIVATION\s*:\s*(.+)/i);
-              const quickWin   = quickWinMatch  ? quickWinMatch[1].trim()  : null;
+              const finalBudgetMatch = rawText.match(/FINAL_BUDGET\s*:\s*(.+)/i);
+              const quickWin = quickWinMatch ? quickWinMatch[1].trim() : null;
               const motivation = motivationMatch ? motivationMatch[1].trim() : null;
+
+              // Parse FINAL_BUDGET pipe-separated key:value pairs
+              const finalBudgetItems = finalBudgetMatch
+                ? finalBudgetMatch[1].split('|').map(s => {
+                    const [label, ...rest] = s.split(':');
+                    return { label: label.trim(), value: rest.join(':').trim() };
+                  }).filter(x => x.label && x.value)
+                : [];
+
+              // Identify the TOTAL and SAVINGS items for emphasis
+              const fbTotal   = finalBudgetItems.find(x => x.label.toUpperCase() === 'TOTAL');
+              const fbSavings = finalBudgetItems.find(x => x.label.toUpperCase() === 'SAVINGS');
+              const fbFits    = finalBudgetItems.find(x => x.label.toUpperCase().includes('FITS'));
+              const fbCats    = finalBudgetItems.filter(x =>
+                !['TOTAL','SAVINGS'].includes(x.label.toUpperCase()) &&
+                !x.label.toUpperCase().includes('FITS')
+              );
 
               const catIcon = (cat) => {
                 const c = cat.toLowerCase();
-                if (c.includes('food'))   return '🍱';
-                if (c.includes('trans'))  return '🚌';
-                if (c.includes('accom'))  return '🏠';
+                if (c.includes('food')) return '🍱';
+                if (c.includes('trans')) return '🚌';
+                if (c.includes('accom')) return '🏠';
                 if (c.includes('internet') || c.includes('phone')) return '📶';
-                if (c.includes('util'))   return '💡';
+                if (c.includes('util')) return '💡';
                 if (c.includes('study') || c.includes('material')) return '📚';
                 if (c.includes('entertain')) return '🎮';
-                if (c.includes('health'))    return '🏥';
+                if (c.includes('health')) return '🏥';
                 if (c.includes('income') || c.includes('earn')) return '�';
                 return '⚡';
               };
@@ -1673,6 +1713,62 @@ const BudgetOptimizerNew = () => {
                     )}
                   </div>
 
+                  {/* ── FINAL BUDGET WITHIN INCOME card ── */}
+                  {finalBudgetItems.length > 0 && !isStreaming && (
+                    <div className="ai-fb-wrap">
+                      <div className="ai-fb-header">
+                        <span className="ai-fb-header-icon">📋</span>
+                        <div>
+                          <div className="ai-fb-title">Optimised Budget — All Within Income</div>
+                          <div className="ai-fb-subtitle">
+                            After applying all steps above · minimum LKR 7,500 savings buffer guaranteed
+                          </div>
+                        </div>
+                        {fbFits && (
+                          <span className="ai-fb-fits-badge">
+                            {fbFits.value.toUpperCase().includes('YES') ? '✅ Fits within income' : fbFits.value}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Category grid */}
+                      <div className="ai-fb-cats">
+                        {fbCats.map((item, i) => (
+                          <div key={i} className="ai-fb-cat-item">
+                            <div className="ai-fb-cat-label">{item.label}</div>
+                            <div className="ai-fb-cat-value">{item.value}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Total row */}
+                      <div className="ai-fb-totals">
+                        {fbTotal && (
+                          <div className="ai-fb-total-box ai-fb-total-box--exp">
+                            <div className="ai-fb-total-label">Total Expenses</div>
+                            <div className="ai-fb-total-value">{fbTotal.value}</div>
+                          </div>
+                        )}
+                        <div className="ai-fb-total-sep">vs</div>
+                        <div className="ai-fb-total-box ai-fb-total-box--income">
+                          <div className="ai-fb-total-label">Monthly Income</div>
+                          <div className="ai-fb-total-value">
+                            LKR {(financial_summary.monthly_income || 0).toLocaleString()}
+                          </div>
+                        </div>
+                        {fbSavings && (
+                          <div className="ai-fb-total-box ai-fb-total-box--save">
+                            <div className="ai-fb-total-label">💰 Savings</div>
+                            <div className="ai-fb-total-value ai-fb-saving-val">{fbSavings.value}</div>
+                            <div style={{fontSize:'0.62rem', color:'#276749', marginTop:3, fontWeight:700}}>
+                              ≥ LKR 7,500 buffer ✅
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
                   {/* Quick Win banner */}
                   {quickWin && !isStreaming && (
                     <div className="ai-tl-quickwin">
@@ -1695,7 +1791,7 @@ const BudgetOptimizerNew = () => {
                     )}
                   </div>
 
-                  {isStreaming && <span className="streaming-cursor" style={{margin:'12px 32px',display:'block'}}>▊</span>}
+                  {isStreaming && <span className="streaming-cursor" style={{ margin: '12px 32px', display: 'block' }}>▊</span>}
                 </div>
               );
             }
@@ -1718,7 +1814,7 @@ const BudgetOptimizerNew = () => {
                 </div>
                 <div className="gemini-content">
                   {rawText.split('\n').map((line, i) => {
-                    if (!line.trim()) return <div key={i} style={{height:'10px'}} />;
+                    if (!line.trim()) return <div key={i} style={{ height: '10px' }} />;
                     if (line.startsWith('**') && line.endsWith('**'))
                       return <h5 key={i} className="gemini-section-head">{line.replace(/\*\*/g, '')}</h5>;
                     if (line.includes('**')) {
@@ -1745,17 +1841,518 @@ const BudgetOptimizerNew = () => {
           })()}
         </div>
 
+        {/* 💰 BUDGET TRANSFORMATION ANIMATION — shown only after AI strategy is generated */}
+        {showTransformation && analysisResult.optimal_strategy && (() => {
+          const inc = financial_summary.monthly_income || 0;
+
+          // Prefer the exact numbers the AI strategy was computed with;
+          // fall back to optimal_strategy data if AI hasn't been generated yet.
+          const aiM    = aiStrategyMeta;  // shorthand
+          const curExp = aiM?.current_expenses
+                         ?? analysisResult.optimal_strategy.current_situation?.total_expenses
+                         ?? financial_summary.total_expenses ?? 0;
+          const tgtExp = aiFinalBudgetNums?.total
+                         ?? aiM?.real_target
+                         ?? analysisResult.optimal_strategy.optimal_target?.target_expenses
+                         ?? curExp;
+          const curSav = Number.isFinite(inc - curExp) ? inc - curExp : (financial_summary.monthly_savings || 0);
+          const tgtSav = aiFinalBudgetNums?.savings
+                         ?? aiM?.min_saving
+                         ?? (Number.isFinite(inc - tgtExp) ? inc - tgtExp : curSav);
+          const extraSav = tgtSav - curSav;
+          const curRate = analysisResult.optimal_strategy.current_situation?.savings_rate || financial_summary.savings_rate || 0;
+          const tgtRate = aiM?.target_rate
+                          ?? analysisResult.optimal_strategy.optimal_target?.target_savings_rate
+                          ?? curRate;
+          return (
+            <div className="bta-wrap mb-4">
+
+              {/* Header */}
+              <div className="bta-header">
+                <span className="bta-header-icon">💰</span>
+                <div>
+                  <h4 className="bta-title">
+                    {aiStrategyMeta ? 'AI-Confirmed Budget Transformation' : 'Your Budget Transformation'}
+                  </h4>
+                  <p className="bta-subtitle">
+                    {aiStrategyMeta
+                      ? `AI strategy targets LKR ${(aiStrategyMeta.real_target || 0).toLocaleString()}/month — saving LKR ${(aiStrategyMeta.min_saving || 0).toLocaleString()} every month`
+                      : 'See exactly how your finances change with the AI strategy applied'}
+                  </p>
+                </div>
+              </div>
+
+              {/* Before / After cards row */}
+              <div className="bta-cards-row">
+
+                {/* ── BEFORE card ── */}
+                <div className="bta-card bta-card--before">
+                  <div className="bta-card-label bta-card-label--before">📊 Before Strategy</div>
+                  <div className="bta-coin-row">
+                    {[0,1,2].map(i => (
+                      <span key={i} className="bta-coin bta-coin--red"
+                            style={{animationDelay:`${i*0.35}s`}}>💸</span>
+                    ))}
+                  </div>
+                  <div className="bta-stat-row">
+                    <div className="bta-stat">
+                      <div className="bta-stat-label">Monthly Income</div>
+                      <div className="bta-stat-value bta-stat-value--neutral">LKR {inc.toLocaleString()}</div>
+                    </div>
+                    <div className="bta-stat">
+                      <div className="bta-stat-label">Total Expenses</div>
+                      <div className="bta-stat-value bta-stat-value--red">LKR {curExp.toLocaleString()}</div>
+                    </div>
+                    <div className="bta-stat bta-stat--hl">
+                      <div className="bta-stat-label">Monthly Savings</div>
+                      <div className={`bta-stat-value ${curSav >= 0 ? 'bta-stat-value--warn' : 'bta-stat-value--red'}`}>
+                        LKR {curSav.toLocaleString()}
+                      </div>
+                      <span className="bta-rate-badge bta-rate-badge--warn">{curRate}% savings rate</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Arrow divider ── */}
+                <div className="bta-arrow-col">
+                  <div className="bta-arrow-wrap">
+                    <span className="bta-arrow-pulse">⚡</span>
+                    <div className="bta-arrow-line" />
+                    <span className="bta-arrow-head">▶</span>
+                    <span className="bta-arrow-label">AI Optimised</span>
+                  </div>
+                </div>
+
+                {/* ── AFTER card ── */}
+                <div className="bta-card bta-card--after">
+                  <div className="bta-card-label bta-card-label--after">
+                    {aiStrategyMeta ? '🤖 AI Confirmed Target' : '🚀 After Strategy'}
+                  </div>
+                  <div className="bta-coin-row">
+                    {[0,1,2,3,4].map(i => (
+                      <span key={i} className="bta-coin bta-coin--green"
+                            style={{animationDelay:`${i*0.22}s`}}>💰</span>
+                    ))}
+                  </div>
+                  <div className="bta-stat-row">
+                    <div className="bta-stat">
+                      <div className="bta-stat-label">Monthly Income</div>
+                      <div className="bta-stat-value bta-stat-value--neutral">LKR {inc.toLocaleString()}</div>
+                    </div>
+                    {/* {aiStrategyMeta?.income_ceiling > 0 && (
+                      <div className="bta-stat">
+                        <div className="bta-stat-label">AI Safe-Spend Ceiling</div>
+                        <div className="bta-stat-value" style={{color:'#d97706', fontSize:'0.92rem'}}>
+                          LKR {aiStrategyMeta.income_ceiling.toLocaleString()}
+                        </div>
+                      </div>
+                    )} */}
+                    <div className="bta-stat">
+                      <div className="bta-stat-label">
+                        {aiFinalBudgetNums ? '🤖 Optimized Total Expenses' : 'Total Expenses'}
+                      </div>
+                      <div className="bta-stat-value bta-stat-value--green">LKR {tgtExp.toLocaleString()}</div>
+                    </div>
+
+                    {/* Per-category breakdown from AI FINAL_BUDGET */}
+                    {aiFinalBudgetNums?.categories?.length > 0 && (
+                      <div style={{
+                        display:'flex', flexWrap:'wrap', gap:'6px',
+                        margin:'8px 0', padding:'8px 10px',
+                        background:'rgba(39,103,73,0.08)', borderRadius:10
+                      }}>
+                        {aiFinalBudgetNums.categories.map((cat, idx) => (
+                          <div key={idx} style={{
+                            background:'#e6fffa', border:'1px solid #81e6d9',
+                            borderRadius:20, padding:'3px 10px',
+                            fontSize:'0.74rem', color:'#234e52', fontWeight:600
+                          }}>
+                            {cat.label}: <span style={{color:'#276749'}}>
+                              LKR {cat.value ? cat.value.toLocaleString() : cat.raw}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="bta-stat bta-stat--hl">
+                      <div className="bta-stat-label">Monthly Savings</div>
+                      <div className="bta-stat-value bta-stat-value--green">LKR {tgtSav.toLocaleString()}</div>
+                      <span className="bta-rate-badge bta-rate-badge--green">{tgtRate}% savings rate</span>
+                      {aiStrategyMeta?.min_savings_buffer > 0 && (
+                        <span className="bta-rate-badge bta-rate-badge--green" style={{marginTop:3, background:'#c6f6d5'}}>
+                          ✅ ≥ LKR {aiStrategyMeta.min_savings_buffer.toLocaleString()} buffer
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Hero extra-savings banner */}
+              {extraSav > 0 && (
+                <div className="bta-hero-banner">
+                  <div className="bta-hero-text">
+                    <div className="bta-hero-caption">
+                      {aiStrategyMeta
+                        ? 'The AI strategy locks in an extra saving of'
+                        : 'With the AI strategy, you could save an extra'}
+                    </div>
+                    <div className="bta-hero-amount">LKR {extraSav.toLocaleString()}</div>
+                    {/* <div className="bta-hero-caption">
+                      per month — that's{' '}
+                      <strong style={{color:'#fefcbf'}}>LKR {(extraSav * 12).toLocaleString()}</strong>
+                      {' '}per year!{' '}
+                      {aiStrategyMeta
+                        ? '🤖 AI Confirmed 🎯'
+                        : '🎯'}
+                    </div> */}
+                    {aiStrategyMeta && (
+                      <div style={{marginTop:10, fontSize:'0.8rem', color:'rgba(255,255,255,0.75)'}}>
+                        Expenses LKR {tgtExp.toLocaleString()} vs Income LKR {inc.toLocaleString()}
+                        {' '}— LKR {tgtSav.toLocaleString()} safely saved every month
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })()}
+
+        {/* ── Reveal button — above action buttons ── */}
+        {geminiInsight && !geminiLoading && (
+          <div className="text-center mb-4">
+            {!showTransformation ? (
+              <button
+                className="bta-reveal-btn"
+                onClick={() => setShowTransformation(true)}
+              >
+                <span className="bta-reveal-btn-glow" />
+                <span className="bta-reveal-btn-icon">📊</span>
+                <span className="bta-reveal-btn-text">View AI-Confirmed Final Budget Summary</span>
+                <span className="bta-reveal-btn-arrow">↓</span>
+              </button>
+            ) : (
+              <button
+                className="bta-reveal-btn bta-reveal-btn--hide"
+                onClick={() => setShowTransformation(false)}
+              >
+                <span className="bta-reveal-btn-icon">📋</span>
+                <span className="bta-reveal-btn-text">Hide Budget Summary</span>
+                <span className="bta-reveal-btn-arrow">↑</span>
+              </button>
+            )}
+          </div>
+        )}
+
         {/* Action Buttons */}
         <div className="text-center">
-          <Button variant="outline-primary" onClick={() => setCurrentStep(1)} className="me-2">
+          <Button variant="outline-primary" onClick={() => setCurrentStep(2)} className="me-2">
             📝 Edit Profile
           </Button>
-          <Button variant="primary" onClick={() => window.print()}>
-            🖨️ Print Report
+          <Button variant="primary" onClick={handlePrintReport}>
+            🖨️ Print Full Report
           </Button>
         </div>
       </div>
     );
+  };
+
+  const handlePrintReport = () => {
+    if (!analysisResult) return;
+    const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment, recommendation } = analysisResult;
+    const strategy = analysisResult.optimal_strategy;
+    const date = new Date().toLocaleDateString('en-LK', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    const catIcons = {
+      accommodation: '🏠', food: '🍽️', transport: '🚌', education: '📚',
+      entertainment: '🎉', utilities: '💡', healthcare: '🏥', internet: '📱', study_materials: '✏️', other: '📦'
+    };
+
+    const expRows = Object.entries(expense_breakdown)
+      .filter(([k, v]) => k !== 'total_expenses' && v > 0)
+      .sort(([, a], [, b]) => b - a)
+      .map(([k, v]) => {
+        const pct = ((v / expense_breakdown.total_expenses) * 100).toFixed(1);
+        const label = k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        return `<tr>
+          <td>${catIcons[k] || '💰'} ${label}</td>
+          <td style="text-align:right;font-weight:600">LKR ${v.toLocaleString()}</td>
+          <td style="text-align:right;color:#666">${pct}%</td>
+          <td style="width:140px;padding-left:8px">
+            <div style="background:#edf2f7;border-radius:6px;height:10px">
+              <div style="width:${Math.min(pct, 100)}%;height:100%;background:#667eea;border-radius:6px"></div>
+            </div>
+          </td>
+        </tr>`;
+      }).join('');
+
+    const riskRecs = (risk_assessment?.recommendations || [])
+      .map(r => `<li><strong>${r.category}:</strong> ${r.message}${r.potential_savings > 0 ? ` <span style="color:#28a745">(Save LKR ${r.potential_savings.toLocaleString()}/mo)</span>` : ''}</li>`)
+      .join('');
+
+    const altRows = (strategy?.optimal_alternatives || [])
+      .map(a => `<tr>
+        <td>${a.category || ''}</td>
+        <td>${a.current_method || ''}</td>
+        <td>${a.alternative || a.recommendation || ''}</td>
+        <td style="color:#e53e3e;text-align:right">LKR ${(a.current_cost || 0).toLocaleString()}</td>
+        <td style="color:#28a745;text-align:right">LKR ${(a.optimised_cost || a.target_cost || 0).toLocaleString()}</td>
+        <td style="color:#28a745;font-weight:700;text-align:right">${a.savings_percentage || a.potential_savings_pct || ''}%</td>
+      </tr>`).join('');
+
+    const actionSteps = (recommendation?.action_steps || [])
+      .map((s, i) => `<li style="margin-bottom:6px"><strong>Step ${i + 1}:</strong> ${s}</li>`).join('');
+
+    const foodInfo = calculated_budgets?.food;
+    const transInfo = calculated_budgets?.transport;
+
+    const html = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Student Budget Report - ${formData.full_name || 'Student'}</title>
+<style>
+  * { box-sizing: border-box; margin:0; padding:0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #2d3748; background: #fff; font-size:13px; }
+  .page { max-width:900px; margin:0 auto; padding:30px 30px; }
+  /* Header */
+  .report-header { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white;
+    border-radius:12px; padding:28px 32px; margin-bottom:24px; }
+  .report-header h1 { font-size:22px; font-weight:800; margin-bottom:4px; }
+  .report-header .sub { opacity:0.88; font-size:13px; }
+  .report-header .meta { margin-top:14px; display:flex; gap:30px; flex-wrap:wrap; }
+  .report-header .meta span { font-size:12px; opacity:0.9; }
+  .report-header .meta strong { display:block; font-size:14px; opacity:1; }
+  /* Section */
+  .section { margin-bottom:24px; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden; }
+  .section-header { padding:12px 18px; font-weight:700; font-size:14px; color:white; }
+  .section-body { padding:18px; }
+  .green { background: linear-gradient(135deg,#38b2ac,#2c7a7b); }
+  .purple { background: linear-gradient(135deg,#667eea,#764ba2); }
+  .orange { background: linear-gradient(135deg,#ed8936,#c05621); }
+  .danger { background: linear-gradient(135deg,#fc8181,#c53030); }
+  .success-bg { background: linear-gradient(135deg,#68d391,#276749); }
+  /* Summary boxes */
+  .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .summary-box { border:1px solid #e2e8f0; border-radius:8px; padding:14px; text-align:center; }
+  .summary-box .label { font-size:11px; color:#718096; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+  .summary-box .value { font-size:18px; font-weight:800; }
+  .blue { color:#667eea; } .red { color:#e53e3e; } .green-c { color:#28a745; }
+  /* Table */
+  table { width:100%; border-collapse:collapse; }
+  th { background:#f7fafc; font-size:11px; text-transform:uppercase; letter-spacing:.5px; 
+       color:#718096; padding:8px 10px; border-bottom:2px solid #e2e8f0; text-align:left; }
+  td { padding:8px 10px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+  tr:last-child td { border-bottom:none; }
+  /* 2-col */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .detail-box { background:#f7fafc; border-radius:8px; padding:14px; }
+  .detail-box h4 { font-size:13px; font-weight:700; margin-bottom:10px; }
+  .detail-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed #e2e8f0; font-size:12px; }
+  .detail-row:last-child { border-bottom:none; font-weight:700; font-size:13px; }
+  /* Strategy */
+  .strategy-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-bottom:16px; }
+  .strategy-box { border-radius:8px; padding:14px; text-align:center; }
+  .s-current { background:#fff5f5; border:1px solid #fed7d7; }
+  .s-target { background:#f0fff4; border:1px solid #9ae6b4; }
+  .s-improve { background:#fffbf0; border:1px solid #fbd38d; }
+  .strategy-box .s-label { font-size:11px; color:#718096; margin-bottom:4px; }
+  .strategy-box .s-value { font-size:20px; font-weight:800; }
+  /* Risk */
+  .risk-high { background:#fff5f5; border:2px solid #fc8181; border-radius:8px; padding:14px; }
+  .risk-low  { background:#f0fff4; border:2px solid #9ae6b4; border-radius:8px; padding:14px; }
+  /* Gemini */
+  .ai-box { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:16px; font-size:12px; line-height:1.7; }
+  /* Tip */
+  .alert-box { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:12px 14px; margin-bottom:12px; font-size:12px; }
+  /* Footer */
+  .footer { text-align:center; margin-top:30px; font-size:11px; color:#a0aec0; border-top:1px solid #e2e8f0; padding-top:14px; }
+  ul { padding-left:18px; }
+  li { margin-bottom:4px; }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { padding:10px 16px; }
+    .no-print { display:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <h1>🎓 Student Budget Analysis Report</h1>
+    <div class="sub">AI-Powered Financial Insights — UniFinder LK</div>
+    <div class="meta">
+      <div><span>Student</span><strong>${formData.full_name || '—'}</strong></div>
+      <div><span>University</span><strong>${formData.university || '—'}</strong></div>
+      <div><span>Year / Field</span><strong>${formData.year_of_study} · ${formData.field_of_study}</strong></div>
+      <div><span>District</span><strong>${formData.district}</strong></div>
+      <div><span>Report Date</span><strong>${date}</strong></div>
+      <div><span>Accuracy</span><strong>86.89% ML Model</strong></div>
+    </div>
+  </div>
+
+  <!-- FINANCIAL SUMMARY -->
+  <div class="section">
+    <div class="section-header green">💰 Financial Summary</div>
+    <div class="section-body">
+      <div class="summary-grid">
+        <div class="summary-box">
+          <div class="label">Monthly Income</div>
+          <div class="value blue">LKR ${financial_summary.monthly_income.toLocaleString()}</div>
+          ${financial_summary.home_money > 0 ? `<div style="font-size:11px;color:#888;margin-top:3px">Base: LKR ${(financial_summary.base_income || 0).toLocaleString()} + Family: LKR ${financial_summary.home_money.toLocaleString()}</div>` : ''}
+        </div>
+        <div class="summary-box">
+          <div class="label">Total Expenses</div>
+          <div class="value red">LKR ${financial_summary.total_expenses.toLocaleString()}</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Monthly Savings</div>
+          <div class="value ${financial_summary.monthly_savings >= 0 ? 'green-c' : 'red'}">LKR ${financial_summary.monthly_savings.toLocaleString()}</div>
+        </div>
+        <div class="summary-box">
+          <div class="label">Savings Rate</div>
+          <div class="value ${financial_summary.savings_rate >= 0 ? 'green-c' : 'red'}">${financial_summary.savings_rate}%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPENSE BREAKDOWN -->
+  <div class="section">
+    <div class="section-header purple">📊 Expense Breakdown</div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Category</th><th style="text-align:right">Amount</th><th style="text-align:right">Share</th><th>Distribution</th></tr></thead>
+        <tbody>${expRows}</tbody>
+        <tfoot>
+          <tr style="background:#f7fafc;font-weight:700;font-size:14px">
+            <td>TOTAL EXPENSES</td>
+            <td style="text-align:right;color:#667eea">LKR ${expense_breakdown.total_expenses.toLocaleString()}</td>
+            <td style="text-align:right">100%</td><td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- AI CALCULATED BUDGETS -->
+  <div class="section">
+    <div class="section-header orange">🤖 AI-Calculated Budgets</div>
+    <div class="section-body">
+      <div class="two-col">
+        ${foodInfo ? `<div class="detail-box">
+          <h4>🍽️ Food Budget — LKR ${foodInfo.monthly_total.toLocaleString()}/month</h4>
+          <div class="detail-row"><span>Food Type</span><span>${foodInfo.food_type}</span></div>
+          <div class="detail-row"><span>Daily Average</span><span>LKR ${foodInfo.daily_cost.toLocaleString()}</span></div>
+          ${foodInfo.breakdown?.groceries !== undefined ? `<div class="detail-row"><span>🛒 Groceries (cooking)</span><span>LKR ${Math.round(foodInfo.breakdown.groceries).toLocaleString()}</span></div>` : ''}
+          ${foodInfo.breakdown?.outside_meals !== undefined ? `<div class="detail-row"><span>🍜 Outside meals</span><span>LKR ${Math.round(foodInfo.breakdown.outside_meals).toLocaleString()}</span></div>` : ''}
+          <div class="detail-row"><span>Monthly Total</span><span>LKR ${foodInfo.monthly_total.toLocaleString()}</span></div>
+        </div>` : '<div class="detail-box"><h4>🍽️ Food Budget</h4><p style="color:#999">Not available</p></div>'}
+        ${transInfo ? `<div class="detail-box">
+          <h4>🚌 Transport Budget — LKR ${transInfo.monthly_total.toLocaleString()}/month</h4>
+          <div class="detail-row"><span>Method</span><span>${transInfo.transport_method}</span></div>
+          <div class="detail-row"><span>Commute Days/Month</span><span>${transInfo.commute_days_per_month || '~22'}</span></div>
+          <div class="detail-row"><span>Round-trip Fare</span><span>LKR ${transInfo.daily_cost.toLocaleString()}</span></div>
+          ${transInfo.one_way_trip_cost > 0 ? `<div class="detail-row"><span>One-way Fare</span><span>LKR ${transInfo.one_way_trip_cost.toLocaleString()}</span></div>` : ''}
+          ${transInfo.breakdown?.daily_commute > 0 ? `<div class="detail-row"><span>🏫 Campus Commute</span><span>LKR ${transInfo.breakdown.daily_commute.toLocaleString()}</span></div>` : ''}
+          ${transInfo.breakdown?.misc_trips > 0 ? `<div class="detail-row"><span>🌧️ Emergency Trips</span><span>LKR ${transInfo.breakdown.misc_trips.toLocaleString()}</span></div>` : ''}
+          ${transInfo.breakdown?.home_visits > 0 ? `<div class="detail-row"><span>🏡 Home Visits</span><span>LKR ${transInfo.breakdown.home_visits.toLocaleString()}</span></div>` : ''}
+          <div class="detail-row"><span>Monthly Total</span><span>LKR ${transInfo.monthly_total.toLocaleString()}</span></div>
+        </div>` : '<div class="detail-box"><h4>🚌 Transport Budget</h4><p style="color:#999">Not available</p></div>'}
+      </div>
+    </div>
+  </div>
+
+  <!-- RISK ASSESSMENT -->
+  ${risk_assessment ? `<div class="section">
+    <div class="section-header ${risk_assessment.risk_level === 'High Risk' ? 'danger' : 'success-bg'}">${risk_assessment.risk_level === 'High Risk' ? '⚠️' : '✅'} Risk Assessment — ${risk_assessment.risk_level}</div>
+    <div class="section-body">
+      <div class="${risk_assessment.risk_level === 'High Risk' ? 'risk-high' : 'risk-low'}" style="margin-bottom:${riskRecs ? '14px' : '0'}">
+        <strong>Risk Probability: ${risk_assessment.risk_probability}%</strong>
+        <span style="margin-left:16px;font-size:12px;color:#555">${risk_assessment.risk_level === 'High Risk' ? 'Your current spending puts you at financial risk. Review the recommendations below.' : 'Your financial situation looks healthy. Keep maintaining good spending habits!'}</span>
+      </div>
+      ${riskRecs ? `<h5 style="font-size:13px;margin-bottom:8px;font-weight:700">📋 Risk Recommendations:</h5><ul>${riskRecs}</ul>` : ''}
+    </div>
+  </div>` : ''}
+
+  <!-- OPTIMAL STRATEGY -->
+  ${strategy ? `<div class="section">
+    <div class="section-header success-bg">🎯 Personalised Optimal Budget Strategy</div>
+    <div class="section-body">
+      <div class="strategy-grid" style="margin-bottom:18px">
+        <div class="strategy-box s-current">
+          <div class="s-label">📊 Current Expenses</div>
+          <div class="s-value red">LKR ${strategy.current_situation.total_expenses.toLocaleString()}</div>
+          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.current_situation.savings_rate}% savings now</div>
+        </div>
+        <div class="strategy-box s-target">
+          <div class="s-label">🎯 Optimised Target</div>
+          <div class="s-value green-c">LKR ${strategy.optimal_target.target_expenses.toLocaleString()}</div>
+          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.optimal_target.target_savings_rate}% savings rate</div>
+        </div>
+        <div class="strategy-box s-improve">
+          <div class="s-label">💰 Potential Saving</div>
+          <div class="s-value ${strategy.potential_improvement.extra_savings > 0 ? 'green-c' : 'blue'}">
+            ${strategy.potential_improvement.extra_savings > 0 ? '+LKR ' + strategy.potential_improvement.extra_savings.toLocaleString() : 'Already Optimised ✅'}
+          </div>
+          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.potential_improvement.extra_savings > 0 ? 'extra/month possible' : 'Well done!'}</div>
+        </div>
+      </div>
+      ${altRows ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:10px">🔄 Optimisation Alternatives:</h5>
+      <table>
+        <thead><tr><th>Category</th><th>Current</th><th>Alternative</th><th style="text-align:right">Current Cost</th><th style="text-align:right">Target Cost</th><th style="text-align:right">Savings</th></tr></thead>
+        <tbody>${altRows}</tbody>
+      </table>` : ''}
+    </div>
+  </div>` : ''}
+
+  <!-- RECOMMENDATIONS -->
+  ${recommendation ? `<div class="section">
+    <div class="section-header purple">💡 Personalised Recommendations</div>
+    <div class="section-body">
+      ${recommendation.primary_advice ? `<div class="alert-box" style="margin-bottom:14px"><strong>📌 Primary Advice:</strong> ${recommendation.primary_advice}</div>` : ''}
+      ${actionSteps ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:8px">✅ Action Steps:</h5><ul>${actionSteps}</ul>` : ''}
+    </div>
+  </div>` : ''}
+
+  <!-- STUDENT PROFILE SUMMARY -->
+  <div class="section">
+    <div class="section-header" style="background:linear-gradient(135deg,#a0aec0,#718096)">👤 Student Profile</div>
+    <div class="section-body">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px">
+        <div><span style="color:#718096">University:</span> <strong>${formData.university}</strong></div>
+        <div><span style="color:#718096">Year:</span> <strong>${formData.year_of_study}</strong></div>
+        <div><span style="color:#718096">Field:</span> <strong>${formData.field_of_study}</strong></div>
+        <div><span style="color:#718096">District:</span> <strong>${formData.district}</strong></div>
+        <div><span style="color:#718096">Accommodation:</span> <strong>${formData.accommodation_type}</strong></div>
+        <div><span style="color:#718096">Transport:</span> <strong>${formData.transport_method}</strong></div>
+        <div><span style="color:#718096">Distance to Uni:</span> <strong>${formData.distance_uni_accommodation} km</strong></div>
+        <div><span style="color:#718096">Distance Home:</span> <strong>${formData.distance_home_uni} km</strong></div>
+        <div><span style="color:#718096">Home Visits:</span> <strong>${formData.home_visit_frequency}</strong></div>
+        <div><span style="color:#718096">Food Type:</span> <strong>${formData.food_type}</strong></div>
+        <div><span style="color:#718096">Diet:</span> <strong>${formData.diet_type}</strong></div>
+        <div><span style="color:#718096">Meals/Day:</span> <strong>${formData.meals_per_day}</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Generated by <strong>UniFinder LK — AI Student Budget Optimizer</strong> &nbsp;|&nbsp; ${date} &nbsp;|&nbsp; Model Accuracy: 86.89%</p>
+    <p style="margin-top:4px">This report is for financial guidance purposes only. Actual costs may vary.</p>
+  </div>
+
+</div>
+<script>window.onload = () => window.print();</script>
+</body>
+</html>`;
+
+    const win = window.open('', '_blank', 'width=1000,height=800');
+    win.document.write(html);
+    win.document.close();
   };
 
   const renderNavigationButtons = () => {
@@ -1768,7 +2365,7 @@ const BudgetOptimizerNew = () => {
         <Button
           variant="outline-secondary"
           onClick={prevStep}
-          disabled={currentStep === 1}
+          disabled={currentStep === 2}
         >
           ← Previous
         </Button>
@@ -1805,7 +2402,7 @@ const BudgetOptimizerNew = () => {
           <Col>
             <div className="text-center">
               <h1 className="display-4 gradient-text mb-3">
-                🎯 AI-Powered Student Budget Optimizer
+                🤖💰 AI-Powered Student Budget Optimizer
               </h1>
               <p className="lead text-muted">
                 Complete your profile in 6 simple steps to get personalized budget insights
@@ -1828,7 +2425,6 @@ const BudgetOptimizerNew = () => {
         {/* Form Steps */}
         <Row>
           <Col lg={10} className="mx-auto">
-            {currentStep === 1 && renderStep1()}
             {currentStep === 2 && renderStep2()}
             {currentStep === 3 && renderStep3()}
             {currentStep === 4 && renderStep4()}
@@ -1873,6 +2469,41 @@ const BudgetOptimizerNew = () => {
           </Col>
         </Row>
       </Container>
+
+      {/* Distance Warning Modal */}
+      <Modal show={distanceWarning.show} onHide={cancelDistanceWarning} centered>
+        <Modal.Header closeButton className="border-0 pb-0">
+          <Modal.Title className="d-flex align-items-center gap-2">
+            <span style={{ fontSize: '1.5rem' }}>⚠️</span>
+            <span>Unusual Distance Detected</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="pt-2">
+          <div className="alert alert-warning mb-3" style={{ borderRadius: '10px' }}>
+            <strong>Are you sure?</strong>
+          </div>
+          <p className="mb-1">
+            You entered <strong>{distanceWarning.pendingValue} km</strong> for <em>Home to University</em>.
+          </p>
+          <p className="text-muted" style={{ fontSize: '0.9rem' }}>
+            Sri Lanka's maximum end-to-end distance is about <strong>~430 km</strong>.
+            A value over <strong>800 km</strong> is unusual for a student commute.
+            Please double-check the distance.
+          </p>
+          <p className="mb-0" style={{ fontSize: '0.9rem', color: '#555' }}>
+            If you travel abroad or have a special case, you can confirm below.
+          </p>
+        </Modal.Body>
+        <Modal.Footer className="border-0">
+          <Button variant="outline-secondary" onClick={cancelDistanceWarning}>
+            ✏️ Correct it
+          </Button>
+          <Button variant="warning" onClick={confirmDistanceWarning}>
+            ✅ Yes, it's correct
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 };

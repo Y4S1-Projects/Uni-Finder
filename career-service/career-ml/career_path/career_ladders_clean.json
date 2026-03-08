@@ -1,0 +1,28 @@
+{
+  "SOFTWARE_ENGINEERING": [
+    "INTERN_SE",
+    "JR_SE",
+    "JR_FE_DEV",
+    "JR_FS_DEV"
+  ],
+  "DATA": [
+    "DATA_ANALYST_INT",
+    "DATA_ENGINEER_INT"
+  ],
+  "AI_ML": [
+    "AI_ML_ENGINEER_INT"
+  ],
+  "DEVOPS": [
+    "DEVOPS_TRAINEE",
+    "JR_SYS_ADMIN"
+  ],
+  "QA": [
+    "JR_QA_ENG"
+  ],
+  "MOBILE": [
+    "JR_MOBILE_DEV"
+  ],
+  "UI_UX": [
+    "JR_UI_UX_DESIGNER"
+  ]
+}

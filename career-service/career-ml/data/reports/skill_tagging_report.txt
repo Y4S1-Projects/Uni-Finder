@@ -1,0 +1,123 @@
+==============================================================================
+  SKILL TAGGING REPORT — v2.0
+  Generated: 2026-03-07T18:39:42.326546
+  Elapsed:   264.5s  (0.017s per job)
+==============================================================================
+
+  Input:  D:\SLIIT\Uni-Finder\career-ml\data\processed\jobs_unified.csv  (15230 jobs)
+  Skills: D:\SLIIT\Uni-Finder\career-ml\data\expanded\skills_v2.csv  (1147 skills)
+  Output: D:\SLIIT\Uni-Finder\career-ml\data\processed\jobs_tagged_v2.csv
+
+  ── Skills per Job ──
+    Min:    3
+    Max:    50
+    Mean:   19.7
+    Median: 18
+
+  ── Confidence ──
+    Avg confidence (all jobs): 0.949
+
+  ── Original Jobs ──
+    Original jobs processed:    15141
+    Original skills preserved:  176909
+    NEW skills added to originals: 122772
+
+  ── Low-Skill Jobs (<5) ──
+    Count: 25
+    [   95] 4 skills — Digital UI/UX Design
+    [  755] 4 skills — Tester (QA QC)
+    [  949] 4 skills — 02 Tester (QA QC)
+    [  956] 3 skills — Graphic Designer (UI-UX)
+    [ 1133] 4 skills — 1+năm Kn Manual Tester (QA QC) Upto$1000
+    [14875] 3 skills — UX/UI Designer
+    [14893] 3 skills — UX Researcher
+    [14915] 3 skills — UX Designer
+    [14927] 4 skills — IT Sales Representative
+    [14929] 4 skills — IT Procurement Coordinator
+    [14931] 3 skills — UX Research Assistant
+    [14945] 3 skills — UX/UI Designer
+    [14963] 3 skills — UX Researcher
+    [14985] 3 skills — UX Designer
+    [14995] 3 skills — UX/UI Designer
+    [15013] 3 skills — UX Researcher
+    [15035] 3 skills — UX Designer
+    [15068] 3 skills — UX Designer
+    [15079] 3 skills — UX Researcher
+    [15112] 3 skills — UX Designer
+
+  ── Top 30 Most Common Skills ──
+       SK041  software engineer                      6241  ( 41.0%)
+       SK003  sql                                    5787  ( 38.0%)
+       SK026  web developer                          5503  ( 36.1%)
+       SK124  data analyst                           5492  ( 36.1%)
+       SK001  java                                   5336  ( 35.0%)
+       SK002  javascript                             4598  ( 30.2%)
+       SK067  business analyst                       4495  ( 29.5%)
+       SK013  rest                                   3977  ( 26.1%)
+       SK006  html                                   3896  ( 25.6%)
+       SK005  css                                    3874  ( 25.4%)
+       SK135  testing                                3828  ( 25.1%)
+       SK009  git                                    3530  ( 23.2%)
+       SK102  project manager                        3461  ( 22.7%)
+       SK285  programming                            3405  ( 22.4%)
+       SK225  it manager                             3345  ( 22.0%)
+       SK161  agile                                  3305  ( 21.7%)
+       SK934  accountability                         3293  ( 21.6%)
+       SK007  mobile                                 3156  ( 20.7%)
+       SK004  python                                 3104  ( 20.4%)
+       SK117  system administrator                   3005  ( 19.7%)
+       SK028  problem solving                        2999  ( 19.7%)
+       SK948  analytical thinking                    2998  ( 19.7%)
+       SK239  computer science                       2937  ( 19.3%)
+       SK021  api                                    2804  ( 18.4%)
+       SK973  agile methodology                      2760  ( 18.1%)
+       SK012  database                               2705  ( 17.8%)
+       SK016  security                               2694  ( 17.7%)
+       SK122  software development                   2498  ( 16.4%)
+       SK950  debugging skills                       2403  ( 15.8%)
+       SK282  implementation                         2281  ( 15.0%)
+
+  ── Job Category Distribution ──
+    backend                 3373
+    frontend                2818
+    mobile                  2487
+    data                    1476
+    devops                  1444
+    database                1007
+    general                  971
+    management               477
+    ai_ml                    461
+    cloud                    284
+    security                 186
+    qa                       166
+    fullstack                 44
+    ui_ux                     36
+
+  ── Seniority Level Distribution ──
+    mid               12883
+    senior             1500
+    director            569
+    lead                108
+    junior               79
+    staff                51
+    principal            35
+    intern                5
+
+  ── Role Assignment Distribution ──
+    JR_BE_DEV                    3357
+    JR_FE_DEV                    2808
+    JR_MOBILE_DEV                2475
+    DEVOPS_TRAINEE               1665
+    DATA_ANALYST_INT             1327
+    JR_SE                        1177
+    DATA_ENGINEER_INT             910
+    JR_BUSINESS_ANALYST           622
+    AI_ML_ENGINEER_INT            432
+    JR_SYS_ADMIN                  184
+    JR_QA_ENG                     160
+    JR_FS_DEV                      44
+    JR_UI_UX_DESIGNER              36
+    JR_IT_SUPPORT                  28
+    INTERN_SE                       5
+
+==============================================================================

@@ -12,27 +12,34 @@ export function useCareerRecommendations() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchRecommendations = useCallback(async (skillIds, topN = 5) => {
-    if (!skillIds || skillIds.length === 0) {
-      setError("Please select at least one skill");
-      return null;
-    }
+  const fetchRecommendations = useCallback(
+    async (skillIds, topN = 5, careerContext = {}) => {
+      if (!skillIds || skillIds.length === 0) {
+        setError("Please select at least one skill");
+        return null;
+      }
 
-    setLoading(true);
-    setError(null);
-    setRecommendations(null);
+      setLoading(true);
+      setError(null);
+      setRecommendations(null);
 
-    try {
-      const data = await getCareerRecommendations(skillIds, topN);
-      setRecommendations(data);
-      return data;
-    } catch (err) {
-      setError(err.message || String(err));
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      try {
+        const data = await getCareerRecommendations(
+          skillIds,
+          topN,
+          careerContext,
+        );
+        setRecommendations(data);
+        return data;
+      } catch (err) {
+        setError(err.message || String(err));
+        return null;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   const clearRecommendations = useCallback(() => {
     setRecommendations(null);
@@ -71,10 +78,10 @@ export function useCareerDetail() {
         matchScore: recommendation.match_score,
         userSkillIds: userSkillIds,
         matchedSkills: extractSkillIds(
-          recommendation.skill_gap?.matched_skills
+          recommendation.skill_gap?.matched_skills,
         ),
         missingSkills: extractSkillIds(
-          recommendation.skill_gap?.missing_skills
+          recommendation.skill_gap?.missing_skills,
         ),
         readinessScore: recommendation.skill_gap?.readiness_score || 0,
         nextRole: recommendation.next_role,
@@ -88,16 +95,16 @@ export function useCareerDetail() {
       // Skills from recommendation are already {id, name} objects
       const normalizeSkills = (skills) =>
         (skills || []).map((s) =>
-          typeof s === "object" ? s : { id: s, name: s }
+          typeof s === "object" ? s : { id: s, name: s },
         );
 
       const fallbackDetail = {
         ...recommendation,
         matched_skills: normalizeSkills(
-          recommendation.skill_gap?.matched_skills
+          recommendation.skill_gap?.matched_skills,
         ),
         missing_skills: normalizeSkills(
-          recommendation.skill_gap?.missing_skills
+          recommendation.skill_gap?.missing_skills,
         ),
         readiness_score: recommendation.skill_gap?.readiness_score || 0,
         explanation: null,

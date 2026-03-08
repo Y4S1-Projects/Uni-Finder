@@ -4,6 +4,13 @@ Uses Gemini AI (from explainability_engine.ipynb) with fallback to template-base
 """
 from typing import Optional
 from .skill_service import get_skill_name
+from .fallback_templates import (
+    get_analyst_explanation,
+    get_coach_explanation,
+    get_strategist_explanation,
+    get_recruiter_explanation,
+    get_visual_explanation,
+)
 
 # Initialize Gemini client
 gemini_client = None
@@ -19,6 +26,18 @@ try:
         print(f"[explainability] Failed to initialize Gemini client: {e}")
 except ImportError:
     print("[explainability] google-genai not installed, AI explanations will use fallback")
+
+
+# List of fallback explanation templates
+FALLBACK_TEMPLATES = [
+    get_analyst_explanation,
+    get_coach_explanation,
+    get_strategist_explanation,
+    get_recruiter_explanation,
+    get_visual_explanation,
+]
+# Index to track the last used fallback template
+last_fallback_index = -1
 
 
 def generate_ai_explanation(context: dict) -> Optional[str]:
@@ -85,7 +104,7 @@ Do not mention skill IDs. Keep the response under 200 words."""
 
 def generate_fallback_explanation(context: dict) -> str:
     """
-    Generate a rich, detailed explanation without external AI.
+    Generate a rich, detailed explanation from a rotating set of templates.
     
     Args:
         context: Dictionary with role, skills, and match information
@@ -93,82 +112,16 @@ def generate_fallback_explanation(context: dict) -> str:
     Returns:
         Template-based explanation string
     """
-    matched_names = [get_skill_name(s) for s in context.get("matched_skills", [])]
-    missing_names = [get_skill_name(s) for s in context.get("missing_skills", [])]
+    global last_fallback_index
     
-    role_title = context.get('role_title') or context.get('role_id') or 'this role'
-    domain_raw = context.get('domain') or 'Technology'
-    domain = domain_raw.replace('_', ' ') if domain_raw else 'Technology'
-    match_score = (context.get('match_score') or 0) * 100
-    readiness = (context.get('readiness_score') or 0) * 100
-    next_role = context.get('next_role_title') or context.get('next_role')
+    # Cycle to the next template
+    last_fallback_index = (last_fallback_index + 1) % len(FALLBACK_TEMPLATES)
     
-    # Determine skill priority advice
-    priority_skills = missing_names[:3] if missing_names else []
+    print(f"[explainability] Using fallback template #{last_fallback_index + 1}")
     
-    # Build personalized explanation
-    explanation = f"""**Why {role_title} is a Great Match for You**
-
-Based on our AI-powered analysis of your skill profile against real job market data, you have a **{match_score:.0f}% match** with this role in the **{domain}** domain.
-
-**🎯 Your Strengths**
-"""
-    
-    if matched_names:
-        explanation += f"You already possess {len(matched_names)} key skills that employers look for in this role:\n"
-        for skill in matched_names[:5]:
-            explanation += f"• **{skill.title()}** - This is actively sought by employers\n"
-        if len(matched_names) > 5:
-            explanation += f"• ...and {len(matched_names) - 5} more relevant skills!\n"
-    else:
-        explanation += "While your current skills may not directly match, your diverse background shows adaptability and learning potential.\n"
-    
-    explanation += "\n**📚 Skills to Prioritize**\n"
-    
-    if priority_skills:
-        explanation += f"To increase your match score and readiness, focus on these high-impact skills:\n"
-        skill_advice = {
-            'python': 'Essential for data work, automation, and backend development',
-            'javascript': 'Critical for web development and modern applications',
-            'sql': 'Fundamental for working with databases and data analysis',
-            'react': 'Popular frontend framework used by top companies',
-            'docker': 'Key DevOps skill for containerization',
-            'git': 'Version control is essential for all development roles',
-            'aws': 'Cloud skills are highly valued in modern tech',
-            'machine learning': 'Growing field with high demand',
-            'css': 'Essential for creating beautiful user interfaces',
-            'html': 'Foundation of all web development',
-            'node': 'Popular for backend JavaScript development',
-            'api': 'Critical for modern software integration',
-        }
-        
-        for skill in priority_skills:
-            advice = skill_advice.get(skill.lower(), 'Highly valued skill in the industry')
-            explanation += f"1. **{skill.title()}** - {advice}\n"
-    else:
-        explanation += "Great news! You already have the core skills needed for this role.\n"
-    
-    explanation += f"\n**📊 Readiness Assessment: {readiness:.0f}%**\n"
-    
-    if readiness >= 70:
-        explanation += "🌟 **Excellent!** You're well-prepared for this role. Consider applying to positions and highlighting your matching skills in your resume.\n"
-    elif readiness >= 50:
-        explanation += "👍 **Good Progress!** You have a solid foundation. A few weeks of focused learning on the priority skills above could significantly boost your readiness.\n"
-    elif readiness >= 30:
-        explanation += "📈 **Building Up!** You're on the right track. Consider taking online courses or building projects to demonstrate these skills.\n"
-    else:
-        explanation += "🚀 **Growth Opportunity!** This role represents an exciting career direction. Start with foundational skills and build up progressively.\n"
-    
-    if next_role:
-        explanation += f"\n**🔮 Career Path**\nAfter mastering {role_title}, your next step could be **{next_role}**. Each skill you acquire now builds toward that goal!\n"
-    
-    explanation += "\n**💡 Recommended Actions**\n"
-    explanation += "• Build a portfolio project showcasing your skills\n"
-    explanation += "• Take relevant online courses (Coursera, Udemy, freeCodeCamp)\n"
-    explanation += "• Contribute to open-source projects for real-world experience\n"
-    explanation += "• Network with professionals in this field on LinkedIn\n"
-
-    return explanation
+    # Get the explanation from the selected template
+    template_function = FALLBACK_TEMPLATES[last_fallback_index]
+    return template_function(context)
 
 
 def generate_explanation(context: dict) -> str:

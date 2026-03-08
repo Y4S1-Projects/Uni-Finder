@@ -1,302 +1,6884 @@
 [
-  { "skill_id": "SK001", "name": "java" },
-  { "skill_id": "SK002", "name": "javascript" },
-  { "skill_id": "SK003", "name": "sql" },
-  { "skill_id": "SK004", "name": "python" },
-  { "skill_id": "SK005", "name": "css" },
-  { "skill_id": "SK006", "name": "html" },
-  { "skill_id": "SK007", "name": "mobile" },
-  { "skill_id": "SK008", "name": "mysql" },
-  { "skill_id": "SK009", "name": "git" },
-  { "skill_id": "SK010", "name": "java developer" },
-  { "skill_id": "SK011", "name": "infrastructure" },
-  { "skill_id": "SK012", "name": "database" },
-  { "skill_id": "SK013", "name": "rest" },
-  { "skill_id": "SK014", "name": "c" },
-  { "skill_id": "SK015", "name": "jquery" },
-  { "skill_id": "SK016", "name": "security" },
-  { "skill_id": "SK017", "name": "php" },
-  { "skill_id": "SK018", "name": "spring" },
-  { "skill_id": "SK019", "name": "json" },
-  { "skill_id": "SK020", "name": "linux" },
-  { "skill_id": "SK021", "name": "api" },
-  { "skill_id": "SK022", "name": "html5" },
-  { "skill_id": "SK023", "name": "xml" },
-  { "skill_id": "SK024", "name": "devops" },
-  { "skill_id": "SK025", "name": "hibernate" },
-  { "skill_id": "SK026", "name": "web developer" },
-  { "skill_id": "SK027", "name": "debugging" },
-  { "skill_id": "SK028", "name": "problem solving" },
-  { "skill_id": "SK029", "name": "docker" },
-  { "skill_id": "SK030", "name": "j2ee" },
-  { "skill_id": "SK031", "name": "machine learning" },
-  { "skill_id": "SK032", "name": "oracle" },
-  { "skill_id": "SK033", "name": "ajax" },
-  { "skill_id": "SK034", "name": "algorithms" },
-  { "skill_id": "SK035", "name": "storage" },
-  { "skill_id": "SK036", "name": "spring boot" },
-  { "skill_id": "SK037", "name": "mvc" },
-  { "skill_id": "SK038", "name": "team player" },
-  { "skill_id": "SK039", "name": "nosql" },
-  { "skill_id": "SK040", "name": "software engineering" },
-  { "skill_id": "SK041", "name": "software engineer" },
-  { "skill_id": "SK042", "name": "bootstrap" },
-  { "skill_id": "SK043", "name": "big data" },
-  { "skill_id": "SK044", "name": "data structures" },
-  { "skill_id": "SK045", "name": "information technology" },
-  { "skill_id": "SK046", "name": "soap" },
-  { "skill_id": "SK047", "name": "mongodb" },
-  { "skill_id": "SK048", "name": "wordpress" },
-  { "skill_id": "SK049", "name": ".net" },
-  { "skill_id": "SK050", "name": "written communication" },
-  { "skill_id": "SK051", "name": "maven" },
-  { "skill_id": "SK052", "name": "web development" },
-  { "skill_id": "SK053", "name": "laravel" },
-  { "skill_id": "SK054", "name": "oops" },
-  { "skill_id": "SK055", "name": "ios" },
-  { "skill_id": "SK056", "name": "svn" },
-  { "skill_id": "SK057", "name": "network engineer" },
-  { "skill_id": "SK058", "name": "apache" },
-  { "skill_id": "SK059", "name": "web technologies" },
-  { "skill_id": "SK060", "name": "hadoop" },
-  { "skill_id": "SK061", "name": "windows" },
-  { "skill_id": "SK062", "name": "jsp" },
-  { "skill_id": "SK063", "name": "github" },
-  { "skill_id": "SK064", "name": "unix" },
-  { "skill_id": "SK065", "name": "angularjs" },
-  { "skill_id": "SK066", "name": "php developer" },
-  { "skill_id": "SK067", "name": "business analyst" },
-  { "skill_id": "SK068", "name": "solution architect" },
-  { "skill_id": "SK069", "name": "spring mvc" },
-  { "skill_id": "SK070", "name": "android developer" },
-  { "skill_id": "SK071", "name": "ios developer" },
-  { "skill_id": "SK072", "name": "junit" },
-  { "skill_id": "SK073", "name": "spring framework" },
-  { "skill_id": "SK074", "name": "fundamentals" },
-  { "skill_id": "SK075", "name": "rdbms" },
-  { "skill_id": "SK076", "name": "node.js" },
-  { "skill_id": "SK077", "name": "postgresql" },
-  { "skill_id": "SK078", "name": "swift" },
-  { "skill_id": "SK079", "name": "struts" },
-  { "skill_id": "SK080", "name": "technical skills" },
-  { "skill_id": "SK081", "name": "android sdk" },
-  { "skill_id": "SK082", "name": "rest api" },
-  { "skill_id": "SK083", "name": "android development" },
-  { "skill_id": "SK084", "name": "jpa" },
-  { "skill_id": "SK085", "name": "scala" },
-  { "skill_id": "SK086", "name": "eclipse" },
-  { "skill_id": "SK087", "name": "messaging" },
-  { "skill_id": "SK088", "name": "ruby" },
-  { "skill_id": "SK089", "name": "gradle" },
-  { "skill_id": "SK090", "name": "jdbc" },
-  { "skill_id": "SK091", "name": "artificial intelligence" },
-  { "skill_id": "SK092", "name": "codeigniter" },
-  { "skill_id": "SK093", "name": "cisco" },
-  { "skill_id": "SK094", "name": "oop" },
-  { "skill_id": "SK095", "name": "hardware" },
-  { "skill_id": "SK096", "name": "software developer" },
-  { "skill_id": "SK097", "name": "software design" },
-  { "skill_id": "SK098", "name": "mvvm" },
-  { "skill_id": "SK099", "name": "magento" },
-  { "skill_id": "SK100", "name": "memory management" },
-  { "skill_id": "SK101", "name": "cloud services" },
-  { "skill_id": "SK102", "name": "project manager" },
-  { "skill_id": "SK103", "name": "asp.net" },
-  { "skill_id": "SK104", "name": "joomla" },
-  { "skill_id": "SK105", "name": "cassandra" },
-  { "skill_id": "SK106", "name": "hive" },
-  { "skill_id": "SK107", "name": "network" },
-  { "skill_id": "SK108", "name": "crm" },
-  { "skill_id": "SK109", "name": "bug fixing" },
-  { "skill_id": "SK110", "name": "django" },
-  { "skill_id": "SK111", "name": "project management" },
-  { "skill_id": "SK112", "name": "orchestration" },
-  { "skill_id": "SK113", "name": "react.js" },
-  { "skill_id": "SK114", "name": "multithreading" },
-  { "skill_id": "SK115", "name": "data mining" },
-  { "skill_id": "SK116", "name": "cocoa touch" },
-  { "skill_id": "SK117", "name": "system administrator" },
-  { "skill_id": "SK118", "name": "san" },
-  { "skill_id": "SK119", "name": "java ee" },
-  { "skill_id": "SK120", "name": "object oriented programming" },
-  { "skill_id": "SK121", "name": "uml" },
-  { "skill_id": "SK122", "name": "software development" },
-  { "skill_id": "SK123", "name": "senior software engineer" },
-  { "skill_id": "SK124", "name": "data analyst" },
-  { "skill_id": "SK125", "name": "drupal" },
-  { "skill_id": "SK126", "name": "wan" },
-  { "skill_id": "SK127", "name": "bgp" },
-  { "skill_id": "SK128", "name": "ospf" },
-  { "skill_id": "SK129", "name": "data warehousing" },
-  { "skill_id": "SK130", "name": "telecom" },
-  { "skill_id": "SK131", "name": "servlets" },
-  { "skill_id": "SK132", "name": "networking" },
-  { "skill_id": "SK133", "name": "threading" },
-  { "skill_id": "SK134", "name": "graphics" },
-  { "skill_id": "SK135", "name": "testing" },
-  { "skill_id": "SK136", "name": "cloud computing" },
-  { "skill_id": "SK137", "name": "ccna" },
-  { "skill_id": "SK138", "name": "hardware engineer" },
-  { "skill_id": "SK139", "name": "system engineer" },
-  { "skill_id": "SK140", "name": "java programming" },
-  { "skill_id": "SK141", "name": "forms" },
-  { "skill_id": "SK142", "name": "mobile development" },
-  { "skill_id": "SK143", "name": "ios development" },
-  { "skill_id": "SK144", "name": "hosting" },
-  { "skill_id": "SK145", "name": "business analysis" },
-  { "skill_id": "SK146", "name": "objective c" },
-  { "skill_id": "SK147", "name": "jee" },
-  { "skill_id": "SK148", "name": "business requirements" },
-  { "skill_id": "SK149", "name": "switching" },
-  { "skill_id": "SK150", "name": "perl" },
-  { "skill_id": "SK151", "name": "xcode" },
-  { "skill_id": "SK152", "name": "web services" },
-  { "skill_id": "SK153", "name": "data entry" },
-  { "skill_id": "SK154", "name": "ant" },
-  { "skill_id": "SK155", "name": "gateway" },
-  { "skill_id": "SK156", "name": "routing" },
-  { "skill_id": "SK157", "name": "application development" },
-  { "skill_id": "SK158", "name": "android studio" },
-  { "skill_id": "SK159", "name": "protocols" },
-  { "skill_id": "SK160", "name": "ccnp" },
-  { "skill_id": "SK161", "name": "agile" },
-  { "skill_id": "SK162", "name": "lan" },
-  { "skill_id": "SK163", "name": "data entry operator" },
-  { "skill_id": "SK164", "name": "consultant" },
-  { "skill_id": "SK165", "name": "firewall" },
-  { "skill_id": "SK166", "name": "coding" },
-  { "skill_id": "SK167", "name": "shell scripting" },
-  { "skill_id": "SK168", "name": "vpn" },
-  { "skill_id": "SK169", "name": "network configuration maintenance" },
-  { "skill_id": "SK170", "name": "routing protocols" },
-  { "skill_id": "SK171", "name": "jsf" },
-  { "skill_id": "SK172", "name": "computer operator" },
-  { "skill_id": "SK173", "name": "dns" },
-  { "skill_id": "SK174", "name": "microsoft azure" },
-  { "skill_id": "SK175", "name": "hbase" },
-  { "skill_id": "SK176", "name": "sql database" },
-  { "skill_id": "SK177", "name": "data analysis" },
-  { "skill_id": "SK178", "name": "web api" },
-  { "skill_id": "SK179", "name": "soa" },
-  { "skill_id": "SK180", "name": "iphone" },
-  { "skill_id": "SK181", "name": "aws" },
-  { "skill_id": "SK182", "name": "configuration" },
-  { "skill_id": "SK183", "name": "weblogic" },
-  { "skill_id": "SK184", "name": "technical requirements" },
-  { "skill_id": "SK185", "name": "elastic search" },
-  { "skill_id": "SK186", "name": "mockito" },
-  { "skill_id": "SK187", "name": "operating system" },
-  { "skill_id": "SK188", "name": "project delivery" },
-  { "skill_id": "SK189", "name": "spring security" },
-  { "skill_id": "SK190", "name": "middleware" },
-  { "skill_id": "SK191", "name": "sybase" },
-  { "skill_id": "SK192", "name": "etl" },
-  { "skill_id": "SK193", "name": "websphere" },
-  { "skill_id": "SK194", "name": "natural language processing" },
-  { "skill_id": "SK195", "name": "visual studio" },
-  { "skill_id": "SK196", "name": "microsoft technologies" },
-  { "skill_id": "SK197", "name": "windows server" },
-  { "skill_id": "SK198", "name": "entity framework" },
-  { "skill_id": "SK199", "name": "phonegap" },
-  { "skill_id": "SK200", "name": "leadership skills" },
-  { "skill_id": "SK201", "name": "it hardware engineer" },
-  { "skill_id": "SK202", "name": "installation" },
-  { "skill_id": "SK203", "name": "zend" },
-  { "skill_id": "SK204", "name": "sqlite" },
-  { "skill_id": "SK205", "name": "design patterns" },
-  { "skill_id": "SK206", "name": "production support" },
-  { "skill_id": "SK207", "name": "global delivery" },
-  { "skill_id": "SK208", "name": "juniper" },
-  { "skill_id": "SK209", "name": "network administrator" },
-  { "skill_id": "SK210", "name": "yii" },
-  { "skill_id": "SK211", "name": "games" },
-  { "skill_id": "SK212", "name": "splunk" },
-  { "skill_id": "SK213", "name": "mvc framework" },
-  { "skill_id": "SK214", "name": "mpls" },
-  { "skill_id": "SK215", "name": "application performance" },
-  { "skill_id": "SK216", "name": "pmp" },
-  { "skill_id": "SK217", "name": "tableau" },
-  { "skill_id": "SK218", "name": "system architecture" },
-  { "skill_id": "SK219", "name": "cakephp" },
-  { "skill_id": "SK220", "name": "groovy" },
-  { "skill_id": "SK221", "name": "eigrp" },
-  { "skill_id": "SK222", "name": "j2ee technologies" },
-  { "skill_id": "SK223", "name": "technical support engineer" },
-  { "skill_id": "SK224", "name": "authoring" },
-  { "skill_id": "SK225", "name": "it manager" },
-  { "skill_id": "SK226", "name": "use cases" },
-  { "skill_id": "SK227", "name": "iam" },
-  { "skill_id": "SK228", "name": "image processing" },
-  { "skill_id": "SK229", "name": "web programming" },
-  { "skill_id": "SK230", "name": "technology consulting" },
-  { "skill_id": "SK231", "name": "ios sdk" },
-  { "skill_id": "SK232", "name": "senior network engineer" },
-  { "skill_id": "SK233", "name": "program management" },
-  { "skill_id": "SK234", "name": "database management" },
-  { "skill_id": "SK235", "name": "ipsec" },
-  { "skill_id": "SK236", "name": "router" },
-  { "skill_id": "SK237", "name": "ipad" },
-  { "skill_id": "SK238", "name": "multimedia" },
-  { "skill_id": "SK239", "name": "computer science" },
-  { "skill_id": "SK240", "name": "salesforce" },
-  { "skill_id": "SK241", "name": "requirement gathering" },
-  { "skill_id": "SK242", "name": "data engineer" },
-  { "skill_id": "SK243", "name": "cocoa" },
-  { "skill_id": "SK244", "name": "hdfs" },
-  { "skill_id": "SK245", "name": "voip" },
-  { "skill_id": "SK246", "name": "mvc architecture" },
-  { "skill_id": "SK247", "name": "cli" },
-  { "skill_id": "SK248", "name": "grunt" },
-  { "skill_id": "SK249", "name": "project life cycle" },
-  { "skill_id": "SK250", "name": "dhcp" },
-  { "skill_id": "SK251", "name": "c ++" },
-  { "skill_id": "SK252", "name": "mqtt" },
-  { "skill_id": "SK253", "name": "data analytics" },
-  { "skill_id": "SK254", "name": "information systems" },
-  { "skill_id": "SK255", "name": "computer engineering" },
-  { "skill_id": "SK256", "name": "xamarin" },
-  { "skill_id": "SK257", "name": "production environment" },
-  { "skill_id": "SK258", "name": "mobile application development" },
-  { "skill_id": "SK259", "name": "system administration" },
-  { "skill_id": "SK260", "name": "desktop support engineer" },
-  { "skill_id": "SK261", "name": "jira" },
-  { "skill_id": "SK262", "name": "advanced java" },
-  { "skill_id": "SK263", "name": "brd" },
-  { "skill_id": "SK264", "name": "soap web services" },
-  { "skill_id": "SK265", "name": "android" },
-  { "skill_id": "SK266", "name": "functional requirements" },
-  { "skill_id": "SK267", "name": "apache tomcat" },
-  { "skill_id": "SK268", "name": "security compliance" },
-  { "skill_id": "SK269", "name": "intellij" },
-  { "skill_id": "SK270", "name": "dashboards" },
-  { "skill_id": "SK271", "name": "troubleshooting" },
-  { "skill_id": "SK272", "name": "database administrator" },
-  { "skill_id": "SK273", "name": "data visualization" },
-  { "skill_id": "SK274", "name": "pig" },
-  { "skill_id": "SK275", "name": "oozie" },
-  { "skill_id": "SK276", "name": "cisco routers" },
-  { "skill_id": "SK277", "name": "data science" },
-  { "skill_id": "SK278", "name": "triggers" },
-  { "skill_id": "SK279", "name": "mobile applications" },
-  { "skill_id": "SK280", "name": "senior web developer" },
-  { "skill_id": "SK281", "name": "system admin" },
-  { "skill_id": "SK282", "name": "implementation" },
-  { "skill_id": "SK283", "name": "stp" },
-  { "skill_id": "SK284", "name": "user stories" },
-  { "skill_id": "SK285", "name": "programming" },
-  { "skill_id": "SK286", "name": "software testing" },
-  { "skill_id": "SK287", "name": "ubuntu" },
-  { "skill_id": "SK288", "name": "desktop engineer" },
-  { "skill_id": "SK289", "name": "mvp" },
-  { "skill_id": "SK290", "name": "operator" },
-  { "skill_id": "SK291", "name": "ejb" },
-  { "skill_id": "SK292", "name": "director" },
-  { "skill_id": "SK293", "name": "java script" },
-  { "skill_id": "SK294", "name": "lamp" },
-  { "skill_id": "SK295", "name": "mentor" },
-  { "skill_id": "SK296", "name": "business process" },
-  { "skill_id": "SK297", "name": "hsrp" },
-  { "skill_id": "SK298", "name": "project plan" },
-  { "skill_id": "SK299", "name": "business applications" },
-  { "skill_id": "SK300", "name": "opencart" }
+  {
+    "skill_id": "SK001",
+    "name": "java",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK002",
+    "name": "javascript",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK003",
+    "name": "sql",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK004",
+    "name": "python",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK005",
+    "name": "css",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK006",
+    "name": "html",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK007",
+    "name": "mobile",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK008",
+    "name": "mysql",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK009",
+    "name": "git",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK010",
+    "name": "java developer",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK011",
+    "name": "infrastructure",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK012",
+    "name": "database",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK013",
+    "name": "rest",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK014",
+    "name": "c",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK015",
+    "name": "jquery",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK016",
+    "name": "security",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK017",
+    "name": "php",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK018",
+    "name": "spring",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK019",
+    "name": "json",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK020",
+    "name": "linux",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK021",
+    "name": "api",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK022",
+    "name": "html5",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK023",
+    "name": "xml",
+    "category": "ml_ai",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK024",
+    "name": "devops",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK025",
+    "name": "hibernate",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK026",
+    "name": "web developer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK027",
+    "name": "debugging",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK028",
+    "name": "problem solving",
+    "category": "soft_skill",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK029",
+    "name": "docker",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK030",
+    "name": "j2ee",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK031",
+    "name": "machine learning",
+    "category": "ml_ai",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK032",
+    "name": "oracle",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK033",
+    "name": "ajax",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK034",
+    "name": "algorithms",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK035",
+    "name": "storage",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK036",
+    "name": "spring boot",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK037",
+    "name": "mvc",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK038",
+    "name": "team player",
+    "category": "soft_skill",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK039",
+    "name": "nosql",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK040",
+    "name": "software engineering",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK041",
+    "name": "software engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK042",
+    "name": "bootstrap",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK043",
+    "name": "big data",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK044",
+    "name": "data structures",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK045",
+    "name": "information technology",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK046",
+    "name": "soap",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK047",
+    "name": "mongodb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK048",
+    "name": "wordpress",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK049",
+    "name": ".net",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK050",
+    "name": "written communication",
+    "category": "soft_skill",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK051",
+    "name": "maven",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK052",
+    "name": "web development",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK053",
+    "name": "laravel",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK054",
+    "name": "oops",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK055",
+    "name": "ios",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK056",
+    "name": "svn",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK057",
+    "name": "network engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK058",
+    "name": "apache",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK059",
+    "name": "web technologies",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK060",
+    "name": "hadoop",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK061",
+    "name": "windows",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK062",
+    "name": "jsp",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK063",
+    "name": "github",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK064",
+    "name": "unix",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK065",
+    "name": "angularjs",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK066",
+    "name": "php developer",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK067",
+    "name": "business analyst",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK068",
+    "name": "solution architect",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK069",
+    "name": "spring mvc",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK070",
+    "name": "android developer",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK071",
+    "name": "ios developer",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK072",
+    "name": "junit",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK073",
+    "name": "spring framework",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK074",
+    "name": "fundamentals",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK075",
+    "name": "rdbms",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK076",
+    "name": "node.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK077",
+    "name": "postgresql",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK078",
+    "name": "swift",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK079",
+    "name": "struts",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK080",
+    "name": "technical skills",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK081",
+    "name": "android sdk",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK082",
+    "name": "rest api",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK083",
+    "name": "android development",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK084",
+    "name": "jpa",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK085",
+    "name": "scala",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK086",
+    "name": "eclipse",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK087",
+    "name": "messaging",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK088",
+    "name": "ruby",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK089",
+    "name": "gradle",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK090",
+    "name": "jdbc",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK091",
+    "name": "artificial intelligence",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK092",
+    "name": "codeigniter",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK093",
+    "name": "cisco",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK094",
+    "name": "oop",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK095",
+    "name": "hardware",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK096",
+    "name": "software developer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK097",
+    "name": "software design",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK098",
+    "name": "mvvm",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK099",
+    "name": "magento",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK100",
+    "name": "memory management",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK101",
+    "name": "cloud services",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK102",
+    "name": "project manager",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK103",
+    "name": "asp.net",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK104",
+    "name": "joomla",
+    "category": "ml_ai",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK105",
+    "name": "cassandra",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK106",
+    "name": "hive",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK107",
+    "name": "network",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK108",
+    "name": "crm",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK109",
+    "name": "bug fixing",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK110",
+    "name": "django",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK111",
+    "name": "project management",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK112",
+    "name": "orchestration",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK113",
+    "name": "react.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK114",
+    "name": "multithreading",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK115",
+    "name": "data mining",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK116",
+    "name": "cocoa touch",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK117",
+    "name": "system administrator",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK118",
+    "name": "san",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK119",
+    "name": "java ee",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK120",
+    "name": "object oriented programming",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK121",
+    "name": "uml",
+    "category": "ml_ai",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK122",
+    "name": "software development",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK123",
+    "name": "senior software engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK124",
+    "name": "data analyst",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK125",
+    "name": "drupal",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK126",
+    "name": "wan",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK127",
+    "name": "bgp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK128",
+    "name": "ospf",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK129",
+    "name": "data warehousing",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK130",
+    "name": "telecom",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK131",
+    "name": "servlets",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK132",
+    "name": "networking",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK133",
+    "name": "threading",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK134",
+    "name": "graphics",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK135",
+    "name": "testing",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK136",
+    "name": "cloud computing",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK137",
+    "name": "ccna",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK138",
+    "name": "hardware engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK139",
+    "name": "system engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK140",
+    "name": "java programming",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK141",
+    "name": "forms",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK142",
+    "name": "mobile development",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK143",
+    "name": "ios development",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK144",
+    "name": "hosting",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK145",
+    "name": "business analysis",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK146",
+    "name": "objective c",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK147",
+    "name": "jee",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK148",
+    "name": "business requirements",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK149",
+    "name": "switching",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK150",
+    "name": "perl",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK151",
+    "name": "xcode",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK152",
+    "name": "web services",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK153",
+    "name": "data entry",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK154",
+    "name": "ant",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK155",
+    "name": "gateway",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK156",
+    "name": "routing",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK157",
+    "name": "application development",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK158",
+    "name": "android studio",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK159",
+    "name": "protocols",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK160",
+    "name": "ccnp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK161",
+    "name": "agile",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK162",
+    "name": "lan",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK163",
+    "name": "data entry operator",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK164",
+    "name": "consultant",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK165",
+    "name": "firewall",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK166",
+    "name": "coding",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK167",
+    "name": "shell scripting",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK168",
+    "name": "vpn",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK169",
+    "name": "network configuration maintenance",
+    "category": "ml_ai",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK170",
+    "name": "routing protocols",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK171",
+    "name": "jsf",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK172",
+    "name": "computer operator",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK173",
+    "name": "dns",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK174",
+    "name": "microsoft azure",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK175",
+    "name": "hbase",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK176",
+    "name": "sql database",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK177",
+    "name": "data analysis",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK178",
+    "name": "web api",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK179",
+    "name": "soa",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK180",
+    "name": "iphone",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK181",
+    "name": "aws",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK182",
+    "name": "configuration",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK183",
+    "name": "weblogic",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK184",
+    "name": "technical requirements",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK185",
+    "name": "elastic search",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK186",
+    "name": "mockito",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK187",
+    "name": "operating system",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK188",
+    "name": "project delivery",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK189",
+    "name": "spring security",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK190",
+    "name": "middleware",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK191",
+    "name": "sybase",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK192",
+    "name": "etl",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK193",
+    "name": "websphere",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK194",
+    "name": "natural language processing",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK195",
+    "name": "visual studio",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK196",
+    "name": "microsoft technologies",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK197",
+    "name": "windows server",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK198",
+    "name": "entity framework",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK199",
+    "name": "phonegap",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK200",
+    "name": "leadership skills",
+    "category": "soft_skill",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK201",
+    "name": "it hardware engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK202",
+    "name": "installation",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK203",
+    "name": "zend",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK204",
+    "name": "sqlite",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK205",
+    "name": "design patterns",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK206",
+    "name": "production support",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK207",
+    "name": "global delivery",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK208",
+    "name": "juniper",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK209",
+    "name": "network administrator",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK210",
+    "name": "yii",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK211",
+    "name": "games",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK212",
+    "name": "splunk",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK213",
+    "name": "mvc framework",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK214",
+    "name": "mpls",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK215",
+    "name": "application performance",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK216",
+    "name": "pmp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK217",
+    "name": "tableau",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK218",
+    "name": "system architecture",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK219",
+    "name": "cakephp",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK220",
+    "name": "groovy",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK221",
+    "name": "eigrp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK222",
+    "name": "j2ee technologies",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK223",
+    "name": "technical support engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK224",
+    "name": "authoring",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK225",
+    "name": "it manager",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK226",
+    "name": "use cases",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK227",
+    "name": "iam",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK228",
+    "name": "image processing",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK229",
+    "name": "web programming",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK230",
+    "name": "technology consulting",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK231",
+    "name": "ios sdk",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK232",
+    "name": "senior network engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK233",
+    "name": "program management",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK234",
+    "name": "database management",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK235",
+    "name": "ipsec",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK236",
+    "name": "router",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK237",
+    "name": "ipad",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK238",
+    "name": "multimedia",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK239",
+    "name": "computer science",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK240",
+    "name": "salesforce",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK241",
+    "name": "requirement gathering",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK242",
+    "name": "data engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK243",
+    "name": "cocoa",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK244",
+    "name": "hdfs",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK245",
+    "name": "voip",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK246",
+    "name": "mvc architecture",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK247",
+    "name": "cli",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK248",
+    "name": "grunt",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK249",
+    "name": "project life cycle",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK250",
+    "name": "dhcp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK251",
+    "name": "c ++",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK252",
+    "name": "mqtt",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK253",
+    "name": "data analytics",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK254",
+    "name": "information systems",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK255",
+    "name": "computer engineering",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK256",
+    "name": "xamarin",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK257",
+    "name": "production environment",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK258",
+    "name": "mobile application development",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK259",
+    "name": "system administration",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK260",
+    "name": "desktop support engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK261",
+    "name": "jira",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK262",
+    "name": "advanced java",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK263",
+    "name": "brd",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK264",
+    "name": "soap web services",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK265",
+    "name": "android",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK266",
+    "name": "functional requirements",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK267",
+    "name": "apache tomcat",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK268",
+    "name": "security compliance",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK269",
+    "name": "intellij",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK270",
+    "name": "dashboards",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK271",
+    "name": "troubleshooting",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK272",
+    "name": "database administrator",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK273",
+    "name": "data visualization",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK274",
+    "name": "pig",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK275",
+    "name": "oozie",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK276",
+    "name": "cisco routers",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK277",
+    "name": "data science",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK278",
+    "name": "triggers",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK279",
+    "name": "mobile applications",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK280",
+    "name": "senior web developer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK281",
+    "name": "system admin",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK282",
+    "name": "implementation",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK283",
+    "name": "stp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK284",
+    "name": "user stories",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK285",
+    "name": "programming",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK286",
+    "name": "software testing",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK287",
+    "name": "ubuntu",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK288",
+    "name": "desktop engineer",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK289",
+    "name": "mvp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK290",
+    "name": "operator",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK291",
+    "name": "ejb",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK292",
+    "name": "director",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK293",
+    "name": "java script",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK294",
+    "name": "lamp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK295",
+    "name": "mentor",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK296",
+    "name": "business process",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK297",
+    "name": "hsrp",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK298",
+    "name": "project plan",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK299",
+    "name": "business applications",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK300",
+    "name": "opencart",
+    "category": "other",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK301",
+    "name": "rust",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK302",
+    "name": "go",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK303",
+    "name": "kotlin",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK304",
+    "name": "dart",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK305",
+    "name": "julia",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK306",
+    "name": "elixir",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK307",
+    "name": "haskell",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK308",
+    "name": "clojure",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK309",
+    "name": "erlang",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK310",
+    "name": "f#",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK311",
+    "name": "r programming",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK312",
+    "name": "typescript",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK313",
+    "name": "lua",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK314",
+    "name": "fortran",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK315",
+    "name": "cobol",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK316",
+    "name": "assembly",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK317",
+    "name": "matlab",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK318",
+    "name": "vba",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK319",
+    "name": "powershell",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK320",
+    "name": "bash scripting",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK321",
+    "name": "solidity",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK322",
+    "name": "prolog",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK323",
+    "name": "lisp",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK324",
+    "name": "ocaml",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK325",
+    "name": "zig",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK326",
+    "name": "nim",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK327",
+    "name": "crystal",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK328",
+    "name": "v lang",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK329",
+    "name": "d language",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK330",
+    "name": "mojo",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK331",
+    "name": "carbon",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK332",
+    "name": "hack",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK333",
+    "name": "gdscript",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK334",
+    "name": "verilog",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK335",
+    "name": "vhdl",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK336",
+    "name": "tcl",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK337",
+    "name": "pascal",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK338",
+    "name": "scheme",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK339",
+    "name": "ada",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK340",
+    "name": "apex",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK341",
+    "name": "abap",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK342",
+    "name": "groovy scripting",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK343",
+    "name": "coffeescript",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK344",
+    "name": "wasm",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK345",
+    "name": "glsl",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK346",
+    "name": "hlsl",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK347",
+    "name": "cuda programming",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK348",
+    "name": "openmp",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK349",
+    "name": "mpi",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK350",
+    "name": "cython",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK351",
+    "name": "react",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK352",
+    "name": "vue.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK353",
+    "name": "angular",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK354",
+    "name": "next.js",
+    "category": "fullstack",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK355",
+    "name": "nuxt.js",
+    "category": "fullstack",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK356",
+    "name": "svelte",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK357",
+    "name": "sveltekit",
+    "category": "fullstack",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK358",
+    "name": "remix",
+    "category": "fullstack",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK359",
+    "name": "astro",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK360",
+    "name": "solid.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK361",
+    "name": "qwik",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK362",
+    "name": "ember.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK363",
+    "name": "backbone.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK364",
+    "name": "alpine.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK365",
+    "name": "htmx",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK366",
+    "name": "tailwind css",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK367",
+    "name": "sass",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK368",
+    "name": "styled components",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK369",
+    "name": "material ui",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK370",
+    "name": "chakra ui",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK371",
+    "name": "ant design",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK372",
+    "name": "storybook",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK373",
+    "name": "webpack",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK374",
+    "name": "vite",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK375",
+    "name": "esbuild",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK376",
+    "name": "turbopack",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK377",
+    "name": "rollup",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK378",
+    "name": "parcel",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK379",
+    "name": "flask",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK380",
+    "name": "fastapi",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK381",
+    "name": "express.js",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK382",
+    "name": "nestjs",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK383",
+    "name": "koa.js",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK384",
+    "name": "hapi.js",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK385",
+    "name": "fastify",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK386",
+    "name": "adonis.js",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK387",
+    "name": "ruby on rails",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK388",
+    "name": "sinatra",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK389",
+    "name": "asp.net core",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK390",
+    "name": "blazor",
+    "category": "fullstack",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK391",
+    "name": "gin",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK392",
+    "name": "echo go",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK393",
+    "name": "fiber go",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK394",
+    "name": "actix web",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK395",
+    "name": "rocket rust",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK396",
+    "name": "phoenix",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK397",
+    "name": "play framework",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK398",
+    "name": "micronaut",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK399",
+    "name": "quarkus",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK400",
+    "name": "vert.x",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK401",
+    "name": "graphql",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK402",
+    "name": "apollo graphql",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK403",
+    "name": "prisma",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK404",
+    "name": "sequelize",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK405",
+    "name": "typeorm",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK406",
+    "name": "drizzle orm",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK407",
+    "name": "sqlalchemy",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK408",
+    "name": "deno",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK409",
+    "name": "bun",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK410",
+    "name": "grpc",
+    "category": "backend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK411",
+    "name": "trpc",
+    "category": "fullstack",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK412",
+    "name": "redux",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK413",
+    "name": "zustand",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK414",
+    "name": "mobx",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK415",
+    "name": "recoil",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK416",
+    "name": "pinia",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK417",
+    "name": "tanstack query",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK418",
+    "name": "gatsby",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK419",
+    "name": "eleventy",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK420",
+    "name": "hugo",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK421",
+    "name": "jekyll",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK422",
+    "name": "three.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK423",
+    "name": "d3.js",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK424",
+    "name": "cypress",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK425",
+    "name": "playwright",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK426",
+    "name": "puppeteer",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK427",
+    "name": "selenium",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK428",
+    "name": "jest",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK429",
+    "name": "vitest",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK430",
+    "name": "mocha",
+    "category": "frontend",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK431",
+    "name": "aws lambda",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK432",
+    "name": "aws s3",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK433",
+    "name": "aws ec2",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK434",
+    "name": "aws rds",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK435",
+    "name": "aws dynamodb",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK436",
+    "name": "aws cloudformation",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK437",
+    "name": "aws eks",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK438",
+    "name": "aws ecs",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK439",
+    "name": "aws fargate",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK440",
+    "name": "aws sqs",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK441",
+    "name": "aws sns",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK442",
+    "name": "aws kinesis",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK443",
+    "name": "aws step functions",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK444",
+    "name": "aws api gateway",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK445",
+    "name": "aws cloudwatch",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK446",
+    "name": "aws iam",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK447",
+    "name": "aws vpc",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK448",
+    "name": "aws route 53",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK449",
+    "name": "aws cloudfront",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK450",
+    "name": "aws elasticache",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK451",
+    "name": "aws redshift",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK452",
+    "name": "aws glue",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK453",
+    "name": "aws athena",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK454",
+    "name": "aws sagemaker",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK455",
+    "name": "aws cdk",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK456",
+    "name": "aws amplify",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK457",
+    "name": "aws cognito",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK458",
+    "name": "aws secrets manager",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK459",
+    "name": "aws eventbridge",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK460",
+    "name": "aws codecommit",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK461",
+    "name": "aws codepipeline",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK462",
+    "name": "aws codebuild",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK463",
+    "name": "aws codedeploy",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK464",
+    "name": "aws elastic beanstalk",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK465",
+    "name": "aws aurora",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK466",
+    "name": "aws documentdb",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK467",
+    "name": "aws emr",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK468",
+    "name": "aws msk",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK469",
+    "name": "aws waf",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK470",
+    "name": "aws organizations",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK471",
+    "name": "azure app service",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK472",
+    "name": "azure functions",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK473",
+    "name": "azure cosmos db",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK474",
+    "name": "azure kubernetes service",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK475",
+    "name": "azure devops",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK476",
+    "name": "azure sql database",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK477",
+    "name": "azure blob storage",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK478",
+    "name": "azure active directory",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK479",
+    "name": "azure virtual machines",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK480",
+    "name": "azure container instances",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK481",
+    "name": "azure container apps",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK482",
+    "name": "azure event hub",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK483",
+    "name": "azure service bus",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK484",
+    "name": "azure key vault",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK485",
+    "name": "azure logic apps",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK486",
+    "name": "azure data factory",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK487",
+    "name": "azure synapse analytics",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK488",
+    "name": "azure machine learning",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK489",
+    "name": "azure cognitive services",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK490",
+    "name": "azure monitor",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK491",
+    "name": "azure front door",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK492",
+    "name": "azure cdn",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK493",
+    "name": "azure api management",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK494",
+    "name": "azure redis cache",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK495",
+    "name": "azure databricks",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK496",
+    "name": "azure openai service",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK497",
+    "name": "azure static web apps",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK498",
+    "name": "azure bicep",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK499",
+    "name": "azure terraform",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK500",
+    "name": "azure sentinel",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK501",
+    "name": "google compute engine",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK502",
+    "name": "google cloud functions",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK503",
+    "name": "google bigquery",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK504",
+    "name": "google kubernetes engine",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK505",
+    "name": "google cloud run",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK506",
+    "name": "google cloud storage",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK507",
+    "name": "google pub/sub",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK508",
+    "name": "google cloud sql",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK509",
+    "name": "google firestore",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK510",
+    "name": "google spanner",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK511",
+    "name": "google dataflow",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK512",
+    "name": "google dataproc",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK513",
+    "name": "google vertex ai",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK514",
+    "name": "google cloud composer",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK515",
+    "name": "google cloud build",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK516",
+    "name": "google artifact registry",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK517",
+    "name": "google cloud armor",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK518",
+    "name": "google cloud iam",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK519",
+    "name": "google cloud cdn",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK520",
+    "name": "google cloud logging",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK521",
+    "name": "google cloud monitoring",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK522",
+    "name": "google apigee",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK523",
+    "name": "google anthos",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK524",
+    "name": "google cloud memorystore",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK525",
+    "name": "google alloydb",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK526",
+    "name": "google cloud tasks",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK527",
+    "name": "google cloud scheduler",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK528",
+    "name": "google looker",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK529",
+    "name": "google firebase",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK530",
+    "name": "google cloud endpoints",
+    "category": "cloud",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK531",
+    "name": "tensorflow",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK532",
+    "name": "pytorch",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK533",
+    "name": "keras",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK534",
+    "name": "scikit-learn",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK535",
+    "name": "hugging face transformers",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK536",
+    "name": "jax",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK537",
+    "name": "xgboost",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK538",
+    "name": "lightgbm",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK539",
+    "name": "catboost",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK540",
+    "name": "fastai",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK541",
+    "name": "onnx",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK542",
+    "name": "pandas",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK543",
+    "name": "numpy",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK544",
+    "name": "scipy",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK545",
+    "name": "matplotlib",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK546",
+    "name": "seaborn",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK547",
+    "name": "plotly",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK548",
+    "name": "statsmodels",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK549",
+    "name": "polars",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK550",
+    "name": "dask",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK551",
+    "name": "large language models",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK552",
+    "name": "gpt models",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK553",
+    "name": "bert",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK554",
+    "name": "langchain",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK555",
+    "name": "llamaindex",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK556",
+    "name": "retrieval augmented generation",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK557",
+    "name": "prompt engineering",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK558",
+    "name": "fine tuning llms",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK559",
+    "name": "vector databases",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK560",
+    "name": "embeddings",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK561",
+    "name": "openai api",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK562",
+    "name": "anthropic claude",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK563",
+    "name": "stable diffusion",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK564",
+    "name": "midjourney",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK565",
+    "name": "ai agents",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK566",
+    "name": "autogen",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK567",
+    "name": "crewai",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK568",
+    "name": "semantic kernel",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK569",
+    "name": "llama",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK570",
+    "name": "mistral",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK571",
+    "name": "gemini api",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK572",
+    "name": "copilot integration",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK573",
+    "name": "ai ethics",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK574",
+    "name": "generative ai",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK575",
+    "name": "multimodal ai",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK576",
+    "name": "mlflow",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK577",
+    "name": "kubeflow",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK578",
+    "name": "weights and biases",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK579",
+    "name": "dvc",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK580",
+    "name": "feature store",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK581",
+    "name": "model serving",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK582",
+    "name": "triton inference server",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK583",
+    "name": "bentoml",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK584",
+    "name": "seldon core",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK585",
+    "name": "ml monitoring",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK586",
+    "name": "experiment tracking",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK587",
+    "name": "model registry",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK588",
+    "name": "label studio",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK589",
+    "name": "great expectations",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK590",
+    "name": "evidently ai",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK591",
+    "name": "apache spark",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK592",
+    "name": "apache kafka",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK593",
+    "name": "apache airflow",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK594",
+    "name": "apache flink",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK595",
+    "name": "apache beam",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK596",
+    "name": "apache nifi",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK597",
+    "name": "apache cassandra advanced",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK598",
+    "name": "apache druid",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK599",
+    "name": "apache iceberg",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK600",
+    "name": "delta lake",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK601",
+    "name": "apache hudi",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK602",
+    "name": "presto",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK603",
+    "name": "dbt",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK604",
+    "name": "snowflake",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK605",
+    "name": "databricks platform",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK606",
+    "name": "data lakehouse",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK607",
+    "name": "data mesh",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK608",
+    "name": "data governance",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK609",
+    "name": "data pipeline",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK610",
+    "name": "streaming analytics",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK611",
+    "name": "power bi",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK612",
+    "name": "looker",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK613",
+    "name": "metabase",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK614",
+    "name": "apache superset",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK615",
+    "name": "qlik",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK616",
+    "name": "sisense",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK617",
+    "name": "grafana dashboards",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK618",
+    "name": "google data studio",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK619",
+    "name": "excel analytics",
+    "category": "analytics",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK620",
+    "name": "jupyter notebooks",
+    "category": "data",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK621",
+    "name": "opencv",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK622",
+    "name": "yolo",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK623",
+    "name": "object detection",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK624",
+    "name": "image segmentation",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK625",
+    "name": "ocr",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK626",
+    "name": "face recognition",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK627",
+    "name": "image classification",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK628",
+    "name": "pose estimation",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK629",
+    "name": "3d vision",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK630",
+    "name": "video analytics",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK631",
+    "name": "spacy",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK632",
+    "name": "nltk",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK633",
+    "name": "text classification",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK634",
+    "name": "named entity recognition",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK635",
+    "name": "topic modeling",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK636",
+    "name": "machine translation",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK637",
+    "name": "speech recognition",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK638",
+    "name": "text generation",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK639",
+    "name": "question answering",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK640",
+    "name": "chatbot development",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK641",
+    "name": "text summarization",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK642",
+    "name": "information retrieval",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK643",
+    "name": "knowledge graphs",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK644",
+    "name": "text analytics",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK645",
+    "name": "tokenization",
+    "category": "ai_ml",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK646",
+    "name": "kubernetes",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK647",
+    "name": "helm charts",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK648",
+    "name": "podman",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK649",
+    "name": "containerd",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK650",
+    "name": "docker swarm",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK651",
+    "name": "container security",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK652",
+    "name": "openshift",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK653",
+    "name": "rancher",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK654",
+    "name": "k3s",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK655",
+    "name": "jenkins",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK656",
+    "name": "gitlab ci",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK657",
+    "name": "github actions",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK658",
+    "name": "circleci",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK659",
+    "name": "argocd",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK660",
+    "name": "tekton",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK661",
+    "name": "azure pipelines",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK662",
+    "name": "aws codepipeline advanced",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK663",
+    "name": "drone ci",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK664",
+    "name": "buildkite",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK665",
+    "name": "spinnaker",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK666",
+    "name": "flux cd",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK667",
+    "name": "harness",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK668",
+    "name": "bamboo",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK669",
+    "name": "travis ci",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK670",
+    "name": "terraform",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK671",
+    "name": "ansible",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK672",
+    "name": "pulumi",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK673",
+    "name": "cloudformation advanced",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK674",
+    "name": "chef",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK675",
+    "name": "puppet",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK676",
+    "name": "saltstack",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK677",
+    "name": "vagrant",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK678",
+    "name": "packer",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK679",
+    "name": "crossplane",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK680",
+    "name": "prometheus",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK681",
+    "name": "grafana",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK682",
+    "name": "datadog",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK683",
+    "name": "new relic",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK684",
+    "name": "elk stack",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK685",
+    "name": "kibana",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK686",
+    "name": "logstash",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK687",
+    "name": "fluentd",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK688",
+    "name": "jaeger",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK689",
+    "name": "opentelemetry",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK690",
+    "name": "zipkin",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK691",
+    "name": "pagerduty",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK692",
+    "name": "opsgenie",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK693",
+    "name": "nagios",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK694",
+    "name": "zabbix",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK695",
+    "name": "dynatrace",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK696",
+    "name": "appdynamics",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK697",
+    "name": "splunk observability",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK698",
+    "name": "istio",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK699",
+    "name": "linkerd",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK700",
+    "name": "consul",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK701",
+    "name": "envoy proxy",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK702",
+    "name": "nginx",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK703",
+    "name": "traefik",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK704",
+    "name": "haproxy",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK705",
+    "name": "site reliability engineering",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK706",
+    "name": "chaos engineering",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK707",
+    "name": "platform engineering",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK708",
+    "name": "infrastructure as code",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK709",
+    "name": "configuration management",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK710",
+    "name": "release management",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK711",
+    "name": "incident management",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK712",
+    "name": "capacity planning",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK713",
+    "name": "blue green deployment",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK714",
+    "name": "feature flags",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK715",
+    "name": "vault",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK716",
+    "name": "service catalog",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK717",
+    "name": "gitops",
+    "category": "devops",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK718",
+    "name": "postgresql advanced",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK719",
+    "name": "mysql advanced",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK720",
+    "name": "oracle database",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK721",
+    "name": "sql server",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK722",
+    "name": "mariadb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK723",
+    "name": "cockroachdb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK724",
+    "name": "vitess",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK725",
+    "name": "mongodb advanced",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK726",
+    "name": "cassandra database",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK727",
+    "name": "redis",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK728",
+    "name": "elasticsearch",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK729",
+    "name": "neo4j",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK730",
+    "name": "dgraph",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK731",
+    "name": "arangodb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK732",
+    "name": "couchdb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK733",
+    "name": "couchbase",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK734",
+    "name": "influxdb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK735",
+    "name": "timescaledb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK736",
+    "name": "questdb",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK737",
+    "name": "pinecone",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK738",
+    "name": "weaviate",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK739",
+    "name": "milvus",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK740",
+    "name": "chroma",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK741",
+    "name": "qdrant",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK742",
+    "name": "pgvector",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK743",
+    "name": "fauna",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK744",
+    "name": "supabase",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK745",
+    "name": "planetscale",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK746",
+    "name": "neon",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK747",
+    "name": "database design",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK748",
+    "name": "database replication",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK749",
+    "name": "database sharding",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK750",
+    "name": "database migration",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK751",
+    "name": "sql optimization",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK752",
+    "name": "stored procedures",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK753",
+    "name": "database backup recovery",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK754",
+    "name": "memcached",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK755",
+    "name": "graph databases",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK756",
+    "name": "data modeling",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK757",
+    "name": "database indexing",
+    "category": "database",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK758",
+    "name": "owasp",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK759",
+    "name": "burp suite",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK760",
+    "name": "metasploit",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK761",
+    "name": "wireshark",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK762",
+    "name": "nmap",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK763",
+    "name": "penetration testing",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK764",
+    "name": "vulnerability assessment",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK765",
+    "name": "siem",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK766",
+    "name": "zero trust architecture",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK767",
+    "name": "identity access management",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK768",
+    "name": "privileged access management",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK769",
+    "name": "security operations",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK770",
+    "name": "threat modeling",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK771",
+    "name": "incident response",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK772",
+    "name": "devsecops",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK773",
+    "name": "application security",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK774",
+    "name": "network security",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK775",
+    "name": "cloud security",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK776",
+    "name": "endpoint security",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK777",
+    "name": "cryptography",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK778",
+    "name": "malware analysis",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK779",
+    "name": "forensics",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK780",
+    "name": "security automation",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK781",
+    "name": "api security",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK782",
+    "name": "web application firewall",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK783",
+    "name": "data loss prevention",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK784",
+    "name": "security audit",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK785",
+    "name": "soc2 compliance",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK786",
+    "name": "gdpr compliance",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK787",
+    "name": "hipaa compliance",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK788",
+    "name": "pci dss compliance",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK789",
+    "name": "iso 27001",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK790",
+    "name": "nist framework",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK791",
+    "name": "fedramp",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK792",
+    "name": "sox compliance",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK793",
+    "name": "container security scanning",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK794",
+    "name": "secret scanning",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK795",
+    "name": "sast",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK796",
+    "name": "dast",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK797",
+    "name": "sbom",
+    "category": "security",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK798",
+    "name": "react native",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK799",
+    "name": "flutter",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK800",
+    "name": "swiftui",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK801",
+    "name": "jetpack compose",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK802",
+    "name": "kotlin multiplatform",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK803",
+    "name": "ionic",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK804",
+    "name": "capacitor",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK805",
+    "name": "expo",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK806",
+    "name": "maui",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK807",
+    "name": "app clips",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK808",
+    "name": "widgets ios",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK809",
+    "name": "arkit",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK810",
+    "name": "arcore",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK811",
+    "name": "core data",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK812",
+    "name": "room database",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK813",
+    "name": "realm",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK814",
+    "name": "firebase mobile",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK815",
+    "name": "push notifications",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK816",
+    "name": "mobile ui testing",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK817",
+    "name": "mobile ci cd",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK818",
+    "name": "app store optimization",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK819",
+    "name": "mobile analytics",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK820",
+    "name": "mobile performance",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK821",
+    "name": "cross platform development",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK822",
+    "name": "responsive design",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK823",
+    "name": "pwa",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK824",
+    "name": "mobile security",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK825",
+    "name": "wear os",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK826",
+    "name": "tvos development",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK827",
+    "name": "mobile deep linking",
+    "category": "mobile",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK828",
+    "name": "ethereum",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK829",
+    "name": "smart contracts",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK830",
+    "name": "web3.js",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK831",
+    "name": "ethers.js",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK832",
+    "name": "hardhat",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK833",
+    "name": "truffle",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK834",
+    "name": "ipfs",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK835",
+    "name": "defi",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK836",
+    "name": "nft development",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK837",
+    "name": "dao",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK838",
+    "name": "polygon",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK839",
+    "name": "solana",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK840",
+    "name": "avalanche",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK841",
+    "name": "hyperledger",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK842",
+    "name": "cosmos blockchain",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK843",
+    "name": "layer 2 solutions",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK844",
+    "name": "tokenomics",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK845",
+    "name": "blockchain security",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK846",
+    "name": "rust blockchain",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK847",
+    "name": "zero knowledge proofs",
+    "category": "blockchain",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK848",
+    "name": "unity",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK849",
+    "name": "unreal engine",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK850",
+    "name": "godot",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK851",
+    "name": "game design",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK852",
+    "name": "game physics",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK853",
+    "name": "shader programming",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK854",
+    "name": "3d modeling",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK855",
+    "name": "game ai",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK856",
+    "name": "multiplayer networking",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK857",
+    "name": "procedural generation",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK858",
+    "name": "directx",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK859",
+    "name": "vulkan",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK860",
+    "name": "opengl",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK861",
+    "name": "xr development",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK862",
+    "name": "game optimization",
+    "category": "game_dev",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK863",
+    "name": "arduino",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK864",
+    "name": "raspberry pi",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK865",
+    "name": "rtos",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK866",
+    "name": "firmware development",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK867",
+    "name": "embedded c",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK868",
+    "name": "iot protocols",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK869",
+    "name": "fpga",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK870",
+    "name": "pcb design",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK871",
+    "name": "embedded linux",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK872",
+    "name": "microcontrollers",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK873",
+    "name": "can bus",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK874",
+    "name": "signal processing",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK875",
+    "name": "sensor integration",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK876",
+    "name": "edge computing",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK877",
+    "name": "robotics",
+    "category": "embedded",
+    "type": "technical"
+  },
+  {
+    "skill_id": "SK878",
+    "name": "technical writing",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK879",
+    "name": "presentation skills",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK880",
+    "name": "stakeholder management",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK881",
+    "name": "documentation",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK882",
+    "name": "code review skills",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK883",
+    "name": "active listening",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK884",
+    "name": "verbal communication",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK885",
+    "name": "cross functional communication",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK886",
+    "name": "client communication",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK887",
+    "name": "email communication",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK888",
+    "name": "negotiation skills",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK889",
+    "name": "conflict resolution",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK890",
+    "name": "feedback delivery",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK891",
+    "name": "storytelling",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK892",
+    "name": "facilitation",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK893",
+    "name": "persuasion",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK894",
+    "name": "technical evangelism",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK895",
+    "name": "knowledge sharing",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK896",
+    "name": "report writing",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK897",
+    "name": "proposal writing",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK898",
+    "name": "intercultural communication",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK899",
+    "name": "remote communication",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK900",
+    "name": "whiteboard sessions",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK901",
+    "name": "technical presentations",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK902",
+    "name": "api documentation",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK903",
+    "name": "user documentation",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK904",
+    "name": "release notes",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK905",
+    "name": "design documents",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK906",
+    "name": "architecture decision records",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK907",
+    "name": "runbook creation",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK908",
+    "name": "team leadership",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK909",
+    "name": "mentoring",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK910",
+    "name": "strategic thinking",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK911",
+    "name": "people management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK912",
+    "name": "change management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK913",
+    "name": "engineering management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK914",
+    "name": "product vision",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK915",
+    "name": "talent development",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK916",
+    "name": "performance management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK917",
+    "name": "hiring and interviewing",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK918",
+    "name": "delegation",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK919",
+    "name": "team building",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK920",
+    "name": "decision making",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK921",
+    "name": "emotional intelligence",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK922",
+    "name": "servant leadership",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK923",
+    "name": "technical strategy",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK924",
+    "name": "architectural leadership",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK925",
+    "name": "cross team collaboration",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK926",
+    "name": "stakeholder alignment",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK927",
+    "name": "budget management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK928",
+    "name": "vendor management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK929",
+    "name": "organizational design",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK930",
+    "name": "succession planning",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK931",
+    "name": "diversity inclusion",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK932",
+    "name": "executive communication",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK933",
+    "name": "vision setting",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK934",
+    "name": "accountability",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK935",
+    "name": "resilience",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK936",
+    "name": "innovation leadership",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK937",
+    "name": "thought leadership",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK938",
+    "name": "crisis management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK939",
+    "name": "influence without authority",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK940",
+    "name": "coaching skills",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK941",
+    "name": "onboarding",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK942",
+    "name": "culture building",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK943",
+    "name": "goal setting",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK944",
+    "name": "time management leadership",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK945",
+    "name": "remote team leadership",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK946",
+    "name": "technical debt management",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK947",
+    "name": "scaling teams",
+    "category": "leadership",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK948",
+    "name": "analytical thinking",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK949",
+    "name": "system design",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK950",
+    "name": "debugging skills",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK951",
+    "name": "root cause analysis",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK952",
+    "name": "innovation",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK953",
+    "name": "critical thinking",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK954",
+    "name": "hypothesis driven development",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK955",
+    "name": "first principles thinking",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK956",
+    "name": "design thinking",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK957",
+    "name": "complexity management",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK958",
+    "name": "trade-off analysis",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK959",
+    "name": "pattern recognition",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK960",
+    "name": "abstraction",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK961",
+    "name": "decomposition",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK962",
+    "name": "estimation skills",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK963",
+    "name": "technical research",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK964",
+    "name": "brainstorming",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK965",
+    "name": "reverse engineering",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK966",
+    "name": "performance analysis",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK967",
+    "name": "architecture evaluation",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK968",
+    "name": "cost optimization",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK969",
+    "name": "scalability planning",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK970",
+    "name": "disaster recovery planning",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK971",
+    "name": "risk assessment",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK972",
+    "name": "continuous improvement",
+    "category": "communication",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK973",
+    "name": "agile methodology",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK974",
+    "name": "scrum framework",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK975",
+    "name": "kanban",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK976",
+    "name": "roadmap planning",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK977",
+    "name": "risk management",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK978",
+    "name": "okr methodology",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK979",
+    "name": "sprint planning",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK980",
+    "name": "backlog management",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK981",
+    "name": "user story writing",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK982",
+    "name": "safe framework",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK983",
+    "name": "lean methodology",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK984",
+    "name": "waterfall methodology",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK985",
+    "name": "release planning",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK986",
+    "name": "resource allocation",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK987",
+    "name": "project estimation",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK988",
+    "name": "status reporting",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK989",
+    "name": "dependency management",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK990",
+    "name": "scope management",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK991",
+    "name": "quality assurance process",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK992",
+    "name": "technical debt tracking",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK993",
+    "name": "retrospectives",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK994",
+    "name": "daily standups",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK995",
+    "name": "confluence",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK996",
+    "name": "jira management",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK997",
+    "name": "trello",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK998",
+    "name": "asana",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK999",
+    "name": "notion",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1000",
+    "name": "monday.com",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1001",
+    "name": "linear",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1002",
+    "name": "github projects",
+    "category": "project_mgmt",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1003",
+    "name": "requirements gathering",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1004",
+    "name": "product strategy",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1005",
+    "name": "customer empathy",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1006",
+    "name": "market research",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1007",
+    "name": "value proposition",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1008",
+    "name": "revenue modeling",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1009",
+    "name": "kpi definition",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1010",
+    "name": "data driven decisions",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1011",
+    "name": "user experience focus",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1012",
+    "name": "go to market strategy",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1013",
+    "name": "technical sales",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1014",
+    "name": "roi analysis",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1015",
+    "name": "process improvement",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1016",
+    "name": "digital transformation",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1017",
+    "name": "startup mindset",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1018",
+    "name": "enterprise architecture",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1019",
+    "name": "business intelligence",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1020",
+    "name": "contract negotiation",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1021",
+    "name": "compliance management",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1022",
+    "name": "it governance",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1023",
+    "name": "technology evaluation",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1024",
+    "name": "privacy by design",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1025",
+    "name": "accessibility",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1026",
+    "name": "sustainability tech",
+    "category": "business",
+    "type": "soft"
+  },
+  {
+    "skill_id": "SK1027",
+    "name": "aws solutions architect associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1028",
+    "name": "aws solutions architect professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1029",
+    "name": "aws developer associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1030",
+    "name": "aws sysops administrator",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1031",
+    "name": "aws devops engineer professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1032",
+    "name": "aws data analytics specialty",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1033",
+    "name": "aws machine learning specialty",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1034",
+    "name": "aws security specialty",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1035",
+    "name": "aws cloud practitioner",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1036",
+    "name": "aws database specialty",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1037",
+    "name": "azure fundamentals az-900",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1038",
+    "name": "azure administrator az-104",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1039",
+    "name": "azure developer az-204",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1040",
+    "name": "azure solutions architect az-305",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1041",
+    "name": "azure devops engineer az-400",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1042",
+    "name": "azure data engineer dp-203",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1043",
+    "name": "azure ai engineer ai-102",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1044",
+    "name": "azure security engineer az-500",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1045",
+    "name": "gcp cloud engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1046",
+    "name": "gcp professional architect",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1047",
+    "name": "gcp data engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1048",
+    "name": "gcp ml engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1049",
+    "name": "gcp devops engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1050",
+    "name": "gcp security engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1051",
+    "name": "hashicorp terraform associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1052",
+    "name": "hashicorp vault associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1053",
+    "name": "cka",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1054",
+    "name": "ckad",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1055",
+    "name": "cks",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1056",
+    "name": "cissp",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1057",
+    "name": "ceh",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1058",
+    "name": "oscp",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1059",
+    "name": "security+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1060",
+    "name": "cisa",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1061",
+    "name": "cism",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1062",
+    "name": "ccsp",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1063",
+    "name": "gpen",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1064",
+    "name": "gsec",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1065",
+    "name": "sscp",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1066",
+    "name": "cysa+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1067",
+    "name": "pentest+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1068",
+    "name": "casp+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1069",
+    "name": "crtp",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1070",
+    "name": "oswe",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1071",
+    "name": "tensorflow developer certificate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1072",
+    "name": "databricks certified data engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1073",
+    "name": "databricks certified ml professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1074",
+    "name": "snowflake snowpro core",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1075",
+    "name": "dbt analytics engineering",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1076",
+    "name": "apache spark certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1077",
+    "name": "cloudera data analyst",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1078",
+    "name": "microsoft data scientist dp-100",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1079",
+    "name": "microsoft power bi da-100",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1080",
+    "name": "sas certified specialist",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1081",
+    "name": "ibm data science professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1082",
+    "name": "google data analytics certificate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1083",
+    "name": "aws data engineer associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1084",
+    "name": "nvidia deep learning institute",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1085",
+    "name": "tableau desktop specialist",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1086",
+    "name": "pmp certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1087",
+    "name": "csm",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1088",
+    "name": "psm",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1089",
+    "name": "safe agilist",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1090",
+    "name": "prince2",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1091",
+    "name": "pmi-acp",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1092",
+    "name": "cspo",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1093",
+    "name": "itil foundation",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1094",
+    "name": "six sigma green belt",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1095",
+    "name": "six sigma black belt",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1096",
+    "name": "togaf certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1097",
+    "name": "lean it foundation",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1098",
+    "name": "oracle certified professional java",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1099",
+    "name": "oracle certified associate java",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1100",
+    "name": "microsoft certified azure developer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1101",
+    "name": "microsoft certified devops expert",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1102",
+    "name": "red hat certified engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1103",
+    "name": "red hat openshift administrator",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1104",
+    "name": "linux foundation certified sysadmin",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1105",
+    "name": "linux foundation certified engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1106",
+    "name": "lpic-1",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1107",
+    "name": "docker certified associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1108",
+    "name": "mongodb developer certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1109",
+    "name": "neo4j certified professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1110",
+    "name": "confluent kafka certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1111",
+    "name": "github actions certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1112",
+    "name": "istio certified associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1113",
+    "name": "puppet certified professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1114",
+    "name": "ansible automation engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1115",
+    "name": "microsoft 365 developer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1116",
+    "name": "spring professional certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1117",
+    "name": "graphql certification",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1118",
+    "name": "salesforce administrator",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1119",
+    "name": "salesforce developer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1120",
+    "name": "salesforce architect",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1121",
+    "name": "salesforce consultant",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1122",
+    "name": "sap certified associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1123",
+    "name": "sap s/4hana",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1124",
+    "name": "sap fiori",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1125",
+    "name": "servicenow certified system admin",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1126",
+    "name": "servicenow certified app developer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1127",
+    "name": "servicenow certified implementation specialist",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1128",
+    "name": "cisco ccna",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1129",
+    "name": "cisco ccnp enterprise",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1130",
+    "name": "cisco ccie",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1131",
+    "name": "cisco devnet associate",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1132",
+    "name": "comptia a+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1133",
+    "name": "comptia network+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1134",
+    "name": "comptia linux+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1135",
+    "name": "comptia cloud+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1136",
+    "name": "comptia data+",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1137",
+    "name": "scrum@scale",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1138",
+    "name": "aws networking specialty",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1139",
+    "name": "unity certified developer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1140",
+    "name": "unreal authorized instructor",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1141",
+    "name": "vmware certified professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1142",
+    "name": "fortinet nse",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1143",
+    "name": "palo alto pcnsa",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1144",
+    "name": "splunk certified power user",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1145",
+    "name": "elastic certified engineer",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1146",
+    "name": "okta certified professional",
+    "category": "certification",
+    "type": "credential"
+  },
+  {
+    "skill_id": "SK1147",
+    "name": "figma certification",
+    "category": "certification",
+    "type": "credential"
+  }
 ]
