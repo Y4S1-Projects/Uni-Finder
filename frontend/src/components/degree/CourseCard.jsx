@@ -13,10 +13,9 @@ import {
 	FaFlask,
 	FaGraduationCap,
 } from "react-icons/fa";
-import MatchRing from "./MatchRing";
 import AIExplanationBox from "./AIExplanationBox";
 
-export default function CourseCard({ course, isEligible = true, isAspirationnal = false }) {
+export default function CourseCard({ course, isEligible = true, isAspirationnal = false, olMarks = null }) {
 	const [expanded, setExpanded] = useState(false);
 
 	const score = course.interest_match_score ?? course.match_score_percentage ?? course.score ?? 0;
@@ -74,101 +73,94 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 			{/* Top Accent Bar */}
 			<div className={`h-1 bg-gradient-to-r ${accentColor}`}></div>
 
-			<div className='p-6 flex flex-col h-full'>
-				{/* Header: Status Badge & Match Score */}
+			<div className='flex flex-col h-full p-6'>
 				<div className='flex items-start justify-between gap-4 mb-3'>
-					<div className='flex-1'>{statusBadge}</div>
-					<div className='flex-shrink-0'>
-						<div className='relative'>
-							<MatchRing score={score} />
-							{score >= 80 && <FaStar className='absolute -top-1 -right-1 text-yellow-400 text-xs drop-shadow-lg' />}
-						</div>
-					</div>
+					{/* Title */}
+					<h3 className='flex-1 text-xl font-extrabold leading-tight tracking-tight transition-colors md:text-2xl text-slate-900 hover:text-blue-600'>
+						{courseName}
+					</h3>
+					<div className='flex-shrink-0'>{statusBadge}</div>
 				</div>
 
-				{/* Score Summary */}
-				<div className='mb-3 pb-3 border-b border-slate-100'>
-					<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-1'>Match Score</p>
-					<p className='text-2xl font-bold text-slate-900'>{Math.round(score)}%</p>
-				</div>
+				{/* Universities + Metadata Tags */}
+				{(universities.length > 0 ||
+					course.industry ||
+					course.job_role ||
+					course.duration ||
+					course.faculty_department) && (
+					<div className='grid grid-cols-1 gap-4 pb-3 mb-3 border-b border-slate-100 md:grid-cols-2'>
+						{universities.length > 0 && (
+							<div>
+								<p className='mb-2 text-xs font-bold tracking-wider uppercase text-slate-500'>
+									<FaUniversity className='inline mr-1.5' />
+									Offering Universities
+								</p>
+								<div className='flex flex-wrap gap-2'>
+									{universities.map((uni, idx) => (
+										<span
+											key={idx}
+											className='inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-colors'>
+											{uni}
+										</span>
+									))}
+								</div>
+							</div>
+						)}
 
-				{/* Title */}
-				<h3 className='mb-3 text-xl font-extrabold leading-tight tracking-tight md:text-2xl text-slate-900 hover:text-blue-600 transition-colors'>
-					{courseName}
-				</h3>
-
-				{/* Universities */}
-				{universities.length > 0 && (
-					<div className='mb-3 pb-3 border-b border-slate-100'>
-						<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-2'>
-							<FaUniversity className='inline mr-1.5' />
-							Available at
-						</p>
-						<div className='flex flex-wrap gap-2'>
-							{universities.map((uni, idx) => (
-								<span
-									key={idx}
-									className='inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-colors'>
-									{uni}
-								</span>
-							))}
-						</div>
-					</div>
-				)}
-
-				{/* Metadata Tags */}
-				{(course.industry || course.job_role || course.duration || course.faculty_department) && (
-					<div className='mb-3 pb-3 border-b border-slate-100'>
-						<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-2'>Details</p>
-						<div className='flex flex-wrap gap-2'>
-							{course.faculty_department && (
-								<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-colors'>
-									<FaBuilding className='text-indigo-500' />
-									{course.faculty_department}
-								</span>
-							)}
-							{course.industry && (
-								<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors'>
-									<FaBuilding className='text-purple-500' />
-									{course.industry}
-								</span>
-							)}
-							{course.job_role && (
-								<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 transition-colors'>
-									<FaBriefcase className='text-cyan-500' />
-									{course.job_role}
-								</span>
-							)}
-							{course.duration && (
-								<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100 transition-colors'>
-									<FaClock className='text-orange-500' />
-									{course.duration}
-								</span>
-							)}
-						</div>
+						{(course.industry || course.job_role || course.duration || course.faculty_department) && (
+							<div>
+								<p className='mb-2 text-xs font-bold tracking-wider uppercase text-slate-500'>Details</p>
+								<div className='flex flex-wrap gap-2'>
+									{course.faculty_department && (
+										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-colors'>
+											<FaBuilding className='text-indigo-500' />
+											{course.faculty_department}
+										</span>
+									)}
+									{course.industry && (
+										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors'>
+											<FaBuilding className='text-purple-500' />
+											{course.industry}
+										</span>
+									)}
+									{course.job_role && (
+										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 transition-colors'>
+											<FaBriefcase className='text-cyan-500' />
+											{course.job_role}
+										</span>
+									)}
+									{course.duration && (
+										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100 transition-colors'>
+											<FaClock className='text-orange-500' />
+											{course.duration}
+										</span>
+									)}
+								</div>
+							</div>
+						)}
 					</div>
 				)}
 
 				{/* Expanded Content */}
 				{expanded && (
-					<div className='mb-3 pb-3 border-b border-slate-100 space-y-3 animate-in fade-in slide-in-from-top-2 duration-300'>
+					<div className='pb-3 mb-3 space-y-3 duration-300 border-b border-slate-100 animate-in fade-in slide-in-from-top-2'>
 						{/* Degree Programme */}
 						{course.degree_programme && (
 							<div>
-								<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-2'>
+								<p className='flex items-center gap-2 mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>
 									<FaGraduationCap /> Programme
 								</p>
-								<p className='text-sm text-slate-700 leading-relaxed'>{course.degree_programme}</p>
+								<p className='text-sm leading-relaxed text-slate-700'>{course.degree_programme}</p>
 							</div>
 						)}
 
 						{/* Subject Requirements */}
 						{(course.raw_subject_requirements || course.metadata?.raw_subject_requirements) && (
 							<div>
-								<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-2'>
+								<p className='flex items-center gap-2 mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>
 									<FaBook /> Subject Requirements
 								</p>
-								<p className='text-sm text-slate-700 leading-relaxed'>
+								<p className='text-sm leading-relaxed text-slate-700'>
 									{course.raw_subject_requirements || course.metadata?.raw_subject_requirements}
 								</p>
 							</div>
@@ -177,7 +169,7 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 						{/* Medium of Instruction */}
 						{course.medium_of_instruction && (
 							<div>
-								<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-1'>Medium</p>
+								<p className='mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>Medium</p>
 								<p className='text-sm text-slate-700'>{course.medium_of_instruction}</p>
 							</div>
 						)}
@@ -185,7 +177,7 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 						{/* Practical Test */}
 						{course.practical_test !== undefined && (
 							<div>
-								<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-1 flex items-center gap-2'>
+								<p className='flex items-center gap-2 mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>
 									<FaFlask /> Practical Test
 								</p>
 								<p className='text-sm text-slate-700'>
@@ -197,16 +189,16 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 						{/* Proposed Intake */}
 						{course.proposed_intake && (
 							<div>
-								<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-1'>Proposed Intake</p>
-								<p className='text-sm text-slate-700 font-semibold'>{course.proposed_intake} students</p>
+								<p className='mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>Proposed Intake</p>
+								<p className='text-sm font-semibold text-slate-700'>{course.proposed_intake} students</p>
 							</div>
 						)}
 
 						{/* Notes */}
 						{course.notes && (
 							<div>
-								<p className='text-xs font-bold uppercase tracking-wider text-slate-500 mb-1'>Additional Notes</p>
-								<p className='text-sm text-slate-700 leading-relaxed italic'>{course.notes}</p>
+								<p className='mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>Additional Notes</p>
+								<p className='text-sm italic leading-relaxed text-slate-700'>{course.notes}</p>
 							</div>
 						)}
 					</div>
@@ -214,14 +206,14 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 
 				{/* Explanation Box */}
 				{course.explanation && (
-					<div className='mt-auto pt-3'>
-						<AIExplanationBox explanation={course.explanation} />
+					<div className='pt-3 mt-auto'>
+						<AIExplanationBox explanation={course.explanation} olMarks={olMarks} />
 					</div>
 				)}
 
 				{/* Expand/Collapse Indicator */}
-				<div className='mt-3 pt-3 border-t border-slate-100 flex items-center justify-center'>
-					<button className='flex items-center justify-center gap-2 py-2 px-4 text-sm font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-lg transition-all hover:gap-3 w-full'>
+				<div className='flex items-center justify-center pt-3 mt-3 border-t border-slate-100'>
+					<button className='flex items-center justify-center w-full gap-2 px-4 py-2 text-sm font-bold transition-all rounded-lg text-slate-600 bg-slate-50 hover:bg-slate-100 hover:gap-3'>
 						{expanded ? "Show Less" : "Show More Details"}
 						<FaChevronDown className={`text-xs transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} />
 					</button>

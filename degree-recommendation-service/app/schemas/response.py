@@ -45,6 +45,36 @@ class InterestRecommendationResponse(BaseModel):
     }
 
 
+class OLPathwayDegree(BaseModel):
+    """Individual degree within a stream pathway."""
+
+    course_code: str
+    course_name: str
+    universities: List[str]
+    match_score_percentage: float
+
+
+class OLStreamPathway(BaseModel):
+    """A single A/L stream pathway with degrees and careers."""
+
+    stream_name: str
+    ol_readiness: str  # e.g., "On Track (Maths: A, Science: B)"
+    readiness_status: str  # "excellent", "good", "needs_improvement"
+    match_score: float  # Average match score for this stream
+    potential_degrees: List[OLPathwayDegree]
+    target_careers: List[str]  # Top career paths for this stream
+
+
+class OLCareerTreeResponse(BaseModel):
+    """Hierarchical career tree response for O/L students."""
+
+    student_goal: str  # Their interest/aspiration
+    pathways: List[OLStreamPathway]  # Stream-grouped pathways
+    ai_counselor_advice: str  # Overall guidance
+    total_streams: int
+    total_degrees: int
+
+
 class SubjectAnalysis(BaseModel):
     """Analysis of a single O/L subject."""
 

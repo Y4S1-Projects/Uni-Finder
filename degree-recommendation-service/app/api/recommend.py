@@ -100,6 +100,7 @@ def recommend_by_interests(
         eligible_course_codes=request.eligible_courses,
         max_results=request.max_results,
         explain=request.explain,
+        ol_marks=request.ol_marks,
     )
 
     # Build response
@@ -108,6 +109,87 @@ def recommend_by_interests(
         eligible_courses_count=len(request.eligible_courses),
         recommendations=recommendations,
     )
+
+
+@router.post("/interests/career-tree")
+def recommend_ol_career_tree(
+    request: InterestBasedRecommendationRequest,
+):
+    """
+    Get O/L Career Tree - hierarchical pathway recommendations grouped by A/L streams.
+
+    **Designed for O/L students planning their A/L stream choice.**
+
+    **Returns a tree structure:**
+    - Root: Student's career goal/interest
+    - Branches: A/L stream pathways (Physical Science, Commerce, Arts, etc.)
+    - Leaves: Specific degrees and careers under each stream
+
+    **Each stream pathway includes:**
+    - O/L readiness assessment based on their marks
+    - Match score indicating alignment with their interests
+    - List of potential degrees
+    - Target career paths
+    - Readiness status (excellent/good/needs_improvement)
+
+    **Response also includes:**
+    - AI counselor advice for overall guidance
+    - Total streams and degrees available
+
+    **Example Request:**
+    ```json
+    {
+        "student_input": "I love coding and want to build software",
+        "eligible_courses": ["19", "20", "41", "21"],
+        "ol_marks": {
+            "core": {
+                "mathematics": "A",
+                "science": "B",
+                "english": "A"
+            }
+        }
+    }
+    ```
+
+    **Example Response Structure:**
+    ```json
+    {
+        "student_goal": "I love coding and want to build software",
+        "pathways": [
+            {
+                "stream_name": "Physical Science",
+                "ol_readiness": "On Track (Maths: A, Science: B)",
+                "readiness_status": "excellent",
+                "match_score": 95.0,
+                "potential_degrees": [...],
+                "target_careers": ["Software Engineer", "Data Scientist"]
+            }
+        ],
+        "ai_counselor_advice": "...",
+        "total_streams": 3,
+        "total_degrees": 12
+    }
+    ```
+    """
+    from app.schemas.response import OLCareerTreeResponse
+
+    # Validate input
+    is_valid, error_msg = interest_service.validate_input(request.student_input)
+    if not is_valid:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=400, detail=error_msg)
+
+    # Get career tree
+    tree_data = interest_service.get_ol_career_tree(
+        student_input=request.student_input,
+        eligible_course_codes=request.eligible_courses,
+        ol_marks=request.ol_marks,
+        max_courses=15,
+    )
+
+    # Return as structured response
+    return OLCareerTreeResponse(**tree_data)
 
 
 @router.post("/ol-pathway")

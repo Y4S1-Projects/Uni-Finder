@@ -12,8 +12,7 @@ Uni-Finder is a multi-service educational guidance platform for Sri Lankan stude
 - `frontend/` — React app (UI)
 - `backend/` — Node/Express API + some Python microservices
 - `degree-recommendation-service/` — FastAPI degree recommendation engine
-- `career-service/` — FastAPI career guidance service
-- `career-ml/` — notebooks + trained artifacts used by `career-service/`
+- `career-service/` — FastAPI career guidance service (includes `career-ml/` with trained models)
 
 ## Services (local dev)
 

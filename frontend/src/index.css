@@ -172,15 +172,15 @@ button:hover {
 }
 
 @layer utilities {
-	/* Content Spacing for Non-Homepage to prevent overlap with fixed header */
-	body.non-homepage main,
-	body.non-homepage > div > div:not(.homepage-container) {
-		padding-top: 80px !important;
+	/* Apply a single top offset equal to fixed header height on non-home pages */
+	body.non-homepage main {
+		padding-top: 0px !important;
 	}
 
+	/* Prevent legacy Bootstrap spacing from adding extra top gaps */
 	body.non-homepage .container.mt-5 {
 		margin-top: 0 !important;
-		padding-top: 100px !important;
+		padding-top: 0 !important;
 	}
 
 	/* React-Bootstrap Navbar explicit overrides to keep it compact */

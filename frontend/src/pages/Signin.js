@@ -38,14 +38,21 @@ export default function SignIn() {
 				credentials: "include",
 				body: JSON.stringify(formdata),
 			});
-			const data = await res.json();
+			const data = await res.json().catch(() => ({}));
 
-			if (data.success === false) {
-				dispatch(signInFailure(data.message));
+			if (!res.ok || data.success === false) {
+				dispatch(signInFailure(data.message || "Sign in failed"));
 				return;
 			}
 
 			dispatch(signInSuccess(data));
+			// Redirect: admins to admin page, others to home
+			const adminUsernames = ['scholarshipadmin', 'scholarshipadmin2'];
+			if (data.username && adminUsernames.includes(data.username)) {
+				navigate("/scholarship-matcher/admin-datasets");
+			} else {
+				navigate("/");
+			}
 		} catch (error) {
 			dispatch(signInFailure(error.toString()));
 		}
@@ -58,13 +65,13 @@ export default function SignIn() {
 				<form onSubmit={handleSubmit}>
 					<div className='mb-3'>
 						<label htmlFor='email' className='form-label'>
-							Email address
+							Email or username
 						</label>
 						<input
-							type='email'
+							type='text'
 							className='form-control'
 							id='email'
-							placeholder='Enter your email'
+							placeholder='Enter your email or username'
 							onChange={handleChange}
 							required
 						/>
