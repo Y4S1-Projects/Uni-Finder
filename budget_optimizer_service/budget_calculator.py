@@ -447,13 +447,25 @@ class BudgetCalculator:
         # ── Inputs ──────────────────────────────────────────────────────
         distance_uni  = float(transport_data.get('distance_uni_accommodation', 5))
         distance_home = float(transport_data.get('distance_home_uni', 50))
-        daily_transport = transport_data.get('transport_method', 'Bus')
-        home_transport  = transport_data.get('transport_method_home', 'Bus')
+        daily_transport = transport_data.get('transport_method', 'Bus')   # Accommodation → University
+
+        # Home → Accommodation route: prefer new field, fall back to legacy transport_method_home
+        home_transport = transport_data.get(
+            'transport_method_home_accommodation',
+            transport_data.get('transport_method_home', 'Bus')
+        )
 
         days_str = str(transport_data.get('days_per_week', '5'))
         days_per_week = int(days_str.split()[0]) if days_str[0].isdigit() else 5
 
         home_visit_freq = transport_data.get('home_visit_frequency', 'Monthly')
+
+        # Work commute (optional)
+        has_work_commute   = bool(transport_data.get('has_work_commute', False))
+        distance_work      = float(transport_data.get('distance_work', 10))
+        work_transport     = transport_data.get('work_transport_method', 'Bus')
+        work_days_str      = str(transport_data.get('work_days_per_week', '5'))
+        work_days_per_week = int(work_days_str.split()[0]) if work_days_str[0].isdigit() else 5
 
         # Effective commuting days per month (4.33 = avg weeks per month)
         commute_days_per_month = round(days_per_week * 4.33)
@@ -530,8 +542,26 @@ class BudgetCalculator:
         home_trip_cost = self._get_home_visit_cost(distance_home, home_transport, transport_data)
         monthly_home = home_trip_cost * visits_per_month
 
+        # ── Work commute cost (optional) ────────────────────────────────
+        monthly_work = 0
+        work_commute_days_per_month = 0
+        work_round_trip_cost = 0
+        if has_work_commute and distance_work > 0:
+            work_round_trip_cost = one_way_cost(work_transport, distance_work) * 2
+            work_vehicle_base = 0
+            if work_transport == 'Bicycle':
+                work_round_trip_cost = 0
+                work_vehicle_base = 250   # shared maintenance
+            elif work_transport == 'Personal Vehicle':
+                work_vehicle_base = 1500  # shared fuel base (already partly counted in uni)
+            elif work_transport == 'University Transport':
+                work_round_trip_cost = 0
+                work_vehicle_base = max(1500, min(3000, 1500 + distance_work * 50))
+            work_commute_days_per_month = round(work_days_per_week * 4.33)
+            monthly_work = work_round_trip_cost * work_commute_days_per_month + work_vehicle_base
+
         # ── Total ────────────────────────────────────────────────────────
-        total = monthly_commute + misc_monthly + monthly_home
+        total = monthly_commute + misc_monthly + monthly_home + monthly_work
         total = max(total, 1500)   # realistic floor: LKR 1,500/month minimum
 
         # Human-readable method label
@@ -553,11 +583,24 @@ class BudgetCalculator:
                 'daily_commute':   round(monthly_commute, 2),
                 'misc_trips':      round(misc_monthly, 2),
                 'home_visits':     round(monthly_home, 2),
+                'work_commute':    round(monthly_work, 2),
             },
-            'daily_cost':              round(round_trip_cost, 2),
-            'transport_method':        method_labels.get(daily_transport, daily_transport),
-            'commute_days_per_month':  commute_days_per_month,
-            'one_way_trip_cost':       round(one_way_cost(daily_transport, distance_uni), 2),
+            'daily_cost':                round(round_trip_cost, 2),
+            # Route method labels — both routes exposed
+            'transport_method':          method_labels.get(daily_transport, daily_transport),
+            'accommodation_uni_method':  method_labels.get(daily_transport, daily_transport),
+            'home_accommodation_method': method_labels.get(home_transport, home_transport),
+            'commute_days_per_month':    commute_days_per_month,
+            'one_way_trip_cost':         round(one_way_cost(daily_transport, distance_uni), 2),
+            'home_visit_frequency':      home_visit_freq,
+            'distance_uni_km':           distance_uni,
+            'distance_home_km':          distance_home,
+            # Work commute
+            'has_work_commute':          has_work_commute,
+            'work_commute_method':       method_labels.get(work_transport, work_transport) if has_work_commute else None,
+            'work_distance_km':          distance_work if has_work_commute else 0,
+            'work_commute_days_per_month': work_commute_days_per_month,
+            'work_round_trip_cost':      round(work_round_trip_cost, 2) if has_work_commute else 0,
         }
 
     def _get_home_visit_cost(self, distance_home, home_transport, transport_data):
@@ -668,3 +711,4 @@ if __name__ == '__main__':
     transport_budget = calculator.calculate_transport_budget(transport_data)
     print(f"\n🚌 Transport Budget: LKR {transport_budget['monthly_total']}")
     print(f"Breakdown: {transport_budget['breakdown']}")
+

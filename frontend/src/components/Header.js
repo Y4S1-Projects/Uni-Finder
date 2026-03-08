@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { signout } from "../redux/User/userSlice";
 
 const Header = () => {
 	const [scrolled, setScrolled] = useState(false);
@@ -19,7 +20,21 @@ const Header = () => {
 	}, []);
 
 	const currentUser = useSelector((state) => state.user?.currentUser);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const isScholarshipAdmin = currentUser && ['scholarshipadmin', 'scholarshipadmin2'].includes(currentUser.username);
+	const isOnAdminPage = location.pathname === '/scholarship-matcher/admin-datasets';
+	const showAdminAuth = isScholarshipAdmin && isOnAdminPage;
+	const API_BASE = process.env.REACT_APP_BACKEND_URL;
+
+	const handleLogout = async () => {
+		try {
+			if (API_BASE) await fetch(`${API_BASE}/api/auth/signout`, { credentials: "include" });
+		} catch (e) {}
+		dispatch(signout());
+		navigate("/signInNew");
+		setMobileMenuOpen(false);
+	};
 
 	const navLinks = [
 		{ label: "Home", href: "/", icon: "🏠" },
@@ -27,7 +42,6 @@ const Header = () => {
 		{ label: "Career", href: "/career", icon: "📈" },
 		{ label: "Budget", href: "/budget-optimizer-new", icon: "💰" },
 		{ label: "Scholarships", href: "/scholarship-matcher", icon: "🏆" },
-		...(isScholarshipAdmin ? [{ label: "Admin", href: "/scholarship-matcher/admin-datasets", icon: "⚙️" }] : []),
 	];
 
 	const isActive = (path) => location.pathname === path;
@@ -83,37 +97,65 @@ const Header = () => {
 
 					{/* Auth Buttons - Desktop */}
 					<div className='items-center hidden gap-3 md:flex'>
-						<Link
-							to='/signInNew'
-							className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 border-2 ${
-								scrolled || !isHomePage ?
-									"text-purple-600 border-purple-600 hover:bg-purple-50"
-								:	"text-white border-white/40 hover:border-white hover:bg-white/10"
-							}`}>
-							Sign In
-						</Link>
-						<Link
-							to='/signUp'
-							className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
-								scrolled || !isHomePage ?
-									"bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg hover:-translate-y-0.5"
-								:	"bg-white text-purple-600 hover:shadow-lg hover:-translate-y-0.5"
-							}`}>
-							Get Started
-						</Link>
+						{showAdminAuth ? (
+							<>
+								<span
+									className={`text-sm font-medium ${
+										scrolled || !isHomePage ? "text-slate-700" : "text-white/90"
+									}`}>
+									Admin
+								</span>
+								<button
+									type='button'
+									onClick={handleLogout}
+									className='px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200'>
+									Logout
+								</button>
+							</>
+						) : (
+							<>
+								<Link
+									to='/signInNew'
+									className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 border-2 ${
+										scrolled || !isHomePage ?
+											"text-purple-600 border-purple-600 hover:bg-purple-50"
+										:	"text-white border-white/40 hover:border-white hover:bg-white/10"
+									}`}>
+									Sign In
+								</Link>
+								<Link
+									to='/signUp'
+									className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
+										scrolled || !isHomePage ?
+											"bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg hover:-translate-y-0.5"
+										:	"bg-white text-purple-600 hover:shadow-lg hover:-translate-y-0.5"
+									}`}>
+									Get Started
+								</Link>
+							</>
+						)}
 					</div>
 
 					{/* Mobile Menu Button */}
 					<div className='flex items-center gap-3 md:hidden'>
-						<Link
-							to='/signInNew'
-							className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition-all duration-300 ${
-								scrolled || !isHomePage ?
-									"text-purple-600 border border-purple-600"
-								:	"text-white border border-white/40"
-							}`}>
-							Sign In
-						</Link>
+						{showAdminAuth ? (
+							<button
+								type='button'
+								onClick={handleLogout}
+								className='px-3 py-1.5 rounded-lg font-semibold text-xs transition-all duration-300 bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200'>
+								Logout
+							</button>
+						) : (
+							<Link
+								to='/signInNew'
+								className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition-all duration-300 ${
+									scrolled || !isHomePage ?
+										"text-purple-600 border border-purple-600"
+									:	"text-white border border-white/40"
+								}`}>
+								Sign In
+							</Link>
+						)}
 						<button
 							onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
 							className={`p-2 rounded-lg transition-all duration-300 ${
@@ -154,12 +196,21 @@ const Header = () => {
 								</span>
 							</Link>
 						))}
-						<Link
-							to='/signUp'
-							onClick={() => setMobileMenuOpen(false)}
-							className='block w-full px-4 py-2 mt-4 text-sm font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-lg'>
-							Get Started Free
-						</Link>
+						{showAdminAuth ? (
+							<button
+								type='button'
+								onClick={handleLogout}
+								className='block w-full px-4 py-2 mt-4 text-sm font-semibold text-center text-purple-700 transition-all duration-300 rounded-lg bg-purple-100 hover:bg-purple-200 border border-purple-200'>
+								Logout
+							</button>
+						) : (
+							<Link
+								to='/signUp'
+								onClick={() => setMobileMenuOpen(false)}
+								className='block w-full px-4 py-2 mt-4 text-sm font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-lg'>
+								Get Started Free
+							</Link>
+						)}
 					</div>
 				)}
 			</div>
