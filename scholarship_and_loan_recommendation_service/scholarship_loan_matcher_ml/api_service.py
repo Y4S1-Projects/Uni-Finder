@@ -1,4 +1,6 @@
 from scholarship_loan_matcher_ml.prediction.predict import run_prediction, _json_safe
+from scholarship_loan_matcher_ml.pipeline.get_stats import get_dataset_stats
+from scholarship_loan_matcher_ml.pipeline.update_pipeline import run_full_update
 import os
 import sys
 from pathlib import Path
@@ -96,6 +98,31 @@ def match_scholarships_and_loans(req: MatchRequest) -> Dict[str, Any]:
 
     safe_matches = _json_safe(matches)
     return {"matches": safe_matches, "count": len(safe_matches)}
+
+
+@app.get("/matcher/update-datasets/stats")
+def dataset_stats() -> Dict[str, Any]:
+    """Return dataset statistics (scholarships/loans counts, last_updated) for the public and admin UI."""
+    stats = get_dataset_stats()
+    return {"success": True, **stats}
+
+
+@app.post("/matcher/update-datasets")
+def trigger_dataset_update() -> Dict[str, Any]:
+    """Run the full update pipeline (scrapers → cleaners) and return summary."""
+    try:
+        summary = run_full_update()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Dataset update failed: {e}")
+    updated_at = (summary.get("completed_at") or summary.get("last_update")) if summary else None
+    if not updated_at:
+        from datetime import datetime
+        updated_at = datetime.now().isoformat()
+    return {
+        "success": True,
+        "updated_at": updated_at,
+        "summary": _json_safe(summary) if summary else {},
+    }
 
 
 if __name__ == "__main__":

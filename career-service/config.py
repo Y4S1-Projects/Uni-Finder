@@ -8,9 +8,18 @@ SERVICE_DIR = Path(__file__).resolve().parent          # career-service/
 ML_DIR = SERVICE_DIR / "career-ml"                     # career-service/career-ml/
 
 # ── Data version toggle (set DATA_VERSION=v1 to revert) ─────────────────────
-DATA_VERSION = os.getenv("DATA_VERSION", "v2").lower()
+DATA_VERSION = os.getenv("DATA_VERSION", "v2_fixed").lower()
 
-if DATA_VERSION == "v2":
+if DATA_VERSION == "v2_fixed":
+    # V2 FIXED paths (with correct role assignments)
+    ROLE_PROFILE_CSV       = ML_DIR / "data" / "processed" / "role_skill_profiles_v2_fixed.csv"
+    CAREER_LADDERS_JSON    = ML_DIR / "data" / "processed" / "career_ladders_v2.json"
+    ROLE_CLASSIFIER_PKL    = ML_DIR / "models" / "role_classifier_v2.pkl"
+    JOB_SKILL_VECTORS_CSV  = ML_DIR / "data" / "processed" / "job_skill_vectors_v2_fixed.csv"
+    SKILLS_CSV             = ML_DIR / "data" / "expanded" / "skills_v2.csv"
+    ROLE_METADATA_JSON     = ML_DIR / "data" / "processed" / "role_metadata.json"
+    SKILL_COLUMNS_PKL      = ML_DIR / "models" / "skill_columns_v2.pkl"
+elif DATA_VERSION == "v2":
     # V2 paths (expanded pipeline)
     ROLE_PROFILE_CSV       = ML_DIR / "data" / "processed" / "role_skill_profiles_v2.csv"
     CAREER_LADDERS_JSON    = ML_DIR / "data" / "processed" / "career_ladders_v2.json"
@@ -65,4 +74,13 @@ else:
 	)
 
 # CORS settings
-CORS_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+# Read from CORS_ORIGINS env var (set by Azure Container Apps deploy).
+# Supports: "*" for all origins, or comma-separated URLs.
+# Falls back to localhost for local development.
+_cors_env = os.getenv("CORS_ORIGINS", "").strip()
+if _cors_env == "*":
+    CORS_ORIGINS = ["*"]
+elif _cors_env:
+    CORS_ORIGINS = [origin.strip() for origin in _cors_env.split(",") if origin.strip()]
+else:
+    CORS_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]

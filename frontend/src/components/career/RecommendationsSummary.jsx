@@ -3,16 +3,47 @@
  * Displays summary of the analysis
  */
 import React from "react";
-import { FaLightbulb } from "react-icons/fa";
+import { FaLightbulb, FaFilter, FaGlobe } from "react-icons/fa";
 
-export function RecommendationsSummary({ skillsCount, rolesCount }) {
+export function RecommendationsSummary({
+  skillsCount,
+  rolesCount,
+  domainFilterApplied,
+  preferredDomain,
+}) {
   return (
     <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg mb-6 border-l-4 border-purple-500">
-      <p className="m-0 text-gray-700">
+      <p className="m-0 text-gray-700 mb-2">
         Analyzed <strong className="text-purple-700">{skillsCount}</strong>{" "}
         skills across <strong className="text-purple-700">{rolesCount}</strong>{" "}
         career roles
       </p>
+
+      {/* Domain Filter Status */}
+      <div className="flex items-center gap-2 text-sm mt-2">
+        {domainFilterApplied ? (
+          <>
+            <FaFilter className="text-blue-600" />
+            <span className="text-gray-600">
+              Showing recommendations for:{" "}
+              <strong className="text-blue-700">
+                {preferredDomain.replace(/_/g, " ")}
+              </strong>
+            </span>
+          </>
+        ) : (
+          <>
+            <FaGlobe className="text-green-600" />
+            <span className="text-gray-600">
+              Showing{" "}
+              <strong className="text-green-700">
+                best matches across all domains
+              </strong>{" "}
+              based on your skills
+            </span>
+          </>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,16 @@
 """
-Career recommendation service using cosine similarity.
+Career recommendation service using cosine similarity + weighted scoring.
+
+The recommendation flow:
+  1. Get raw cosine similarity scores (skill match)
+  2. Apply weighted scoring considering:
+     - skill_match_score (from cosine similarity)
+     - domain_preference_score (explicit user preference)
+     - experience_fit_score (seniority alignment)
+     - career_goal_fit_score (intent alignment)
+     - education_fit_score (soft signal)
+  3. Rank by final_match_score
+  4. Return recommendations with score breakdowns
 
 Supports two modes:
   1. Enhanced (330-dim) — uses skill + categorical features when
@@ -11,6 +22,12 @@ import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from data_loader import DataStore
 from .career_service import detect_skill_gap, get_next_role, get_domain_for_role
+from .scoring import (
+    compute_final_score,
+    generate_ranking_explanation,
+    normalize_domain,
+    ScoreBreakdown,
+)
 
 
 # ── helpers ──────────────────────────────────────────────────────────
@@ -57,18 +74,24 @@ def recommend_careers_for_user(
     preferred_job_type: str | None = None,
 ) -> dict:
     """
-    Recommend best-fit career roles.
+    Recommend best-fit career roles using weighted multi-factor scoring.
 
+    The ranking considers:
+    - skill_match_score (40%/55%): From cosine similarity
+    - domain_preference_score (30%/10%): User's explicit domain preference
+    - experience_fit_score (15%/20%): Seniority alignment
+    - career_goal_fit_score (10%/10%): Intent alignment
+    - education_fit_score (5%/5%): Soft education signal
+    
     When enhanced data is available the function uses a 330-dim vector
-    (skills + experience + education + domain + status + job-type).
-    Otherwise it falls back to the original 300-dim skill-only mode.
+    for skill similarity. Otherwise it falls back to 300-dim skill-only mode.
     """
     if not user_skill_ids:
         raise ValueError("No skills provided")
 
     user_skills_upper = set(s.strip().upper() for s in user_skill_ids if s)
 
-    # ── choose enhanced vs legacy path ──
+    # ── choose enhanced vs legacy path for skill similarity ──
     use_enhanced = _enhanced_available() and any([
         experience_level, current_status, education_level,
         preferred_domain, preferred_job_type,
@@ -90,18 +113,58 @@ def recommend_careers_for_user(
         similarity_scores, role_ids = _legacy_recommend(user_skills_upper)
         mode = "legacy"
 
-    # ── sort & pick top N ──
-    recs = pd.DataFrame({"role_id": role_ids, "match_score": similarity_scores})
-    recs = recs.sort_values("match_score", ascending=False).head(top_n)
-
-    results = []
-    for _, row in recs.iterrows():
-        role_id = row["role_id"]
-        match_score = round(float(row["match_score"]), 3)
+    # ── compute weighted scores for ALL roles ──
+    scored_roles = []
+    for i, role_id in enumerate(role_ids):
+        skill_score = float(similarity_scores[i])
         role_title = DataStore.role_id_to_title.get(role_id, role_id)
         domain = get_domain_for_role(role_id)
-
-        # Career ladder
+        
+        # Get readiness from skill gap analysis
+        readiness = 0.5
+        skill_gap = None
+        try:
+            skill_gap = detect_skill_gap(user_skills_upper, role_id, importance_threshold=0.02)
+            if skill_gap and "readiness_score" in skill_gap:
+                readiness = skill_gap["readiness_score"]
+        except Exception:
+            pass
+        
+        # Compute weighted final score using scoring engine
+        score_breakdown = compute_final_score(
+            skill_match_score=skill_score,
+            role_id=role_id,
+            role_domain=domain,
+            preferred_domain=preferred_domain,
+            experience_level=experience_level,
+            career_goal=career_goal,
+            education_level=education_level,
+            readiness_score=readiness,
+        )
+        
+        scored_roles.append({
+            "role_id": role_id,
+            "role_title": role_title,
+            "domain": domain,
+            "skill_gap": skill_gap,
+            "score_breakdown": score_breakdown,
+        })
+    
+    # ── sort by FINAL score (not raw similarity) & pick top N ──
+    scored_roles.sort(key=lambda x: x["score_breakdown"].final_match_score, reverse=True)
+    top_roles = scored_roles[:top_n]
+    
+    # ── build final results with is_best_match flag ──
+    results = []
+    for rank, role_data in enumerate(top_roles):
+        role_id = role_data["role_id"]
+        role_title = role_data["role_title"]
+        domain = role_data["domain"]
+        skill_gap = role_data["skill_gap"]
+        breakdown = role_data["score_breakdown"]
+        is_best = (rank == 0)
+        
+        # Career ladder info
         next_role = None
         next_role_title = None
         if domain:
@@ -111,22 +174,35 @@ def recommend_careers_for_user(
                     next_role_title = DataStore.role_id_to_title.get(next_role, next_role)
             except ValueError:
                 pass
-
-        # Skill gap + readiness
-        skill_gap = None
-        try:
-            skill_gap = detect_skill_gap(user_skills_upper, role_id, importance_threshold=0.02)
-        except Exception:
-            pass
-
+        
+        # Generate ranking explanation
+        explanations = generate_ranking_explanation(
+            score_breakdown=breakdown,
+            role_title=role_title,
+            role_domain=domain,
+            preferred_domain=preferred_domain,
+            is_best_match=is_best,
+        )
+        
         results.append({
             "role_id": role_id,
             "role_title": role_title,
-            "match_score": match_score,
             "domain": domain,
+            # Scores - use final_match_score for "match_score" display
+            "match_score": round(breakdown.final_match_score, 3),
+            "skill_match_score": round(breakdown.skill_match_score, 3),
+            "readiness_score": round(breakdown.readiness_score, 3),
+            # Score breakdown for transparency
+            "score_breakdown": breakdown.to_dict(),
+            # Flags
+            "is_best_match": is_best,
+            # Career progression
             "next_role": next_role,
             "next_role_title": next_role_title,
+            # Skill gap details
             "skill_gap": skill_gap,
+            # Explanations
+            "explanations": explanations,
         })
 
     return {
@@ -134,6 +210,16 @@ def recommend_careers_for_user(
         "skills_analyzed": list(user_skills_upper),
         "total_roles_compared": len(role_ids),
         "mode": mode,
+        "domain_filter_applied": bool(preferred_domain),
+        "preferred_domain": preferred_domain,
+        # Include user profile in response for frontend display
+        "profile_used": {
+            "experience_level": experience_level,
+            "current_status": current_status,
+            "education_level": education_level,
+            "career_goal": career_goal,
+            "preferred_domain": preferred_domain,
+        },
     }
 
 

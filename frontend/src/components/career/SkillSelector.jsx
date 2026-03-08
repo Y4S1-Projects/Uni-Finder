@@ -135,6 +135,7 @@ export default function SkillSelector({ selected = [], onChange }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState(0); // index into QUICK_FILTERS
+  const [activeCategory, setActiveCategory] = useState("All");
   const [expandedGroups, setExpandedGroups] = useState(
     () => new Set(GROUP_ORDER),
   );
@@ -177,15 +178,40 @@ export default function SkillSelector({ selected = [], onChange }) {
     [selectedIds],
   );
 
+  // Reset active category on top-level filter change
+  useEffect(() => {
+    setActiveCategory("All");
+  }, [activeFilter]);
+
   // ── Filtered + grouped skills ────────────────────────────────────────
-  const { grouped, flatFiltered, totalMatches } = useMemo(() => {
+  const { grouped, flatFiltered, totalMatches, availableCategories } = useMemo(() => {
     const quickFn = QUICK_FILTERS[activeFilter].filter;
     const q = debouncedQuery.trim();
 
-    const matches = normalized.filter((s) => {
+    // 1. Filter by Quick Filter & Search Query
+    const baseMatches = normalized.filter((s) => {
       if (!quickFn(s)) return false;
-      return fuzzyMatch(s.label, q) || fuzzyMatch(s.id, q);
+      
+      const mapping = CATEGORY_MAP[s.category] || { group: "Technical Skills", sub: "Other" };
+      const searchableText = `${s.label} ${mapping.group} ${mapping.sub}`.toLowerCase();
+      return fuzzyMatch(searchableText, q) || fuzzyMatch(s.id, q);
     });
+
+    // 2. Extract available categories from base matching results
+    const categoriesSet = new Set();
+    for (const s of baseMatches) {
+      const mapping = CATEGORY_MAP[s.category] || { sub: "Other" };
+      categoriesSet.add(mapping.sub);
+    }
+    const availableCategories = Array.from(categoriesSet).sort();
+
+    // 3. Apply active category filter
+    const matches = activeCategory === "All" 
+      ? baseMatches 
+      : baseMatches.filter((s) => {
+          const mapping = CATEGORY_MAP[s.category] || { sub: "Other" };
+          return mapping.sub === activeCategory;
+        });
 
     // Group by group → sub
     const groups = {};
@@ -217,13 +243,14 @@ export default function SkillSelector({ selected = [], onChange }) {
       grouped: ordered,
       flatFiltered: flat,
       totalMatches: matches.length,
+      availableCategories,
     };
-  }, [normalized, debouncedQuery, activeFilter]);
+  }, [normalized, debouncedQuery, activeFilter, activeCategory]);
 
-  // Reset visible count on filter/query change
+  // Reset visible count on filter/query/category change
   useEffect(() => {
     setVisibleCount(WINDOW_SIZE);
-  }, [debouncedQuery, activeFilter]);
+  }, [debouncedQuery, activeFilter, activeCategory]);
 
   // Infinite-scroll: load more when scrolled near bottom
   const handleScroll = useCallback(() => {
@@ -348,46 +375,63 @@ export default function SkillSelector({ selected = [], onChange }) {
 
   // ── Build windowed flat list ─────────────────────────────────────────
   const windowedItems = useMemo(() => {
-    // If searching or using a non-default filter, show flat list (windowed)
-    if (debouncedQuery.trim() || activeFilter !== 0) {
+    // If searching or using a non-default filter/category, show flat list (windowed)
+    if (debouncedQuery.trim() || activeFilter !== 0 || activeCategory !== "All") {
       return flatFiltered.slice(0, visibleCount);
     }
     return null; // signal to use grouped view
-  }, [debouncedQuery, activeFilter, flatFiltered, visibleCount]);
+  }, [debouncedQuery, activeFilter, activeCategory, flatFiltered, visibleCount]);
 
   return (
     <div className="relative" ref={containerRef}>
       {/* ── Selected Skills (tags) ──────────────────────────────────────── */}
       {selectedIds.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-3">
-          {selectedIds.map((id, idx) => (
-            <div
-              key={id || `sel-${idx}`}
-              className="group flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50
-                         border border-blue-200 px-2.5 py-1 rounded-full
-                         shadow-sm hover:shadow-md hover:border-blue-300
-                         transition-all duration-200"
+        <div className="mb-3">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+              Selected ({selectedIds.length})
+            </span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                if (typeof onChange === "function") onChange([]);
+              }}
+              className="text-[11px] font-semibold text-red-500 hover:text-red-700 transition-colors flex items-center gap-1 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-md"
             >
-              <span className="text-xs font-medium text-blue-700 max-w-[140px] truncate">
-                {labelFor(id)}
-              </span>
-              <button
-                type="button"
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  remove(id);
-                }}
-                title={`Remove ${labelFor(id)}`}
-                aria-label={`Remove ${labelFor(id)}`}
-                className="w-4 h-4 flex items-center justify-center rounded-full
-                           bg-blue-100 text-blue-500 hover:bg-red-100 hover:text-red-500
-                           transition-colors duration-150 text-[10px] font-bold"
+              Clear All
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {selectedIds.map((id, idx) => (
+              <div
+                key={id || `sel-${idx}`}
+                className="group flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50
+                           border border-blue-200 px-2.5 py-1 rounded-full
+                           shadow-sm hover:shadow-md hover:border-blue-300
+                           transition-all duration-200"
               >
-                ✕
-              </button>
-            </div>
-          ))}
+                <span className="text-xs font-medium text-blue-700 max-w-[140px] truncate">
+                  {labelFor(id)}
+                </span>
+                <button
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    remove(id);
+                  }}
+                  title={`Remove ${labelFor(id)}`}
+                  aria-label={`Remove ${labelFor(id)}`}
+                  className="w-4 h-4 flex items-center justify-center rounded-full
+                             bg-blue-100 text-blue-500 hover:bg-red-100 hover:text-red-500
+                             transition-colors duration-150 text-[10px] font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -481,7 +525,7 @@ export default function SkillSelector({ selected = [], onChange }) {
                      animate-in fade-in slide-in-from-top-2 duration-200"
         >
           {/* Quick filters */}
-          <div className="flex items-center gap-1 px-3 py-2 bg-gray-50 border-b border-gray-100 overflow-x-auto">
+          <div className="flex items-center gap-1 px-3 py-2 bg-gray-50 border-b border-gray-100 overflow-x-auto scrollbar-hide">
             {QUICK_FILTERS.map((f, i) => (
               <button
                 key={f.label}
@@ -490,18 +534,76 @@ export default function SkillSelector({ selected = [], onChange }) {
                   e.preventDefault();
                   setActiveFilter(i);
                 }}
-                className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap
+                className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap
                            transition-colors duration-150
                            ${
                              activeFilter === i
-                               ? "bg-blue-500 text-white"
-                               : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                               ? "bg-[#9333ea] text-white border border-[#9333ea] shadow-sm"
+                               : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 shadow-sm"
                            }`}
               >
                 {f.label}
               </button>
             ))}
           </div>
+
+          {/* Category Filters */}
+          {availableCategories.length > 0 && (
+            <div className="flex items-center gap-1.5 px-3 py-2 bg-white border-b border-gray-100 overflow-x-auto scrollbar-hide">
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  setActiveCategory("All");
+                }}
+                className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-colors
+                           ${
+                             activeCategory === "All"
+                               ? "bg-[#0d6efd] text-white border border-[#0d6efd] shadow-sm"
+                               : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 shadow-sm"
+                           }`}
+              >
+                All Categories
+              </button>
+              {availableCategories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    setActiveCategory(cat);
+                  }}
+                  className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-colors
+                             ${
+                               activeCategory === cat
+                                 ? "bg-[#0d6efd] text-white border border-[#0d6efd] shadow-sm"
+                                 : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm"
+                             }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Action Header / Select All (when filtered) */}
+          {(activeFilter !== 0 || activeCategory !== "All" || debouncedQuery.trim() !== "") && totalMatches > 0 && (
+            <div className="flex items-center justify-between px-4 py-2 bg-[#6366f1] text-white shadow-inner">
+               <div className="text-xs font-semibold">
+                 {totalMatches} matching skills
+               </div>
+               <button
+                 type="button"
+                 onMouseDown={(e) => {
+                   e.preventDefault();
+                   selectAllInSub(flatFiltered);
+                 }}
+                 className="text-[#6366f1] bg-white hover:bg-gray-100 text-xs font-bold px-3 py-1 rounded-md transition-colors shadow-sm"
+               >
+                 Select All
+               </button>
+            </div>
+          )}
 
           {/* Scrollable list */}
           <div
@@ -582,9 +684,9 @@ export default function SkillSelector({ selected = [], onChange }) {
                                 e.preventDefault();
                                 selectAllInSub(skills);
                               }}
-                              className="text-[10px] text-blue-500 hover:text-blue-700 font-semibold"
+                              className="px-3 py-1 text-[10px] font-bold text-white rounded-md bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-md transition-all uppercase tracking-wider select-none shadow-sm"
                             >
-                              Select all
+                              Select All
                             </button>
                           </div>
                           {skills.slice(0, visibleCount).map(renderSkillRow)}
@@ -621,12 +723,14 @@ export default function SkillSelector({ selected = [], onChange }) {
 
           {/* Footer */}
           {totalMatches > 0 && (
-            <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-              <p className="text-xs text-gray-400">
-                💡 {totalMatches.toLocaleString()} skills
-                {debouncedQuery.trim() ? " matching" : " available"} • Click to
-                toggle
-              </p>
+            <div className="px-4 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-4 sticky bottom-0 z-20 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+              <div className="flex flex-col">
+                <p className="text-xs text-gray-500 font-medium">
+                  {totalMatches.toLocaleString()} skills
+                  {debouncedQuery.trim() || activeCategory !== "All" ? " matching filters" : " available"}
+                </p>
+              </div>
+              
               {selectedIds.length > 0 && (
                 <button
                   type="button"
@@ -634,7 +738,7 @@ export default function SkillSelector({ selected = [], onChange }) {
                     e.preventDefault();
                     if (typeof onChange === "function") onChange([]);
                   }}
-                  className="text-[10px] text-red-500 hover:text-red-700 font-semibold"
+                  className="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors shadow-sm flex items-center gap-1 whitespace-nowrap"
                 >
                   Clear all
                 </button>

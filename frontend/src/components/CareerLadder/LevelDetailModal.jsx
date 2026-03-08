@@ -1,4 +1,5 @@
 import React from "react";
+import { createPortal } from "react-dom";
 import { FaTimes, FaCheckCircle, FaExclamationTriangle } from "react-icons/fa";
 
 export default function LevelDetailModal({ level, userSkills = [], onClose }) {
@@ -25,8 +26,9 @@ export default function LevelDetailModal({ level, userSkills = [], onClose }) {
       ? Math.round(level.readiness_score * 100)
       : null;
 
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+  // Use portal to render modal at document body level, avoiding z-index stacking context issues
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 max-h-[85vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-purple-600 to-blue-500 text-white">
@@ -137,6 +139,7 @@ export default function LevelDetailModal({ level, userSkills = [], onClose }) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -41,12 +41,27 @@ const CAREER_GOAL_OPTIONS = [
 ];
 
 const DOMAIN_OPTIONS = [
+  { id: "", name: "No Preference - Let AI Decide (Recommended)" },
   { id: "software_engineering", name: "Software Engineering" },
-  { id: "data", name: "Data Science / Analytics" },
+  { id: "frontend_engineering", name: "Frontend Engineering" },
+  { id: "backend_engineering", name: "Backend Engineering" },
+  { id: "fullstack_engineering", name: "Full-Stack Engineering" },
+  { id: "data_engineering", name: "Data Engineering" },
+  { id: "data_science", name: "Data Science" },
   { id: "ai_ml", name: "AI / Machine Learning" },
-  { id: "devops", name: "DevOps / Cloud" },
+  { id: "devops", name: "DevOps / SRE" },
+  { id: "cloud_engineering", name: "Cloud Engineering" },
+  { id: "security", name: "Security / Cybersecurity" },
   { id: "qa", name: "QA / Testing" },
-  { id: "ui_ux", name: "UI / UX Design" },
+  { id: "mobile_engineering", name: "Mobile Development" },
+  { id: "ui_ux", name: "UI/UX Design" },
+  { id: "product_management", name: "Product Management" },
+  { id: "business_analysis", name: "Business Analysis" },
+  { id: "project_management", name: "Project Management" },
+  { id: "technical_writing", name: "Technical Writing" },
+  { id: "blockchain_web3", name: "Blockchain / Web3" },
+  { id: "game_development", name: "Game Development" },
+  { id: "embedded_systems", name: "Embedded Systems" },
 ];
 
 export default function CareerProfileForm({
@@ -77,19 +92,26 @@ export default function CareerProfileForm({
     careerGoal.setValue(selected?.id || "");
   };
 
+  const handleStatusSelect = (selected) => {
+    currentStatus.setValue(selected?.value || "");
+  };
+
   const handleDomainSelect = (selected) => {
     preferredDomain.setValue(selected?.id || "");
   };
 
   // Get selected option object for dropdowns
   const selectedEducation = EDUCATION_OPTIONS.find(
-    (opt) => opt.id === educationLevel.value
+    (opt) => opt.id === educationLevel.value,
   );
   const selectedCareerGoal = CAREER_GOAL_OPTIONS.find(
-    (opt) => opt.id === careerGoal.value
+    (opt) => opt.id === careerGoal.value,
+  );
+  const selectedStatus = STATUS_OPTIONS.find(
+    (opt) => opt.value === currentStatus.value,
   );
   const selectedDomain = DOMAIN_OPTIONS.find(
-    (opt) => opt.id === preferredDomain.value
+    (opt) => opt.id === preferredDomain.value,
   );
 
   return (
@@ -128,9 +150,9 @@ export default function CareerProfileForm({
           </p>
         </div>
 
-        {/* Two-column grid for inputs */}
+        {/* Profile Basics Row: Experience Level & Highest Education */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          {/* Experience Level - Radio Group */}
+          {/* Experience Level - Button Group */}
           <div
             className="p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg"
             style={{
@@ -152,14 +174,14 @@ export default function CareerProfileForm({
               <span>Experience Level</span>
               <span className="text-red-500">*</span>
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-3 h-full">
               {EXPERIENCE_OPTIONS.map((option) => (
                 <button
                   key={option.value}
                   type="button"
                   onClick={() => experienceLevel.setValue(option.value)}
                   onBlur={experienceLevel.handleInputBlur}
-                  className="py-4 px-5 rounded-xl font-semibold transition-all duration-300 border-2 shadow-xl scale-105 hover:scale-110"
+                  className="py-3 px-5 rounded-xl font-semibold transition-all duration-300 border-2 shadow-sm focus:outline-none hover:shadow-md"
                   style={
                     experienceLevel.value === option.value
                       ? {
@@ -167,6 +189,8 @@ export default function CareerProfileForm({
                             "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                           color: "white",
                           borderColor: "transparent",
+                          transform: "scale(1.02)",
+                          boxShadow: "0 10px 15px -3px rgba(102, 126, 234, 0.3)"
                         }
                       : {
                           background: "white",
@@ -187,7 +211,7 @@ export default function CareerProfileForm({
             )}
           </div>
 
-          {/* Current Status - Button Group */}
+          {/* Highest Education - Button Group */}
           <div
             className="p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg"
             style={{
@@ -204,26 +228,28 @@ export default function CareerProfileForm({
                     "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                 }}
               >
-                <FaUser className="text-white text-xl" />
+                <FaGraduationCap className="text-white text-xl" />
               </div>
-              <span>Current Status</span>
+              <span>Highest Education</span>
               <span className="text-red-500">*</span>
             </div>
-            <div className="flex flex-col gap-3">
-              {STATUS_OPTIONS.map((option) => (
+            <div className="flex flex-col gap-3 h-full">
+              {EDUCATION_OPTIONS.map((option) => (
                 <button
-                  key={option.value}
+                  key={option.id}
                   type="button"
-                  onClick={() => currentStatus.setValue(option.value)}
-                  onBlur={currentStatus.handleInputBlur}
-                  className="py-4 px-5 rounded-xl font-semibold transition-all duration-300 border-2 shadow-xl scale-105 hover:scale-110"
+                  onClick={() => educationLevel.setValue(option.id)}
+                  onBlur={educationLevel.handleInputBlur}
+                  className="py-3 px-5 rounded-xl font-semibold transition-all duration-300 border-2 shadow-sm focus:outline-none hover:shadow-md"
                   style={
-                    currentStatus.value === option.value
+                    educationLevel.value === option.id
                       ? {
                           background:
                             "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                           color: "white",
                           borderColor: "transparent",
+                          transform: "scale(1.02)",
+                          boxShadow: "0 10px 15px -3px rgba(102, 126, 234, 0.3)"
                         }
                       : {
                           background: "white",
@@ -232,19 +258,22 @@ export default function CareerProfileForm({
                         }
                   }
                 >
-                  {option.label}
+                  {option.name}
                 </button>
               ))}
             </div>
-            {currentStatus.hasError && (
+            {educationLevel.hasError && (
               <p className="text-red-500 text-sm mt-3 flex items-center gap-1">
                 <span className="text-red-500">⚠</span>
-                {currentStatus.errorMessage}
+                {educationLevel.errorMessage}
               </p>
             )}
           </div>
+        </div>
 
-          {/* Education Level - Dropdown */}
+        {/* Status & Goals Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* Current Status - Dropdown */}
           <div
             className="p-6 rounded-2xl border transition-all duration-300 hover:shadow-lg"
             style={{
@@ -254,22 +283,20 @@ export default function CareerProfileForm({
             }}
           >
             <Dropdown
-              label="Highest Education"
+              label="Current Status"
               labelClassName="flex items-center gap-3 text-gray-800 text-lg font-bold mb-4"
               isRequired={true}
-              placeholder="Select education level"
-              options={EDUCATION_OPTIONS}
-              defaultOption={selectedEducation}
-              displayKey="name"
-              idKey="id"
-              onSelect={handleEducationSelect}
-              onBlur={educationLevel.handleInputBlur}
-              error={
-                educationLevel.hasError ? educationLevel.errorMessage : null
-              }
-              buttonClassName="bg-white text-gray-700 border-2 border-gray-200 hover:border-indigo-400 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 focus:border-indigo-500 focus:shadow-lg transition-all duration-300"
-              dropdownClassName="bg-white border-2 border-indigo-200 shadow-2xl"
-              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50"
+              placeholder="Select current status"
+              options={STATUS_OPTIONS}
+              defaultOption={selectedStatus}
+              displayKey="label"
+              idKey="value"
+              onSelect={handleStatusSelect}
+              onBlur={currentStatus.handleInputBlur}
+              error={currentStatus.hasError ? currentStatus.errorMessage : null}
+              buttonClassName="bg-white text-gray-700 border-2 border-gray-200 hover:border-purple-400 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 focus:border-purple-500 focus:shadow-lg transition-all duration-300"
+              dropdownClassName="bg-white border-2 border-purple-200 shadow-2xl"
+              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
               prefixIcon={
                 <div
                   className="p-2 rounded-lg shadow-md"
@@ -278,11 +305,15 @@ export default function CareerProfileForm({
                       "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                   }}
                 >
-                  <FaGraduationCap className="text-white text-lg" />
+                  <FaUser className="text-white text-lg" />
                 </div>
               }
             />
           </div>
+
+
+
+
 
           {/* Career Goal - Dropdown */}
           <div
@@ -348,7 +379,7 @@ export default function CareerProfileForm({
                 </div>
               }
               labelClassName="flex items-center gap-3 text-gray-800 text-lg font-bold mb-4"
-              placeholder="No preference"
+              placeholder="No Preference - Let AI Decide"
               options={DOMAIN_OPTIONS}
               defaultOption={selectedDomain}
               displayKey="name"
@@ -356,7 +387,7 @@ export default function CareerProfileForm({
               onSelect={handleDomainSelect}
               onBlur={preferredDomain.handleInputBlur}
               buttonClassName="bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 focus:border-blue-500 focus:shadow-lg transition-all duration-300"
-              dropdownClassName="bg-white border-2 border-blue-200 shadow-2xl"
+              dropdownClassName="bg-white border-2 border-blue-200 shadow-2xl max-h-60 overflow-y-auto"
               optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50"
               prefixIcon={
                 <div
@@ -370,6 +401,33 @@ export default function CareerProfileForm({
                 </div>
               }
             />
+
+            {/* Help text and info banner */}
+            <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+              Choose "No Preference" for unbiased AI recommendations based
+              purely on your skills. Or select a specific domain if you know
+              your career direction.
+            </p>
+
+            {/* Info banner when No Preference is selected */}
+            {!preferredDomain.value && (
+              <div
+                className="flex items-center gap-3 p-4 rounded-lg mt-4 border"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(239, 246, 255, 0.9) 0%, rgba(224, 242, 254, 0.9) 100%)",
+                  borderColor: "#bfdbfe",
+                }}
+              >
+                <div className="flex-shrink-0 bg-blue-100 p-2 rounded-full">
+                  <FaChartLine className="text-blue-600 text-lg" />
+                </div>
+                <p className="m-0 text-blue-800 text-sm">
+                  AI will analyze your skills and recommend the best-fit careers
+                  across all domains.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -382,7 +440,7 @@ export default function CareerProfileForm({
             borderColor: "rgba(102, 126, 234, 0.3)",
           }}
         >
-          <label className="w-full block">
+          <div className="w-full block">
             <div className="flex items-center gap-3 text-gray-800 text-xl font-bold mb-4">
               <div
                 className="p-3 rounded-lg shadow-md"
@@ -423,7 +481,7 @@ export default function CareerProfileForm({
                 </span>
               </p>
             )}
-          </label>
+          </div>
         </div>
 
         {/* Submit Button */}

@@ -3,6 +3,7 @@
  * Full-screen modal showing detailed career information and AI explanation
  */
 import React from "react";
+import { createPortal } from "react-dom";
 import { ScoreCard } from "./ScoreDisplay";
 import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
@@ -11,12 +12,20 @@ import { AIExplanation, AILoadingState } from "./AIExplanation";
 import { IoClose } from "react-icons/io5";
 import { FaCheckCircle, FaBookOpen } from "react-icons/fa";
 
-export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
+export function CareerDetailModal({
+  isOpen,
+  onClose,
+  jobDetail,
+  isLoading,
+  onViewPath,
+  userProfile,
+}) {
   if (!isOpen) return null;
 
-  return (
+  // Use portal to render modal at document body level, avoiding z-index stacking context issues
+  return createPortal(
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1050] overflow-auto py-8 animate-fade-in"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] overflow-auto py-8 animate-fade-in"
       onClick={onClose}
       style={{
         animation: "fadeIn 0.2s ease-out",
@@ -36,12 +45,13 @@ export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
         {isLoading ? (
           <AILoadingState />
         ) : jobDetail ? (
-          <CareerDetailContent jobDetail={jobDetail} />
+          <CareerDetailContent jobDetail={jobDetail} onViewPath={onViewPath} userProfile={userProfile} />
         ) : (
           <ErrorState />
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -57,7 +67,7 @@ function CloseButton({ onClick }) {
   );
 }
 
-function CareerDetailContent({ jobDetail }) {
+function CareerDetailContent({ jobDetail, onViewPath, userProfile }) {
   return (
     <>
       {/* Header */}
@@ -65,7 +75,30 @@ function CareerDetailContent({ jobDetail }) {
         <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
           {jobDetail.role_title || jobDetail.role_id}
         </h2>
-        <DomainBadge domain={jobDetail.domain} size="large" />
+        
+        <div className="flex flex-wrap items-center gap-3">
+          <DomainBadge domain={jobDetail.domain} size="large" />
+          
+          {userProfile && (
+            <div className="flex flex-wrap gap-2 items-center ml-2 border-l-2 border-slate-200 pl-4">
+              {userProfile.experienceLevel && (
+                <span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium whitespace-nowrap border border-slate-200 shadow-sm">
+                  <span className="opacity-75">Exp:</span> {userProfile.experienceLevel}
+                </span>
+              )}
+              {userProfile.educationLevel && (
+                <span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium whitespace-nowrap border border-slate-200 shadow-sm">
+                  <span className="opacity-75">Edu:</span> {userProfile.educationLevel}
+                </span>
+              )}
+              {userProfile.currentStatus && (
+                <span className="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 font-medium whitespace-nowrap border border-slate-200 shadow-sm">
+                   <span className="opacity-75">Status:</span> {userProfile.currentStatus}
+                </span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Scores */}
@@ -74,14 +107,14 @@ function CareerDetailContent({ jobDetail }) {
         style={{ animationDelay: "0.1s" }}
       >
         <ScoreCard
-          score={jobDetail.match_score}
-          label="Match Score"
-          variant="blue"
-        />
-        <ScoreCard
           score={jobDetail.readiness_score}
           label="Readiness"
           variant="green"
+        />
+        <ScoreCard
+          score={jobDetail.match_score}
+          label="Match Score"
+          variant="blue"
         />
       </div>
 
@@ -92,6 +125,7 @@ function CareerDetailContent({ jobDetail }) {
             nextRole={jobDetail.next_role}
             nextRoleTitle={jobDetail.next_role_title}
             variant="full"
+            onViewPath={onViewPath}
           />
         </div>
       )}

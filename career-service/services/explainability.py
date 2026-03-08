@@ -42,10 +42,10 @@ last_fallback_index = -1
 
 def generate_ai_explanation(context: dict) -> Optional[str]:
     """
-    Generate AI explanation using Gemini (from explainability_engine.ipynb).
+    Generate profile-aware AI explanation using Gemini.
     
     Args:
-        context: Dictionary with role, skills, and match information
+        context: Dictionary with role, skills, match information, AND user profile
         
     Returns:
         AI-generated explanation string or None if failed
@@ -65,28 +65,58 @@ def generate_ai_explanation(context: dict) -> Optional[str]:
         readiness_val = context.get('readiness_score') or 0
         next_role_str = context.get('next_role_title') or 'This is a senior role'
         
-        prompt = f"""You are a career guidance assistant.
+        # Profile context (NEW)
+        experience_level = context.get('experience_level') or 'not specified'
+        current_status = context.get('current_status') or 'not specified'
+        education_level = context.get('education_level') or 'not specified'
+        career_goal = context.get('career_goal') or 'not specified'
+        preferred_domain = context.get('preferred_domain') or 'no preference'
+        
+        # Score breakdown (NEW)
+        score_breakdown = context.get('score_breakdown', {})
+        skill_match = score_breakdown.get('skill_match_score', match_score_val)
+        domain_score = score_breakdown.get('domain_preference_score', 0.5)
+        experience_fit = score_breakdown.get('experience_fit_score', 0.7)
+        
+        # Explanations from scoring engine (NEW)
+        explanations = context.get('explanations', {})
+        domain_impact = explanations.get('domain_impact', '')
+        why_ranked = explanations.get('why_ranked_here', '')
+        
+        prompt = f"""You are a career guidance assistant helping a user understand why a specific role was recommended.
 
-Explain why a user should consider the role of {role_title} in the {domain_str} domain.
+**Role Recommended:** {role_title} in {domain_str}
 
-Match score: {match_score_val:.2f}
-Readiness score: {readiness_val:.2f}
+**User Profile:**
+- Experience Level: {experience_level}
+- Current Status: {current_status}
+- Education: {education_level}
+- Career Goal: {career_goal}
+- Preferred Domain: {preferred_domain}
 
-Skills already possessed:
-{', '.join(matched_names) if matched_names else 'None identified'}
+**Scoring Analysis:**
+- Overall Match Score: {match_score_val:.0%}
+- Skill Match: {skill_match:.0%}
+- Domain Fit: {domain_score:.0%}
+- Experience Fit: {experience_fit:.0%}
+- Readiness: {readiness_val:.0%}
 
-Skills to improve:
-{', '.join(missing_names) if missing_names else 'None - user has all required skills'}
+**Skills Assessment:**
+- Skills you have: {', '.join(matched_names) if matched_names else 'None identified'}
+- Skills to develop: {', '.join(missing_names) if missing_names else 'None - you have all required skills'}
 
-Next career step: {next_role_str}
+**Domain Context:** {domain_impact}
 
-Generate a clear, supportive, human-friendly explanation that:
-1. Explains why this role is a good fit based on their current skills
-2. Provides encouragement about their readiness level
-3. Suggests which 2-3 missing skills to prioritize and why
-4. Ends with a motivational statement about their career potential
+**Next Career Step:** {next_role_str}
 
-Do not mention skill IDs. Keep the response under 200 words."""
+Generate a personalized, encouraging explanation (150-200 words) that:
+1. Explains why this role specifically matches their profile (mention their experience level, career goal)
+2. Addresses how their preferred domain preference influenced this recommendation
+3. Highlights their strongest skill matches
+4. Suggests 2-3 priority skills to develop based on their career goal
+5. Provides encouragement based on their readiness level
+
+Be specific to their situation. Do not mention skill IDs or technical score numbers."""
 
         response = gemini_client.models.generate_content(
             model="gemini-2.5-flash",
@@ -94,7 +124,7 @@ Do not mention skill IDs. Keep the response under 200 words."""
         )
         
         explanation = response.text.strip()
-        print(f"[explainability] Generated Gemini AI explanation successfully")
+        print(f"[explainability] Generated profile-aware Gemini explanation successfully")
         return explanation
         
     except Exception as e:

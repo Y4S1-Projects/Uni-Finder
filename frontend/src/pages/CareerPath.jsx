@@ -3,6 +3,7 @@
  * Main page for career recommendations using modular components
  */
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import CareerProfileForm from "../components/career/CareerProfileForm";
 import {
   CareerRecommendationCard,
@@ -25,6 +26,8 @@ import {
 import { FaChartLine, FaTrophy, FaUndo } from "react-icons/fa";
 
 export default function CareerPath() {
+  const navigate = useNavigate();
+
   // Restore state from sessionStorage on mount
   const [selectedSkills, setSelectedSkills] = React.useState(() => {
     const saved = sessionStorage.getItem("careerPath_skills");
@@ -34,23 +37,23 @@ export default function CareerPath() {
   // Form inputs using useInput hook with restored values
   const experienceLevel = useInput(
     sessionStorage.getItem("careerPath_experienceLevel") || "",
-    validateExperienceLevel
+    validateExperienceLevel,
   );
   const currentStatus = useInput(
     sessionStorage.getItem("careerPath_currentStatus") || "",
-    validateCurrentStatus
+    validateCurrentStatus,
   );
   const preferredDomain = useInput(
     sessionStorage.getItem("careerPath_preferredDomain") || "",
-    validatePreferredDomain
+    validatePreferredDomain,
   );
   const educationLevel = useInput(
     sessionStorage.getItem("careerPath_educationLevel") || "",
-    validateEducationLevel
+    validateEducationLevel,
   );
   const careerGoal = useInput(
     sessionStorage.getItem("careerPath_careerGoal") || "",
-    validateCareerGoal
+    validateCareerGoal,
   );
 
   // Custom hooks for business logic
@@ -68,7 +71,7 @@ export default function CareerPath() {
   // Restore recommendations on mount
   React.useEffect(() => {
     const savedRecommendations = sessionStorage.getItem(
-      "careerPath_recommendations"
+      "careerPath_recommendations",
     );
     if (savedRecommendations) {
       setRecommendations(JSON.parse(savedRecommendations));
@@ -106,7 +109,7 @@ export default function CareerPath() {
     if (recommendations) {
       sessionStorage.setItem(
         "careerPath_recommendations",
-        JSON.stringify(recommendations)
+        JSON.stringify(recommendations),
       );
     }
   }, [recommendations]);
@@ -144,6 +147,23 @@ export default function CareerPath() {
 
   const handleViewJob = (recommendation) => {
     fetchJobDetail(recommendation, selectedSkills);
+  };
+
+  const handleViewCareerLadder = () => {
+    if (!jobDetail) return;
+    navigate('/career-ladder', {
+      state: {
+        userSkills: selectedSkills,
+        selectedDomain: jobDetail.domain,
+        recommendations: [jobDetail],
+        userProfile: {
+          experienceLevel: experienceLevel.value,
+          currentStatus: currentStatus.value,
+          educationLevel: educationLevel.value,
+          careerGoal: careerGoal.value,
+        }
+      }
+    });
   };
 
   // Optional: Add a function to clear saved state
@@ -212,6 +232,13 @@ export default function CareerPath() {
         onClose={closeDetail}
         jobDetail={jobDetail}
         isLoading={detailLoading}
+        onViewPath={handleViewCareerLadder}
+        userProfile={{
+          experienceLevel: experienceLevel.value,
+          currentStatus: currentStatus.value,
+          educationLevel: educationLevel.value,
+          careerGoal: careerGoal.value,
+        }}
       />
     </div>
   );
@@ -227,13 +254,19 @@ function ErrorMessage({ message }) {
   );
 }
 
-function RecommendationsSection({ recommendations, userSkills, onViewDetails }) {
+function RecommendationsSection({
+  recommendations,
+  userSkills,
+  onViewDetails,
+}) {
   return (
     <div className="mt-8">
       {/* Summary */}
       <RecommendationsSummary
         skillsCount={recommendations.skills_analyzed.length}
         rolesCount={recommendations.total_roles_compared}
+        domainFilterApplied={recommendations.domain_filter_applied}
+        preferredDomain={recommendations.preferred_domain}
       />
 
       {/* Title */}
@@ -247,7 +280,7 @@ function RecommendationsSection({ recommendations, userSkills, onViewDetails }) 
           key={rec.role_id}
           recommendation={rec}
           rank={index + 1}
-          isBestMatch={index === 0}
+          isBestMatch={rec.is_best_match || false}
           onViewDetails={onViewDetails}
           userSkills={userSkills}
         />

@@ -4,13 +4,13 @@
  */
 import React from "react";
 import { FaRocket } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
 export function NextRoleBadge({
   nextRole,
   nextRoleTitle,
   variant = "compact",
   showLadderButton = true,
+  onViewPath,
 }) {
   if (!nextRole) return null;
 
@@ -24,9 +24,9 @@ export function NextRoleBadge({
           <div className="text-xl font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent">
             {nextRoleTitle || nextRole}
           </div>
-          {showLadderButton && (
-            <Link
-              to="/career-ladder"
+          {showLadderButton && onViewPath && (
+            <button
+              onClick={onViewPath}
               className="px-4 py-2 text-white rounded-lg text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
               style={{
                 background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -41,7 +41,7 @@ export function NextRoleBadge({
               }}
             >
               View Career Path
-            </Link>
+            </button>
           )}
         </div>
       </div>
@@ -58,9 +58,9 @@ export function NextRoleBadge({
           {nextRoleTitle || nextRole}
         </span>
       </div>
-      {showLadderButton && (
-        <Link
-          to="/career-ladder"
+      {showLadderButton && onViewPath && (
+        <button
+          onClick={onViewPath}
           className="px-3 py-1.5 text-white rounded-lg text-xs font-semibold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap hover:scale-105"
           style={{
             background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
@@ -75,7 +75,7 @@ export function NextRoleBadge({
           }}
         >
           View Path
-        </Link>
+        </button>
       )}
     </div>
   );

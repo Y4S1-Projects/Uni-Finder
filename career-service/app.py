@@ -215,6 +215,7 @@ class CareerProgressionRequest(BaseModel):
     user_skill_ids: List[str]
     current_role_id: str = None
     target_domain: str
+    show_all_levels: bool = False  # If True, returns ALL levels in ladder (for network view)
 
 class ComparePathsRequest(BaseModel):
     user_skill_ids: List[str]
@@ -270,7 +271,8 @@ def analyze_progression_endpoint(req: CareerProgressionRequest):
         result = analyze_career_progression(
             user_skill_ids=req.user_skill_ids,
             current_role_id=req.current_role_id,
-            target_domain=req.target_domain.upper()
+            target_domain=req.target_domain.upper(),
+            show_all_levels=req.show_all_levels
         )
         return result
     except ValueError as e:
