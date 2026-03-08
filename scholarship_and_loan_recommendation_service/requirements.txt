@@ -4,6 +4,8 @@ uvicorn[standard]
 
 # Core ML / data dependencies for scholarship_loan_matcher_ml
 numpy
+
+
 pandas
 scikit-learn
 joblib
