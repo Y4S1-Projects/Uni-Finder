@@ -39,10 +39,6 @@ app.use(
 	}),
 );
 
-app.listen(PORT, () => {
-	console.log(`server listening on port ${PORT}!`);
-});
-
 // Health check endpoint
 app.get("/health", (req, res) => {
 	res.status(200).json({ status: "ok", service: "backend" });
@@ -70,4 +66,9 @@ app.use((err, req, res, next) => {
 		message,
 		statusCode,
 	});
+});
+
+//Start server (must be at the end after all routes are defined)
+app.listen(PORT, () => {
+	console.log(`server listening on port ${PORT}!`);
 });
