@@ -1,5 +1,7 @@
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const MATCHER_SERVICE_URL = process.env.REACT_APP_SCHOLARSHIP_MATCHER_URL;
+const MATCHER_SERVICE_URL = process.env.REACT_APP_SCHOLARSHIP_MATCHER_URL
+	? process.env.REACT_APP_SCHOLARSHIP_MATCHER_URL.replace(/\/+$/, "")
+	: null;
 
 if (!BACKEND_URL) {
 	throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");
@@ -9,6 +11,14 @@ if (!BACKEND_URL) {
 // Otherwise, fall back to the Node backend route for compatibility.
 const MATCH_BASE = (MATCHER_SERVICE_URL || `${BACKEND_URL}/api/scholarships`).replace(/\/+$/, "");
 const API_BASE = BACKEND_URL;
+
+// Dataset update & stats: when REACT_APP_SCHOLARSHIP_MATCHER_URL is set, these
+// call the scholarship service directly so admin can run update/stats without Node.
+// Matcher service must expose: POST /matcher/update-datasets, GET /matcher/update-datasets/stats
+// with the same JSON shape as the Node backend (success, updated_at, summary; success, scholarships, loans, last_updated).
+const DATASET_API_BASE = MATCHER_SERVICE_URL || API_BASE;
+const DATASET_UPDATE_PATH = MATCHER_SERVICE_URL ? "/matcher/update-datasets" : "/api/update-datasets";
+const DATASET_STATS_PATH = MATCHER_SERVICE_URL ? "/matcher/update-datasets/stats" : "/api/update-datasets/stats";
 
 export async function requestMatches(profile, options = {}) {
 	const { topN = 5, matchType } = options;
@@ -50,7 +60,7 @@ export async function requestMatches(profile, options = {}) {
 }
 
 export async function triggerDatasetUpdate() {
-	const response = await fetch(`${API_BASE}/api/update-datasets`, {
+	const response = await fetch(`${DATASET_API_BASE}${DATASET_UPDATE_PATH}`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -67,7 +77,7 @@ export async function triggerDatasetUpdate() {
 }
 
 export async function getDatasetStats() {
-	const response = await fetch(`${API_BASE}/api/update-datasets/stats`, {
+	const response = await fetch(`${DATASET_API_BASE}${DATASET_STATS_PATH}`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
