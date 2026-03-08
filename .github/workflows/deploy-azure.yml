@@ -9,7 +9,7 @@ env:
   AZURE_RESOURCE_GROUP: unifinder-rg
   AZURE_LOCATION: eastus
   ENVIRONMENT: prod
-  ACR_NAME: unifinderacr2026y4s1  # Globally unique ACR name
+  ACR_NAME: unifinderacr2026main01
 
 jobs:
   deploy:
