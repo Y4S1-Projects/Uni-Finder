@@ -7,21 +7,33 @@ import Review from "../models/review.model.js";
 
 export const signup=async(req,res,next)=>{
     const {username,email,password}=req.body;
+    if (!username || !email || !password) {
+        return next(errorHandler(400, "Username, email, and password are required"));
+    }
     const hashPassword=bcryptjs.hashSync(password,10)
     const newUser=new User({username,email,password:hashPassword});
     try{
         await newUser.save();
-        res.status(201).json({message:"user created successfully"});
+        res.status(201).json({ success: true, message: "User created successfully" });
     }catch(error){
+        if (error.code === 11000) {
+            const field = Object.keys(error.keyPattern || {})[0] || "field";
+            return next(errorHandler(400, `${field === "email" ? "Email" : "Username"} already exists`));
+        }
         next(error);
     }
-   
 }
-//login 
+//login - accepts email or username (if no @, treat as username)
 export const signin =async(req,res,next)=>{
     const{email,password}=req.body
+    if (!email || !password) {
+        return next(errorHandler(400, "Email/username and password are required"));
+    }
     try{
-        const validUser=await User.findOne({email})
+        let validUser = await User.findOne({ email });
+        if (!validUser && !email.includes("@")) {
+            validUser = await User.findOne({ username: email });
+        }
         if(!validUser) return next(errorHandler(404,'user not found'));
         const validPassword = bcryptjs.compareSync(password,validUser.password)
         if(!validPassword) return next(errorHandler(401,'wrong credentials'))

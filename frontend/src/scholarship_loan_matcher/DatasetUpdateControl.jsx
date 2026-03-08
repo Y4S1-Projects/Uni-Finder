@@ -10,6 +10,7 @@ export default function DatasetUpdateControl() {
   const [updateStatus, setUpdateStatus] = useState(null); // 'success' | 'error' | null
   const [errorMessage, setErrorMessage] = useState('');
   const [summary, setSummary] = useState(null);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   // Load current stats on mount
   useEffect(() => {
@@ -94,6 +95,20 @@ export default function DatasetUpdateControl() {
            null;
   };
 
+  const getNewScholarshipCount = () => {
+    if (!summary) return null;
+    return summary.cleaner_results?.scholarships?.new_unique_count ??
+           summary.cleaner_results?.scholarships?.new_count ??
+           null;
+  };
+
+  const getNewLoanCount = () => {
+    if (!summary) return null;
+    return summary.cleaner_results?.loans?.new_unique_count ??
+           summary.cleaner_results?.loans?.new_count ??
+           null;
+  };
+
   return (
     <div className="dataset-update-control">
       <div className="dataset-update-control__header">
@@ -106,7 +121,7 @@ export default function DatasetUpdateControl() {
       <div className="dataset-update-control__actions">
         <button
           className="dataset-update-control__btn"
-          onClick={handleUpdate}
+          onClick={() => setShowConfirm(true)}
           disabled={isLoading}
         >
           {isLoading ? (
@@ -119,6 +134,42 @@ export default function DatasetUpdateControl() {
           )}
         </button>
       </div>
+
+      {showConfirm && !isLoading && (
+        <div className="dataset-update-control__modal-backdrop">
+          <div className="dataset-update-control__modal">
+            <h4 className="dataset-update-control__modal-title">Confirm dataset update</h4>
+            <p className="dataset-update-control__modal-body">
+              You are about to refresh the live scholarship and loan datasets. This process runs
+              a full scraping and cleaning pipeline and can take approximately 10–20 minutes to
+              complete. During this time, the server will be busy but students can still browse
+              using the existing data.
+            </p>
+            <p className="dataset-update-control__modal-body">
+              Are you sure you want to start the update now?
+            </p>
+            <div className="dataset-update-control__modal-actions">
+              <button
+                type="button"
+                className="dataset-update-control__modal-btn dataset-update-control__modal-btn--secondary"
+                onClick={() => setShowConfirm(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="dataset-update-control__modal-btn dataset-update-control__modal-btn--primary"
+                onClick={() => {
+                  setShowConfirm(false);
+                  handleUpdate();
+                }}
+              >
+                Yes, start update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Last Updated Timestamp - displayed in place of current dataset */}
       {lastUpdate && (
@@ -157,16 +208,31 @@ export default function DatasetUpdateControl() {
           <p className="dataset-update-control__success-message">
             ✓ Dataset update completed successfully!
           </p>
+          <p className="dataset-update-control__current-stats-title">
+            <strong>Newly added data</strong>
+          </p>
           <div className="dataset-update-control__stats">
+            {getNewScholarshipCount() !== null && (
+              <div className="dataset-update-control__stat-item">
+                <span className="dataset-update-control__stat-label">New scholarships added:</span>
+                <span className="dataset-update-control__stat-value">{getNewScholarshipCount()}</span>
+              </div>
+            )}
             {getScholarshipCount() !== null && (
               <div className="dataset-update-control__stat-item">
-                <span className="dataset-update-control__stat-label">Scholarships:</span>
+                <span className="dataset-update-control__stat-label">Total scholarships now:</span>
                 <span className="dataset-update-control__stat-value">{getScholarshipCount()}</span>
+              </div>
+            )}
+            {getNewLoanCount() !== null && (
+              <div className="dataset-update-control__stat-item">
+                <span className="dataset-update-control__stat-label">New loans added:</span>
+                <span className="dataset-update-control__stat-value">{getNewLoanCount()}</span>
               </div>
             )}
             {getLoanCount() !== null && (
               <div className="dataset-update-control__stat-item">
-                <span className="dataset-update-control__stat-label">Loans:</span>
+                <span className="dataset-update-control__stat-label">Total loans now:</span>
                 <span className="dataset-update-control__stat-value">{getLoanCount()}</span>
               </div>
             )}

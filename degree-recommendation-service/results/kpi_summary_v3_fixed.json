@@ -1,0 +1,22 @@
+{
+  "engine_version": "v3_dream_vs_reality",
+  "total_test_cases": 11,
+  "valid_test_cases": 11,
+  "failed_test_cases": 0,
+  "avg_p_at_5": 0.0727,
+  "avg_mrr": 0.2121,
+  "avg_ndcg_at_5": 0.2511,
+  "interpretation": {
+    "p_at_5": "[POOR] P@5 of 7.3% is below target",
+    "mrr": "[POOR] MRR of 21.2% is below target",
+    "ndcg_at_5": "[POOR] NDCG@5 of 25.1% is below target"
+  },
+  "improvements": [
+    "Career-to-Degree Mapping (query expansion)",
+    "Hybrid Search (Dense 70% + Sparse 30%)",
+    "Weighted Corpus Construction (3x job roles, 2x skills)",
+    "HARD ELIGIBILITY FILTERING (NEW in V3)",
+    "Dream vs. Reality Separation (NEW in V3)"
+  ],
+  "evaluated_at": "2026-03-05T14:49:22.309210"
+}

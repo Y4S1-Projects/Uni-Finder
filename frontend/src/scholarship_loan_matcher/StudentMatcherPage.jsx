@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import DatasetUpdateControl from './DatasetUpdateControl';
+import DatasetStatus from './DatasetStatus';
 import './styles.css';
 
 const FEATURES = [
@@ -25,10 +25,10 @@ export default function StudentMatcherPage() {
     <div className="matcher-landing">
       <section className="matcher-landing__hero">
         <p className="matcher-page__eyebrow">Funding Discovery Workspace</p>
-        <h1>Scholarship & Loan Matching</h1>
+        <h1>Find Your Perfect Scholarship & Funding Match</h1><br></br>
         <p className="matcher-page__lead">
-          Explore the latest education funding opportunities, then jump into the dedicated flows for
-          either scholarships or education loans based on your current priority.
+        Tell us about your academic profile and financial goals, and our AI system will match you with
+        scholarships and loans tailored to your unique situation. Every opportunity is ranked by relevance.
         </p>
         <div className="matcher-landing__cta">
           <Link className="matcher-landing__btn matcher-landing__btn--primary" to="/scholarship-matcher/scholarships">
@@ -43,7 +43,7 @@ export default function StudentMatcherPage() {
 
       <section className="matcher-landing__split">
         <article className="matcher-landing__card">
-          <h2>Scholarship Flow</h2>
+          <h2>Scholarship Recommendations</h2>
           <p>
             Ideal for students tracking grants, bursaries, and merit awards. Feed the form with academic
             milestones, need level, and study interests to uncover the closest matches.
@@ -54,12 +54,12 @@ export default function StudentMatcherPage() {
             <li>Deadline prioritization</li>
           </ul>
           <Link className="matcher-landing__btn matcher-landing__btn--secondary" to="/scholarship-matcher/scholarships">
-            Launch Scholarship Flow
+            Launch Scholarship Matcher
           </Link>
         </article>
 
         <article className="matcher-landing__card">
-          <h2>Loan Flow</h2>
+          <h2>Loan Recommendations</h2>
           <p>
             Tailored for students comparing educational loans. Capture repayment preferences, desired
             ticket size, and collateral readiness to surface viable options fast.
@@ -70,7 +70,7 @@ export default function StudentMatcherPage() {
             <li>Funding amount normalization</li>
           </ul>
           <Link className="matcher-landing__btn matcher-landing__btn--secondary" to="/scholarship-matcher/loans">
-            Launch Loan Flow
+            Launch Loan Matcher
           </Link>
         </article>
       </section>
@@ -85,7 +85,7 @@ export default function StudentMatcherPage() {
       </section>
 
       <section className="matcher-landing__update-section">
-        <DatasetUpdateControl />
+        <DatasetStatus />
       </section>
     </div>
   );

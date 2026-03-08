@@ -1,0 +1,117 @@
+{
+	"Physical Science": {
+		"description": "Suitable for students interested in Engineering, Medicine, Physical Sciences, Technology and IT fields",
+		"core_subjects": ["Mathematics", "Science"],
+		"minimum_requirement": {
+			"Mathematics": "C",
+			"Science": "S"
+		},
+		"ideal_score": {
+			"Mathematics": "A",
+			"Science": "A"
+		},
+		"target_careers": ["Engineer", "Doctor", "Scientist", "Software Developer", "Architect", "Pharmacist", "Researcher"]
+	},
+	"Biological Science": {
+		"description": "Suitable for students interested in Medicine, Allied Health Sciences, Agriculture, Veterinary Science",
+		"core_subjects": ["Science", "Mathematics"],
+		"minimum_requirement": {
+			"Science": "C",
+			"Mathematics": "S"
+		},
+		"ideal_score": {
+			"Science": "A",
+			"Mathematics": "B"
+		},
+		"target_careers": [
+			"Doctor",
+			"Nurse",
+			"Veterinarian",
+			"Agricultural Officer",
+			"Medical Laboratory Technologist",
+			"Pharmacist"
+		]
+	},
+	"Commerce": {
+		"description": "Suitable for students interested in Business, Accounting, Economics, Management fields",
+		"core_subjects": ["Mathematics", "Business & Accounting Studies"],
+		"minimum_requirement": {
+			"Mathematics": "S"
+		},
+		"ideal_score": {
+			"Mathematics": "B",
+			"Business & Accounting Studies": "A"
+		},
+		"target_careers": [
+			"Accountant",
+			"Banker",
+			"Business Analyst",
+			"Entrepreneur",
+			"Financial Analyst",
+			"Marketing Manager",
+			"Human Resource Manager"
+		]
+	},
+	"Technology": {
+		"description": "Suitable for students interested in Engineering Technology, Information Technology, Technical fields",
+		"core_subjects": ["Science", "Mathematics"],
+		"minimum_requirement": {
+			"Science": "S",
+			"Mathematics": "S"
+		},
+		"ideal_score": {
+			"Science": "B",
+			"Mathematics": "B"
+		},
+		"target_careers": [
+			"Technician",
+			"IT Professional",
+			"Engineering Technologist",
+			"Technical Officer",
+			"Network Engineer"
+		]
+	},
+	"Arts": {
+		"description": "Suitable for students interested in Languages, Social Sciences, Humanities, Law, Teaching",
+		"core_subjects": ["First Language", "History"],
+		"minimum_requirement": {},
+		"ideal_score": {
+			"First Language": "B",
+			"History": "B"
+		},
+		"target_careers": ["Teacher", "Lawyer", "Journalist", "Social Worker", "Government Officer", "Translator", "Author"]
+	},
+	"grade_mappings": {
+		"A": 9,
+		"B": 8,
+		"C": 7,
+		"S": 6,
+		"W": 5,
+		"F": 0
+	},
+	"subjects": {
+		"core": ["Mathematics", "Science", "First Language", "English", "History", "Religion"],
+		"optional": [
+			"Business & Accounting Studies",
+			"Geography",
+			"Citizenship Education",
+			"Sinhala Literature",
+			"Tamil Literature",
+			"English Literature",
+			"Buddhism",
+			"Hinduism",
+			"Islam",
+			"Christianity",
+			"Health & Physical Education",
+			"Art",
+			"Music",
+			"Dancing",
+			"Drama & Theatre",
+			"ICT",
+			"Agriculture & Food Technology",
+			"Design & Mechanical Technology",
+			"Home Economics",
+			"Eastern Music"
+		]
+	}
+}

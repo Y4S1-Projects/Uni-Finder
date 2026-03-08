@@ -1,0 +1,15 @@
+{
+  "record_count": 127,
+  "text_fields": [
+    "name",
+    "description",
+    "eligibility",
+    "program_type",
+    "loan_type",
+    "region",
+    "special_benefits"
+  ],
+  "vectorizer_path": "tfidf_vectorizer.joblib",
+  "model_path": "knn_similarity_model.joblib",
+  "processed_dataset_path": "processed_dataset.json"
+}

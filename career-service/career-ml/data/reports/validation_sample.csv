@@ -1,0 +1,101 @@
+job_index,job_title,skill_count,avg_confidence,top_10_skills,job_category,seniority_level,role_id,role_title
+88,"Mobile Developer (iOS,Android)",21,0.9952,java;javascript;sql;css;html;mysql;rest;json;xml;j2ee,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+150,Senior Software Engineer (ReactJS),27,0.9037,javascript;git;security;api;html5;network;games;implementation;react;webpack,frontend,senior,JR_FE_DEV,Junior Frontend Developer
+339,Fullstack Java Developer - Up to $3000,40,0.9875,java;javascript;css;html;mysql;git;rest;spring;json;api,backend,mid,JR_BE_DEV,Junior Backend Developer
+351,QA QC Manual/Automation to$2k4+1Mo Bonus,42,0.9333,java;javascript;sql;python;git;database;api;github;node.js;ruby,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+735,"PHP Developers (SQL, Laravel)",16,0.9938,javascript;sql;css;html;mysql;git;php;laravel;postgresql;bug fixing,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+1006,".NET Web Developer (C#, MVC)",8,1.0,css;jquery;mvc;bootstrap;mongodb;.net;asp.net;web developer,backend,mid,JR_BE_DEV,Junior Backend Developer
+1056,Frontend Developer (JQuery/ ReactJS),25,0.976,javascript;html;mobile;rest;jquery;php;api;html5;web developer;bootstrap,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+1453,Andriod Developer,14,0.9857,rest;soap;android developer;network;threading;web services;gateway;android studio;agile;android,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+1530,Andriod Developer,17,0.9941,java;mobile;database;json;xml;debugging;problem solving;android development;software developer;application development,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+1688,Android Developer,15,1.0,mobile;rest;json;mvc;android sdk;bug fixing;software development;mobile development;application performance;computer science,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+1720,Android Developer,16,1.0,mobile;rest;json;android developer;android sdk;bug fixing;object oriented programming;mobile development;visual studio;application performance,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+1869,Android Developer,10,1.0,mobile;rest;json;ios;android developer;android development;android;mobile applications;flutter;data analyst,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+2150,Angular Developer,16,0.9812,javascript;css;html;security;debugging;problem solving;angularjs;fundamentals;typescript;angular,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+2227,AngularJS Developer,10,1.0,javascript;css;html;mvc;angularjs;project management;computer science;grunt;computer engineering;project manager,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+2298,Associate Java Backend Developer,43,0.9605,java;javascript;sql;mysql;git;infrastructure;database;rest;spring;json,backend,mid,JR_BE_DEV,Junior Backend Developer
+2342,Back End Engineer,35,0.9543,java;javascript;python;css;mobile;git;database;security;php;html5,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+2753,Business Analyst,33,0.9576,sql;database;devops;business analyst;software design;testing;business requirements;agile;project delivery;computer science,database,mid,JR_BUSINESS_ANALYST,Business Analyst (Entry Level)
+2874,Data Analyst,29,0.9828,sql;xml;information technology;rdbms;hardware;data analyst;business analysis;microsoft technologies;production support;tableau,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+2954,Data Analyst,16,0.9375,sql;python;information technology;data analyst;testing;tableau;computer science;information systems;business analyst;software engineer,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+2966,Data Analyst,6,0.9833,python;data analysis;data analytics;data analyst;project manager;analytical thinking,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+3024,Data Analyst,15,0.94,sql;python;machine learning;algorithms;data analyst;testing;tableau;computer science;dashboards;data science,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+3269,Data Engineer,31,0.971,javascript;sql;database;security;xml;data warehousing;business requirements;agile;etl;tableau,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+3562,Deep Learning Engineer,21,0.9952,sql;python;problem solving;machine learning;algorithms;information technology;network;data mining;testing;use cases,ai_ml,mid,AI_ML_ENGINEER_INT,AI / ML Engineer (Entry Level)
+3656,DevOps Engineer,24,0.9667,javascript;python;mysql;infrastructure;database;php;linux;devops;docker;mongodb,devops,mid,DEVOPS_TRAINEE,DevOps Trainee
+3776,Django Developer,16,0.8688,python;rest;devops;mongodb;django;software development;agile;programming;angular;project manager,backend,mid,JR_BE_DEV,Junior Backend Developer
+3842,Embedded Software Engineer,15,0.9933,linux;debugging;data structures;software design;network;networking;testing;coding;programming;embedded linux,general,mid,JR_SE,Junior Software Engineer
+4034,Full Stack Developer,16,0.95,java;sql;python;css;html;php;api;web developer;bootstrap;codeigniter,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+4110,Full Stack Developer,16,0.95,java;sql;python;css;html;php;api;web developer;bootstrap;codeigniter,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+4291,iOS Developer,19,0.9684,mobile;git;problem solving;oops;ios;github;swift;mvvm;memory management;testing,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+4475,iOS Developer,19,0.9895,mobile;rest;json;api;xml;debugging;ios;ios developer;rest api;oop,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+4509,iOS Developer,14,1.0,mobile;information technology;ios;ios developer;cocoa touch;software development;graphics;mobile development;ios development;computer science,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+4560,IT Manager,20,0.92,database;security;information technology;software developer;network;it manager;database administrator;implementation;system administrator;data analyst,database,director,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+4606,IT Project Manager,8,0.875,web development;it manager;information systems;project manager;business analyst;web developer;people management;stakeholder management,management,director,JR_SE,Junior Software Engineer
+4629,Java Backend Developer,37,0.9162,java;sql;rest;security;spring;linux;j2ee;oracle;spring boot;mvc,backend,mid,JR_BE_DEV,Junior Backend Developer
+4676,Java Developer,13,0.8846,java;java developer;spring;spring boot;application development;aws;aws lambda;aws ecs;aws fargate;aws cloudwatch,backend,mid,JR_BE_DEV,Junior Backend Developer
+4702,Java Developer,30,0.9233,java;css;java developer;rest;security;spring;devops;hibernate;spring boot;mvc,backend,mid,JR_BE_DEV,Junior Backend Developer
+4807,Java Developer,32,0.9906,java;javascript;sql;css;html;mysql;infrastructure;rest;jquery;security,backend,mid,JR_BE_DEV,Junior Backend Developer
+5129,Java Developer,30,0.95,java;python;database;security;algorithms;big data;apache;hive;data mining;data warehousing,cloud,mid,DEVOPS_TRAINEE,DevOps Trainee
+5186,Java Developer,27,0.9778,java;javascript;sql;css;html;java developer;hibernate;debugging;problem solving;j2ee,backend,mid,JR_BE_DEV,Junior Backend Developer
+5195,Java Developer,29,0.9241,java;java developer;infrastructure;rest;spring;j2ee;spring boot;written communication;messaging;software development,backend,mid,JR_BE_DEV,Junior Backend Developer
+5400,Java Developer,8,1.0,java;java developer;hibernate;j2ee;software engineering;computer science;software engineer;problem solving,backend,mid,JR_BE_DEV,Junior Backend Developer
+5407,Java Developer,15,0.9733,java;java developer;database;spring;linux;xml;data analysis;sybase;programming;system administrator,backend,mid,JR_BE_DEV,Junior Backend Developer
+5664,Java Developer,30,0.96,java;mobile;git;java developer;rest;spring;json;linux;api;xml,backend,mid,JR_BE_DEV,Junior Backend Developer
+5872,Java Developer,16,0.9437,java;java developer;api;written communication;solution architect;telecom;forms;consultant;configuration;kubernetes,backend,mid,JR_BE_DEV,Junior Backend Developer
+5936,Java Developer,42,0.9405,java;javascript;sql;java developer;database;spring;devops;oracle;spring boot;mvc,backend,mid,JR_BE_DEV,Junior Backend Developer
+6264,Mobile Application Developer,19,0.9842,javascript;css;html;mobile;rest;json;xml;problem solving;ajax;bootstrap,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+6277,Mobile Application Developer,21,0.8714,mobile;rest;mvc;ios;swift;application development;android studio;sqlite;mobile application development;android,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+6367,Network Administrator,22,0.9773,infrastructure;security;hardware;project manager;network;project management;forms;information systems;implementation;mentoring,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+6475,Network Analyst,12,0.9917,team player;system administrator;data entry;data entry operator;computer operator;operator;network;desktop support engineer;desktop engineer;data analyst,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+6505,Network Engineer,16,0.9938,security;network engineer;windows;hardware;network;system administrator;networking;hardware engineer;installation;technical support engineer,general,mid,JR_SE,Junior Software Engineer
+6885,Network Engineer,25,0.992,infrastructure;security;network engineer;technical skills;cisco;hardware;network;wan;networking;protocols,devops,mid,DEVOPS_TRAINEE,DevOps Trainee
+6908,Network Engineer,22,0.9818,linux;windows;unix;hardware;network;orchestration;networking;testing;ccna;ccnp,general,mid,JR_SE,Junior Software Engineer
+7105,Network Engineer,20,0.985,security;network engineer;hardware;network;networking;testing;hardware engineer;network configuration maintenance;configuration;operating system,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+7109,Network Engineer,15,1.0,linux;apache;windows;unix;cisco;network;wan;lan;vpn;windows server,devops,mid,DEVOPS_TRAINEE,DevOps Trainee
+7652,Python Developer,10,0.94,javascript;python;security;html5;django;computer science;data analyst;problem solving;data loss prevention;rest,backend,mid,JR_BE_DEV,Junior Backend Developer
+8012,Senior Consultant,19,0.9368,sql;python;artificial intelligence;project manager;consultant;project delivery;games;data analytics;data science;mentoring,devops,senior,DEVOPS_TRAINEE,DevOps Trainee
+8029,Senior Data Analyst,28,0.9179,sql;python;infrastructure;data analyst;use cases;dashboards;data science;programming;r programming;snowflake,data,senior,DATA_ANALYST_INT,Data Analyst (Entry Level)
+8066,Senior Data Engineer,25,0.9,java;sql;python;problem solving;technical skills;agile;aws;etl;data pipeline;decision making,data,senior,DATA_ANALYST_INT,Data Analyst (Entry Level)
+8109,Senior DevOps Engineer,40,0.935,java;python;database;security;devops;docker;scala;ruby;agile;aws,devops,senior,DEVOPS_TRAINEE,DevOps Trainee
+8216,Senior iOS Developer,30,0.9533,mobile;git;security;api;team player;ios;swift;mvvm;memory management;multithreading,mobile,senior,JR_MOBILE_DEV,Junior Mobile Developer
+8240,Senior iOS Developer,24,0.8708,rest;debugging;ios;ios developer;swift;graphics;agile;design patterns;android;push notifications,mobile,senior,JR_MOBILE_DEV,Junior Mobile Developer
+8396,Senior Solution Architect,36,0.8778,javascript;sql;database;api;devops;problem solving;docker;nosql;apache;messaging,frontend,senior,JR_FE_DEV,Junior Frontend Developer
+8639,Software Engineer,12,0.9917,security;linux;algorithms;software engineer;network;protocols;troubleshooting;programming;network security;data analyst,security,mid,JR_SYS_ADMIN,Junior System Administrator
+8810,Software Engineer,7,0.7714,java;php;software engineer;accountability;git;agile;problem solving,backend,mid,JR_BE_DEV,Junior Backend Developer
+8818,Software Engineer,7,1.0,javascript;software engineer;senior software engineer;data analytics;programming;data analyst;.net,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+8969,Solution Architect,26,0.9192,sql;mysql;infrastructure;database;security;linux;devops;oracle;windows;solution architect,database,senior,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+9237,Sr. Data Engineer,8,0.975,algorithms;crm;data analysis;data engineer;business analyst;data analyst;data governance;analytical thinking,data,senior,DATA_ANALYST_INT,Data Analyst (Entry Level)
+9239,Sr. React Lead Architect,17,0.8118,javascript;json;react.js;react;san;webpack;redux;data analyst;web developer;flux cd,frontend,senior,JR_FE_DEV,Junior Frontend Developer
+10214,Andriod Developer,30,0.9233,java;mobile;json;xml;debugging;algorithms;data structures;soap;android developer;android sdk,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+10381,Andriod Developer,15,0.9933,javascript;sql;html;mobile;json;xml;oops;technical skills;android sdk;application development,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+10476,Andriod Developer,8,1.0,java;json;xml;android developer;android sdk;testing;coding;android,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+10536,Andriod Developer,20,0.985,java;git;database;json;storage;data structures;svn;android sdk;mvvm;threading,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+10798,Andriod Developer,29,0.9931,java;sql;mobile;mysql;database;jquery;json;html5;xml;oracle,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+10977,Business Analyst,19,0.9789,infrastructure;team player;information technology;business analyst;project manager;project management;business requirements;technology consulting;computer science;brd,devops,mid,JR_BUSINESS_ANALYST,Business Analyst (Entry Level)
+11076,Business Analyst,5,0.98,business analyst;telecom;digital transformation;system administrator;change management,general,mid,JR_BUSINESS_ANALYST,Business Analyst (Entry Level)
+11169,Data Analyst,18,0.9389,python;mysql;algorithms;data analyst;games;tableau;storytelling;goal setting;innovation;sql,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+11287,Data Architect,9,0.8889,python;mysql;team player;implementation;verbal communication;sql;data analyst;system design;technical requirements,database,senior,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+11401,Data Engineer,19,0.9632,java;python;machine learning;big data;apache;hadoop;etl;computer science;data engineer;pytorch,data,mid,DATA_ANALYST_INT,Data Analyst (Entry Level)
+11749,DevOps Engineer,31,0.9484,java;python;infrastructure;linux;devops;docker;written communication;maven;windows;gradle,devops,mid,DEVOPS_TRAINEE,DevOps Trainee
+11879,DevOps Engineer,40,0.9625,python;infrastructure;security;linux;devops;software engineering;windows;github;ruby;network,devops,mid,DEVOPS_TRAINEE,DevOps Trainee
+11997,Full Stack Developer,16,0.95,java;sql;python;css;html;php;api;web developer;bootstrap;codeigniter,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+12402,ITManager,22,0.9273,database;security;information technology;software developer;network;computer operator;it manager;database administrator;implementation;operator,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+12979,Java Developer,7,1.0,java;python;java developer;spring;hibernate;spring framework;jdbc,backend,mid,JR_BE_DEV,Junior Backend Developer
+13032,Java Developer,13,1.0,java;mobile;java developer;rest;spring;j2ee;soap;software development;telecom;verbal communication,backend,mid,JR_BE_DEV,Junior Backend Developer
+13143,Machine Learning Engineer,8,0.75,machine learning;web development;web developer;project manager;git;agile;problem solving;testing,ai_ml,mid,AI_ML_ENGINEER_INT,AI / ML Engineer (Entry Level)
+13244,Mobile Application Developer,26,0.9346,mobile;git;devops;storage;ios;swift;android development;cocoa touch;threading;xcode,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+13254,Mobile Application Developer,12,1.0,java;css;html;mobile;xml;ios;android sdk;objective c;iphone;cocoa,mobile,mid,JR_MOBILE_DEV,Junior Mobile Developer
+13379,Network Engineer,27,0.9778,security;network engineer;cisco;network;wan;ccna;switching;routing;lan;firewall,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+13511,Network Engineer,34,0.9765,infrastructure;security;network engineer;cisco;network;wan;bgp;ospf;networking;testing,devops,mid,DEVOPS_TRAINEE,DevOps Trainee
+13618,Php Developer,8,0.9875,javascript;jquery;php;html5;php developer;computer science;web developer;user experience focus,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+13707,Php Developer,13,0.8462,php;wordpress;laravel;oops;php developer;codeigniter;yii;programming;angular;javascript,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+13858,Project Manager,22,0.9136,problem solving;project manager;project management;testing;leadership skills;pmp;project plan;facilitation;decision making;software engineer,management,director,JR_SE,Junior Software Engineer
+13891,Project Manager,5,0.8,business analyst;project manager;web developer;people management;stakeholder management,management,director,JR_SE,Junior Software Engineer
+14030,Software Architect,26,0.9192,python;security;devops;algorithms;uml;protocols;agile;aws;middleware;system architecture,devops,senior,DEVOPS_TRAINEE,DevOps Trainee
+14062,Software Engineer,23,0.9478,javascript;sql;html;jquery;api;ajax;mvc;.net;angularjs;asp.net,frontend,mid,JR_FE_DEV,Junior Frontend Developer
+14086,Software Engineer,27,0.9556,java;database;rest;spring;hibernate;docker;machine learning;oracle;nosql;software engineer,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+14358,System Administrator,22,0.9818,infrastructure;security;linux;network;networking;routing;firewall;vpn;aws;mpls,cloud,mid,DEVOPS_TRAINEE,DevOps Trainee
+14438,System Engineer,16,0.975,infrastructure;uml;software development;testing;system engineer;agile;coding;computer science;innovation;system administrator,devops,mid,DEVOPS_TRAINEE,DevOps Trainee
+14471,System Engineer,9,1.0,mysql;infrastructure;linux;testing;system engineer;configuration;documentation;system administrator;software engineer,database,mid,DATA_ENGINEER_INT,Data Engineer (Entry Level)
+15118,AI/ML Engineer,6,0.6667,python;tensorflow;git;agile;problem solving;testing,ai_ml,mid,AI_ML_ENGINEER_INT,AI / ML Engineer (Entry Level)

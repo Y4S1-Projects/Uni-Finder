@@ -18,6 +18,7 @@ export default function SignUp() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setError(false);
 		try {
 			setLoading(true);
 			const res = await fetch(`${API_BASE}/api/auth/signup`, {
@@ -27,19 +28,17 @@ export default function SignUp() {
 				},
 				body: JSON.stringify(formdata),
 			});
-			const data = await res.json();
+			const data = await res.json().catch(() => ({}));
 			setLoading(false);
-			if (data.success === false) {
-				setError(true);
+			if (!res.ok || data.success === false) {
+				setError(data.message || "Sign up failed. Username or email may already exist.");
 				return;
 			}
-			navigate("/signIn");
+			navigate("/signInNew");
 		} catch (error) {
 			setLoading(false);
-			setError(true);
+			setError("Something went wrong. Please try again.");
 		}
-
-		//console.log(data)
 	};
 
 	return (
@@ -76,10 +75,10 @@ export default function SignUp() {
 
 			<div>
 				<p>have an account </p>
-				<Link to='/sign-in'>
+				<Link to='/signInNew'>
 					<span className='text-blue-500'>Sign In</span>
 				</Link>
-				<p className='text-red-700 mt-5'>{error && "Something went wrong!"}</p>
+				<p className='text-red-700 mt-5'>{error && error}</p>
 			</div>
 		</div>
 	);

@@ -1,47 +1,72 @@
 # app/engines/cutoff_matcher.py
-import numpy as np
-from app.engines.similarity_engine import SimilarityEngine
+from typing import Optional, Tuple
 from app.repositories.cutoff_repository import CutoffRepository
 
 
 class CutoffMatcher:
-    def __init__(self):
-        self.similarity_engine = SimilarityEngine()
-        self.cutoff_repo = CutoffRepository()
+    """
+    Matches degree programs to their Z-score cutoffs using the new dataset structure.
+    Uses course codes for precise matching.
+    """
 
+    def __init__(self):
+        self.cutoff_repo = CutoffRepository()
         # Load cutoff data once
         self.cutoff_repo.load()
 
-        # Unique program names in cutoff dataset
-        self.cutoff_names = list(
-            set(name for (name, _) in self.cutoff_repo._cache.keys())
-        )
+    def get_cutoff_for_course(
+        self,
+        course_code: str,
+        district: str,
+        preferred_university: Optional[str] = None,
+    ) -> Tuple[Optional[float], str]:
+        """
+        Get Z-score cutoff for a course in a specific district.
 
-        # Precompute embeddings
-        self.cutoff_vectors = [
-            self.similarity_engine.encode_text(name) for name in self.cutoff_names
-        ]
+        Args:
+            course_code: Course code from University_Courses_Dataset
+            district: Student's district
+            preferred_university: If specified, get cutoff for that university
 
-    def get_cutoff_semantic(
-        self, program_name: str, district: str, threshold: float = 0.85
-    ):
-        query_vec = self.similarity_engine.encode_text(program_name)
-
-        scores = [float(np.dot(query_vec, vec)) for vec in self.cutoff_vectors]
-
-        best_idx = int(np.argmax(scores))
-        best_score = scores[best_idx]
-
-        if best_score < threshold:
-            return None, f"No semantic match (confidence={best_score:.2f})"
-
-        matched_name = self.cutoff_names[best_idx]
-        cutoff = self.cutoff_repo.get_cutoff(matched_name, district)
-
-        if cutoff is None:
-            return (
-                None,
-                f"Matched '{matched_name}' but no cutoff for district {district}",
+        Returns:
+            (cutoff_zscore, explanation_message)
+        """
+        if preferred_university:
+            # Get cutoff for specific university
+            cutoff = self.cutoff_repo.get_cutoff(
+                course_code, preferred_university, district
             )
+            if cutoff is not None:
+                return cutoff, f"Cutoff for {preferred_university}: {cutoff:.4f}"
+            else:
+                return (
+                    None,
+                    f"No cutoff data for {preferred_university} in {district} (may be NQC)",
+                )
 
-        return cutoff, f"Matched '{matched_name}' (confidence={best_score:.2f})"
+        # Get minimum cutoff across all universities offering this course
+        result = self.cutoff_repo.get_min_cutoff_for_course(course_code, district)
+
+        if result:
+            min_zscore, university = result
+            return min_zscore, f"Min cutoff: {min_zscore:.4f} at {university}"
+        else:
+            return None, f"No cutoff data available for district {district}"
+
+    def get_all_university_cutoffs(self, course_code: str, district: str) -> list:
+        """
+        Get cutoffs for all universities offering a course in a district.
+        Returns list of (university, zscore) tuples.
+        """
+        all_offerings = self.cutoff_repo.get_all_cutoffs_for_course(course_code)
+
+        results = []
+        for offering in all_offerings:
+            university = offering["university"]
+            zscore = offering["cutoffs_by_district"].get(district)
+            if zscore is not None:
+                results.append((university, zscore))
+
+        # Sort by Z-score (ascending - easier first)
+        results.sort(key=lambda x: x[1])
+        return results

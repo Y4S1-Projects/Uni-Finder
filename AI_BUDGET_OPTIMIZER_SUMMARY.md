@@ -197,3 +197,15 @@ curl -X POST http://127.0.0.1:5001/budget/predict \
 Your AI-Powered Student Budget Optimizer is now fully implemented and ready for deployment. The system exceeds all target specifications and provides a solid foundation for Sri Lankan students to manage their finances intelligently.
 
 **🚀 The system is live and accessible at: http://127.0.0.1:5001/budget**
+
+
+**python model run 
+
+source "/Users/shehansalitha/Desktop/research implementation/Uni-Finder/.venv/bin/activate"
+cd budget_optimizer_service
+python3 app.py
+
+
+
+//kill
+lsof -ti :5002 | xargs kill -9 2>/dev/null; echo "Port cleared"
