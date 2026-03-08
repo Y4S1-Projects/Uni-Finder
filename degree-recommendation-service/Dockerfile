@@ -14,12 +14,14 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Pre-download ML models to cache them in Docker layer
-# This layer only rebuilds if requirements.txt changes
-RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
-
 # Copy application code
 COPY . .
+
+# Cache ML models in container (will download on first startup, then cached)
+# Set HuggingFace cache directory so models persist in container storage
+ENV HF_HOME=/app/.cache/huggingface
+ENV TRANSFORMERS_CACHE=/app/.cache/huggingface
+ENV SENTENCE_TRANSFORMERS_HOME=/app/.cache/sentence-transformers
 
 # Expose port
 EXPOSE 5001
