@@ -1,16 +1,21 @@
 // Proxy controller for scholarship service
 export const matchScholarships = async (req, res, next) => {
 	try {
-		const scholarshipServiceUrl = process.env.SCHOLARSHIP_SERVICE_URL || "http://unifinder-scholarship-service:5005";
-		const topN = req.query.topN || 5;
-		
-		// Forward the request to the scholarship service
-		const response = await fetch(`${scholarshipServiceUrl}/api/scholarships/match?topN=${topN}`, {
+		const scholarshipServiceUrl = process.env.SCHOLARSHIP_SERVICE_URL || "https://unifinder-scholarship-service.whiteplant-cce1fd12.southeastasia.azurecontainerapps.io";
+		const topN = Number(req.query.topN) || 5;
+		const matchType = req.body?.match_type || req.query?.matchType || null;
+
+		// Scholarship service expects request envelope: { profile, top_n, match_type }
+		const response = await fetch(`${scholarshipServiceUrl}/match`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(req.body),
+			body: JSON.stringify({
+				profile: req.body || {},
+				top_n: topN,
+				match_type: matchType,
+			}),
 		});
 
 		if (!response.ok) {
