@@ -83,14 +83,14 @@ function CareerDetailContent({ jobDetail, onViewPath }) {
         style={{ animationDelay: "0.1s" }}
       >
         <ScoreCard
-          score={jobDetail.match_score}
-          label="Match Score"
-          variant="blue"
-        />
-        <ScoreCard
           score={jobDetail.readiness_score}
           label="Readiness"
           variant="green"
+        />
+        <ScoreCard
+          score={jobDetail.match_score}
+          label="Match Score"
+          variant="blue"
         />
       </div>
 
