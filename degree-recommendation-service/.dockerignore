@@ -18,3 +18,9 @@ README.md
 *.log
 .env
 .env.local
+.cache
+**/.cache
+tests/
+docs/
+results/
+*.ipynb

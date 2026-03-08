@@ -66,7 +66,7 @@ const PREFERRED_FIELDS = [
 ];
 
 // A/L Years (2020-2024)
-const AL_YEARS = ['2020', '2021', '2022', '2023', '2024'];
+const AL_YEARS = ['2024', '2023', '2022', '2021', '2020'];
 
 // Target Institute Types
 const INSTITUTE_TYPES = [
@@ -88,32 +88,32 @@ const EMPLOYMENT_STATUS = [
   'Employed Full-time'
 ];
 
-// Scholarship Form Initial State
+// Scholarship Form Initial State (prefilled for demo, still editable)
 const scholarshipInitialState = {
-  alStream: '',
+  alStream: 'Commerce',
   alStreamOther: '',
-  zScore: '',
-  district: '',
-  englishResult: '',
-  uniRegistrationStatus: '',
-  annualHouseholdIncome: '',
-  samurdhiRecipient: '',
-  siblingsStudying: '',
-  preferredFieldOfStudy: '',
+  zScore: '1.4502',
+  district: 'Colombo',
+  englishResult: 'B',
+  uniRegistrationStatus: 'Not Registered',
+  annualHouseholdIncome: '600000',
+  samurdhiRecipient: 'No',
+  siblingsStudying: '1',
+  preferredFieldOfStudy: 'Arts',
   preferredFieldOther: '',
 };
 
-// Loan Form Initial State
+// Loan Form Initial State (prefilled for demo, still editable)
 const loanInitialState = {
-  alYear: '',
-  generalTestScore: '',
-  alQualification: '',
-  zScore: '',
-  targetInstituteType: '',
-  loanAmountRequired: '',
-  guarantorAvailability: '',
-  employmentStatus: '',
-  preferredFieldOfStudy: '',
+  alYear: '2024',
+  generalTestScore: '80',
+  alQualification: 'passedAll3',
+  zScore: '1.2000',
+  targetInstituteType: 'Private University',
+  loanAmountRequired: '800000',
+  guarantorAvailability: '1 Guarantor',
+  employmentStatus: 'Unemployed',
+  preferredFieldOfStudy: 'Management',
   preferredFieldOther: '',
 };
 

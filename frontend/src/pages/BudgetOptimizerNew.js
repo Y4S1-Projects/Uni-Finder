@@ -64,6 +64,12 @@ const BudgetOptimizerNew = () => {
     home_visit_frequency: 'Monthly',
     transport_method_home: 'Bus',              // legacy — kept for backward compat
 
+    // Work Commute (optional)
+    has_work_commute: false,
+    distance_work: 10,                        // km from accommodation to work
+    work_transport_method: 'Bus',
+    work_days_per_week: '5 days',
+
     // Additional Expenses
     internet: 1500,
     study_materials: 2000,
@@ -309,9 +315,15 @@ const BudgetOptimizerNew = () => {
             distance_uni_accommodation: formData.distance_uni_accommodation,
             distance_home_uni: formData.distance_home_uni,
             transport_method: formData.transport_method,
-            transport_method_home: formData.transport_method_home,
+            transport_method_home_accommodation: formData.transport_method_home_accommodation,
+            transport_method_home: formData.transport_method_home_accommodation, // compat alias
             days_per_week: formData.days_per_week,
             home_visit_frequency: formData.home_visit_frequency,
+            // Work commute
+            has_work_commute: formData.has_work_commute,
+            distance_work: formData.distance_work,
+            work_transport_method: formData.work_transport_method,
+            work_days_per_week: formData.work_days_per_week,
 
             // Calculated Budgets from Flask response
             food_budget: result.calculated_budgets?.food || {},
@@ -693,6 +705,67 @@ const BudgetOptimizerNew = () => {
             </Row>
           </div>
 
+          {/* ── Route 3: Work Commute (optional) ── */}
+          <div className="p-3 mb-3 rounded" style={{ background: '#fefce8', border: '1px solid #fde68a' }}>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <div style={{ fontWeight: 700, color: '#92400e', fontSize: '0.92rem' }}>
+                💼 Route 3: Accommodation → Work (Part-Time / Weekday Job)
+              </div>
+              <Form.Check
+                type="switch"
+                id="has_work_commute"
+                label={<span style={{ fontSize: '0.82rem', color: '#92400e' }}>I have a work commute</span>}
+                checked={formData.has_work_commute}
+                onChange={e => setFormData(prev => ({ ...prev, has_work_commute: e.target.checked }))}
+              />
+            </div>
+            {formData.has_work_commute && (
+              <Row className="g-2 mt-1">
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Distance to Work (km)</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="distance_work"
+                      value={formData.distance_work}
+                      onChange={handleInputChange}
+                      onFocus={e => e.target.select()}
+                      min={0}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport to Work</Form.Label>
+                    <Form.Select name="work_transport_method" value={formData.work_transport_method} onChange={handleInputChange}>
+                      <option value="Walking">🚶 Walking</option>
+                      <option value="Bicycle">🚲 Bicycle</option>
+                      <option value="Bus">🚌 Bus (CTB / Private)</option>
+                      <option value="Train">🚆 Train</option>
+                      <option value="Tuk-Tuk">🛵 Tuk-Tuk / Three-Wheeler</option>
+                      <option value="Ride-share">🚗 Ride-share (Uber / PickMe)</option>
+                      <option value="Personal Vehicle">🏍️ Personal Vehicle</option>
+                      <option value="Mixed">🔀 Mixed</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group>
+                    <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Work Days per Week</Form.Label>
+                    <Form.Select name="work_days_per_week" value={formData.work_days_per_week} onChange={handleInputChange}>
+                      <option value="1 day">1 day</option>
+                      <option value="2 days">2 days</option>
+                      <option value="3 days">3 days</option>
+                      <option value="4 days">4 days</option>
+                      <option value="5 days">5 days</option>
+                      <option value="6 days">6 days</option>
+                    </Form.Select>
+                  </Form.Group>
+                </Col>
+              </Row>
+            )}
+          </div>
+
           {/* Days per week at uni */}
           <Form.Group className="mb-3">
             <Form.Label><strong>Days per Week at University</strong></Form.Label>
@@ -1007,113 +1080,192 @@ const BudgetOptimizerNew = () => {
                     )}
                   </div>
                 )}
-                {calculated_budgets.transport && (
-                  <div className="mb-3 p-3 rounded" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
-                    {/* Header row */}
-                    <div className="d-flex justify-content-between align-items-center mb-2">
-                      <span><strong>🚌 Transport Budget:</strong></span>
-                      <span className="text-success fw-bold fs-6">
-                        LKR {calculated_budgets.transport.monthly_total.toLocaleString()}
-                        <small className="text-muted fw-normal">/month</small>
-                      </span>
-                    </div>
+                {calculated_budgets.transport && (() => {
+                  const t = calculated_budgets.transport;
+                  const bd = t.breakdown || {};
+                  const totalMonthly = t.monthly_total || 0;
+                  return (
+                    <div className="mb-3 rounded overflow-hidden" style={{ border: '1.5px solid #bfdbfe' }}>
 
-                    {/* Route method pills — both routes */}
-                    <div className="mb-2 d-flex flex-column gap-1">
-                      {/* Route 1 — Daily commute */}
-                      <div className="d-flex align-items-center gap-2 px-2 py-1 rounded"
-                        style={{ background: '#dbeafe', border: '1px solid #93c5fd' }}>
-                        <span style={{ fontSize: '0.85rem' }}>🏫</span>
-                        <div className="flex-grow-1" style={{ fontSize: '0.78rem', color: '#1e40af' }}>
-                          <strong>Accommodation → University</strong>
-                          <span className="ms-2 badge" style={{ background: '#1d4ed8', color: '#fff', fontWeight: 600 }}>
-                            {calculated_budgets.transport.accommodation_uni_method || calculated_budgets.transport.transport_method}
-                          </span>
-                        </div>
-                        {calculated_budgets.transport.commute_days_per_month && (
-                          <span className="badge bg-light text-dark border" style={{ fontSize: '0.7rem' }}>
-                            {calculated_budgets.transport.commute_days_per_month} days/mo
-                          </span>
-                        )}
+                      {/* Header */}
+                      <div className="d-flex justify-content-between align-items-center px-3 py-2"
+                        style={{ background: 'linear-gradient(90deg,#1e40af 0%,#2563eb 100%)' }}>
+                        <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>
+                          🚌 Transport Budget
+                        </span>
+                        <span style={{ color: '#bfdbfe', fontWeight: 800, fontSize: '1.15rem' }}>
+                          LKR {totalMonthly.toLocaleString()}
+                          <span style={{ fontSize: '0.75rem', fontWeight: 400, marginLeft: 4 }}>/month</span>
+                        </span>
                       </div>
-                      {/* Route 2 — Home visits */}
-                      {calculated_budgets.transport.home_accommodation_method && (
-                        <div className="d-flex align-items-center gap-2 px-2 py-1 rounded"
-                          style={{ background: '#dcfce7', border: '1px solid #86efac' }}>
-                          <span style={{ fontSize: '0.85rem' }}>🏡</span>
-                          <div className="flex-grow-1" style={{ fontSize: '0.78rem', color: '#166534' }}>
-                            <strong>Home → Accommodation</strong>
-                            <span className="ms-2 badge" style={{ background: '#16a34a', color: '#fff', fontWeight: 600 }}>
-                              {calculated_budgets.transport.home_accommodation_method}
-                            </span>
+
+                      <div className="p-3" style={{ background: '#f8faff' }}>
+
+                        {/* Route cards */}
+                        <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+                          Routes
+                        </div>
+                        <div className="d-flex flex-column gap-2 mb-3">
+
+                          {/* Route 1 — Campus commute */}
+                          <div className="rounded-3 p-2" style={{ background: '#eff6ff', border: '1px solid #93c5fd' }}>
+                            <div className="d-flex align-items-center justify-content-between">
+                              <div className="d-flex align-items-center gap-2">
+                                <div style={{
+                                  width: 32, height: 32, borderRadius: 8, background: '#dbeafe',
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
+                                }}>🏫</div>
+                                <div>
+                                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1e40af' }}>
+                                    Accommodation → University
+                                  </div>
+                                  <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
+                                    <span className="badge" style={{ background: '#1d4ed8', color: '#fff', fontSize: '0.68rem' }}>
+                                      {t.accommodation_uni_method || t.transport_method}
+                                    </span>
+                                    {t.distance_uni_km > 0 && (
+                                      <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.distance_uni_km} km one-way</span>
+                                    )}
+                                    {t.daily_cost > 0 && (
+                                      <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                                        · LKR {t.daily_cost.toLocaleString()} / round-trip
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="text-end ms-2" style={{ flexShrink: 0 }}>
+                                <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.commute_days_per_month} days/mo</div>
+                                {bd.daily_commute > 0 && (
+                                  <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1e40af' }}>
+                                    LKR {bd.daily_commute.toLocaleString()}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
                           </div>
-                          {calculated_budgets.transport.home_visit_frequency && (
-                            <span className="badge bg-light text-dark border" style={{ fontSize: '0.7rem' }}>
-                              {calculated_budgets.transport.home_visit_frequency}
-                            </span>
+
+                          {/* Route 2 — Home visits */}
+                          {t.home_accommodation_method && (
+                            <div className="rounded-3 p-2" style={{ background: '#f0fdf4', border: '1px solid #86efac' }}>
+                              <div className="d-flex align-items-center justify-content-between">
+                                <div className="d-flex align-items-center gap-2">
+                                  <div style={{
+                                    width: 32, height: 32, borderRadius: 8, background: '#dcfce7',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
+                                  }}>🏡</div>
+                                  <div>
+                                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#166534' }}>
+                                      Home → Accommodation
+                                    </div>
+                                    <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
+                                      <span className="badge" style={{ background: '#16a34a', color: '#fff', fontSize: '0.68rem' }}>
+                                        {t.home_accommodation_method}
+                                      </span>
+                                      {t.distance_home_km > 0 && (
+                                        <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.distance_home_km} km one-way</span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="text-end ms-2" style={{ flexShrink: 0 }}>
+                                  <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.home_visit_frequency}</div>
+                                  {bd.home_visits > 0 ? (
+                                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#166534' }}>
+                                      LKR {bd.home_visits.toLocaleString()}
+                                    </div>
+                                  ) : (
+                                    <div style={{ fontSize: '0.72rem', color: '#6b7280', fontStyle: 'italic' }}>within campus cost</div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Route 3 — Work commute */}
+                          {t.has_work_commute && t.work_commute_method && (
+                            <div className="rounded-3 p-2" style={{ background: '#fffbeb', border: '1px solid #fde68a' }}>
+                              <div className="d-flex align-items-center justify-content-between">
+                                <div className="d-flex align-items-center gap-2">
+                                  <div style={{
+                                    width: 32, height: 32, borderRadius: 8, background: '#fef3c7',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
+                                  }}>💼</div>
+                                  <div>
+                                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#92400e' }}>
+                                      Accommodation → Work
+                                      <span className="ms-2 badge" style={{ background: '#d97706', color: '#fff', fontSize: '0.62rem' }}>
+                                        Part-time Job
+                                      </span>
+                                    </div>
+                                    <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
+                                      <span className="badge" style={{ background: '#f59e0b', color: '#fff', fontSize: '0.68rem' }}>
+                                        {t.work_commute_method}
+                                      </span>
+                                      {t.work_distance_km > 0 && (
+                                        <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.work_distance_km} km one-way</span>
+                                      )}
+                                      {t.work_round_trip_cost > 0 && (
+                                        <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+                                          · LKR {t.work_round_trip_cost.toLocaleString()} / round-trip
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="text-end ms-2" style={{ flexShrink: 0 }}>
+                                  <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.work_commute_days_per_month} days/mo</div>
+                                  {bd.work_commute > 0 && (
+                                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#d97706' }}>
+                                      LKR {bd.work_commute.toLocaleString()}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
                           )}
                         </div>
-                      )}
-                    </div>
 
-                    {/* Per-trip cost — clearly labelled */}
-                    {calculated_budgets.transport.daily_cost > 0 && (
-                      <div className="d-flex align-items-center gap-2 mb-2 p-2 rounded"
-                        style={{ background: '#e8f4fd', border: '1px solid #bee3f8' }}>
-                        <span style={{ fontSize: '1.1rem' }}>🔄</span>
-                        <div className="flex-grow-1">
-                          <div style={{ fontSize: '0.78rem', color: '#4a5568', fontWeight: 600 }}>
-                            Round-trip fare &nbsp;
-                            <span style={{ fontWeight: 400, color: '#718096' }}>
-                              (Accommodation → Campus → Accommodation)
+                        {/* Misc / emergency row */}
+                        {bd.misc_trips > 0 && (
+                          <div className="d-flex align-items-center justify-content-between rounded-3 px-2 py-1 mb-3"
+                            style={{ background: '#f1f5f9', border: '1px dashed #cbd5e1' }}>
+                            <span style={{ fontSize: '0.78rem', color: '#475569' }}>
+                              🌧️ Emergency / incidental trips
+                              <span style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 4 }}>(rain, late nights, city runs)</span>
+                            </span>
+                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#475569' }}>
+                              LKR {bd.misc_trips.toLocaleString()}
                             </span>
                           </div>
-                          <div style={{ fontSize: '0.82rem', color: '#2d3748' }}>
-                            <strong>LKR {calculated_budgets.transport.daily_cost.toLocaleString()}</strong>
-                            &nbsp;per trip
-                            {calculated_budgets.transport.one_way_trip_cost > 0 && (
-                              <span className="text-muted ms-2">
-                                (one-way: LKR {calculated_budgets.transport.one_way_trip_cost.toLocaleString()})
-                              </span>
-                            )}
+                        )}
+
+                        {/* Total summary bar */}
+                        <div className="rounded-3 px-3 py-2 d-flex justify-content-between align-items-center"
+                          style={{ background: 'linear-gradient(90deg,#1e3a8a 0%,#1e40af 100%)' }}>
+                          <div>
+                            <div style={{ fontSize: '0.72rem', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                              Total Monthly Transport
+                            </div>
+                            <div style={{ fontSize: '0.72rem', color: '#bfdbfe' }}>
+                              {[
+                                bd.daily_commute > 0 && 'campus',
+                                bd.home_visits > 0 && 'home visits',
+                                bd.misc_trips > 0 && 'emergency',
+                                bd.work_commute > 0 && 'work',
+                              ].filter(Boolean).join(' + ')}
+                            </div>
+                          </div>
+                          <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#fff' }}>
+                            LKR {totalMonthly.toLocaleString()}
+                            <span style={{ fontSize: '0.72rem', fontWeight: 400, color: '#93c5fd', marginLeft: 4 }}>/mo</span>
                           </div>
                         </div>
-                      </div>
-                    )}
 
-                    {/* Monthly breakdown */}
-                    {calculated_budgets.transport.breakdown && (
-                      <div className="ps-2 border-start border-primary border-2">
-                        {calculated_budgets.transport.breakdown.daily_commute > 0 && (
-                          <div className="d-flex justify-content-between">
-                            <small className="text-muted">
-                              🏫 Campus commute
-                              <span className="ms-1 text-muted" style={{ fontSize: '0.73rem' }}>
-                                (round-trip × {calculated_budgets.transport.commute_days_per_month || '~22'} days)
-                              </span>
-                            </small>
-                            <small><strong>LKR {calculated_budgets.transport.breakdown.daily_commute.toLocaleString()}</strong></small>
-                          </div>
-                        )}
-                        {calculated_budgets.transport.breakdown.misc_trips > 0 && (
-                          <div className="d-flex justify-content-between">
-                            <small className="text-muted">
-                              🌧️ Emergency / weekend trips
-                              <span className="ms-1 text-muted" style={{ fontSize: '0.73rem' }}>(rain, late nights, city)</span>
-                            </small>
-                            <small><strong>LKR {calculated_budgets.transport.breakdown.misc_trips.toLocaleString()}</strong></small>
-                          </div>
-                        )}
-                        {calculated_budgets.transport.breakdown.home_visits > 0 && (
-                          <div className="d-flex justify-content-between">
-                            <small className="text-muted">🏡 Home visits</small>
-                            <small><strong>LKR {calculated_budgets.transport.breakdown.home_visits.toLocaleString()}</strong></small>
-                          </div>
-                        )}
                       </div>
-                    )}
-                  </div>
-                )}
+                    </div>
+                  );
+                })()}
                 {/* Show home_money contribution if present */}
                 {financial_summary.home_money > 0 && (
                   <div className="alert alert-info py-2 px-3 mb-0" style={{ fontSize: '0.82rem' }}>
@@ -1195,6 +1347,48 @@ const BudgetOptimizerNew = () => {
               {analysisResult.optimal_strategy.optimal_alternatives &&
                 analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
                   <div className="opt-journey-wrap">
+                    {/* Warning — optimised target still exceeds income */}
+                    {analysisResult.optimal_strategy.optimal_target.target_expenses > financial_summary.monthly_income && (
+                      <div className="d-flex align-items-start gap-3 rounded-3 px-3 py-3 mb-3"
+                        style={{
+                          background: 'linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)',
+                          border: '1.5px solid #f59e42',
+                          boxShadow: '0 2px 8px rgba(245,158,66,0.13)'
+                        }}>
+                        <div style={{
+                          fontSize: '1.6rem', lineHeight: 1, flexShrink: 0, marginTop: 2
+                        }}>⚠️</div>
+                        <div>
+                          <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#92400e', marginBottom: 3 }}>
+                            Optimised Target Exceeds Your Monthly Income
+                          </div>
+                          <div style={{ fontSize: '0.82rem', color: '#78350f', lineHeight: 1.55 }}>
+                            Your optimised target of{' '}
+                            <strong style={{ color: '#b45309' }}>
+                              LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+                            </strong>{' '}
+                            is greater than your monthly income of{' '}
+                            <strong style={{ color: '#b45309' }}>
+                              LKR {financial_summary.monthly_income.toLocaleString()}
+                            </strong>.
+                            Therefore, you need to follow the{' '}
+                            <strong>AI-Powered Optimization Strategy</strong>{' '}
+                            below to achieve a more optimised and realistic budget.
+                          </div>
+                          <button
+                            className="btn btn-sm mt-2"
+                            style={{
+                              background: '#f59e0b', color: '#fff', fontWeight: 700,
+                              fontSize: '0.78rem', border: 'none', borderRadius: 6,
+                              padding: '4px 14px'
+                            }}
+                            onClick={scrollToAISection}
+                          >
+                            Go to AI Strategy 🚀
+                          </button>
+                        </div>
+                      </div>
+                    )}
                     <div className="opt-journey-header">
                       <span className="opt-journey-badge">Step 1</span>
                       <span className="opt-journey-title">🗺️ Your Path to the Optimised Target</span>
@@ -1255,11 +1449,11 @@ const BudgetOptimizerNew = () => {
                     </div>
 
                     <div className="opt-journey-footer">
-                      <p className="opt-journey-footer-text">
-                        When you are ready for a guided plan, jump to the
-                        <strong> AI-Powered Optimization Strategy</strong> section. There the AI will convert this path
-                        into a clear, step-by-step routine you can follow.
-                      </p>
+                    <p className="opt-journey-footer-text">
+  If your improved budget is lower than your income, you can follow these steps.
+  If you need to further optimize and improve your budget, proceed to the
+  <strong> Budget Optimization</strong> section for additional guidance.
+</p>
                       <div className="opt-journey-footer-btn">
                         <Button
                           size="sm"

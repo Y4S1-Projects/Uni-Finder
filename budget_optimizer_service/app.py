@@ -319,7 +319,17 @@ def complete_budget_analysis():
             'transport_method': data.get('transport_method', 'Bus'),
             'days_per_week': data.get('days_per_week', '5 days'),
             'home_visit_frequency': data.get('home_visit_frequency', 'Monthly'),
-            'transport_method_home': data.get('transport_method_home', 'Bus')
+            # Home route — accept both field names
+            'transport_method_home_accommodation': data.get(
+                'transport_method_home_accommodation',
+                data.get('transport_method_home', 'Bus')
+            ),
+            'transport_method_home': data.get('transport_method_home', 'Bus'),
+            # Work commute (new fields)
+            'has_work_commute': data.get('has_work_commute', False),
+            'distance_work': data.get('distance_work', 10),
+            'work_transport_method': data.get('work_transport_method', 'Bus'),
+            'work_days_per_week': data.get('work_days_per_week', '5 days'),
         }
         
         transport_budget = calculator.calculate_transport_budget(transport_data)
