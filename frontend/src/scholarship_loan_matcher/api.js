@@ -5,8 +5,8 @@ if (!BACKEND_URL) {
 	throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");
 }
 
-// If REACT_APP_SCHOLARSHIP_MATCHER_URL is set, call the FastAPI matcher directly.
-// Otherwise, fall back to the existing Node backend route for compatibility.
+// If a dedicated matcher service URL is configured, call it directly.
+// Otherwise, fall back to the Node backend route for compatibility.
 const MATCH_BASE = (MATCHER_SERVICE_URL || `${BACKEND_URL}/api/scholarships`).replace(/\/+$/, "");
 const API_BASE = BACKEND_URL;
 

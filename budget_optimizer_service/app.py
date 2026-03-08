@@ -43,6 +43,7 @@ ml_predictor = MLBudgetPredictor(model_dir=DATA_DIR)
 # AI API cache (simple in-memory cache with 1-hour TTL)
 openai_cache = {}
 CACHE_TTL_SECONDS = 3600  # 1 hour
+PROMPT_VERSION = "v4-min-savings-buffer"  # bump this whenever the prompt changes
 
 # Load OpenAI API key
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
@@ -60,13 +61,14 @@ print("="*60)
 
 def create_cache_key(data):
     """Create a cache key from request data"""
-    # Use income, expenses, and risk level as cache key
+    # Use income, expenses, risk level AND prompt version so prompt changes bust the cache
     financial = data.get('financial_summary', {})
     key_data = {
         'income': financial.get('monthly_income', 0),
         'expenses': financial.get('total_expenses', 0),
         'savings_rate': financial.get('savings_rate', 0),
-        'risk': data.get('risk_assessment', {}).get('risk_level', '')
+        'risk': data.get('risk_assessment', {}).get('risk_level', ''),
+        'prompt_version': PROMPT_VERSION,
     }
     key_string = json.dumps(key_data, sort_keys=True)
     return hashlib.md5(key_string.encode()).hexdigest()
@@ -710,55 +712,111 @@ def get_ai_strategy():
         target_rate = optimal_strategy.get('optimal_target', {}).get('target_savings_rate', savings_rate)
         gap         = max(current_exp - target_exp, 0)
 
+        # ── Enforce minimum savings buffer ─────────────────────────
+        MIN_SAVINGS_BUFFER = 7500   # LKR — target must be at least 7,500 below income
+        # The hard ceiling for expenses: income minus the minimum buffer
+        income_ceiling    = max(income - MIN_SAVINGS_BUFFER, 0)
+
+        # Determine if student is over budget or needs the savings buffer enforced
+        over_budget   = total_exp > income_ceiling
+        deficit       = max(total_exp - income_ceiling, 0)
+        # raw optimised target, but must always leave MIN_SAVINGS_BUFFER as savings
+        raw_target    = min(income_ceiling, target_exp)
+        real_target   = min(raw_target, income_ceiling)   # hard cap
+        real_gap      = max(total_exp - real_target, 0)   # how much to cut
+        min_saving    = income - real_target              # guaranteed saving
+
+        # Build optimised-category estimates for FINAL_BUDGET guidance
+        cat_optimised = {}
+        for k, v in expense_breakdown.items():
+            if k == 'total_expenses':
+                continue
+            # Proportional reduction to hit real_target
+            if total_exp > 0 and real_gap > 0:
+                reduction = (v / total_exp) * real_gap
+                cat_optimised[k] = max(round(v - reduction), 0)
+            else:
+                cat_optimised[k] = v
+
+        final_budget_lines = []
+        for k, v in cat_optimised.items():
+            final_budget_lines.append(
+                f"  • {k.replace('_',' ').title()}: LKR {v:,.0f}"
+            )
+
+        constraint_note = (
+            f"⚠️  CRITICAL: Student is OVER the safe-spend ceiling by LKR {deficit:,.0f}/month. "
+            f"Steps MUST reduce total expenses to ≤ LKR {income_ceiling:,.0f} "
+            f"so at least LKR {MIN_SAVINGS_BUFFER:,.0f} is saved each month."
+            if over_budget else
+            f"Student is within income. Still, steps MUST optimise expenses to ≤ LKR {real_target:,.0f}/month "
+            f"guaranteeing at least LKR {min_saving:,.0f} monthly savings "
+            f"(LKR {MIN_SAVINGS_BUFFER:,.0f} minimum buffer enforced)."
+        )
+
         prompt = f"""You are an expert financial coach for Sri Lankan university students.
-A student used our AI Budget Optimizer. Generate a precise numbered step-by-step plan showing EXACTLY how they move from their CURRENT expenses to the OPTIMISED TARGET.
+A student used our AI Budget Optimizer. Generate a precise numbered step-by-step plan showing EXACTLY how to bring ALL monthly expenses WITHIN their income limit.
 
 ─── STUDENT ────────────────────────────────────────────────
 University: {university} | Year: {year} | Field: {field}
 District: {district} | Accommodation: {acc_type}
 Food: {food_type} | Transport: {transport}
 
-─── MISSION: CLOSE THE GAP ─────────────────────────────────
-Current Expenses : LKR {current_exp:,.0f}/month
-Optimised Target : LKR {target_exp:,.0f}/month
-Gap to Close     : LKR {gap:,.0f}/month  ← THIS is what your steps must cover
-Target Savings   : {target_rate}% of income
+─── INCOME vs EXPENSE CONSTRAINT ───────────────────────────
+Monthly Income         : LKR {income:,.0f}
+Safe-Spend Ceiling     : LKR {income_ceiling:,.0f}  ← expenses MUST be ≤ this (income − LKR {MIN_SAVINGS_BUFFER:,.0f} buffer)
+Minimum Monthly Saving : LKR {MIN_SAVINGS_BUFFER:,.0f}  ← this gap must ALWAYS remain between expenses and income
+Current Expenses       : LKR {current_exp:,.0f}
+Gap to Close           : LKR {real_gap:,.0f}
+Optimised Target       : LKR {real_target:,.0f}/month  (saves LKR {min_saving:,.0f})
+Target Savings Rate    : {target_rate}%
 
-Expense Breakdown:
+{constraint_note}
+
+─── CURRENT EXPENSE BREAKDOWN ──────────────────────────────
 {chr(10).join(expense_lines)}
 
-AI-identified alternatives:
+─── AI-SUGGESTED OPTIMISED BUDGET ──────────────────────────
+{chr(10).join(final_budget_lines)}
+  ─────────────────────────────────────────────────────
+  TOTAL after optimising : LKR {real_target:,.0f}
+  Monthly Savings        : LKR {min_saving:,.0f}  ✅  (≥ LKR {MIN_SAVINGS_BUFFER:,.0f} buffer achieved)
+
+─── AI-IDENTIFIED ALTERNATIVES ─────────────────────────────
 {chr(10).join(alt_lines) if alt_lines else '  • No critical alternatives flagged'}
 
-─── OUTPUT FORMAT ──────────────────────────────────────────
-Use EXACTLY this structure. NO extra text outside this structure.
+─── OUTPUT FORMAT ───────────────────────────────────────────
+Use EXACTLY this structure. NO extra text outside this format.
 
-GAP_SUMMARY: Reducing your spending by LKR {gap:,.0f} is achievable in [X] months by following these steps.
+GAP_SUMMARY: By reducing expenses by LKR {real_gap:,.0f}/month you will always have at least LKR {MIN_SAVINGS_BUFFER:,.0f} left over — here is how to do it in [X] steps.
 
-STEP 1: [Short action title e.g. Switch to home cooking 5 days/week]
+STEP 1: [Short action title — keep it practical, Sri Lanka specific]
 CATEGORY: [Food / Transport / Accommodation / Internet / Utilities / Study / Entertainment / Income]
 SAVE: LKR [amount]/month
-HOW: [One specific sentence on HOW to do it, Sri Lanka context, e.g. cook at home using Cargills groceries]
+HOW: [One practical sentence — use Sri Lanka context: CTB buses, Keells/Cargills, student ID, BOC/NSB]
 TIMEFRAME: [This week / Week 2 / Week 3 / Month 2 / Month 3]
 
-STEP 2: [Short action title]
+STEP 2: [title]
 CATEGORY: [...]
 SAVE: LKR [amount]/month
 HOW: [...]
 TIMEFRAME: [...]
 
-[Continue steps 3-5 in the same format. Generate enough steps so the SAVE amounts total to LKR {gap:,.0f}.]
+[Add STEP 3 to STEP 5 in the same format. SAVE amounts across all steps must total LKR {real_gap:,.0f}.]
 
-QUICK_WIN: [One thing they can do TODAY that costs nothing and saves money immediately]
+FINAL_BUDGET: After applying all steps — Food: LKR [X] | Transport: LKR [X] | Accommodation: LKR [X] | Other: LKR [X] | TOTAL: LKR [X] | SAVINGS: LKR [X] | FITS WITHIN INCOME: YES
 
-MOTIVATION: [One encouraging sentence referencing their specific target of LKR {target_exp:,.0f}]
-─── RULES ──────────────────────────────────────────────────
-- Use "you/your" throughout
-- Always use LKR amounts
-- Reference Sri Lanka specifics (CTB/intercity buses, Keells/Cargills/Arpico, student ID discounts, BOC/NSB accounts)
-- SAVE amounts in each step must be realistic and sum close to LKR {gap:,.0f}
-- Keep each HOW field to 1 sentence, very practical
-- Output ONLY the structured format above, nothing else"""
+QUICK_WIN: [One thing doable TODAY for free that immediately saves money]
+
+MOTIVATION: [One encouraging sentence — mention income LKR {income:,.0f}, new total LKR {real_target:,.0f}, and that LKR {min_saving:,.0f} will be saved every month]
+
+─── STRICT RULES ────────────────────────────────────────────
+1. TOTAL in FINAL_BUDGET must be ≤ LKR {income_ceiling:,.0f} — this is non-negotiable
+2. SAVINGS in FINAL_BUDGET must be ≥ LKR {MIN_SAVINGS_BUFFER:,.0f} — there must always be a visible gap between expenses and income
+3. SAVE amounts across all steps must sum to LKR {real_gap:,.0f}
+4. Use "you/your" throughout, keep tone encouraging yet realistic
+5. Reference Sri Lanka specifics in every HOW field
+6. Output ONLY the structured format above — NOTHING outside these fields"""
 
         # ── Call OpenAI API ────────────────────────────────────────
         success, content, error_msg = call_openai_with_retry(OPENAI_API_KEY, prompt)
@@ -773,10 +831,19 @@ MOTIVATION: [One encouraging sentence referencing their specific target of LKR {
                 "ai_provider": "OpenAI",
                 "cached": False,
                 "prompt_data": {
-                    "income": income,
-                    "total_expenses": total_exp,
-                    "savings_rate": savings_rate,
-                    "risk_level": risk_level
+                    "income":             income,
+                    "total_expenses":     total_exp,
+                    "savings_rate":       savings_rate,
+                    "risk_level":         risk_level,
+                    # AI-computed constraint numbers — used by the frontend
+                    # Budget Transformation card so it shows identical figures
+                    "income_ceiling":     income_ceiling,
+                    "real_target":        real_target,
+                    "real_gap":           real_gap,
+                    "min_saving":         min_saving,
+                    "min_savings_buffer": MIN_SAVINGS_BUFFER,
+                    "current_expenses":   current_exp,
+                    "target_rate":        target_rate,
                 },
                 "timestamp": datetime.now().isoformat()
             })
@@ -823,3 +890,4 @@ if __name__ == '__main__':
     print("="*60 + "\n")
     
     app.run(debug=True, port=5002, host='0.0.0.0')
+
