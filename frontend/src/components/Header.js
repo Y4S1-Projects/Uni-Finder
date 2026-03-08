@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
 	const [scrolled, setScrolled] = useState(false);
@@ -17,12 +18,16 @@ const Header = () => {
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
 
+	const currentUser = useSelector((state) => state.user?.currentUser);
+	const isScholarshipAdmin = currentUser && ['scholarshipadmin', 'scholarshipadmin2'].includes(currentUser.username);
+
 	const navLinks = [
 		{ label: "Home", href: "/", icon: "🏠" },
 		{ label: "Degrees", href: "/degree-recommendations", icon: "🎓" },
 		{ label: "Career", href: "/career", icon: "📈" },
 		{ label: "Budget", href: "/budget-optimizer-new", icon: "💰" },
 		{ label: "Scholarships", href: "/scholarship-matcher", icon: "🏆" },
+		...(isScholarshipAdmin ? [{ label: "Admin", href: "/scholarship-matcher/admin-datasets", icon: "⚙️" }] : []),
 	];
 
 	const isActive = (path) => location.pathname === path;
