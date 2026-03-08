@@ -128,7 +128,8 @@ Publish-ContainerApp -Name "unifinder-budget-service" -Image $Images.budget -Por
 )
 
 Publish-ContainerApp -Name "unifinder-career-service" -Image $Images.career -Port 5004 -Ingress "external" -Cpu "0.5" -Memory "1Gi" -EnvVars @(
-    "PORT=5004"
+    "PORT=5004",
+    "CORS_ORIGINS=*"
 )
 
 Publish-ContainerApp -Name "unifinder-scholarship-service" -Image $Images.scholarship -Port 5005 -Ingress "external" -Cpu "0.5" -Memory "1Gi" -EnvVars @(
