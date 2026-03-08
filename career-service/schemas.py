@@ -37,3 +37,11 @@ class ExplainRequest(BaseModel):
     readiness_score: float
     next_role: Optional[str] = None
     next_role_title: Optional[str] = None
+    # Profile context for personalized explanations
+    score_breakdown: Optional[dict] = None
+    explanations: Optional[dict] = None
+    experience_level: Optional[str] = None
+    current_status: Optional[str] = None
+    education_level: Optional[str] = None
+    career_goal: Optional[str] = None
+    preferred_domain: Optional[str] = None
