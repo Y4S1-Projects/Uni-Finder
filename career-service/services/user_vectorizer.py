@@ -158,12 +158,27 @@ class UserVectorizer:
         """Map frontend domain values to internal domain names."""
         mapping = {
             "software_engineering": "SOFTWARE_ENGINEERING",
+            "frontend_engineering": "FRONTEND_ENGINEERING",
+            "backend_engineering": "BACKEND_ENGINEERING",
+            "fullstack_engineering": "FULLSTACK_ENGINEERING",
+            "data_engineering": "DATA_ENGINEERING",
+            "data_science": "DATA_SCIENCE",
             "data": "DATA",
             "ai_ml": "AI_ML",
             "devops": "DEVOPS",
+            "cloud_engineering": "CLOUD_ENGINEERING",
+            "security": "SECURITY",
             "qa": "QA",
+            "mobile_engineering": "MOBILE",
             "mobile": "MOBILE",
             "ui_ux": "UI_UX",
+            "product_management": "PRODUCT_MANAGEMENT",
+            "business_analysis": "BUSINESS_ANALYSIS",
+            "project_management": "PROJECT_MANAGEMENT",
+            "technical_writing": "TECHNICAL_WRITING",
+            "blockchain_web3": "BLOCKCHAIN_WEB3",
+            "game_development": "GAME_DEVELOPMENT",
+            "embedded_systems": "EMBEDDED_SYSTEMS",
         }
         return mapping.get(domain_raw.lower(), "") if domain_raw else ""
 

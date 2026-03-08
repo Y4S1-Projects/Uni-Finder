@@ -134,6 +134,8 @@ def recommend_careers_for_user(
         "skills_analyzed": list(user_skills_upper),
         "total_roles_compared": len(role_ids),
         "mode": mode,
+        "domain_filter_applied": bool(preferred_domain),
+        "preferred_domain": preferred_domain,
     }
 
 
