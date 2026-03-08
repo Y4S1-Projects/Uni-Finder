@@ -7,9 +7,11 @@ on:
 
 env:
   AZURE_RESOURCE_GROUP: unifinder-rg
-  AZURE_LOCATION: eastus
+  AZURE_LOCATION: southeastasia
   ENVIRONMENT: prod
   ACR_NAME: unifinderacr2026main01
+  CONTAINERAPPS_ENV_NAME: ctse-env
+  CONTAINERAPPS_ENV_RESOURCE_GROUP: ctse-microservices-rg
 
 jobs:
   deploy:
@@ -30,15 +32,21 @@ jobs:
             --name ${{ env.AZURE_RESOURCE_GROUP }} \
             --location ${{ env.AZURE_LOCATION }}
 
-      - name: Deploy Infrastructure
+      - name: Register Azure Providers
         run: |
-          az deployment group create \
+          az provider register --namespace Microsoft.ContainerRegistry
+          az provider register --namespace Microsoft.App
+          az provider register --namespace Microsoft.OperationalInsights
+
+      - name: Ensure Azure Container Registry
+        run: |
+          az acr show --name ${{ env.ACR_NAME }} --resource-group ${{ env.AZURE_RESOURCE_GROUP }} >/dev/null 2>&1 \
+          || az acr create \
+            --name ${{ env.ACR_NAME }} \
             --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
-            --template-file deploy/azure/main.bicep \
-            --parameters \
-              environmentName=${{ env.ENVIRONMENT }} \
-              acrName=${{ env.ACR_NAME }} \
-              location=${{ env.AZURE_LOCATION }}
+            --location ${{ env.AZURE_LOCATION }} \
+            --sku Basic \
+            --admin-enabled true
 
       - name: Get ACR Credentials
         id: acr-creds
@@ -102,8 +110,8 @@ jobs:
         id: get-env
         run: |
           ENV_ID=$(az containerapp env show \
-            --name unifinder-${{ env.ENVIRONMENT }}-env \
-            --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+            --name ${{ env.CONTAINERAPPS_ENV_NAME }} \
+            --resource-group ${{ env.CONTAINERAPPS_ENV_RESOURCE_GROUP }} \
             --query id -o tsv)
           echo "CONTAINER_APPS_ENV_ID=$ENV_ID" >> $GITHUB_ENV
 
@@ -125,7 +133,7 @@ jobs:
               PORT=5000 \
               MONGO="${{ secrets.MONGO_URI }}" \
               JWT_SECRET="${{ secrets.JWT_SECRET }}" \
-              CORS_ORIGINS="https://unifinder-frontend.$(az containerapp env show --name unifinder-${{ env.ENVIRONMENT }}-env --resource-group ${{ env.AZURE_RESOURCE_GROUP }} --query properties.defaultDomain -o tsv)" \
+              CORS_ORIGINS="https://example.com" \
             || az containerapp update \
               --name unifinder-backend \
               --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
