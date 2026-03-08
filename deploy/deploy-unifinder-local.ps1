@@ -75,7 +75,7 @@ function Resolve-ImageReference {
     )
 
     if ($DisableDigestPinning) {
-        return "$AcrServer/$Repository:$Tag"
+        return "$AcrServer/${Repository}:$Tag"
     }
 
     try {
@@ -88,11 +88,12 @@ function Resolve-ImageReference {
         Write-Warning "Could not resolve digest for $Repository`:$Tag. Falling back to tag."
     }
 
-    return "$AcrServer/$Repository:$Tag"
+    return "$AcrServer/${Repository}:$Tag"
 }
 
 Write-Host "Resolving image references (digest pinning: $([string](-not $DisableDigestPinning))) ..."
-foreach ($key in $Images.Keys) {
+$imageKeys = @($Images.Keys)
+foreach ($key in $imageKeys) {
     $repo = $ImageRepos[$key]
     $resolved = Resolve-ImageReference -Repository $repo -Tag $ImageTag
     $Images[$key] = $resolved
