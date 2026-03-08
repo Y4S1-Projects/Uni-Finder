@@ -58,11 +58,19 @@ export function CareerRecommendationCard({
 
   return (
     <div
-      className={`p-6 rounded-2xl mb-5 relative transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] ${
+      className={`p-6 rounded-2xl mb-5 relative transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border-2 ${
         isBestMatch
-          ? "bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 border-2 border-purple-300 shadow-xl"
-          : "bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/60 border-2 border-gray-200 hover:border-purple-300"
+          ? "bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 border-purple-300 shadow-xl"
+          : ""
       }`}
+      style={
+        !isBestMatch
+          ? {
+              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
+              borderColor: 'rgba(102, 126, 234, 0.3)',
+            }
+          : {}
+      }
     >
       {/* Best Match Badge */}
       {isBestMatch && (
@@ -119,7 +127,11 @@ export function CareerRecommendationCard({
       {/* Next Career Step */}
       {next_role && (
         <div className="mb-4">
-          <NextRoleBadge nextRole={next_role} nextRoleTitle={next_role_title} />
+          <NextRoleBadge 
+            nextRole={next_role} 
+            nextRoleTitle={next_role_title} 
+            onViewPath={viewCareerLadder}
+          />
         </div>
       )}
 

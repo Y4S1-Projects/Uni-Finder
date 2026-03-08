@@ -31,11 +31,19 @@ export default function CareerPathComparator({ comparisonData, userSkills }) {
 function ComparisonCard({ comparison, rank, isBest }) {
   return (
     <div 
-      className={`p-6 rounded-2xl border-2 transition-all hover:shadow-xl ${
+      className={`p-6 rounded-2xl border-2 transition-all hover:shadow-xl hover:scale-105 ${
         isBest 
           ? 'border-purple-400 bg-gradient-to-br from-purple-50 to-blue-50'
-          : 'border-gray-200 bg-white'
+          : ''
       }`}
+      style={
+        !isBest 
+          ? {
+              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
+              borderColor: 'rgba(102, 126, 234, 0.3)'
+            }
+          : {}
+      }
     >
       {isBest && (
         <div className="text-center mb-4">

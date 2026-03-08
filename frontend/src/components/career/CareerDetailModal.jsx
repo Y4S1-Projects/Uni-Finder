@@ -3,6 +3,7 @@
  * Full-screen modal showing detailed career information and AI explanation
  */
 import React from "react";
+import { createPortal } from "react-dom";
 import { ScoreCard } from "./ScoreDisplay";
 import { SkillTagList } from "./SkillTags";
 import { NextRoleBadge } from "./NextRoleBadge";
@@ -11,12 +12,19 @@ import { AIExplanation, AILoadingState } from "./AIExplanation";
 import { IoClose } from "react-icons/io5";
 import { FaCheckCircle, FaBookOpen } from "react-icons/fa";
 
-export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
+export function CareerDetailModal({
+  isOpen,
+  onClose,
+  jobDetail,
+  isLoading,
+  onViewPath,
+}) {
   if (!isOpen) return null;
 
-  return (
+  // Use portal to render modal at document body level, avoiding z-index stacking context issues
+  return createPortal(
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1050] overflow-auto py-8 animate-fade-in"
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[9999] overflow-auto py-8 animate-fade-in"
       onClick={onClose}
       style={{
         animation: "fadeIn 0.2s ease-out",
@@ -36,12 +44,13 @@ export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading }) {
         {isLoading ? (
           <AILoadingState />
         ) : jobDetail ? (
-          <CareerDetailContent jobDetail={jobDetail} />
+          <CareerDetailContent jobDetail={jobDetail} onViewPath={onViewPath} />
         ) : (
           <ErrorState />
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 
@@ -57,7 +66,7 @@ function CloseButton({ onClick }) {
   );
 }
 
-function CareerDetailContent({ jobDetail }) {
+function CareerDetailContent({ jobDetail, onViewPath }) {
   return (
     <>
       {/* Header */}
@@ -92,6 +101,7 @@ function CareerDetailContent({ jobDetail }) {
             nextRole={jobDetail.next_role}
             nextRoleTitle={jobDetail.next_role_title}
             variant="full"
+            onViewPath={onViewPath}
           />
         </div>
       )}

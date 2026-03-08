@@ -359,35 +359,52 @@ export default function SkillSelector({ selected = [], onChange }) {
     <div className="relative" ref={containerRef}>
       {/* ── Selected Skills (tags) ──────────────────────────────────────── */}
       {selectedIds.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-3">
-          {selectedIds.map((id, idx) => (
-            <div
-              key={id || `sel-${idx}`}
-              className="group flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50
-                         border border-blue-200 px-2.5 py-1 rounded-full
-                         shadow-sm hover:shadow-md hover:border-blue-300
-                         transition-all duration-200"
+        <div className="mb-3">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+              Selected ({selectedIds.length})
+            </span>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                if (typeof onChange === "function") onChange([]);
+              }}
+              className="text-[11px] font-semibold text-red-500 hover:text-red-700 transition-colors flex items-center gap-1 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-md"
             >
-              <span className="text-xs font-medium text-blue-700 max-w-[140px] truncate">
-                {labelFor(id)}
-              </span>
-              <button
-                type="button"
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  remove(id);
-                }}
-                title={`Remove ${labelFor(id)}`}
-                aria-label={`Remove ${labelFor(id)}`}
-                className="w-4 h-4 flex items-center justify-center rounded-full
-                           bg-blue-100 text-blue-500 hover:bg-red-100 hover:text-red-500
-                           transition-colors duration-150 text-[10px] font-bold"
+              Clear All
+            </button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {selectedIds.map((id, idx) => (
+              <div
+                key={id || `sel-${idx}`}
+                className="group flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50
+                           border border-blue-200 px-2.5 py-1 rounded-full
+                           shadow-sm hover:shadow-md hover:border-blue-300
+                           transition-all duration-200"
               >
-                ✕
-              </button>
-            </div>
-          ))}
+                <span className="text-xs font-medium text-blue-700 max-w-[140px] truncate">
+                  {labelFor(id)}
+                </span>
+                <button
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    remove(id);
+                  }}
+                  title={`Remove ${labelFor(id)}`}
+                  aria-label={`Remove ${labelFor(id)}`}
+                  className="w-4 h-4 flex items-center justify-center rounded-full
+                             bg-blue-100 text-blue-500 hover:bg-red-100 hover:text-red-500
+                             transition-colors duration-150 text-[10px] font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -582,9 +599,9 @@ export default function SkillSelector({ selected = [], onChange }) {
                                 e.preventDefault();
                                 selectAllInSub(skills);
                               }}
-                              className="text-[10px] text-blue-500 hover:text-blue-700 font-semibold"
+                              className="px-3 py-1 text-[10px] font-bold text-white rounded-md bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-md transition-all uppercase tracking-wider select-none shadow-sm"
                             >
-                              Select all
+                              Select All
                             </button>
                           </div>
                           {skills.slice(0, visibleCount).map(renderSkillRow)}
@@ -634,7 +651,7 @@ export default function SkillSelector({ selected = [], onChange }) {
                     e.preventDefault();
                     if (typeof onChange === "function") onChange([]);
                   }}
-                  className="text-[10px] text-red-500 hover:text-red-700 font-semibold"
+                  className="px-2 py-1 text-[11px] font-semibold text-red-500 bg-red-50 hover:bg-red-100 hover:text-red-700 rounded-md transition-colors shadow-sm flex items-center gap-1"
                 >
                   Clear all
                 </button>

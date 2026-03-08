@@ -41,12 +41,27 @@ const CAREER_GOAL_OPTIONS = [
 ];
 
 const DOMAIN_OPTIONS = [
+  { id: "", name: "🤖 No Preference - Let AI Decide (Recommended)" },
   { id: "software_engineering", name: "Software Engineering" },
-  { id: "data", name: "Data Science / Analytics" },
+  { id: "frontend_engineering", name: "Frontend Engineering" },
+  { id: "backend_engineering", name: "Backend Engineering" },
+  { id: "fullstack_engineering", name: "Full-Stack Engineering" },
+  { id: "data_engineering", name: "Data Engineering" },
+  { id: "data_science", name: "Data Science" },
   { id: "ai_ml", name: "AI / Machine Learning" },
-  { id: "devops", name: "DevOps / Cloud" },
+  { id: "devops", name: "DevOps / SRE" },
+  { id: "cloud_engineering", name: "Cloud Engineering" },
+  { id: "security", name: "Security / Cybersecurity" },
   { id: "qa", name: "QA / Testing" },
-  { id: "ui_ux", name: "UI / UX Design" },
+  { id: "mobile_engineering", name: "Mobile Development" },
+  { id: "ui_ux", name: "UI/UX Design" },
+  { id: "product_management", name: "Product Management" },
+  { id: "business_analysis", name: "Business Analysis" },
+  { id: "project_management", name: "Project Management" },
+  { id: "technical_writing", name: "Technical Writing" },
+  { id: "blockchain_web3", name: "Blockchain / Web3" },
+  { id: "game_development", name: "Game Development" },
+  { id: "embedded_systems", name: "Embedded Systems" },
 ];
 
 export default function CareerProfileForm({
@@ -83,13 +98,13 @@ export default function CareerProfileForm({
 
   // Get selected option object for dropdowns
   const selectedEducation = EDUCATION_OPTIONS.find(
-    (opt) => opt.id === educationLevel.value
+    (opt) => opt.id === educationLevel.value,
   );
   const selectedCareerGoal = CAREER_GOAL_OPTIONS.find(
-    (opt) => opt.id === careerGoal.value
+    (opt) => opt.id === careerGoal.value,
   );
   const selectedDomain = DOMAIN_OPTIONS.find(
-    (opt) => opt.id === preferredDomain.value
+    (opt) => opt.id === preferredDomain.value,
   );
 
   return (
@@ -348,7 +363,7 @@ export default function CareerProfileForm({
                 </div>
               }
               labelClassName="flex items-center gap-3 text-gray-800 text-lg font-bold mb-4"
-              placeholder="No preference"
+              placeholder="🤖 No Preference - Let AI Decide"
               options={DOMAIN_OPTIONS}
               defaultOption={selectedDomain}
               displayKey="name"
@@ -356,7 +371,7 @@ export default function CareerProfileForm({
               onSelect={handleDomainSelect}
               onBlur={preferredDomain.handleInputBlur}
               buttonClassName="bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 focus:border-blue-500 focus:shadow-lg transition-all duration-300"
-              dropdownClassName="bg-white border-2 border-blue-200 shadow-2xl"
+              dropdownClassName="bg-white border-2 border-blue-200 shadow-2xl max-h-60 overflow-y-auto"
               optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50"
               prefixIcon={
                 <div
@@ -370,6 +385,31 @@ export default function CareerProfileForm({
                 </div>
               }
             />
+
+            {/* Help text and info banner */}
+            <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+              💡 Choose "No Preference" for unbiased AI recommendations based
+              purely on your skills. Or select a specific domain if you know
+              your career direction.
+            </p>
+
+            {/* Info banner when No Preference is selected */}
+            {!preferredDomain.value && (
+              <div
+                className="flex items-center gap-3 p-4 rounded-lg mt-4 border"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(239, 246, 255, 0.9) 0%, rgba(224, 242, 254, 0.9) 100%)",
+                  borderColor: "#bfdbfe",
+                }}
+              >
+                <span className="text-2xl">🎯</span>
+                <p className="m-0 text-blue-800 text-sm">
+                  AI will analyze your skills and recommend the best-fit careers
+                  across all domains.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -382,7 +422,7 @@ export default function CareerProfileForm({
             borderColor: "rgba(102, 126, 234, 0.3)",
           }}
         >
-          <label className="w-full block">
+          <div className="w-full block">
             <div className="flex items-center gap-3 text-gray-800 text-xl font-bold mb-4">
               <div
                 className="p-3 rounded-lg shadow-md"
@@ -423,7 +463,7 @@ export default function CareerProfileForm({
                 </span>
               </p>
             )}
-          </label>
+          </div>
         </div>
 
         {/* Submit Button */}

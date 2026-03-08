@@ -6,17 +6,19 @@ export default function CareerLadderTimeline({ progressionData, userSkills, doma
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [showModal, setShowModal] = useState(false);
   
-  const { current_position, progression_path, total_levels } = progressionData;
+  const { current_position, eligible_levels, total_levels } = progressionData;
   
-  // Combine current position with progression path
-  const allLevels = [
-    {
-      ...current_position,
-      is_current: true,
-      readiness_score: 1.0
-    },
-    ...progression_path
-  ];
+  const allLevels = eligible_levels || [];
+  
+  if (allLevels.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 bg-white rounded-2xl shadow-sm border border-gray-100 text-center">
+        <FaLock className="text-4xl text-gray-300 mb-4" />
+        <h3 className="text-xl font-bold text-gray-800 mb-2">Path Locked</h3>
+        <p className="text-gray-500 max-w-md">No eligible career levels found. Build more skills to unlock career paths!</p>
+      </div>
+    );
+  }
   
   const handleLevelClick = (level) => {
     setSelectedLevel(level);
@@ -72,11 +74,6 @@ function LevelCard({ level, index, isCurrent, isAchievable, isLocked, onClick })
         border: '3px solid #5a67d8',
         transform: 'scale(1.05)'
       };
-    } else if (isAchievable) {
-      return {
-        background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)',
-        border: '2px solid rgba(59, 130, 246, 0.3)'
-      };
     } else if (isLocked) {
       return {
         background: 'linear-gradient(135deg, rgba(156, 163, 175, 0.1) 0%, rgba(209, 213, 219, 0.1) 100%)',
@@ -84,9 +81,12 @@ function LevelCard({ level, index, isCurrent, isAchievable, isLocked, onClick })
         opacity: 0.6
       };
     } else {
+      // Achievable & fallback cards
       return {
-        background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%)',
-        border: '2px solid rgba(168, 85, 247, 0.3)'
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
+        borderColor: 'rgba(102, 126, 234, 0.3)',
+        borderWidth: '2px',
+        borderStyle: 'solid'
       };
     }
   };
@@ -133,8 +133,8 @@ function LevelCard({ level, index, isCurrent, isAchievable, isLocked, onClick })
         <div className="flex justify-between items-start mb-4">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <span className={`text-sm font-bold px-3 py-1 rounded-full ${isCurrent ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-700'}`}>
-                Level {level.level}
+              <span className={`text-xs font-semibold px-2 py-1 rounded-full ${isCurrent ? 'bg-white/20 text-white' : 'bg-purple-100 text-purple-700'}`}>
+                TIER {level.level}
               </span>
               {isCurrent && (
                 <span className="text-sm font-bold px-3 py-1 rounded-full bg-yellow-400 text-gray-900 animate-pulse">
@@ -150,58 +150,52 @@ function LevelCard({ level, index, isCurrent, isAchievable, isLocked, onClick })
             </p>
           </div>
           
-          {!isCurrent && (
-            <div className="text-right">
-              <div className="text-3xl font-bold mb-1" style={{
-                background: isAchievable ? 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)' : 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}>
-                {Math.round(level.readiness_score * 100)}%
-              </div>
-              <p className="text-xs text-gray-600">Ready</p>
+          <div className="text-right">
+            <div className="text-3xl font-bold mb-1" style={{
+              background: isAchievable ? 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)' : 'linear-gradient(135deg, #9ca3af 0%, #6b7280 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              {level.readiness_score >= 1 ? 100 : Math.floor(level.readiness_score * 100)}%
             </div>
-          )}
+            <p className="text-xs text-gray-600">Ready</p>
+          </div>
         </div>
         
         {/* Progress Bar */}
-        {!isCurrent && (
-          <div className="mb-4">
-            <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-              <div 
-                className="h-full transition-all duration-500 rounded-full"
-                style={{
-                  width: `${level.readiness_score * 100}%`,
-                  background: isAchievable 
-                    ? 'linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)'
-                    : 'linear-gradient(90deg, #9ca3af 0%, #6b7280 100%)'
-                }}
-              />
-            </div>
+        <div className="mb-4">
+          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className="h-full transition-all duration-500 rounded-full"
+              style={{
+                width: `${level.readiness_score * 100}%`,
+                background: isAchievable 
+                  ? 'linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)'
+                  : 'linear-gradient(90deg, #9ca3af 0%, #6b7280 100%)'
+              }}
+            />
           </div>
-        )}
+        </div>
         
         {/* Skills Summary */}
-        {!isCurrent && (
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div className={isCurrent ? 'text-white/90' : 'text-gray-700'}>
-              <span className="font-semibold">Skills Matched:</span>
-              <span className="ml-2 font-bold text-green-600">
-                {level.matched_skills?.length || 0}
-              </span>
-            </div>
-            <div className={isCurrent ? 'text-white/90' : 'text-gray-700'}>
-              <span className="font-semibold">Skills Needed:</span>
-              <span className="ml-2 font-bold text-red-600">
-                {level.missing_skills?.length || 0}
-              </span>
-            </div>
+        <div className="grid grid-cols-2 gap-4 text-sm mt-4">
+          <div className={isCurrent ? 'text-white/90' : 'text-gray-700'}>
+            <span className="font-semibold">Skills Matched:</span>
+            <span className="ml-2 font-bold text-green-500">
+              {level.matched_skills?.length || 0}
+            </span>
           </div>
-        )}
+          <div className={isCurrent ? 'text-white/90' : 'text-gray-700'}>
+            <span className="font-semibold">Skills Needed:</span>
+            <span className="ml-2 font-bold text-red-500">
+              {level.missing_skills?.length || 0}
+            </span>
+          </div>
+        </div>
         
         {/* Time Estimate */}
-        {!isCurrent && level.estimated_time && (
-          <div className="mt-4 pt-4 border-t border-gray-200">
+        {level.estimated_time && (
+          <div className="mt-4 pt-4 border-t border-gray-200/50">
             <p className={`text-sm ${isCurrent ? 'text-white/80' : 'text-gray-600'}`}>
               <span className="font-semibold">Estimated Time:</span>
               <span className="ml-2">{level.estimated_time}</span>
@@ -210,8 +204,8 @@ function LevelCard({ level, index, isCurrent, isAchievable, isLocked, onClick })
         )}
         
         {/* CTA */}
-        {!isLocked && !isCurrent && (
-          <button className="mt-4 w-full py-2 px-4 bg-white text-purple-700 rounded-lg font-semibold hover:bg-purple-50 transition-colors">
+        {!isLocked && (
+          <button className="mt-6 w-full py-2 px-4 bg-white/90 text-purple-700 rounded-lg font-semibold shadow-sm hover:shadow-md hover:bg-white transition-all duration-300">
             View Details & Learning Path →
           </button>
         )}
