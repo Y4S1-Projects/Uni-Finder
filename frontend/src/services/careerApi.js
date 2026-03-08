@@ -10,18 +10,30 @@ if (!CAREER_API) {
 }
 
 /**
- * Get career recommendations based on user skills
+ * Get career recommendations based on user skills and profile
  * @param {string[]} skillIds - Array of skill IDs
  * @param {number} topN - Number of recommendations to return
- * @returns {Promise<Object>} Recommendations response
+ * @param {Object} careerContext - User profile context for personalized recommendations
+ * @param {string} careerContext.experience_level - e.g., "student", "0-1", "1-3", "3-5", "5+"
+ * @param {string} careerContext.current_status - e.g., "student", "graduate", "working"
+ * @param {string} careerContext.preferred_domain - e.g., "backend_engineering", "ai_ml"
+ * @param {string} careerContext.education_level - e.g., "bachelors", "masters"
+ * @param {string} careerContext.career_goal - e.g., "first_job", "get_promoted", "switch_career"
+ * @returns {Promise<Object>} Recommendations response with score breakdowns
  */
-export async function getCareerRecommendations(skillIds, topN = 5) {
+export async function getCareerRecommendations(skillIds, topN = 5, careerContext = {}) {
 	const response = await fetch(`${CAREER_API}/recommend_careers`, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
 		body: JSON.stringify({
 			user_skill_ids: skillIds,
 			top_n: topN,
+			// Include all profile fields for weighted scoring
+			experience_level: careerContext.experience_level || null,
+			current_status: careerContext.current_status || null,
+			preferred_domain: careerContext.preferred_domain || null,
+			education_level: careerContext.education_level || null,
+			career_goal: careerContext.career_goal || null,
 		}),
 	});
 

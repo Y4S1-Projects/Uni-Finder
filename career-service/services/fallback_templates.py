@@ -38,6 +38,18 @@ def _generate_base_explanation(context: dict) -> dict:
     matched_names = [get_skill_name(s) for s in context.get("matched_skills", [])]
     missing_names = [get_skill_name(s) for s in context.get("missing_skills", [])]
     
+    # Profile context (NEW)
+    experience_level = context.get('experience_level') or 'not specified'
+    current_status = context.get('current_status') or 'not specified'
+    education_level = context.get('education_level') or 'not specified'
+    career_goal = context.get('career_goal') or 'not specified'
+    preferred_domain = context.get('preferred_domain') or ''
+    
+    # Score breakdown (NEW)
+    score_breakdown = context.get('score_breakdown', {})
+    explanations = context.get('explanations', {})
+    domain_impact = explanations.get('domain_impact', '')
+    
     return {
         "role_title": context.get('role_title', 'this role'),
         "domain": (context.get('domain') or 'Technology').replace('_', ' '),
@@ -46,8 +58,43 @@ def _generate_base_explanation(context: dict) -> dict:
         "next_role": context.get('next_role_title'),
         "matched_names": matched_names,
         "missing_names": missing_names,
-        "priority_skills": missing_names[:3]
+        "priority_skills": missing_names[:3],
+        # Profile fields
+        "experience_level": experience_level,
+        "current_status": current_status,
+        "education_level": education_level,
+        "career_goal": career_goal,
+        "preferred_domain": preferred_domain.replace('_', ' ') if preferred_domain else '',
+        "domain_impact": domain_impact,
+        "score_breakdown": score_breakdown
     }
+
+
+def _get_profile_section(base: dict) -> str:
+    """Generate profile context section for explanations."""
+    sections = []
+    
+    preferred_domain = base.get('preferred_domain', '')
+    domain_impact = base.get('domain_impact', '')
+    career_goal = base.get('career_goal', 'not specified')
+    experience_level = base.get('experience_level', 'not specified')
+    
+    if preferred_domain and preferred_domain != 'not specified':
+        if domain_impact:
+            sections.append(f"**🎯 Domain Preference:** {domain_impact}")
+        else:
+            sections.append(f"**🎯 Domain Preference:** Your preference for {preferred_domain} was considered in this ranking.")
+    
+    if career_goal and career_goal != 'not specified':
+        sections.append(f"**🎯 Career Goal:** This role aligns with your goal to {career_goal.lower().replace('_', ' ')}.")
+    
+    if experience_level and experience_level != 'not specified':
+        exp_text = experience_level.replace('_', ' ')
+        sections.append(f"**📊 Experience Match:** This role is suitable for someone at the {exp_text} level.")
+    
+    if sections:
+        return "\n**Your Profile Factors**\n" + "\n".join(sections) + "\n"
+    return ""
 
 # --- Template 1: The Direct Analyst ---
 def get_analyst_explanation(context: dict) -> str:
@@ -58,7 +105,13 @@ def get_analyst_explanation(context: dict) -> str:
     explanation = f"""**Why {role_title} is a Great Match for You**
 
 Based on our AI-powered analysis of your skill profile against real job market data, you have a **{match_score:.0f}% match** with this role in the **{domain}** domain.
-
+"""
+    # Add profile context section (NEW)
+    profile_section = _get_profile_section(base)
+    if profile_section:
+        explanation += profile_section
+    
+    explanation += """
 **🎯 Your Strengths**
 """
     if matched_names:

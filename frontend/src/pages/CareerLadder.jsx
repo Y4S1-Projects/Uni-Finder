@@ -120,9 +120,9 @@ export default function CareerLadder() {
                 "linear-gradient(90deg, transparent, #667eea, #764ba2, transparent)",
             }}
           ></div>
-          <div className="inline-block mb-6">
+          <div className="inline-block mb-6 cursor-default pointer-events-none">
             <div
-              className="px-6 py-2 rounded-full text-white text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+              className="px-6 py-2 rounded-full text-white text-sm font-semibold shadow-lg"
               style={{
                 background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
               }}

@@ -5,7 +5,7 @@ import re
 from pathlib import Path
 
 def generate_enhanced_career_ladders():
-    base_dir = Path(r"d:\SLIIT\Uni-Finder\career-ml")
+    base_dir = Path(r"d:\SLIIT\Uni-Finder\career-service\career-ml")
     # Load data
     jobs_df = pd.read_csv(base_dir / 'data/processed/jobs_labeled.csv')
     role_skills_df = pd.read_csv(base_dir / 'skill_gap/role_skill_profiles.csv')

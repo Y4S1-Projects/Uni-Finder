@@ -96,13 +96,50 @@ def get_career_ladder(domain: str) -> dict:
     return ladders[domain]
 
 
+def is_user_eligible_for_level(
+    user_skill_ids: set,
+    level_data: dict,
+    min_match_threshold: float = 0.15,
+    current_user_level: int = 1
+) -> bool:
+    """
+    Check if user is eligible to see this career level
+    
+    Rules:
+    1. Must have at least 15% skill match (matched_skills / required_skills)
+    2. Can only view current level and next 3 levels (level_gap <= 3)
+    3. Cannot view levels below current (level_gap >= 0)
+    
+    Returns True if eligible, False otherwise
+    """
+    target_level = level_data.get('level', 1)
+    level_gap = target_level - current_user_level
+    
+    if level_gap < 0 or level_gap > 3:
+        return False
+        
+    match_score = calculate_role_match(user_skill_ids, level_data.get('top_skills', []))
+    if match_score < min_match_threshold:
+        return False
+        
+    return True
+
+
 def analyze_career_progression(
     user_skill_ids: List[str],
     current_role_id: str,
-    target_domain: str
+    target_domain: str,
+    show_all_levels: bool = False
 ) -> dict:
     """
     Analyze user's progression path in a career ladder
+    
+    Args:
+        user_skill_ids: User's skill IDs
+        current_role_id: Current role ID (optional)
+        target_domain: Target career domain
+        show_all_levels: If True, returns ALL levels in the ladder (for network/ecosystem view)
+                        If False, only returns eligible levels based on user's current position
     """
     ladder = get_career_ladder(target_domain)
     user_skills_set = set(user_skill_ids)
@@ -121,15 +158,18 @@ def analyze_career_progression(
     if not current_position:
         current_level_num, current_position = predict_current_level(user_skills_set, ladder)
     
-    # Calculate readiness for next levels
-    progression_path = []
+    # Calculate readiness for levels
+    eligible_levels = []
     
     for level in ladder['levels']:
-        if level['level'] <= current_level_num:
+        # Skip levels below current unless showing all
+        if not show_all_levels and level['level'] < current_level_num:
             continue
         
-        if level['level'] > current_level_num + 3:
-            break  # Only show next 3 levels
+        # Apply eligibility filter only when not showing all levels
+        if not show_all_levels:
+            if not is_user_eligible_for_level(user_skills_set, level, current_user_level=current_level_num):
+                continue
         
         # Get skill gap
         try:
@@ -147,18 +187,30 @@ def analyze_career_progression(
             matched_skills = []
             missing_skills = []
             readiness_score = 0.0
+        
+        # Skip zero readiness only when filtering (not in show_all mode)
+        if not show_all_levels and readiness_score <= 0:
+            continue
             
-        progression_path.append({
+        is_current = (level['level'] == current_level_num)
+        
+        # Calculate match_score separately (skill coverage ratio based on top skills)
+        top_skills = set(level.get('top_skills', []))
+        if top_skills:
+            match_score = len(user_skills_set & top_skills) / len(top_skills)
+        else:
+            match_score = readiness_score  # Fallback to readiness if no top_skills
+            
+        eligible_levels.append({
             'level': level['level'],
             'role_id': level['role_id'],
             'role_title': level['role_title'],
-            'experience_range': level['experience_range'],
+            'experience_range': level.get('experience_range', ''),
             'readiness_score': readiness_score,
+            'match_score': round(match_score, 3),
             'matched_skills': matched_skills,
             'missing_skills': missing_skills,
-            'total_skills_required': len(level['top_skills']),
-            'estimated_time': f"{(level['level'] - current_level_num) * 12}-{(level['level'] - current_level_num) * 18} months",
-            'difficulty': get_difficulty_level(readiness_score)
+            'is_current': is_current
         })
     
     return {
@@ -166,12 +218,10 @@ def analyze_career_progression(
         'current_position': {
             'level': current_level_num,
             'role_id': current_position['role_id'],
-            'role_title': current_position['role_title'],
-            'match_score': calculate_role_match(user_skills_set, current_position['top_skills'])
+            'role_title': current_position['role_title']
         },
-        'progression_path': progression_path,
-        'alternate_paths': ladder.get('alternate_paths', []),
-        'total_levels': len(ladder['levels'])
+        'eligible_levels': eligible_levels,
+        'total_levels_in_domain': len(ladder['levels'])
     }
 
 

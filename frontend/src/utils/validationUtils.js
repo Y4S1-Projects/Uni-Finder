@@ -38,14 +38,29 @@ export const validateCurrentStatus = (value) => {
 
 // Validate preferred domain (optional)
 export const validatePreferredDomain = (value) => {
-  if (!value) return ""; // Optional field
+  if (!value) return ""; // Optional field - empty is valid
   const validOptions = [
     "software_engineering",
+    "frontend_engineering",
+    "backend_engineering",
+    "fullstack_engineering",
+    "data_engineering",
+    "data_science",
     "data",
     "ai_ml",
     "devops",
+    "cloud_engineering",
+    "security",
     "qa",
+    "mobile_engineering",
     "ui_ux",
+    "product_management",
+    "business_analysis",
+    "project_management",
+    "technical_writing",
+    "blockchain_web3",
+    "game_development",
+    "embedded_systems",
   ];
   if (!validOptions.includes(value)) return errorMessages.INVALID_OPTION;
   return "";

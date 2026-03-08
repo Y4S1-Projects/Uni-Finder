@@ -1,67 +1,93 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import CareerLadderTimeline from '../components/CareerLadder/CareerLadderTimeline';
-import CareerLadderNetwork from '../components/CareerLadder/CareerLadderNetwork';
-import CareerPathComparator from '../components/CareerLadder/CareerPathComparator';
-import DomainSelector from '../components/CareerLadder/DomainSelector';
-import ViewModeSelector from '../components/CareerLadder/ViewModeSelector';
-import { analyzeCareerProgression, compareCareerPaths, getAllDomains } from '../api/careerLadderApi';
-import { FaProjectDiagram, FaGlobe, FaChevronRight } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import CareerLadderTimeline from "../components/CareerLadder/CareerLadderTimeline";
+import CareerLadderNetwork from "../components/CareerLadder/CareerLadderNetwork";
+import CareerPathComparator from "../components/CareerLadder/CareerPathComparator";
+import DomainSelector from "../components/CareerLadder/DomainSelector";
+import ViewModeSelector from "../components/CareerLadder/ViewModeSelector";
+import {
+  analyzeCareerProgression,
+  compareCareerPaths,
+  getAllDomains,
+} from "../api/careerLadderApi";
+import { FaProjectDiagram, FaGlobe, FaChevronRight } from "react-icons/fa";
 
 export default function CareerLadderPage() {
   const location = useLocation();
-  const { userSkills, recommendations } = location.state || {};
-  
-  const [selectedDomain, setSelectedDomain] = useState('SOFTWARE_ENGINEERING');
-  const [viewMode, setViewMode] = useState('network'); // comparison, network
+  const { userSkills, recommendations, userProfile } = location.state || {};
+
+  const [selectedDomain, setSelectedDomain] = useState("SOFTWARE_ENGINEERING");
+  const [viewMode, setViewMode] = useState("network"); // comparison, network
   const [progressionData, setProgressionData] = useState(null);
   const [comparisonData, setComparisonData] = useState(null);
   const [availableDomains, setAvailableDomains] = useState([]);
   const [loading, setLoading] = useState(true);
   const [allProgressionsData, setAllProgressionsData] = useState(null);
-  
+
   // Load data immediately on mount
   useEffect(() => {
+    window.scrollTo(0, 0);
     const init = async () => {
       setLoading(true);
       const domains = await loadDomains();
-      if (viewMode === 'network') {
+      if (viewMode === "network") {
         await loadAllProgressions(domains);
       }
       setLoading(false);
     };
     init();
   }, [userSkills]); // userSkills is the primary dependency for personalization
-  
+
   // Load progression data when domain changes
   useEffect(() => {
     if (selectedDomain && userSkills) {
       loadProgressionData();
     }
   }, [selectedDomain, userSkills]);
-  
+
   const loadDomains = async () => {
     try {
       const data = await getAllDomains();
-      setAvailableDomains(data.domains);
-      return data.domains;
+      
+      // Extract top 5 domains based on best matching recommendations
+      let topDomains = [];
+      if (recommendations && recommendations.length > 0) {
+        const domainSet = new Set();
+        for (const rec of recommendations) {
+          if (rec.domain && !domainSet.has(rec.domain)) {
+            domainSet.add(rec.domain);
+            const domainObj = data.domains.find(d => d.domain_id === rec.domain);
+            if (domainObj) topDomains.push(domainObj);
+          }
+          if (topDomains.length >= 5) break;
+        }
+      }
+      
+      // If we don't have 5 domains from recommendations, fill with remaining domains
+      if (topDomains.length < 5) {
+        const remaining = data.domains.filter(d => !topDomains.find(td => td.domain_id === d.domain_id));
+        topDomains = [...topDomains, ...remaining].slice(0, 5);
+      }
+      
+      setAvailableDomains(topDomains);
+      return topDomains;
     } catch (error) {
-      console.error('Error loading domains:', error);
+      console.error("Error loading domains:", error);
       return [];
     }
   };
-  
+
   const loadProgressionData = async () => {
     setLoading(true);
     try {
       const data = await analyzeCareerProgression({
         user_skill_ids: userSkills,
         target_domain: selectedDomain,
-        current_role_id: recommendations?.[0]?.role_id
+        current_role_id: recommendations?.[0]?.role_id,
       });
       setProgressionData(data);
     } catch (error) {
-      console.error('Error loading progression:', error);
+      console.error("Error loading progression:", error);
     } finally {
       setLoading(false);
     }
@@ -70,131 +96,179 @@ export default function CareerLadderPage() {
   const loadAllProgressions = async (domains) => {
     try {
       const domainsToLoad = domains || availableDomains;
-      const promises = domainsToLoad.map(d => analyzeCareerProgression({
-        user_skill_ids: userSkills,
-        target_domain: d.domain_id,
-        current_role_id: recommendations?.[0]?.role_id
-      }));
+      const promises = domainsToLoad.map((d) =>
+        analyzeCareerProgression({
+          user_skill_ids: userSkills,
+          target_domain: d.domain_id,
+          current_role_id: recommendations?.[0]?.role_id,
+          show_all_levels: true, // Show ALL levels in network/ecosystem view
+        }),
+      );
       const results = await Promise.all(promises);
       setAllProgressionsData(results);
     } catch (error) {
-      console.error('Error loading all progressions:', error);
+      console.error("Error loading all progressions:", error);
     }
   };
-  
+
   const loadComparisonData = async (domains) => {
     setLoading(true);
     try {
       const data = await compareCareerPaths({
         user_skill_ids: userSkills,
-        domains: domains
+        domains: domains,
       });
       setComparisonData(data);
     } catch (error) {
-      console.error('Error loading comparison:', error);
+      console.error("Error loading comparison:", error);
     } finally {
       setLoading(false);
     }
   };
-  
+
   const handleDomainChange = (domain) => {
     setSelectedDomain(domain);
   };
-  
+
   const handleViewModeChange = (mode) => {
     setViewMode(mode);
-    
-    if (mode === 'comparison' && !comparisonData) {
+
+    if (mode === "comparison" && !comparisonData) {
       // Load comparison for top 3 domains
-      const topDomains = availableDomains.slice(0, 3).map(d => d.domain_id);
+      const topDomains = availableDomains.slice(0, 3).map((d) => d.domain_id);
       loadComparisonData(topDomains);
-    } else if (mode === 'network' && !allProgressionsData) {
+    } else if (mode === "network" && !allProgressionsData) {
       loadAllProgressions();
     }
   };
-  
+
   if (loading) {
     return <LoadingSpinner />;
   }
-  
+
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 overflow-x-hidden">
-      {/* 🚀 AI-Powered Ecosystem Header */}
-      <header className="sticky top-0 z-[100] bg-white/80 backdrop-blur-2xl border-b border-slate-200 shadow-sm">
-        <div className="max-w-[2000px] mx-auto px-8 py-5 flex flex-col lg:flex-row items-center justify-between gap-8">
-          <div className="flex items-center gap-6 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full animate-pulse" />
-              <div className="relative w-14 h-14 bg-gradient-to-br from-indigo-500 via-blue-600 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 transform transition-transform group-hover:rotate-12">
-                <FaProjectDiagram className="text-3xl text-white" />
-              </div>
-            </div>
-            <div className="space-y-1">
-              <h1 className="text-3xl font-black tracking-tight text-slate-900 flex items-center gap-2">
-                AI Career Ecosystem
-                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200 uppercase tracking-tighter">Live v2.0</span>
-              </h1>
-              <div className="flex items-center gap-2 text-slate-500 text-sm font-medium">
-                <FaGlobe className="text-blue-500/70" />
-                <span>Mapping global industry trends to your personalized skill profile</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-             <div className="hidden lg:flex items-center gap-3 mr-4 text-xs font-bold text-slate-500 uppercase tracking-widest">
-               Analysis Mode <FaChevronRight className="text-blue-500" />
-             </div>
-             <div className="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm flex items-center w-full sm:w-auto">
-               <ViewModeSelector
-                 mode={viewMode}
-                 onChange={handleViewModeChange}
-               />
-             </div>
-          </div>
-        </div>
-      </header>
-
-      {/* 🔮 Dynamic Full-Screen Canvas Area */}
-      <main className="relative">
-        <div className={`${viewMode === 'network' ? 'h-[calc(100vh-96px)] w-full' : 'max-w-7xl mx-auto py-16 px-6'}`}>
-          {viewMode === 'network' && allProgressionsData && (
-            <div className="w-full h-full relative animate-in fade-in duration-1000">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.08),transparent_50%)] pointer-events-none" />
-              <CareerLadderNetwork
-                allProgressions={allProgressionsData}
-                userSkills={userSkills}
-              />
-            </div>
-          )}
-
-          {viewMode === 'comparison' && comparisonData && (
-            <div className="bg-white rounded-[3rem] border border-slate-200 p-12 shadow-xl border-t-white">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-                <div className="space-y-2">
-                  <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">Market Benchmarking</h2>
-                  <p className="text-slate-600 text-lg max-w-2xl">Visualizing your competitive index across parallel domain architectures.</p>
+    <div className="min-h-screen pt-0 bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 text-slate-900 overflow-x-hidden">
+      <div className="relative z-10 m-0 p-0">
+        {/* 🚀 AI-Powered Ecosystem Header */}
+        <header className="sticky top-[64px] z-40 bg-white/80 backdrop-blur-2xl border-b border-slate-200 shadow-sm mt-[64px]">
+          <div className="max-w-[2000px] mx-auto px-8 pt-8 pb-2 flex flex-col lg:flex-row items-center justify-between gap-4 w-full">
+            <div className="flex flex-col justify-center items-center lg:items-start text-center lg:text-left gap-1 group">
+              <div className="flex items-center gap-3">
+                <div
+                  className="p-2.5 rounded-xl shadow-lg relative transform transition-transform group-hover:rotate-12"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  }}
+                >
+                  <div className="absolute inset-0 bg-blue-500/20 blur-xl rounded-full" />
+                  <FaProjectDiagram className="relative text-white text-2xl" />
                 </div>
-                <div className="h-0.5 flex-grow mx-12 border-t border-slate-200 hidden lg:block" />
+
+                <h1
+                  className="text-3xl md:text-4xl font-bold tracking-tight"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Career Ladder
+                </h1>
               </div>
-              <CareerPathComparator
-                comparisonData={comparisonData}
-                userSkills={userSkills}
-              />
+
+              <p className="text-gray-600 text-base flex items-center gap-2 font-medium">
+                <FaGlobe className="text-blue-500/70 hidden sm:inline-block" />
+                Explore career pathways and discover the skills you need to
+                advance in your journey
+              </p>
             </div>
-          )}
-        </div>
-      </main>
+
+            <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+              <div className="bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm flex items-center w-full sm:w-auto">
+                <ViewModeSelector
+                  mode={viewMode}
+                  onChange={handleViewModeChange}
+                />
+              </div>
+            </div>
+          </div>
+        </header>
+
+        {/* 🔮 Dynamic Full-Screen Canvas Area */}
+        <main className="relative">
+          <div
+            className={`${viewMode === "network" ? "h-[calc(100vh-140px)] w-full" : "max-w-7xl mx-auto pt-6 pb-16 px-6"}`}
+          >
+            {viewMode === "network" && allProgressionsData && (
+              <div className="w-full h-full relative animate-in fade-in duration-1000">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.08),transparent_50%)] pointer-events-none" />
+                <CareerLadderNetwork
+                  allProgressions={allProgressionsData}
+                  userSkills={userSkills}
+                  userProfile={userProfile}
+                />
+              </div>
+            )}
+
+            {viewMode === "comparison" && comparisonData && (
+              <div className="bg-white rounded-[3rem] border border-slate-200 p-12 shadow-xl border-t-white">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                  <div className="space-y-2">
+                    <h2 className="text-4xl font-extrabold text-[#111827] tracking-tight">
+                      Compare Paths
+                    </h2>
+                    <p className="text-slate-600 text-lg max-w-2xl font-medium">
+                      See how you match across different career domains and identify your strongest overlaps.
+                    </p>
+                  </div>
+                  <div className="h-0.5 flex-grow mx-12 border-t border-slate-200 hidden lg:block" />
+                </div>
+                <CareerPathComparator
+                  comparisonData={comparisonData}
+                  userSkills={userSkills}
+                />
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
 
 function LoadingSpinner() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="text-center">
-        <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <p className="text-gray-600">Loading career ladder...</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 via-white to-purple-50">
+      <div className="relative flex items-center justify-center">
+        {/* Decorative outer rings */}
+        <div className="absolute inset-0 border-4 border-indigo-100 rounded-full animate-ping" style={{ animationDuration: '3s' }}></div>
+        <div className="absolute inset-[-10px] border-2 border-purple-100 rounded-full animate-ping" style={{ animationDuration: '2s', animationDelay: '0.5s' }}></div>
+        
+        {/* Main spinning element */}
+        <div className="w-24 h-24 border-[5px] border-purple-100 border-t-purple-600 rounded-full animate-spin shadow-lg relative z-10"></div>
+        
+        {/* Center Icon */}
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <FaProjectDiagram className="text-purple-600 text-3xl animate-pulse" />
+        </div>
+      </div>
+      
+      <h3 className="mt-8 text-2xl font-bold bg-gradient-to-r from-purple-700 to-indigo-700 bg-clip-text text-transparent">
+        Mapping Career Ecosystem...
+      </h3>
+      <p className="mt-2 text-gray-500 font-medium tracking-wide">
+        Analyzing skill vectors & generating pathways
+      </p>
+      
+      {/* Skeleton-like decorative nodes */}
+      <div className="flex gap-3 mt-8 opacity-70">
+        <div className="w-3 h-3 rounded-full bg-blue-400 animate-bounce" style={{ animationDelay: '0ms' }}></div>
+        <div className="w-3 h-3 rounded-full bg-purple-400 animate-bounce" style={{ animationDelay: '150ms' }}></div>
+        <div className="w-3 h-3 rounded-full bg-indigo-400 animate-bounce" style={{ animationDelay: '300ms' }}></div>
+        <div className="w-3 h-3 rounded-full bg-pink-400 animate-bounce" style={{ animationDelay: '450ms' }}></div>
       </div>
     </div>
   );
