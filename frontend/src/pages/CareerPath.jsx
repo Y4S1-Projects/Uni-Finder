@@ -155,7 +155,13 @@ export default function CareerPath() {
       state: {
         userSkills: selectedSkills,
         selectedDomain: jobDetail.domain,
-        recommendations: [jobDetail]
+        recommendations: [jobDetail],
+        userProfile: {
+          experienceLevel: experienceLevel.value,
+          currentStatus: currentStatus.value,
+          educationLevel: educationLevel.value,
+          careerGoal: careerGoal.value,
+        }
       }
     });
   };
@@ -227,6 +233,12 @@ export default function CareerPath() {
         jobDetail={jobDetail}
         isLoading={detailLoading}
         onViewPath={handleViewCareerLadder}
+        userProfile={{
+          experienceLevel: experienceLevel.value,
+          currentStatus: currentStatus.value,
+          educationLevel: educationLevel.value,
+          careerGoal: careerGoal.value,
+        }}
       />
     </div>
   );
@@ -268,7 +280,7 @@ function RecommendationsSection({
           key={rec.role_id}
           recommendation={rec}
           rank={index + 1}
-          isBestMatch={index === 0}
+          isBestMatch={rec.is_best_match || false}
           onViewDetails={onViewDetails}
           userSkills={userSkills}
         />
