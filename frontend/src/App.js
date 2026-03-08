@@ -15,6 +15,7 @@ import StudentMatcherPage from "./scholarship_loan_matcher/StudentMatcherPage";
 import ScholarshipMatcherPage from "./scholarship_loan_matcher/ScholarshipMatcherPage";
 import LoanMatcherPage from "./scholarship_loan_matcher/LoanMatcherPage";
 import AdminDatasetPage from "./scholarship_loan_matcher/AdminDatasetPage";
+import AdminRouteGuard from "./scholarship_loan_matcher/AdminRouteGuard";
 
 import OnboardingGateway from "./pages/degree-recommendation/DegreeHome";
 import ALWizardFlow from "./pages/degree-recommendation/ALWizardFlow";
@@ -52,7 +53,14 @@ function AppContent() {
 					<Route path='/scholarship-matcher' element={<StudentMatcherPage />} />
 					<Route path='/scholarship-matcher/scholarships' element={<ScholarshipMatcherPage />} />
 					<Route path='/scholarship-matcher/loans' element={<LoanMatcherPage />} />
-					<Route path='/scholarship-matcher/admin-datasets' element={<AdminDatasetPage />} />
+					<Route
+						path='/scholarship-matcher/admin-datasets'
+						element={
+							<AdminRouteGuard>
+								<AdminDatasetPage />
+							</AdminRouteGuard>
+						}
+					/>
 					<Route path='/signUp' element={<SignUp />} />
 					<Route path='/signInNew' element={<SignIn />} />
 				</Routes>
