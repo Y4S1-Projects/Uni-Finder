@@ -74,4 +74,13 @@ else:
 	)
 
 # CORS settings
-CORS_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
+# Read from CORS_ORIGINS env var (set by Azure Container Apps deploy).
+# Supports: "*" for all origins, or comma-separated URLs.
+# Falls back to localhost for local development.
+_cors_env = os.getenv("CORS_ORIGINS", "").strip()
+if _cors_env == "*":
+    CORS_ORIGINS = ["*"]
+elif _cors_env:
+    CORS_ORIGINS = [origin.strip() for origin in _cors_env.split(",") if origin.strip()]
+else:
+    CORS_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
