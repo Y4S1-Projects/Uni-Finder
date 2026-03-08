@@ -679,3 +679,4 @@ if __name__ == '__main__':
     transport_budget = calculator.calculate_transport_budget(transport_data)
     print(f"\n🚌 Transport Budget: LKR {transport_budget['monthly_total']}")
     print(f"Breakdown: {transport_budget['breakdown']}")
+
