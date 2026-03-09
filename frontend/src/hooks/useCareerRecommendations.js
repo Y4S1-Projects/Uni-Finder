@@ -61,60 +61,82 @@ export function useCareerDetail() {
   const [jobDetail, setJobDetail] = useState(null);
   const [detailLoading, setDetailLoading] = useState(false);
 
-  const fetchJobDetail = useCallback(async (recommendation, userSkillIds) => {
-    setSelectedJob(recommendation);
-    setDetailLoading(true);
-    setJobDetail(null);
+  const fetchJobDetail = useCallback(
+    async (recommendation, userSkillIds, userProfile = {}) => {
+      setSelectedJob(recommendation);
+      setDetailLoading(true);
+      setJobDetail(null);
 
-    // Extract skill IDs (skills may be objects {id, name} or strings)
-    const extractSkillIds = (skills) =>
-      (skills || []).map((s) => (typeof s === "object" ? s.id : s));
+      // Extract skill IDs (skills may be objects {id, name} or strings)
+      const extractSkillIds = (skills) =>
+        (skills || []).map((s) => (typeof s === "object" ? s.id : s));
 
-    try {
-      const data = await getCareerExplanation({
-        roleId: recommendation.role_id,
-        roleTitle: recommendation.role_title,
-        domain: recommendation.domain,
-        matchScore: recommendation.match_score,
-        userSkillIds: userSkillIds,
-        matchedSkills: extractSkillIds(
-          recommendation.skill_gap?.matched_skills,
-        ),
-        missingSkills: extractSkillIds(
-          recommendation.skill_gap?.missing_skills,
-        ),
-        readinessScore: recommendation.skill_gap?.readiness_score || 0,
-        nextRole: recommendation.next_role,
-        nextRoleTitle: recommendation.next_role_title,
-      });
-      setJobDetail(data);
-      return data;
-    } catch (err) {
-      console.error(err);
-      // Fallback to basic detail without AI explanation
-      // Skills from recommendation are already {id, name} objects
-      const normalizeSkills = (skills) =>
-        (skills || []).map((s) =>
-          typeof s === "object" ? s : { id: s, name: s },
-        );
+      try {
+        const data = await getCareerExplanation({
+          roleId: recommendation.role_id,
+          roleTitle: recommendation.role_title,
+          domain: recommendation.domain,
+          matchScore: recommendation.match_score,
+          userSkillIds: userSkillIds,
+          matchedSkills: extractSkillIds(
+            recommendation.skill_gap?.matched_skills,
+          ),
+          missingSkills: extractSkillIds(
+            recommendation.skill_gap?.missing_skills,
+          ),
+          readinessScore: recommendation.skill_gap?.readiness_score || 0,
+          nextRole: recommendation.next_role,
+          nextRoleTitle: recommendation.next_role_title,
+          // Phase D structured fields from recommendation payload
+          scoreBreakdown: recommendation.score_breakdown || null,
+          explanations: recommendation.explanations || null,
+          seniority: recommendation.seniority ?? null,
+          ladderPosition: recommendation.ladder_position ?? null,
+          ladderLength: recommendation.ladder_length ?? null,
+          confidenceScore: recommendation.confidence_score ?? null,
+          matchedCoreSkills: recommendation.matched_core_skills || null,
+          matchedSupportingSkills:
+            recommendation.matched_supporting_skills || null,
+          missingCriticalSkills: recommendation.missing_critical_skills || null,
+          isBestMatch: recommendation.is_best_match ?? null,
+          profileSource: recommendation.profile_source || null,
+          // User profile context
+          experienceLevel: userProfile.experienceLevel || null,
+          currentStatus: userProfile.currentStatus || null,
+          educationLevel: userProfile.educationLevel || null,
+          careerGoal: userProfile.careerGoal || null,
+          preferredDomain: userProfile.preferredDomain || null,
+        });
+        setJobDetail(data);
+        return data;
+      } catch (err) {
+        console.error(err);
+        // Fallback to basic detail without AI explanation
+        // Skills from recommendation are already {id, name} objects
+        const normalizeSkills = (skills) =>
+          (skills || []).map((s) =>
+            typeof s === "object" ? s : { id: s, name: s },
+          );
 
-      const fallbackDetail = {
-        ...recommendation,
-        matched_skills: normalizeSkills(
-          recommendation.skill_gap?.matched_skills,
-        ),
-        missing_skills: normalizeSkills(
-          recommendation.skill_gap?.missing_skills,
-        ),
-        readiness_score: recommendation.skill_gap?.readiness_score || 0,
-        explanation: null,
-      };
-      setJobDetail(fallbackDetail);
-      return fallbackDetail;
-    } finally {
-      setDetailLoading(false);
-    }
-  }, []);
+        const fallbackDetail = {
+          ...recommendation,
+          matched_skills: normalizeSkills(
+            recommendation.skill_gap?.matched_skills,
+          ),
+          missing_skills: normalizeSkills(
+            recommendation.skill_gap?.missing_skills,
+          ),
+          readiness_score: recommendation.skill_gap?.readiness_score || 0,
+          explanation: null,
+        };
+        setJobDetail(fallbackDetail);
+        return fallbackDetail;
+      } finally {
+        setDetailLoading(false);
+      }
+    },
+    [],
+  );
 
   const closeDetail = useCallback(() => {
     setSelectedJob(null);
