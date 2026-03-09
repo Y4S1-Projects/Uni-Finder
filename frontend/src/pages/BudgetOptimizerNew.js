@@ -767,18 +767,58 @@ const BudgetOptimizerNew = () => {
           </div>
 
           {/* Days per week at uni */}
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Days per Week at University</strong></Form.Label>
-            <Form.Select name="days_per_week" value={formData.days_per_week} onChange={handleInputChange}>
-              <option value="1 day">1 day</option>
-              <option value="2 days">2 days</option>
-              <option value="3 days">3 days</option>
-              <option value="4 days">4 days</option>
-              <option value="5 days">5 days</option>
-              <option value="6 days">6 days</option>
-              <option value="7 days">7 days</option>
-            </Form.Select>
-          </Form.Group>
+          {(() => {
+            const workDays = formData.has_work_commute
+              ? parseInt(formData.work_days_per_week) || 0
+              : 0;
+            const maxUniDays = 7 - workDays;
+            const currentUniDays = parseInt(formData.days_per_week) || 5;
+            const isOverLimit = currentUniDays > maxUniDays;
+
+            // Auto-correct if current value exceeds the new max
+            if (isOverLimit && maxUniDays > 0) {
+              setFormData(prev => ({ ...prev, days_per_week: `${maxUniDays} ${maxUniDays === 1 ? 'day' : 'days'}` }));
+            }
+
+            const allOptions = [
+              { v: 1, l: '1 day' }, { v: 2, l: '2 days' }, { v: 3, l: '3 days' },
+              { v: 4, l: '4 days' }, { v: 5, l: '5 days' }, { v: 6, l: '6 days' },
+              { v: 7, l: '7 days' },
+            ];
+
+            return (
+              <Form.Group className="mb-3">
+                <Form.Label><strong>Days per Week at University</strong></Form.Label>
+                <Form.Select
+                  name="days_per_week"
+                  value={formData.days_per_week}
+                  onChange={handleInputChange}
+                  isInvalid={isOverLimit}
+                  style={isOverLimit ? { borderColor: '#dc3545' } : {}}
+                >
+                  {allOptions
+                    .filter(o => o.v <= maxUniDays)
+                    .map(o => (
+                      <option key={o.v} value={o.l}>{o.l}</option>
+                    ))
+                  }
+                </Form.Select>
+                {formData.has_work_commute && workDays > 0 && (
+                  <div style={{
+                    fontSize: '0.78rem', marginTop: 5, padding: '5px 10px', borderRadius: 6,
+                    background: isOverLimit ? '#fef2f2' : '#fffbeb',
+                    border: `1px solid ${isOverLimit ? '#fca5a5' : '#fde68a'}`,
+                    color: isOverLimit ? '#b91c1c' : '#92400e'
+                  }}>
+                    {isOverLimit
+                      ? `⚠️ Cannot select more than ${maxUniDays} university ${maxUniDays === 1 ? 'day' : 'days'} — your work commute already uses ${workDays} ${workDays === 1 ? 'day' : 'days'}/week.`
+                      : `ℹ️ Work commute uses ${workDays} ${workDays === 1 ? 'day' : 'days'}/week — max ${maxUniDays} ${maxUniDays === 1 ? 'day' : 'days'} available for university.`
+                    }
+                  </div>
+                )}
+              </Form.Group>
+            );
+          })()}
         </Form>
       </Card.Body>
     </Card>
