@@ -162,6 +162,7 @@ def recommend_careers(req: RecommendRequest):
 async def explain_career(req: ExplainRequest):
     """
     Generate AI-powered explanation for a career recommendation.
+    Passes full Phase D context to explainability service.
     """
     context = {
         "role_id": req.role_id,
@@ -173,6 +174,25 @@ async def explain_career(req: ExplainRequest):
         "missing_skills": req.missing_skills,
         "next_role": req.next_role,
         "next_role_title": req.next_role_title,
+        # Profile
+        "experience_level": req.experience_level,
+        "current_status": req.current_status,
+        "education_level": req.education_level,
+        "career_goal": req.career_goal,
+        "preferred_domain": req.preferred_domain,
+        # Score breakdown & explanations from scoring engine
+        "score_breakdown": req.score_breakdown or {},
+        "explanations": req.explanations or {},
+        # Phase D fields
+        "seniority": req.seniority,
+        "ladder_position": req.ladder_position,
+        "ladder_length": req.ladder_length,
+        "confidence_score": req.confidence_score,
+        "matched_core_skills": req.matched_core_skills or [],
+        "matched_supporting_skills": req.matched_supporting_skills or [],
+        "missing_critical_skills": req.missing_critical_skills or [],
+        "is_best_match": req.is_best_match,
+        "profile_source": req.profile_source,
     }
     
     # Convert skill IDs to names for response
@@ -193,6 +213,25 @@ async def explain_career(req: ExplainRequest):
         "next_role": req.next_role,
         "next_role_title": req.next_role_title,
         "explanation": explanation,
+        # Phase D: pass through all structured data for modal rendering
+        "score_breakdown": req.score_breakdown,
+        "explanations": req.explanations,
+        "seniority": req.seniority,
+        "ladder_position": req.ladder_position,
+        "ladder_length": req.ladder_length,
+        "confidence_score": req.confidence_score,
+        "matched_core_skills": req.matched_core_skills,
+        "matched_supporting_skills": req.matched_supporting_skills,
+        "missing_critical_skills": req.missing_critical_skills,
+        "is_best_match": req.is_best_match,
+        "profile_source": req.profile_source,
+        "profile_used": {
+            "experience_level": req.experience_level,
+            "current_status": req.current_status,
+            "education_level": req.education_level,
+            "career_goal": req.career_goal,
+            "preferred_domain": req.preferred_domain,
+        },
     }
 
 # =============================================================================
