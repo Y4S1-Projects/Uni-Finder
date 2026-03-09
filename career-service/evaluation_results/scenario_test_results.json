@@ -1,0 +1,73 @@
+[
+  {
+    "scenario": "Frontend Heavy Profile",
+    "description": "User has frontend web skills.",
+    "input_skills": [
+      "SK005",
+      "SK006",
+      "SK002",
+      "SK351",
+      "SK312"
+    ],
+    "expected_any_of": [
+      "FE_DEV",
+      "JR_FE_DEV",
+      "SENIOR_FE_DEV"
+    ],
+    "actual_top_roles": [
+      "FE_DEV",
+      "FS_DEV",
+      "JR_FE_DEV",
+      "SENIOR_FE_DEV",
+      "BE_DEV"
+    ],
+    "passed": true
+  },
+  {
+    "scenario": "Data Science Profile",
+    "description": "User has data science and ML skills.",
+    "input_skills": [
+      "SK004",
+      "SK124",
+      "SK531",
+      "SK031"
+    ],
+    "expected_any_of": [
+      "DATA_SCIENTIST",
+      "JR_DATA_ANALYST",
+      "ML_RESEARCH_SCIENTIST",
+      "DATA_ANALYST"
+    ],
+    "actual_top_roles": [
+      "ML_RESEARCH_SCIENTIST",
+      "RESEARCH_SCIENTIST",
+      "DATA_ENGINEER",
+      "CLOUD_ENGINEER",
+      "DATA_ENGINEER_INT"
+    ],
+    "passed": true
+  },
+  {
+    "scenario": "Backend Heavy Profile",
+    "description": "Java Spring Developer",
+    "input_skills": [
+      "SK001",
+      "SK018",
+      "SK003"
+    ],
+    "expected_any_of": [
+      "BE_DEV",
+      "JR_BE_DEV",
+      "FS_DEV",
+      "JR_FS_DEV"
+    ],
+    "actual_top_roles": [
+      "BE_DEV",
+      "JR_BE_DEV",
+      "DATA_ENGINEER",
+      "FE_DEV",
+      "MOBILE_DEV"
+    ],
+    "passed": true
+  }
+]
