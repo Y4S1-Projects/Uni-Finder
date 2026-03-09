@@ -1,0 +1,2994 @@
+{
+  "recommendations": [
+    {
+      "role_id": "SENIOR_BE_DEV",
+      "role_title": "Senior Backend Developer",
+      "domain": "BACKEND_ENGINEERING",
+      "seniority": 4,
+      "ladder_position": 3,
+      "ladder_length": 8,
+      "next_role": "STAFF_BE_DEV",
+      "next_role_title": "Staff Backend Developer",
+      "match_score": 0.6185,
+      "readiness_score": 0.235,
+      "skill_match_score": 0.6112,
+      "confidence_score": 1.0,
+      "score_breakdown": {
+        "skill_match_score": 0.6112,
+        "core_skill_coverage_score": 0.0,
+        "domain_preference_score": 1.0,
+        "experience_fit_score": 1.0,
+        "current_status_fit_score": 1.0,
+        "education_fit_score": 0.85,
+        "career_goal_fit_score": 0.6,
+        "seniority_fit_score": 1.0,
+        "confidence_score": 1.0,
+        "final_match_score": 0.6185,
+        "readiness_score": 0.235,
+        "penalty_total": -0.15,
+        "boost_total": 0.13,
+        "penalties_applied": [
+          "weak_core_coverage(0%)"
+        ],
+        "boosts_applied": [
+          "exact_domain_match",
+          "perfect_seniority"
+        ],
+        "matched_core_skills": [],
+        "matched_supporting_skills": [],
+        "missing_critical_skills": [
+          "SK001",
+          "SK002",
+          "SK003",
+          "SK009",
+          "SK010",
+          "SK013",
+          "SK018",
+          "SK021",
+          "SK026",
+          "SK041",
+          "SK067",
+          "SK068",
+          "SK102",
+          "SK122",
+          "SK124",
+          "SK135",
+          "SK161",
+          "SK184",
+          "SK282",
+          "SK285",
+          "SK882",
+          "SK909",
+          "SK934",
+          "SK949",
+          "SK973"
+        ],
+        "total_core_skills": 25,
+        "total_supporting_skills": 44,
+        "supporting_skill_coverage": 0.0,
+        "is_entry_level_user": false,
+        "entry_level_adjustment": 0.0,
+        "profile_source": "data_backed"
+      },
+      "matched_core_skills": [],
+      "matched_supporting_skills": [],
+      "missing_critical_skills": [
+        {
+          "id": "SK001",
+          "name": "java"
+        },
+        {
+          "id": "SK002",
+          "name": "javascript"
+        },
+        {
+          "id": "SK003",
+          "name": "sql"
+        },
+        {
+          "id": "SK009",
+          "name": "git"
+        },
+        {
+          "id": "SK010",
+          "name": "java developer"
+        },
+        {
+          "id": "SK013",
+          "name": "rest"
+        },
+        {
+          "id": "SK018",
+          "name": "spring"
+        },
+        {
+          "id": "SK021",
+          "name": "api"
+        },
+        {
+          "id": "SK026",
+          "name": "web developer"
+        },
+        {
+          "id": "SK041",
+          "name": "software engineer"
+        },
+        {
+          "id": "SK067",
+          "name": "business analyst"
+        },
+        {
+          "id": "SK068",
+          "name": "solution architect"
+        },
+        {
+          "id": "SK102",
+          "name": "project manager"
+        },
+        {
+          "id": "SK122",
+          "name": "software development"
+        },
+        {
+          "id": "SK124",
+          "name": "data analyst"
+        },
+        {
+          "id": "SK135",
+          "name": "testing"
+        },
+        {
+          "id": "SK161",
+          "name": "agile"
+        },
+        {
+          "id": "SK184",
+          "name": "technical requirements"
+        },
+        {
+          "id": "SK282",
+          "name": "implementation"
+        },
+        {
+          "id": "SK285",
+          "name": "programming"
+        },
+        {
+          "id": "SK882",
+          "name": "code review skills"
+        },
+        {
+          "id": "SK909",
+          "name": "mentoring"
+        },
+        {
+          "id": "SK934",
+          "name": "accountability"
+        },
+        {
+          "id": "SK949",
+          "name": "system design"
+        },
+        {
+          "id": "SK973",
+          "name": "agile methodology"
+        }
+      ],
+      "is_best_match": true,
+      "profile_source": "data_backed",
+      "skill_gap": {
+        "target_role": "SENIOR_BE_DEV",
+        "readiness_score": 0.0,
+        "missing_skills": [
+          {
+            "id": "SK001",
+            "name": "java"
+          },
+          {
+            "id": "SK002",
+            "name": "javascript"
+          },
+          {
+            "id": "SK003",
+            "name": "sql"
+          },
+          {
+            "id": "SK004",
+            "name": "python"
+          },
+          {
+            "id": "SK005",
+            "name": "css"
+          },
+          {
+            "id": "SK006",
+            "name": "html"
+          },
+          {
+            "id": "SK007",
+            "name": "mobile"
+          },
+          {
+            "id": "SK008",
+            "name": "mysql"
+          },
+          {
+            "id": "SK009",
+            "name": "git"
+          },
+          {
+            "id": "SK010",
+            "name": "java developer"
+          },
+          {
+            "id": "SK011",
+            "name": "infrastructure"
+          },
+          {
+            "id": "SK012",
+            "name": "database"
+          },
+          {
+            "id": "SK013",
+            "name": "rest"
+          },
+          {
+            "id": "SK015",
+            "name": "jquery"
+          },
+          {
+            "id": "SK016",
+            "name": "security"
+          },
+          {
+            "id": "SK017",
+            "name": "php"
+          },
+          {
+            "id": "SK018",
+            "name": "spring"
+          },
+          {
+            "id": "SK019",
+            "name": "json"
+          },
+          {
+            "id": "SK020",
+            "name": "linux"
+          },
+          {
+            "id": "SK021",
+            "name": "api"
+          },
+          {
+            "id": "SK022",
+            "name": "html5"
+          },
+          {
+            "id": "SK023",
+            "name": "xml"
+          },
+          {
+            "id": "SK024",
+            "name": "devops"
+          },
+          {
+            "id": "SK025",
+            "name": "hibernate"
+          },
+          {
+            "id": "SK026",
+            "name": "web developer"
+          },
+          {
+            "id": "SK027",
+            "name": "debugging"
+          },
+          {
+            "id": "SK028",
+            "name": "problem solving"
+          },
+          {
+            "id": "SK029",
+            "name": "docker"
+          },
+          {
+            "id": "SK030",
+            "name": "j2ee"
+          },
+          {
+            "id": "SK031",
+            "name": "machine learning"
+          },
+          {
+            "id": "SK032",
+            "name": "oracle"
+          },
+          {
+            "id": "SK033",
+            "name": "ajax"
+          },
+          {
+            "id": "SK034",
+            "name": "algorithms"
+          },
+          {
+            "id": "SK035",
+            "name": "storage"
+          },
+          {
+            "id": "SK036",
+            "name": "spring boot"
+          },
+          {
+            "id": "SK037",
+            "name": "mvc"
+          },
+          {
+            "id": "SK038",
+            "name": "team player"
+          },
+          {
+            "id": "SK039",
+            "name": "nosql"
+          },
+          {
+            "id": "SK040",
+            "name": "software engineering"
+          },
+          {
+            "id": "SK041",
+            "name": "software engineer"
+          },
+          {
+            "id": "SK042",
+            "name": "bootstrap"
+          },
+          {
+            "id": "SK043",
+            "name": "big data"
+          },
+          {
+            "id": "SK044",
+            "name": "data structures"
+          },
+          {
+            "id": "SK045",
+            "name": "information technology"
+          },
+          {
+            "id": "SK046",
+            "name": "soap"
+          },
+          {
+            "id": "SK047",
+            "name": "mongodb"
+          },
+          {
+            "id": "SK049",
+            "name": ".net"
+          },
+          {
+            "id": "SK050",
+            "name": "written communication"
+          },
+          {
+            "id": "SK051",
+            "name": "maven"
+          },
+          {
+            "id": "SK052",
+            "name": "web development"
+          },
+          {
+            "id": "SK053",
+            "name": "laravel"
+          },
+          {
+            "id": "SK054",
+            "name": "oops"
+          },
+          {
+            "id": "SK056",
+            "name": "svn"
+          },
+          {
+            "id": "SK057",
+            "name": "network engineer"
+          },
+          {
+            "id": "SK058",
+            "name": "apache"
+          },
+          {
+            "id": "SK059",
+            "name": "web technologies"
+          },
+          {
+            "id": "SK060",
+            "name": "hadoop"
+          },
+          {
+            "id": "SK061",
+            "name": "windows"
+          },
+          {
+            "id": "SK062",
+            "name": "jsp"
+          },
+          {
+            "id": "SK063",
+            "name": "github"
+          },
+          {
+            "id": "SK064",
+            "name": "unix"
+          },
+          {
+            "id": "SK067",
+            "name": "business analyst"
+          },
+          {
+            "id": "SK068",
+            "name": "solution architect"
+          },
+          {
+            "id": "SK069",
+            "name": "spring mvc"
+          },
+          {
+            "id": "SK072",
+            "name": "junit"
+          },
+          {
+            "id": "SK073",
+            "name": "spring framework"
+          },
+          {
+            "id": "SK074",
+            "name": "fundamentals"
+          },
+          {
+            "id": "SK075",
+            "name": "rdbms"
+          },
+          {
+            "id": "SK076",
+            "name": "node.js"
+          },
+          {
+            "id": "SK077",
+            "name": "postgresql"
+          },
+          {
+            "id": "SK079",
+            "name": "struts"
+          },
+          {
+            "id": "SK080",
+            "name": "technical skills"
+          },
+          {
+            "id": "SK082",
+            "name": "rest api"
+          },
+          {
+            "id": "SK084",
+            "name": "jpa"
+          },
+          {
+            "id": "SK085",
+            "name": "scala"
+          },
+          {
+            "id": "SK086",
+            "name": "eclipse"
+          },
+          {
+            "id": "SK087",
+            "name": "messaging"
+          },
+          {
+            "id": "SK088",
+            "name": "ruby"
+          },
+          {
+            "id": "SK089",
+            "name": "gradle"
+          },
+          {
+            "id": "SK090",
+            "name": "jdbc"
+          },
+          {
+            "id": "SK091",
+            "name": "artificial intelligence"
+          },
+          {
+            "id": "SK094",
+            "name": "oop"
+          },
+          {
+            "id": "SK096",
+            "name": "software developer"
+          },
+          {
+            "id": "SK097",
+            "name": "software design"
+          },
+          {
+            "id": "SK1000",
+            "name": "monday.com"
+          },
+          {
+            "id": "SK1003",
+            "name": "requirements gathering"
+          },
+          {
+            "id": "SK1004",
+            "name": "product strategy"
+          },
+          {
+            "id": "SK1009",
+            "name": "kpi definition"
+          },
+          {
+            "id": "SK101",
+            "name": "cloud services"
+          },
+          {
+            "id": "SK1011",
+            "name": "user experience focus"
+          },
+          {
+            "id": "SK1017",
+            "name": "startup mindset"
+          },
+          {
+            "id": "SK102",
+            "name": "project manager"
+          },
+          {
+            "id": "SK1021",
+            "name": "compliance management"
+          },
+          {
+            "id": "SK103",
+            "name": "asp.net"
+          },
+          {
+            "id": "SK105",
+            "name": "cassandra"
+          },
+          {
+            "id": "SK107",
+            "name": "network"
+          },
+          {
+            "id": "SK108",
+            "name": "crm"
+          },
+          {
+            "id": "SK110",
+            "name": "django"
+          },
+          {
+            "id": "SK111",
+            "name": "project management"
+          },
+          {
+            "id": "SK114",
+            "name": "multithreading"
+          },
+          {
+            "id": "SK117",
+            "name": "system administrator"
+          },
+          {
+            "id": "SK119",
+            "name": "java ee"
+          },
+          {
+            "id": "SK120",
+            "name": "object oriented programming"
+          },
+          {
+            "id": "SK121",
+            "name": "uml"
+          },
+          {
+            "id": "SK122",
+            "name": "software development"
+          },
+          {
+            "id": "SK123",
+            "name": "senior software engineer"
+          },
+          {
+            "id": "SK124",
+            "name": "data analyst"
+          },
+          {
+            "id": "SK131",
+            "name": "servlets"
+          },
+          {
+            "id": "SK132",
+            "name": "networking"
+          },
+          {
+            "id": "SK133",
+            "name": "threading"
+          },
+          {
+            "id": "SK135",
+            "name": "testing"
+          },
+          {
+            "id": "SK136",
+            "name": "cloud computing"
+          },
+          {
+            "id": "SK140",
+            "name": "java programming"
+          },
+          {
+            "id": "SK147",
+            "name": "jee"
+          },
+          {
+            "id": "SK148",
+            "name": "business requirements"
+          },
+          {
+            "id": "SK152",
+            "name": "web services"
+          },
+          {
+            "id": "SK154",
+            "name": "ant"
+          },
+          {
+            "id": "SK155",
+            "name": "gateway"
+          },
+          {
+            "id": "SK157",
+            "name": "application development"
+          },
+          {
+            "id": "SK159",
+            "name": "protocols"
+          },
+          {
+            "id": "SK161",
+            "name": "agile"
+          },
+          {
+            "id": "SK166",
+            "name": "coding"
+          },
+          {
+            "id": "SK178",
+            "name": "web api"
+          },
+          {
+            "id": "SK179",
+            "name": "soa"
+          },
+          {
+            "id": "SK181",
+            "name": "aws"
+          },
+          {
+            "id": "SK182",
+            "name": "configuration"
+          },
+          {
+            "id": "SK184",
+            "name": "technical requirements"
+          },
+          {
+            "id": "SK185",
+            "name": "elastic search"
+          },
+          {
+            "id": "SK186",
+            "name": "mockito"
+          },
+          {
+            "id": "SK189",
+            "name": "spring security"
+          },
+          {
+            "id": "SK190",
+            "name": "middleware"
+          },
+          {
+            "id": "SK198",
+            "name": "entity framework"
+          },
+          {
+            "id": "SK200",
+            "name": "leadership skills"
+          },
+          {
+            "id": "SK205",
+            "name": "design patterns"
+          },
+          {
+            "id": "SK207",
+            "name": "global delivery"
+          },
+          {
+            "id": "SK225",
+            "name": "it manager"
+          },
+          {
+            "id": "SK226",
+            "name": "use cases"
+          },
+          {
+            "id": "SK239",
+            "name": "computer science"
+          },
+          {
+            "id": "SK252",
+            "name": "mqtt"
+          },
+          {
+            "id": "SK254",
+            "name": "information systems"
+          },
+          {
+            "id": "SK255",
+            "name": "computer engineering"
+          },
+          {
+            "id": "SK261",
+            "name": "jira"
+          },
+          {
+            "id": "SK262",
+            "name": "advanced java"
+          },
+          {
+            "id": "SK266",
+            "name": "functional requirements"
+          },
+          {
+            "id": "SK271",
+            "name": "troubleshooting"
+          },
+          {
+            "id": "SK282",
+            "name": "implementation"
+          },
+          {
+            "id": "SK284",
+            "name": "user stories"
+          },
+          {
+            "id": "SK285",
+            "name": "programming"
+          },
+          {
+            "id": "SK295",
+            "name": "mentor"
+          },
+          {
+            "id": "SK301",
+            "name": "rust"
+          },
+          {
+            "id": "SK302",
+            "name": "go"
+          },
+          {
+            "id": "SK303",
+            "name": "kotlin"
+          },
+          {
+            "id": "SK306",
+            "name": "elixir"
+          },
+          {
+            "id": "SK309",
+            "name": "erlang"
+          },
+          {
+            "id": "SK312",
+            "name": "typescript"
+          },
+          {
+            "id": "SK320",
+            "name": "bash scripting"
+          },
+          {
+            "id": "SK336",
+            "name": "tcl"
+          },
+          {
+            "id": "SK351",
+            "name": "react"
+          },
+          {
+            "id": "SK353",
+            "name": "angular"
+          },
+          {
+            "id": "SK363",
+            "name": "backbone.js"
+          },
+          {
+            "id": "SK389",
+            "name": "asp.net core"
+          },
+          {
+            "id": "SK397",
+            "name": "play framework"
+          },
+          {
+            "id": "SK427",
+            "name": "selenium"
+          },
+          {
+            "id": "SK431",
+            "name": "aws lambda"
+          },
+          {
+            "id": "SK591",
+            "name": "apache spark"
+          },
+          {
+            "id": "SK592",
+            "name": "apache kafka"
+          },
+          {
+            "id": "SK646",
+            "name": "kubernetes"
+          },
+          {
+            "id": "SK652",
+            "name": "openshift"
+          },
+          {
+            "id": "SK655",
+            "name": "jenkins"
+          },
+          {
+            "id": "SK721",
+            "name": "sql server"
+          },
+          {
+            "id": "SK727",
+            "name": "redis"
+          },
+          {
+            "id": "SK728",
+            "name": "elasticsearch"
+          },
+          {
+            "id": "SK747",
+            "name": "database design"
+          },
+          {
+            "id": "SK750",
+            "name": "database migration"
+          },
+          {
+            "id": "SK752",
+            "name": "stored procedures"
+          },
+          {
+            "id": "SK777",
+            "name": "cryptography"
+          },
+          {
+            "id": "SK781",
+            "name": "api security"
+          },
+          {
+            "id": "SK851",
+            "name": "game design"
+          },
+          {
+            "id": "SK868",
+            "name": "iot protocols"
+          },
+          {
+            "id": "SK877",
+            "name": "robotics"
+          },
+          {
+            "id": "SK879",
+            "name": "presentation skills"
+          },
+          {
+            "id": "SK881",
+            "name": "documentation"
+          },
+          {
+            "id": "SK882",
+            "name": "code review skills"
+          },
+          {
+            "id": "SK884",
+            "name": "verbal communication"
+          },
+          {
+            "id": "SK885",
+            "name": "cross functional communication"
+          },
+          {
+            "id": "SK893",
+            "name": "persuasion"
+          },
+          {
+            "id": "SK896",
+            "name": "report writing"
+          },
+          {
+            "id": "SK909",
+            "name": "mentoring"
+          },
+          {
+            "id": "SK910",
+            "name": "strategic thinking"
+          },
+          {
+            "id": "SK912",
+            "name": "change management"
+          },
+          {
+            "id": "SK915",
+            "name": "talent development"
+          },
+          {
+            "id": "SK917",
+            "name": "hiring and interviewing"
+          },
+          {
+            "id": "SK919",
+            "name": "team building"
+          },
+          {
+            "id": "SK933",
+            "name": "vision setting"
+          },
+          {
+            "id": "SK934",
+            "name": "accountability"
+          },
+          {
+            "id": "SK937",
+            "name": "thought leadership"
+          },
+          {
+            "id": "SK940",
+            "name": "coaching skills"
+          },
+          {
+            "id": "SK941",
+            "name": "onboarding"
+          },
+          {
+            "id": "SK943",
+            "name": "goal setting"
+          },
+          {
+            "id": "SK944",
+            "name": "time management leadership"
+          },
+          {
+            "id": "SK948",
+            "name": "analytical thinking"
+          },
+          {
+            "id": "SK949",
+            "name": "system design"
+          },
+          {
+            "id": "SK950",
+            "name": "debugging skills"
+          },
+          {
+            "id": "SK952",
+            "name": "innovation"
+          },
+          {
+            "id": "SK953",
+            "name": "critical thinking"
+          },
+          {
+            "id": "SK962",
+            "name": "estimation skills"
+          },
+          {
+            "id": "SK969",
+            "name": "scalability planning"
+          },
+          {
+            "id": "SK972",
+            "name": "continuous improvement"
+          },
+          {
+            "id": "SK973",
+            "name": "agile methodology"
+          },
+          {
+            "id": "SK974",
+            "name": "scrum framework"
+          },
+          {
+            "id": "SK975",
+            "name": "kanban"
+          },
+          {
+            "id": "SK976",
+            "name": "roadmap planning"
+          },
+          {
+            "id": "SK981",
+            "name": "user story writing"
+          },
+          {
+            "id": "SK982",
+            "name": "safe framework"
+          },
+          {
+            "id": "SK984",
+            "name": "waterfall methodology"
+          },
+          {
+            "id": "SK991",
+            "name": "quality assurance process"
+          },
+          {
+            "id": "SK996",
+            "name": "jira management"
+          }
+        ],
+        "matched_skills": []
+      },
+      "explanations": {
+        "domain_impact": "Exact match with your preferred domain (BACKEND_ENGINEERING).",
+        "why_ranked_here": "Best Match \u2014 strong domain match, ideal seniority fit.",
+        "why_best_match": "Highest overall fit (62%) with 0/25 core skills matched.",
+        "readiness": "Growth opportunity (23%) \u2014 focus on building core skills first.",
+        "why_not_more_ready": "Missing 25 core skills: java, javascript, sql and 22 more | Only 0% of supporting skills covered (44 expected).",
+        "seniority_fit": "Ideal seniority match for your experience level.",
+        "adjustments": "Penalties: weak_core_coverage(0%) | Boosts: exact_domain_match, perfect_seniority"
+      }
+    },
+    {
+      "role_id": "BE_DEV",
+      "role_title": "Backend Developer",
+      "domain": "BACKEND_ENGINEERING",
+      "seniority": 3,
+      "ladder_position": 2,
+      "ladder_length": 8,
+      "next_role": "SENIOR_BE_DEV",
+      "next_role_title": "Senior Backend Developer",
+      "match_score": 0.5713,
+      "readiness_score": 0.1975,
+      "skill_match_score": 0.4879,
+      "confidence_score": 1.0,
+      "score_breakdown": {
+        "skill_match_score": 0.4879,
+        "core_skill_coverage_score": 0.0,
+        "domain_preference_score": 1.0,
+        "experience_fit_score": 1.0,
+        "current_status_fit_score": 1.0,
+        "education_fit_score": 0.85,
+        "career_goal_fit_score": 1.0,
+        "seniority_fit_score": 0.75,
+        "confidence_score": 1.0,
+        "final_match_score": 0.5713,
+        "readiness_score": 0.1975,
+        "penalty_total": -0.15,
+        "boost_total": 0.12,
+        "penalties_applied": [
+          "weak_core_coverage(0%)"
+        ],
+        "boosts_applied": [
+          "exact_domain_match",
+          "career_goal_aligned"
+        ],
+        "matched_core_skills": [],
+        "matched_supporting_skills": [],
+        "missing_critical_skills": [
+          "SK001",
+          "SK002",
+          "SK003",
+          "SK006",
+          "SK010",
+          "SK013",
+          "SK018",
+          "SK025",
+          "SK026",
+          "SK041",
+          "SK135"
+        ],
+        "total_core_skills": 11,
+        "total_supporting_skills": 49,
+        "supporting_skill_coverage": 0.0,
+        "is_entry_level_user": false,
+        "entry_level_adjustment": 0.0,
+        "profile_source": "data_backed"
+      },
+      "matched_core_skills": [],
+      "matched_supporting_skills": [],
+      "missing_critical_skills": [
+        {
+          "id": "SK001",
+          "name": "java"
+        },
+        {
+          "id": "SK002",
+          "name": "javascript"
+        },
+        {
+          "id": "SK003",
+          "name": "sql"
+        },
+        {
+          "id": "SK006",
+          "name": "html"
+        },
+        {
+          "id": "SK010",
+          "name": "java developer"
+        },
+        {
+          "id": "SK013",
+          "name": "rest"
+        },
+        {
+          "id": "SK018",
+          "name": "spring"
+        },
+        {
+          "id": "SK025",
+          "name": "hibernate"
+        },
+        {
+          "id": "SK026",
+          "name": "web developer"
+        },
+        {
+          "id": "SK041",
+          "name": "software engineer"
+        },
+        {
+          "id": "SK135",
+          "name": "testing"
+        }
+      ],
+      "is_best_match": false,
+      "profile_source": "data_backed",
+      "skill_gap": {
+        "target_role": "BE_DEV",
+        "readiness_score": 0.0,
+        "missing_skills": [
+          {
+            "id": "SK001",
+            "name": "java"
+          },
+          {
+            "id": "SK002",
+            "name": "javascript"
+          },
+          {
+            "id": "SK003",
+            "name": "sql"
+          },
+          {
+            "id": "SK004",
+            "name": "python"
+          },
+          {
+            "id": "SK005",
+            "name": "css"
+          },
+          {
+            "id": "SK006",
+            "name": "html"
+          },
+          {
+            "id": "SK007",
+            "name": "mobile"
+          },
+          {
+            "id": "SK008",
+            "name": "mysql"
+          },
+          {
+            "id": "SK009",
+            "name": "git"
+          },
+          {
+            "id": "SK010",
+            "name": "java developer"
+          },
+          {
+            "id": "SK011",
+            "name": "infrastructure"
+          },
+          {
+            "id": "SK012",
+            "name": "database"
+          },
+          {
+            "id": "SK013",
+            "name": "rest"
+          },
+          {
+            "id": "SK015",
+            "name": "jquery"
+          },
+          {
+            "id": "SK016",
+            "name": "security"
+          },
+          {
+            "id": "SK017",
+            "name": "php"
+          },
+          {
+            "id": "SK018",
+            "name": "spring"
+          },
+          {
+            "id": "SK019",
+            "name": "json"
+          },
+          {
+            "id": "SK020",
+            "name": "linux"
+          },
+          {
+            "id": "SK021",
+            "name": "api"
+          },
+          {
+            "id": "SK022",
+            "name": "html5"
+          },
+          {
+            "id": "SK023",
+            "name": "xml"
+          },
+          {
+            "id": "SK024",
+            "name": "devops"
+          },
+          {
+            "id": "SK025",
+            "name": "hibernate"
+          },
+          {
+            "id": "SK026",
+            "name": "web developer"
+          },
+          {
+            "id": "SK027",
+            "name": "debugging"
+          },
+          {
+            "id": "SK028",
+            "name": "problem solving"
+          },
+          {
+            "id": "SK029",
+            "name": "docker"
+          },
+          {
+            "id": "SK030",
+            "name": "j2ee"
+          },
+          {
+            "id": "SK031",
+            "name": "machine learning"
+          },
+          {
+            "id": "SK032",
+            "name": "oracle"
+          },
+          {
+            "id": "SK033",
+            "name": "ajax"
+          },
+          {
+            "id": "SK034",
+            "name": "algorithms"
+          },
+          {
+            "id": "SK036",
+            "name": "spring boot"
+          },
+          {
+            "id": "SK037",
+            "name": "mvc"
+          },
+          {
+            "id": "SK038",
+            "name": "team player"
+          },
+          {
+            "id": "SK039",
+            "name": "nosql"
+          },
+          {
+            "id": "SK040",
+            "name": "software engineering"
+          },
+          {
+            "id": "SK041",
+            "name": "software engineer"
+          },
+          {
+            "id": "SK042",
+            "name": "bootstrap"
+          },
+          {
+            "id": "SK043",
+            "name": "big data"
+          },
+          {
+            "id": "SK044",
+            "name": "data structures"
+          },
+          {
+            "id": "SK045",
+            "name": "information technology"
+          },
+          {
+            "id": "SK046",
+            "name": "soap"
+          },
+          {
+            "id": "SK047",
+            "name": "mongodb"
+          },
+          {
+            "id": "SK048",
+            "name": "wordpress"
+          },
+          {
+            "id": "SK049",
+            "name": ".net"
+          },
+          {
+            "id": "SK050",
+            "name": "written communication"
+          },
+          {
+            "id": "SK051",
+            "name": "maven"
+          },
+          {
+            "id": "SK052",
+            "name": "web development"
+          },
+          {
+            "id": "SK053",
+            "name": "laravel"
+          },
+          {
+            "id": "SK054",
+            "name": "oops"
+          },
+          {
+            "id": "SK056",
+            "name": "svn"
+          },
+          {
+            "id": "SK057",
+            "name": "network engineer"
+          },
+          {
+            "id": "SK058",
+            "name": "apache"
+          },
+          {
+            "id": "SK059",
+            "name": "web technologies"
+          },
+          {
+            "id": "SK060",
+            "name": "hadoop"
+          },
+          {
+            "id": "SK061",
+            "name": "windows"
+          },
+          {
+            "id": "SK062",
+            "name": "jsp"
+          },
+          {
+            "id": "SK063",
+            "name": "github"
+          },
+          {
+            "id": "SK064",
+            "name": "unix"
+          },
+          {
+            "id": "SK065",
+            "name": "angularjs"
+          },
+          {
+            "id": "SK066",
+            "name": "php developer"
+          },
+          {
+            "id": "SK067",
+            "name": "business analyst"
+          },
+          {
+            "id": "SK068",
+            "name": "solution architect"
+          },
+          {
+            "id": "SK069",
+            "name": "spring mvc"
+          },
+          {
+            "id": "SK072",
+            "name": "junit"
+          },
+          {
+            "id": "SK073",
+            "name": "spring framework"
+          },
+          {
+            "id": "SK074",
+            "name": "fundamentals"
+          },
+          {
+            "id": "SK075",
+            "name": "rdbms"
+          },
+          {
+            "id": "SK077",
+            "name": "postgresql"
+          },
+          {
+            "id": "SK079",
+            "name": "struts"
+          },
+          {
+            "id": "SK080",
+            "name": "technical skills"
+          },
+          {
+            "id": "SK082",
+            "name": "rest api"
+          },
+          {
+            "id": "SK084",
+            "name": "jpa"
+          },
+          {
+            "id": "SK086",
+            "name": "eclipse"
+          },
+          {
+            "id": "SK087",
+            "name": "messaging"
+          },
+          {
+            "id": "SK089",
+            "name": "gradle"
+          },
+          {
+            "id": "SK090",
+            "name": "jdbc"
+          },
+          {
+            "id": "SK092",
+            "name": "codeigniter"
+          },
+          {
+            "id": "SK094",
+            "name": "oop"
+          },
+          {
+            "id": "SK096",
+            "name": "software developer"
+          },
+          {
+            "id": "SK097",
+            "name": "software design"
+          },
+          {
+            "id": "SK100",
+            "name": "memory management"
+          },
+          {
+            "id": "SK1000",
+            "name": "monday.com"
+          },
+          {
+            "id": "SK102",
+            "name": "project manager"
+          },
+          {
+            "id": "SK1021",
+            "name": "compliance management"
+          },
+          {
+            "id": "SK103",
+            "name": "asp.net"
+          },
+          {
+            "id": "SK107",
+            "name": "network"
+          },
+          {
+            "id": "SK110",
+            "name": "django"
+          },
+          {
+            "id": "SK111",
+            "name": "project management"
+          },
+          {
+            "id": "SK114",
+            "name": "multithreading"
+          },
+          {
+            "id": "SK117",
+            "name": "system administrator"
+          },
+          {
+            "id": "SK119",
+            "name": "java ee"
+          },
+          {
+            "id": "SK120",
+            "name": "object oriented programming"
+          },
+          {
+            "id": "SK122",
+            "name": "software development"
+          },
+          {
+            "id": "SK124",
+            "name": "data analyst"
+          },
+          {
+            "id": "SK130",
+            "name": "telecom"
+          },
+          {
+            "id": "SK131",
+            "name": "servlets"
+          },
+          {
+            "id": "SK132",
+            "name": "networking"
+          },
+          {
+            "id": "SK133",
+            "name": "threading"
+          },
+          {
+            "id": "SK135",
+            "name": "testing"
+          },
+          {
+            "id": "SK140",
+            "name": "java programming"
+          },
+          {
+            "id": "SK147",
+            "name": "jee"
+          },
+          {
+            "id": "SK148",
+            "name": "business requirements"
+          },
+          {
+            "id": "SK152",
+            "name": "web services"
+          },
+          {
+            "id": "SK154",
+            "name": "ant"
+          },
+          {
+            "id": "SK155",
+            "name": "gateway"
+          },
+          {
+            "id": "SK157",
+            "name": "application development"
+          },
+          {
+            "id": "SK159",
+            "name": "protocols"
+          },
+          {
+            "id": "SK161",
+            "name": "agile"
+          },
+          {
+            "id": "SK166",
+            "name": "coding"
+          },
+          {
+            "id": "SK171",
+            "name": "jsf"
+          },
+          {
+            "id": "SK181",
+            "name": "aws"
+          },
+          {
+            "id": "SK182",
+            "name": "configuration"
+          },
+          {
+            "id": "SK183",
+            "name": "weblogic"
+          },
+          {
+            "id": "SK186",
+            "name": "mockito"
+          },
+          {
+            "id": "SK189",
+            "name": "spring security"
+          },
+          {
+            "id": "SK191",
+            "name": "sybase"
+          },
+          {
+            "id": "SK193",
+            "name": "websphere"
+          },
+          {
+            "id": "SK205",
+            "name": "design patterns"
+          },
+          {
+            "id": "SK222",
+            "name": "j2ee technologies"
+          },
+          {
+            "id": "SK225",
+            "name": "it manager"
+          },
+          {
+            "id": "SK239",
+            "name": "computer science"
+          },
+          {
+            "id": "SK261",
+            "name": "jira"
+          },
+          {
+            "id": "SK262",
+            "name": "advanced java"
+          },
+          {
+            "id": "SK265",
+            "name": "android"
+          },
+          {
+            "id": "SK271",
+            "name": "troubleshooting"
+          },
+          {
+            "id": "SK282",
+            "name": "implementation"
+          },
+          {
+            "id": "SK285",
+            "name": "programming"
+          },
+          {
+            "id": "SK293",
+            "name": "java script"
+          },
+          {
+            "id": "SK295",
+            "name": "mentor"
+          },
+          {
+            "id": "SK312",
+            "name": "typescript"
+          },
+          {
+            "id": "SK320",
+            "name": "bash scripting"
+          },
+          {
+            "id": "SK351",
+            "name": "react"
+          },
+          {
+            "id": "SK353",
+            "name": "angular"
+          },
+          {
+            "id": "SK379",
+            "name": "flask"
+          },
+          {
+            "id": "SK381",
+            "name": "express.js"
+          },
+          {
+            "id": "SK397",
+            "name": "play framework"
+          },
+          {
+            "id": "SK591",
+            "name": "apache spark"
+          },
+          {
+            "id": "SK592",
+            "name": "apache kafka"
+          },
+          {
+            "id": "SK646",
+            "name": "kubernetes"
+          },
+          {
+            "id": "SK655",
+            "name": "jenkins"
+          },
+          {
+            "id": "SK721",
+            "name": "sql server"
+          },
+          {
+            "id": "SK727",
+            "name": "redis"
+          },
+          {
+            "id": "SK728",
+            "name": "elasticsearch"
+          },
+          {
+            "id": "SK752",
+            "name": "stored procedures"
+          },
+          {
+            "id": "SK777",
+            "name": "cryptography"
+          },
+          {
+            "id": "SK822",
+            "name": "responsive design"
+          },
+          {
+            "id": "SK881",
+            "name": "documentation"
+          },
+          {
+            "id": "SK882",
+            "name": "code review skills"
+          },
+          {
+            "id": "SK884",
+            "name": "verbal communication"
+          },
+          {
+            "id": "SK896",
+            "name": "report writing"
+          },
+          {
+            "id": "SK909",
+            "name": "mentoring"
+          },
+          {
+            "id": "SK910",
+            "name": "strategic thinking"
+          },
+          {
+            "id": "SK917",
+            "name": "hiring and interviewing"
+          },
+          {
+            "id": "SK919",
+            "name": "team building"
+          },
+          {
+            "id": "SK933",
+            "name": "vision setting"
+          },
+          {
+            "id": "SK934",
+            "name": "accountability"
+          },
+          {
+            "id": "SK943",
+            "name": "goal setting"
+          },
+          {
+            "id": "SK944",
+            "name": "time management leadership"
+          },
+          {
+            "id": "SK948",
+            "name": "analytical thinking"
+          },
+          {
+            "id": "SK949",
+            "name": "system design"
+          },
+          {
+            "id": "SK950",
+            "name": "debugging skills"
+          },
+          {
+            "id": "SK952",
+            "name": "innovation"
+          },
+          {
+            "id": "SK969",
+            "name": "scalability planning"
+          },
+          {
+            "id": "SK972",
+            "name": "continuous improvement"
+          },
+          {
+            "id": "SK973",
+            "name": "agile methodology"
+          },
+          {
+            "id": "SK974",
+            "name": "scrum framework"
+          },
+          {
+            "id": "SK979",
+            "name": "sprint planning"
+          },
+          {
+            "id": "SK996",
+            "name": "jira management"
+          }
+        ],
+        "matched_skills": []
+      },
+      "explanations": {
+        "domain_impact": "Exact match with your preferred domain (BACKEND_ENGINEERING).",
+        "why_ranked_here": "Ranked #2 \u2014 scored 57% overall.",
+        "why_best_match": null,
+        "readiness": "Growth opportunity (19%) \u2014 focus on building core skills first.",
+        "why_not_more_ready": "Missing 11 core skills: java, javascript, sql and 8 more | Only 0% of supporting skills covered (49 expected).",
+        "seniority_fit": "Reasonable seniority fit \u2014 slight stretch or underlap.",
+        "adjustments": "Penalties: weak_core_coverage(0%) | Boosts: exact_domain_match, career_goal_aligned"
+      }
+    },
+    {
+      "role_id": "SENIOR_SRE",
+      "role_title": "Senior SRE",
+      "domain": "DEVOPS_SRE",
+      "seniority": 4,
+      "ladder_position": 7,
+      "ladder_length": 13,
+      "next_role": "STAFF_DEVOPS_ENG",
+      "next_role_title": "Staff DevOps Engineer",
+      "match_score": 0.4814,
+      "readiness_score": 0.235,
+      "skill_match_score": 0.6244,
+      "confidence_score": 1.0,
+      "score_breakdown": {
+        "skill_match_score": 0.6244,
+        "core_skill_coverage_score": 0.0,
+        "domain_preference_score": 0.7,
+        "experience_fit_score": 1.0,
+        "current_status_fit_score": 1.0,
+        "education_fit_score": 0.85,
+        "career_goal_fit_score": 0.6,
+        "seniority_fit_score": 1.0,
+        "confidence_score": 1.0,
+        "final_match_score": 0.4814,
+        "readiness_score": 0.235,
+        "penalty_total": -0.15,
+        "boost_total": 0.05,
+        "penalties_applied": [
+          "weak_core_coverage(0%)"
+        ],
+        "boosts_applied": [
+          "perfect_seniority"
+        ],
+        "matched_core_skills": [],
+        "matched_supporting_skills": [],
+        "missing_critical_skills": [
+          "SK004",
+          "SK009",
+          "SK011",
+          "SK016",
+          "SK024",
+          "SK029",
+          "SK041",
+          "SK067",
+          "SK068",
+          "SK117",
+          "SK124",
+          "SK181",
+          "SK184",
+          "SK225",
+          "SK239",
+          "SK282",
+          "SK646",
+          "SK655",
+          "SK671",
+          "SK882",
+          "SK909",
+          "SK934",
+          "SK949"
+        ],
+        "total_core_skills": 23,
+        "total_supporting_skills": 42,
+        "supporting_skill_coverage": 0.0,
+        "is_entry_level_user": false,
+        "entry_level_adjustment": 0.0,
+        "profile_source": "data_backed"
+      },
+      "matched_core_skills": [],
+      "matched_supporting_skills": [],
+      "missing_critical_skills": [
+        {
+          "id": "SK004",
+          "name": "python"
+        },
+        {
+          "id": "SK009",
+          "name": "git"
+        },
+        {
+          "id": "SK011",
+          "name": "infrastructure"
+        },
+        {
+          "id": "SK016",
+          "name": "security"
+        },
+        {
+          "id": "SK024",
+          "name": "devops"
+        },
+        {
+          "id": "SK029",
+          "name": "docker"
+        },
+        {
+          "id": "SK041",
+          "name": "software engineer"
+        },
+        {
+          "id": "SK067",
+          "name": "business analyst"
+        },
+        {
+          "id": "SK068",
+          "name": "solution architect"
+        },
+        {
+          "id": "SK117",
+          "name": "system administrator"
+        },
+        {
+          "id": "SK124",
+          "name": "data analyst"
+        },
+        {
+          "id": "SK181",
+          "name": "aws"
+        },
+        {
+          "id": "SK184",
+          "name": "technical requirements"
+        },
+        {
+          "id": "SK225",
+          "name": "it manager"
+        },
+        {
+          "id": "SK239",
+          "name": "computer science"
+        },
+        {
+          "id": "SK282",
+          "name": "implementation"
+        },
+        {
+          "id": "SK646",
+          "name": "kubernetes"
+        },
+        {
+          "id": "SK655",
+          "name": "jenkins"
+        },
+        {
+          "id": "SK671",
+          "name": "ansible"
+        },
+        {
+          "id": "SK882",
+          "name": "code review skills"
+        },
+        {
+          "id": "SK909",
+          "name": "mentoring"
+        },
+        {
+          "id": "SK934",
+          "name": "accountability"
+        },
+        {
+          "id": "SK949",
+          "name": "system design"
+        }
+      ],
+      "is_best_match": false,
+      "profile_source": "data_backed",
+      "skill_gap": {
+        "target_role": "SENIOR_SRE",
+        "readiness_score": 0.0,
+        "missing_skills": [
+          {
+            "id": "SK001",
+            "name": "java"
+          },
+          {
+            "id": "SK002",
+            "name": "javascript"
+          },
+          {
+            "id": "SK003",
+            "name": "sql"
+          },
+          {
+            "id": "SK004",
+            "name": "python"
+          },
+          {
+            "id": "SK005",
+            "name": "css"
+          },
+          {
+            "id": "SK006",
+            "name": "html"
+          },
+          {
+            "id": "SK007",
+            "name": "mobile"
+          },
+          {
+            "id": "SK008",
+            "name": "mysql"
+          },
+          {
+            "id": "SK009",
+            "name": "git"
+          },
+          {
+            "id": "SK011",
+            "name": "infrastructure"
+          },
+          {
+            "id": "SK012",
+            "name": "database"
+          },
+          {
+            "id": "SK013",
+            "name": "rest"
+          },
+          {
+            "id": "SK016",
+            "name": "security"
+          },
+          {
+            "id": "SK017",
+            "name": "php"
+          },
+          {
+            "id": "SK018",
+            "name": "spring"
+          },
+          {
+            "id": "SK020",
+            "name": "linux"
+          },
+          {
+            "id": "SK021",
+            "name": "api"
+          },
+          {
+            "id": "SK024",
+            "name": "devops"
+          },
+          {
+            "id": "SK026",
+            "name": "web developer"
+          },
+          {
+            "id": "SK027",
+            "name": "debugging"
+          },
+          {
+            "id": "SK028",
+            "name": "problem solving"
+          },
+          {
+            "id": "SK029",
+            "name": "docker"
+          },
+          {
+            "id": "SK030",
+            "name": "j2ee"
+          },
+          {
+            "id": "SK031",
+            "name": "machine learning"
+          },
+          {
+            "id": "SK032",
+            "name": "oracle"
+          },
+          {
+            "id": "SK034",
+            "name": "algorithms"
+          },
+          {
+            "id": "SK035",
+            "name": "storage"
+          },
+          {
+            "id": "SK038",
+            "name": "team player"
+          },
+          {
+            "id": "SK039",
+            "name": "nosql"
+          },
+          {
+            "id": "SK040",
+            "name": "software engineering"
+          },
+          {
+            "id": "SK041",
+            "name": "software engineer"
+          },
+          {
+            "id": "SK043",
+            "name": "big data"
+          },
+          {
+            "id": "SK044",
+            "name": "data structures"
+          },
+          {
+            "id": "SK045",
+            "name": "information technology"
+          },
+          {
+            "id": "SK047",
+            "name": "mongodb"
+          },
+          {
+            "id": "SK049",
+            "name": ".net"
+          },
+          {
+            "id": "SK050",
+            "name": "written communication"
+          },
+          {
+            "id": "SK051",
+            "name": "maven"
+          },
+          {
+            "id": "SK055",
+            "name": "ios"
+          },
+          {
+            "id": "SK056",
+            "name": "svn"
+          },
+          {
+            "id": "SK057",
+            "name": "network engineer"
+          },
+          {
+            "id": "SK058",
+            "name": "apache"
+          },
+          {
+            "id": "SK060",
+            "name": "hadoop"
+          },
+          {
+            "id": "SK061",
+            "name": "windows"
+          },
+          {
+            "id": "SK063",
+            "name": "github"
+          },
+          {
+            "id": "SK064",
+            "name": "unix"
+          },
+          {
+            "id": "SK067",
+            "name": "business analyst"
+          },
+          {
+            "id": "SK068",
+            "name": "solution architect"
+          },
+          {
+            "id": "SK074",
+            "name": "fundamentals"
+          },
+          {
+            "id": "SK075",
+            "name": "rdbms"
+          },
+          {
+            "id": "SK076",
+            "name": "node.js"
+          },
+          {
+            "id": "SK077",
+            "name": "postgresql"
+          },
+          {
+            "id": "SK087",
+            "name": "messaging"
+          },
+          {
+            "id": "SK088",
+            "name": "ruby"
+          },
+          {
+            "id": "SK089",
+            "name": "gradle"
+          },
+          {
+            "id": "SK091",
+            "name": "artificial intelligence"
+          },
+          {
+            "id": "SK093",
+            "name": "cisco"
+          },
+          {
+            "id": "SK094",
+            "name": "oop"
+          },
+          {
+            "id": "SK095",
+            "name": "hardware"
+          },
+          {
+            "id": "SK097",
+            "name": "software design"
+          },
+          {
+            "id": "SK1004",
+            "name": "product strategy"
+          },
+          {
+            "id": "SK1007",
+            "name": "value proposition"
+          },
+          {
+            "id": "SK1009",
+            "name": "kpi definition"
+          },
+          {
+            "id": "SK101",
+            "name": "cloud services"
+          },
+          {
+            "id": "SK1013",
+            "name": "technical sales"
+          },
+          {
+            "id": "SK1016",
+            "name": "digital transformation"
+          },
+          {
+            "id": "SK1018",
+            "name": "enterprise architecture"
+          },
+          {
+            "id": "SK102",
+            "name": "project manager"
+          },
+          {
+            "id": "SK1021",
+            "name": "compliance management"
+          },
+          {
+            "id": "SK1025",
+            "name": "accessibility"
+          },
+          {
+            "id": "SK105",
+            "name": "cassandra"
+          },
+          {
+            "id": "SK106",
+            "name": "hive"
+          },
+          {
+            "id": "SK107",
+            "name": "network"
+          },
+          {
+            "id": "SK110",
+            "name": "django"
+          },
+          {
+            "id": "SK111",
+            "name": "project management"
+          },
+          {
+            "id": "SK112",
+            "name": "orchestration"
+          },
+          {
+            "id": "SK117",
+            "name": "system administrator"
+          },
+          {
+            "id": "SK118",
+            "name": "san"
+          },
+          {
+            "id": "SK121",
+            "name": "uml"
+          },
+          {
+            "id": "SK122",
+            "name": "software development"
+          },
+          {
+            "id": "SK123",
+            "name": "senior software engineer"
+          },
+          {
+            "id": "SK124",
+            "name": "data analyst"
+          },
+          {
+            "id": "SK125",
+            "name": "drupal"
+          },
+          {
+            "id": "SK126",
+            "name": "wan"
+          },
+          {
+            "id": "SK127",
+            "name": "bgp"
+          },
+          {
+            "id": "SK128",
+            "name": "ospf"
+          },
+          {
+            "id": "SK132",
+            "name": "networking"
+          },
+          {
+            "id": "SK135",
+            "name": "testing"
+          },
+          {
+            "id": "SK136",
+            "name": "cloud computing"
+          },
+          {
+            "id": "SK144",
+            "name": "hosting"
+          },
+          {
+            "id": "SK148",
+            "name": "business requirements"
+          },
+          {
+            "id": "SK149",
+            "name": "switching"
+          },
+          {
+            "id": "SK150",
+            "name": "perl"
+          },
+          {
+            "id": "SK152",
+            "name": "web services"
+          },
+          {
+            "id": "SK154",
+            "name": "ant"
+          },
+          {
+            "id": "SK156",
+            "name": "routing"
+          },
+          {
+            "id": "SK157",
+            "name": "application development"
+          },
+          {
+            "id": "SK159",
+            "name": "protocols"
+          },
+          {
+            "id": "SK161",
+            "name": "agile"
+          },
+          {
+            "id": "SK162",
+            "name": "lan"
+          },
+          {
+            "id": "SK165",
+            "name": "firewall"
+          },
+          {
+            "id": "SK166",
+            "name": "coding"
+          },
+          {
+            "id": "SK170",
+            "name": "routing protocols"
+          },
+          {
+            "id": "SK173",
+            "name": "dns"
+          },
+          {
+            "id": "SK175",
+            "name": "hbase"
+          },
+          {
+            "id": "SK181",
+            "name": "aws"
+          },
+          {
+            "id": "SK182",
+            "name": "configuration"
+          },
+          {
+            "id": "SK184",
+            "name": "technical requirements"
+          },
+          {
+            "id": "SK190",
+            "name": "middleware"
+          },
+          {
+            "id": "SK200",
+            "name": "leadership skills"
+          },
+          {
+            "id": "SK202",
+            "name": "installation"
+          },
+          {
+            "id": "SK205",
+            "name": "design patterns"
+          },
+          {
+            "id": "SK206",
+            "name": "production support"
+          },
+          {
+            "id": "SK208",
+            "name": "juniper"
+          },
+          {
+            "id": "SK211",
+            "name": "games"
+          },
+          {
+            "id": "SK212",
+            "name": "splunk"
+          },
+          {
+            "id": "SK220",
+            "name": "groovy"
+          },
+          {
+            "id": "SK221",
+            "name": "eigrp"
+          },
+          {
+            "id": "SK225",
+            "name": "it manager"
+          },
+          {
+            "id": "SK226",
+            "name": "use cases"
+          },
+          {
+            "id": "SK227",
+            "name": "iam"
+          },
+          {
+            "id": "SK239",
+            "name": "computer science"
+          },
+          {
+            "id": "SK240",
+            "name": "salesforce"
+          },
+          {
+            "id": "SK245",
+            "name": "voip"
+          },
+          {
+            "id": "SK250",
+            "name": "dhcp"
+          },
+          {
+            "id": "SK252",
+            "name": "mqtt"
+          },
+          {
+            "id": "SK255",
+            "name": "computer engineering"
+          },
+          {
+            "id": "SK259",
+            "name": "system administration"
+          },
+          {
+            "id": "SK261",
+            "name": "jira"
+          },
+          {
+            "id": "SK265",
+            "name": "android"
+          },
+          {
+            "id": "SK271",
+            "name": "troubleshooting"
+          },
+          {
+            "id": "SK277",
+            "name": "data science"
+          },
+          {
+            "id": "SK282",
+            "name": "implementation"
+          },
+          {
+            "id": "SK285",
+            "name": "programming"
+          },
+          {
+            "id": "SK292",
+            "name": "director"
+          },
+          {
+            "id": "SK295",
+            "name": "mentor"
+          },
+          {
+            "id": "SK302",
+            "name": "go"
+          },
+          {
+            "id": "SK312",
+            "name": "typescript"
+          },
+          {
+            "id": "SK319",
+            "name": "powershell"
+          },
+          {
+            "id": "SK320",
+            "name": "bash scripting"
+          },
+          {
+            "id": "SK351",
+            "name": "react"
+          },
+          {
+            "id": "SK353",
+            "name": "angular"
+          },
+          {
+            "id": "SK431",
+            "name": "aws lambda"
+          },
+          {
+            "id": "SK433",
+            "name": "aws ec2"
+          },
+          {
+            "id": "SK436",
+            "name": "aws cloudformation"
+          },
+          {
+            "id": "SK437",
+            "name": "aws eks"
+          },
+          {
+            "id": "SK447",
+            "name": "aws vpc"
+          },
+          {
+            "id": "SK449",
+            "name": "aws cloudfront"
+          },
+          {
+            "id": "SK451",
+            "name": "aws redshift"
+          },
+          {
+            "id": "SK462",
+            "name": "aws codebuild"
+          },
+          {
+            "id": "SK475",
+            "name": "azure devops"
+          },
+          {
+            "id": "SK507",
+            "name": "google pub/sub"
+          },
+          {
+            "id": "SK591",
+            "name": "apache spark"
+          },
+          {
+            "id": "SK592",
+            "name": "apache kafka"
+          },
+          {
+            "id": "SK646",
+            "name": "kubernetes"
+          },
+          {
+            "id": "SK647",
+            "name": "helm charts"
+          },
+          {
+            "id": "SK655",
+            "name": "jenkins"
+          },
+          {
+            "id": "SK657",
+            "name": "github actions"
+          },
+          {
+            "id": "SK658",
+            "name": "circleci"
+          },
+          {
+            "id": "SK665",
+            "name": "spinnaker"
+          },
+          {
+            "id": "SK666",
+            "name": "flux cd"
+          },
+          {
+            "id": "SK670",
+            "name": "terraform"
+          },
+          {
+            "id": "SK671",
+            "name": "ansible"
+          },
+          {
+            "id": "SK674",
+            "name": "chef"
+          },
+          {
+            "id": "SK675",
+            "name": "puppet"
+          },
+          {
+            "id": "SK676",
+            "name": "saltstack"
+          },
+          {
+            "id": "SK680",
+            "name": "prometheus"
+          },
+          {
+            "id": "SK681",
+            "name": "grafana"
+          },
+          {
+            "id": "SK683",
+            "name": "new relic"
+          },
+          {
+            "id": "SK684",
+            "name": "elk stack"
+          },
+          {
+            "id": "SK685",
+            "name": "kibana"
+          },
+          {
+            "id": "SK689",
+            "name": "opentelemetry"
+          },
+          {
+            "id": "SK693",
+            "name": "nagios"
+          },
+          {
+            "id": "SK698",
+            "name": "istio"
+          },
+          {
+            "id": "SK702",
+            "name": "nginx"
+          },
+          {
+            "id": "SK705",
+            "name": "site reliability engineering"
+          },
+          {
+            "id": "SK708",
+            "name": "infrastructure as code"
+          },
+          {
+            "id": "SK709",
+            "name": "configuration management"
+          },
+          {
+            "id": "SK710",
+            "name": "release management"
+          },
+          {
+            "id": "SK717",
+            "name": "gitops"
+          },
+          {
+            "id": "SK727",
+            "name": "redis"
+          },
+          {
+            "id": "SK728",
+            "name": "elasticsearch"
+          },
+          {
+            "id": "SK750",
+            "name": "database migration"
+          },
+          {
+            "id": "SK753",
+            "name": "database backup recovery"
+          },
+          {
+            "id": "SK758",
+            "name": "owasp"
+          },
+          {
+            "id": "SK765",
+            "name": "siem"
+          },
+          {
+            "id": "SK767",
+            "name": "identity access management"
+          },
+          {
+            "id": "SK772",
+            "name": "devsecops"
+          },
+          {
+            "id": "SK775",
+            "name": "cloud security"
+          },
+          {
+            "id": "SK777",
+            "name": "cryptography"
+          },
+          {
+            "id": "SK790",
+            "name": "nist framework"
+          },
+          {
+            "id": "SK801",
+            "name": "jetpack compose"
+          },
+          {
+            "id": "SK865",
+            "name": "rtos"
+          },
+          {
+            "id": "SK868",
+            "name": "iot protocols"
+          },
+          {
+            "id": "SK879",
+            "name": "presentation skills"
+          },
+          {
+            "id": "SK881",
+            "name": "documentation"
+          },
+          {
+            "id": "SK882",
+            "name": "code review skills"
+          },
+          {
+            "id": "SK884",
+            "name": "verbal communication"
+          },
+          {
+            "id": "SK890",
+            "name": "feedback delivery"
+          },
+          {
+            "id": "SK893",
+            "name": "persuasion"
+          },
+          {
+            "id": "SK896",
+            "name": "report writing"
+          },
+          {
+            "id": "SK908",
+            "name": "team leadership"
+          },
+          {
+            "id": "SK909",
+            "name": "mentoring"
+          },
+          {
+            "id": "SK910",
+            "name": "strategic thinking"
+          },
+          {
+            "id": "SK911",
+            "name": "people management"
+          },
+          {
+            "id": "SK912",
+            "name": "change management"
+          },
+          {
+            "id": "SK917",
+            "name": "hiring and interviewing"
+          },
+          {
+            "id": "SK919",
+            "name": "team building"
+          },
+          {
+            "id": "SK933",
+            "name": "vision setting"
+          },
+          {
+            "id": "SK934",
+            "name": "accountability"
+          },
+          {
+            "id": "SK939",
+            "name": "influence without authority"
+          },
+          {
+            "id": "SK940",
+            "name": "coaching skills"
+          },
+          {
+            "id": "SK944",
+            "name": "time management leadership"
+          },
+          {
+            "id": "SK948",
+            "name": "analytical thinking"
+          },
+          {
+            "id": "SK949",
+            "name": "system design"
+          },
+          {
+            "id": "SK950",
+            "name": "debugging skills"
+          },
+          {
+            "id": "SK951",
+            "name": "root cause analysis"
+          },
+          {
+            "id": "SK952",
+            "name": "innovation"
+          },
+          {
+            "id": "SK963",
+            "name": "technical research"
+          },
+          {
+            "id": "SK969",
+            "name": "scalability planning"
+          },
+          {
+            "id": "SK970",
+            "name": "disaster recovery planning"
+          },
+          {
+            "id": "SK972",
+            "name": "continuous improvement"
+          },
+          {
+            "id": "SK973",
+            "name": "agile methodology"
+          },
+          {
+            "id": "SK974",
+            "name": "scrum framework"
+          },
+          {
+            "id": "SK976",
+            "name": "roadmap planning"
+          },
+          {
+            "id": "SK982",
+            "name": "safe framework"
+          },
+          {
+            "id": "SK995",
+            "name": "confluence"
+          },
+          {
+            "id": "SK996",
+            "name": "jira management"
+          }
+        ],
+        "matched_skills": []
+      },
+      "explanations": {
+        "domain_impact": "Related to your preferred domain (BACKEND_ENGINEERING). Moderate boost applied.",
+        "why_ranked_here": "Ranked #3 \u2014 scored 48% overall.",
+        "why_best_match": null,
+        "readiness": "Growth opportunity (23%) \u2014 focus on building core skills first.",
+        "why_not_more_ready": "Missing 23 core skills: python, git, infrastructure and 20 more | Only 0% of supporting skills covered (42 expected).",
+        "seniority_fit": "Ideal seniority match for your experience level.",
+        "adjustments": "Penalties: weak_core_coverage(0%) | Boosts: perfect_seniority"
+      }
+    }
+  ],
+  "skills_analyzed": [
+    "SK0001",
+    "SK0002",
+    "SK0003",
+    "SK0004",
+    "SK0010",
+    "SK0015",
+    "SK0020",
+    "SK0025",
+    "SK0030",
+    "SK0035",
+    "SK0040",
+    "SK0100",
+    "SK0105",
+    "SK0110"
+  ],
+  "total_roles_compared": 73,
+  "mode": "enhanced+legacy",
+  "domain_filter_applied": true,
+  "preferred_domain": "BACKEND_ENGINEERING",
+  "is_entry_level_user": false,
+  "profile_used": {
+    "experience_level": "3-5",
+    "current_status": "working",
+    "education_level": "bachelors",
+    "career_goal": "switch_career",
+    "preferred_domain": "BACKEND_ENGINEERING"
+  }
+}

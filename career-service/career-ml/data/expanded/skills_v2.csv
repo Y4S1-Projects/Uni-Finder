@@ -1146,3 +1146,47 @@ SK1144,splunk certified power user,"splunk cert,splunk power user",certification
 SK1145,elastic certified engineer,"elastic cert,elasticsearch cert",certification,credential
 SK1146,okta certified professional,"okta cert,okta professional",certification,credential
 SK1147,figma certification,"figma cert,figma certified",certification,credential
+SK1200,tensorflow,"tensorflow,tf",ai_ml,technical
+SK1201,pytorch,"pytorch,torch",ai_ml,technical
+SK1202,deep learning,"deep learning,deep_learning",ai_ml,technical
+SK1203,keras,keras,ai_ml,technical
+SK1204,scikit-learn,"scikit-learn,sklearn,scikit",ai_ml,technical
+SK1205,computer vision,"computer vision,cv",ai_ml,technical
+SK1206,reinforcement learning,"reinforcement learning,rl",ai_ml,technical
+SK1207,numpy,numpy,ai_ml,technical
+SK1208,pandas,pandas,ai_ml,technical
+SK1209,scipy,scipy,ai_ml,technical
+SK1210,model deployment,"model deployment,mlops",ai_ml,technical
+SK1211,data pipelines,"data pipelines,etl pipelines",data_engineering,technical
+SK1212,feature engineering,feature engineering,ai_ml,technical
+SK1213,model training,"model training,model optimization",ai_ml,technical
+SK1214,experiment tracking,"experiment tracking,mlflow,wandb",ai_ml,technical
+SK1215,transformers,"transformers,huggingface",ai_ml,technical
+SK1216,llm,"llm,large language model",ai_ml,technical
+SK1217,neural networks,"neural networks,ann,cnn,rnn,lstm",ai_ml,technical
+SK1218,statistics,"statistics,statistical analysis",data_science,technical
+SK1219,r programming,"r,r programming,rstudio",data_science,technical
+SK1220,data visualization,"data visualization,tableau,powerbi",data_science,technical
+SK1221,jupyter,"jupyter,jupyter notebook,colab",ai_ml,technical
+SK1222,opencv,opencv,ai_ml,technical
+SK1223,spark,"spark,pyspark,apache spark",data_engineering,technical
+SK1230,unity,"unity,unity3d,unity engine",game_dev,technical
+SK1231,unreal engine,"unreal,unreal engine,ue4,ue5",game_dev,technical
+SK1232,c#,"c#,csharp,c sharp",game_dev,technical
+SK1233,c++,"c++,cpp,cplusplus",game_dev,technical
+SK1234,game design,"game design,gameplay design",game_dev,technical
+SK1235,shader programming,"shader,shaders,hlsl,glsl",game_dev,technical
+SK1236,opengl,"opengl,vulkan,directx,dx11,dx12",game_dev,technical
+SK1237,3d modeling,"3d modeling,3d modelling,maya,blender",game_dev,technical
+SK1238,game physics,"game physics,physics engine,rigid body",game_dev,technical
+SK1239,godot,"godot,gdscript",game_dev,technical
+SK1240,gameplay programming,"gameplay programming,gameplay systems",game_dev,technical
+SK1241,game ai,"game ai,pathfinding,behavior trees",game_dev,technical
+SK1242,level design,"level design,world building",game_dev,technical
+SK1243,animation systems,"animation systems,skeletal animation",game_dev,technical
+SK1244,multiplayer networking,"multiplayer networking,netcode",game_dev,technical
+SK1245,game optimization,"game optimization,profiling,frame rate",game_dev,technical
+SK1246,version control for games,"perforce,p4,plastic scm",game_dev,technical
+SK1247,game engine architecture,"game engine,engine architecture",game_dev,technical
+SK1248,rendering,"rendering,rendering pipeline,ray tracing",game_dev,technical
+SK1249,audio programming,"audio programming,fmod,wwise",game_dev,technical

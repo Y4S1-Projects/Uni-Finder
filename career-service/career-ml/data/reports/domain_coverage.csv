@@ -1,0 +1,20 @@
+domain,core_defined,core_resolved,core_missing,core_total_jobs,supporting_defined,supporting_resolved,supporting_missing,supporting_total_jobs,missing_core_skills,missing_supporting_skills
+FRONTEND_ENGINEERING,12,12,0,19766,8,7,1,5979,,figma
+BACKEND_ENGINEERING,14,14,0,15282,11,11,0,15647,,
+FULLSTACK_ENGINEERING,10,10,0,13874,10,10,0,20631,,
+AI_ML,15,13,2,5000,27,24,3,14032,"deep learning, computer vision","statistics, model deployment, feature engineering"
+DATA_SCIENCE,12,10,2,11348,7,5,2,1372,"statistics, jupyter","deep learning, excel"
+DATA_ENGINEERING,11,11,0,13245,12,9,3,7235,,"gcp, dynamodb, databricks"
+DEVOPS_SRE,14,11,3,9599,9,7,2,7041,"ci/cd, gcp, monitoring","bash, helm"
+CLOUD_ENGINEERING,10,7,3,5412,8,6,2,6480,"gcp, cloud architecture, serverless","ci/cd, vpc"
+SECURITY,14,10,4,3252,8,7,1,8639,"encryption, oauth, identity management, soc",compliance
+MOBILE_ENGINEERING,10,9,1,5851,9,6,3,14484,objective-c,"firebase, ui/ux, figma"
+UI_UX_DESIGN,11,0,11,0,8,3,5,7924,"figma, sketch, adobe xd, ui design, ux design, user research, wireframing, prototyping, usability testing, design systems, interaction design","photoshop, illustrator, invision, typography, color theory"
+QA_TESTING,11,5,6,4451,9,6,3,18405,"test automation, pytest, qa methodology, manual testing, performance testing, load testing","ci/cd, api testing, postman"
+GAME_DEVELOPMENT,18,18,0,257,9,6,3,10945,,"blender, maya, photoshop"
+BLOCKCHAIN_WEB3,11,6,5,127,8,8,0,12767,"web3, blockchain, nft, cryptocurrency, consensus algorithms",
+EMBEDDED_SYSTEMS,14,7,7,173,10,6,4,4905,"embedded systems, firmware, microcontroller, arm, iot, device drivers, hardware debugging","oscilloscope, uart, spi, i2c"
+PRODUCT_MANAGEMENT,9,5,4,1382,7,5,2,10582,"product management, competitive analysis, product analytics, a/b testing","scrum, figma"
+BUSINESS_ANALYSIS,9,6,3,7657,7,5,2,4754,"process mapping, bpmn, excel","scrum, visio"
+PROJECT_MANAGEMENT,10,7,3,5095,6,3,3,892,"scrum, resource planning, scheduling","ms project, communication, leadership"
+TECHNICAL_WRITING,8,3,5,1904,9,5,4,12168,"content strategy, markdown, information architecture, style guides, docs-as-code","diagrams, dita, swagger, openapi"
