@@ -1,0 +1,2437 @@
+{
+  "AI_ML_ENGINEER_INT": {
+    "job_count": 0,
+    "domain": "AI_ML",
+    "typical_experience": "student",
+    "top_skills": [
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 1.0
+      },
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 1.0
+      },
+      {
+        "id": "SK057",
+        "name": "network engineer",
+        "weight": 0.4
+      },
+      {
+        "id": "SK107",
+        "name": "network",
+        "weight": 0.4
+      },
+      {
+        "id": "SK209",
+        "name": "network administrator",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 5,
+    "source": "synthetic_repair"
+  },
+  "BE_DEV": {
+    "job_count": 2978,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.466
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.392
+      },
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.385
+      },
+      {
+        "id": "SK018",
+        "name": "spring",
+        "weight": 0.322
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "CLOUD_ENGINEER": {
+    "job_count": 135,
+    "domain": "CLOUD_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.704
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.302
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "CLOUD_PLATFORM_LEAD": {
+    "job_count": 2,
+    "domain": "DEVOPS_SRE",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 1.0
+      },
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 1.0
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 1.0
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.7
+      },
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.6
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.6
+      },
+      {
+        "id": "SK076",
+        "name": "node.js",
+        "weight": 0.6
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.6
+      },
+      {
+        "id": "SK174",
+        "name": "microsoft azure",
+        "weight": 0.6
+      },
+      {
+        "id": "SK040",
+        "name": "software engineering",
+        "weight": 0.4
+      },
+      {
+        "id": "SK112",
+        "name": "orchestration",
+        "weight": 0.4
+      },
+      {
+        "id": "SK118",
+        "name": "san",
+        "weight": 0.4
+      },
+      {
+        "id": "SK136",
+        "name": "cloud computing",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK973",
+        "name": "agile methodology",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 16
+  },
+  "DATA_ENGINEER": {
+    "job_count": 1846,
+    "domain": "DATA_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.695
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.413
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "DATA_ENGINEER_INT": {
+    "job_count": 2,
+    "domain": "DATA_ENGINEERING",
+    "typical_experience": "student",
+    "top_skills": [
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 1.0
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.5
+      },
+      {
+        "id": "SK619",
+        "name": "excel analytics",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 3
+  },
+  "FE_DEV": {
+    "job_count": 2593,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.881
+      },
+      {
+        "id": "SK005",
+        "name": "css",
+        "weight": 0.596
+      },
+      {
+        "id": "SK006",
+        "name": "html",
+        "weight": 0.59
+      },
+      {
+        "id": "SK351",
+        "name": "react",
+        "weight": 0.411
+      },
+      {
+        "id": "SK312",
+        "name": "typescript",
+        "weight": 0.352
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.325
+      },
+      {
+        "id": "SK353",
+        "name": "angular",
+        "weight": 0.317
+      }
+    ],
+    "total_active_skills": 7
+  },
+  "FS_DEV": {
+    "job_count": 43,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.907
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.7
+      },
+      {
+        "id": "SK005",
+        "name": "css",
+        "weight": 0.635
+      },
+      {
+        "id": "SK006",
+        "name": "html",
+        "weight": 0.635
+      },
+      {
+        "id": "SK013",
+        "name": "rest",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "INTERN_SE": {
+    "job_count": 1,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "student",
+    "top_skills": [
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.7
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.6
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "JR_BE_DEV": {
+    "job_count": 36,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.417
+      },
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.4
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.369
+      }
+    ],
+    "total_active_skills": 3
+  },
+  "JR_CLOUD_ENG": {
+    "job_count": 1,
+    "domain": "CLOUD_ENGINEERING",
+    "typical_experience": "student",
+    "top_skills": [
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 1.0
+      },
+      {
+        "id": "SK020",
+        "name": "linux",
+        "weight": 0.7
+      },
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 0.6
+      },
+      {
+        "id": "SK136",
+        "name": "cloud computing",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "JR_DATA_ENGINEER": {
+    "job_count": 5,
+    "domain": "DATA_ENGINEERING",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.6
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.6
+      },
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.42
+      },
+      {
+        "id": "SK067",
+        "name": "business analyst",
+        "weight": 0.32
+      },
+      {
+        "id": "SK124",
+        "name": "data analyst",
+        "weight": 0.32
+      },
+      {
+        "id": "SK225",
+        "name": "it manager",
+        "weight": 0.32
+      }
+    ],
+    "total_active_skills": 6
+  },
+  "JR_FE_DEV": {
+    "job_count": 14,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 1.0
+      },
+      {
+        "id": "SK351",
+        "name": "react",
+        "weight": 0.643
+      },
+      {
+        "id": "SK005",
+        "name": "css",
+        "weight": 0.6
+      },
+      {
+        "id": "SK006",
+        "name": "html",
+        "weight": 0.6
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.45
+      },
+      {
+        "id": "SK017",
+        "name": "php",
+        "weight": 0.386
+      }
+    ],
+    "total_active_skills": 6
+  },
+  "JR_IT_SUPPORT": {
+    "job_count": 1,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK135",
+        "name": "testing",
+        "weight": 0.6
+      },
+      {
+        "id": "SK067",
+        "name": "business analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK1009",
+        "name": "kpi definition",
+        "weight": 0.4
+      },
+      {
+        "id": "SK919",
+        "name": "team building",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "JR_MOBILE_DEV": {
+    "job_count": 10,
+    "domain": "MOBILE_ENGINEERING",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK055",
+        "name": "ios",
+        "weight": 0.8
+      },
+      {
+        "id": "SK078",
+        "name": "swift",
+        "weight": 0.8
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.35
+      },
+      {
+        "id": "SK071",
+        "name": "ios developer",
+        "weight": 0.32
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "JR_PROJECT_MANAGER": {
+    "job_count": 454,
+    "domain": "PROJECT_MANAGEMENT",
+    "typical_experience": "unknown",
+    "top_skills": [
+      {
+        "id": "SK880",
+        "name": "stakeholder management",
+        "weight": 1.0
+      },
+      {
+        "id": "SK111",
+        "name": "project management",
+        "weight": 0.632
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK102",
+        "name": "project manager",
+        "weight": 0.393
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.346
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "JR_QA_ENG": {
+    "job_count": 8,
+    "domain": "QA_TESTING",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK135",
+        "name": "testing",
+        "weight": 0.75
+      },
+      {
+        "id": "SK427",
+        "name": "selenium",
+        "weight": 0.375
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "JR_SYS_ADMIN": {
+    "job_count": 3,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.4
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 0.4
+      },
+      {
+        "id": "SK655",
+        "name": "jenkins",
+        "weight": 0.4
+      },
+      {
+        "id": "SK680",
+        "name": "prometheus",
+        "weight": 0.4
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.333
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "JR_UI_UX_DESIGNER": {
+    "job_count": 1,
+    "domain": "UI_UX_DESIGN",
+    "typical_experience": "0-1",
+    "top_skills": [
+      {
+        "id": "SK007",
+        "name": "mobile",
+        "weight": 0.4
+      },
+      {
+        "id": "SK1000",
+        "name": "monday.com",
+        "weight": 0.4
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.4
+      },
+      {
+        "id": "SK288",
+        "name": "desktop engineer",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK934",
+        "name": "accountability",
+        "weight": 0.4
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 7
+  },
+  "LEAD_BE_DEV": {
+    "job_count": 25,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.448
+      },
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.336
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.336
+      },
+      {
+        "id": "SK312",
+        "name": "typescript",
+        "weight": 0.32
+      }
+    ],
+    "total_active_skills": 7
+  },
+  "LEAD_FE_DEV": {
+    "job_count": 16,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.938
+      },
+      {
+        "id": "SK351",
+        "name": "react",
+        "weight": 0.938
+      },
+      {
+        "id": "SK312",
+        "name": "typescript",
+        "weight": 0.688
+      },
+      {
+        "id": "SK005",
+        "name": "css",
+        "weight": 0.656
+      },
+      {
+        "id": "SK006",
+        "name": "html",
+        "weight": 0.612
+      },
+      {
+        "id": "SK353",
+        "name": "angular",
+        "weight": 0.438
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.394
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.375
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.312
+      },
+      {
+        "id": "SK076",
+        "name": "node.js",
+        "weight": 0.312
+      }
+    ],
+    "total_active_skills": 12
+  },
+  "LEAD_MOBILE_DEV": {
+    "job_count": 12,
+    "domain": "MOBILE_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK265",
+        "name": "android",
+        "weight": 1.0
+      },
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.7
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.467
+      },
+      {
+        "id": "SK303",
+        "name": "kotlin",
+        "weight": 0.417
+      },
+      {
+        "id": "SK070",
+        "name": "android developer",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.35
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "LEAD_QA_ENG": {
+    "job_count": 4,
+    "domain": "QA_TESTING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK135",
+        "name": "testing",
+        "weight": 0.75
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.525
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK117",
+        "name": "system administrator",
+        "weight": 0.3
+      },
+      {
+        "id": "SK940",
+        "name": "coaching skills",
+        "weight": 0.3
+      },
+      {
+        "id": "SK973",
+        "name": "agile methodology",
+        "weight": 0.3
+      }
+    ],
+    "total_active_skills": 6
+  },
+  "ML_RESEARCH_SCIENTIST": {
+    "job_count": 388,
+    "domain": "AI_ML",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 0.642
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.588
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "MOBILE_DEV": {
+    "job_count": 2329,
+    "domain": "MOBILE_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK265",
+        "name": "android",
+        "weight": 0.708
+      },
+      {
+        "id": "SK055",
+        "name": "ios",
+        "weight": 0.441
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "PRINCIPAL_DATA_ENGINEER": {
+    "job_count": 13,
+    "domain": "DATA_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.692
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.692
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 0.323
+      },
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.323
+      }
+    ],
+    "total_active_skills": 6
+  },
+  "PRINCIPAL_DATA_SCIENTIST": {
+    "job_count": 1,
+    "domain": "DATA_SCIENCE",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 1.0
+      },
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 1.0
+      },
+      {
+        "id": "SK135",
+        "name": "testing",
+        "weight": 0.6
+      },
+      {
+        "id": "SK977",
+        "name": "risk management",
+        "weight": 0.6
+      },
+      {
+        "id": "SK034",
+        "name": "algorithms",
+        "weight": 0.4
+      },
+      {
+        "id": "SK063",
+        "name": "github",
+        "weight": 0.4
+      },
+      {
+        "id": "SK091",
+        "name": "artificial intelligence",
+        "weight": 0.4
+      },
+      {
+        "id": "SK107",
+        "name": "network",
+        "weight": 0.4
+      },
+      {
+        "id": "SK117",
+        "name": "system administrator",
+        "weight": 0.4
+      },
+      {
+        "id": "SK124",
+        "name": "data analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK225",
+        "name": "it manager",
+        "weight": 0.4
+      },
+      {
+        "id": "SK239",
+        "name": "computer science",
+        "weight": 0.4
+      },
+      {
+        "id": "SK277",
+        "name": "data science",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK915",
+        "name": "talent development",
+        "weight": 0.4
+      },
+      {
+        "id": "SK934",
+        "name": "accountability",
+        "weight": 0.4
+      },
+      {
+        "id": "SK944",
+        "name": "time management leadership",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 18
+  },
+  "PRINCIPAL_DESIGNER": {
+    "job_count": 1,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.6
+      },
+      {
+        "id": "SK822",
+        "name": "responsive design",
+        "weight": 0.6
+      },
+      {
+        "id": "SK007",
+        "name": "mobile",
+        "weight": 0.4
+      },
+      {
+        "id": "SK067",
+        "name": "business analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK102",
+        "name": "project manager",
+        "weight": 0.4
+      },
+      {
+        "id": "SK288",
+        "name": "desktop engineer",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK891",
+        "name": "storytelling",
+        "weight": 0.4
+      },
+      {
+        "id": "SK893",
+        "name": "persuasion",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK917",
+        "name": "hiring and interviewing",
+        "weight": 0.4
+      },
+      {
+        "id": "SK919",
+        "name": "team building",
+        "weight": 0.4
+      },
+      {
+        "id": "SK934",
+        "name": "accountability",
+        "weight": 0.4
+      },
+      {
+        "id": "SK939",
+        "name": "influence without authority",
+        "weight": 0.4
+      },
+      {
+        "id": "SK940",
+        "name": "coaching skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK973",
+        "name": "agile methodology",
+        "weight": 0.4
+      },
+      {
+        "id": "SK986",
+        "name": "resource allocation",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 17
+  },
+  "PRINCIPAL_ENGINEER": {
+    "job_count": 2,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK102",
+        "name": "project manager",
+        "weight": 0.4
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK885",
+        "name": "cross functional communication",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "PRINCIPAL_ML_ENGINEER": {
+    "job_count": 2,
+    "domain": "AI_ML",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 1.0
+      },
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 1.0
+      },
+      {
+        "id": "SK531",
+        "name": "tensorflow",
+        "weight": 1.0
+      },
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.6
+      },
+      {
+        "id": "SK532",
+        "name": "pytorch",
+        "weight": 0.5
+      },
+      {
+        "id": "SK533",
+        "name": "keras",
+        "weight": 0.5
+      },
+      {
+        "id": "SK124",
+        "name": "data analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK537",
+        "name": "xgboost",
+        "weight": 0.35
+      }
+    ],
+    "total_active_skills": 10
+  },
+  "PRINCIPAL_SRE": {
+    "job_count": 17,
+    "domain": "DEVOPS_SRE",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK020",
+        "name": "linux",
+        "weight": 0.706
+      },
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 0.647
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 0.588
+      },
+      {
+        "id": "SK655",
+        "name": "jenkins",
+        "weight": 0.588
+      },
+      {
+        "id": "SK671",
+        "name": "ansible",
+        "weight": 0.588
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.535
+      },
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.471
+      },
+      {
+        "id": "SK670",
+        "name": "terraform",
+        "weight": 0.471
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.412
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.353
+      },
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 0.318
+      },
+      {
+        "id": "SK024",
+        "name": "devops",
+        "weight": 0.306
+      }
+    ],
+    "total_active_skills": 14
+  },
+  "PROGRAM_MANAGER": {
+    "job_count": 2,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.6
+      },
+      {
+        "id": "SK261",
+        "name": "jira",
+        "weight": 0.6
+      },
+      {
+        "id": "SK067",
+        "name": "business analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK1009",
+        "name": "kpi definition",
+        "weight": 0.4
+      },
+      {
+        "id": "SK102",
+        "name": "project manager",
+        "weight": 0.4
+      },
+      {
+        "id": "SK239",
+        "name": "computer science",
+        "weight": 0.4
+      },
+      {
+        "id": "SK974",
+        "name": "scrum framework",
+        "weight": 0.4
+      },
+      {
+        "id": "SK996",
+        "name": "jira management",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "QA_AUTOMATION_ENG": {
+    "job_count": 122,
+    "domain": "QA_TESTING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK135",
+        "name": "testing",
+        "weight": 0.893
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.339
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "RESEARCH_SCIENTIST": {
+    "job_count": 190,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.963
+      },
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 0.581
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.453
+      },
+      {
+        "id": "SK124",
+        "name": "data analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK591",
+        "name": "apache spark",
+        "weight": 0.325
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "SECURITY_ENGINEER": {
+    "job_count": 162,
+    "domain": "SECURITY",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 0.759
+      },
+      {
+        "id": "SK774",
+        "name": "network security",
+        "weight": 0.407
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "SENIOR_BE_DEV": {
+    "job_count": 317,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.424
+      },
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.366
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.35
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.342
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "SENIOR_CLOUD_ENG": {
+    "job_count": 139,
+    "domain": "CLOUD_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.712
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.357
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.354
+      },
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 0.306
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.302
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "SENIOR_DATA_ENGINEER": {
+    "job_count": 330,
+    "domain": "DATA_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.803
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.467
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.36
+      },
+      {
+        "id": "SK192",
+        "name": "etl",
+        "weight": 0.348
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "SENIOR_DATA_SCIENTIST": {
+    "job_count": 25,
+    "domain": "DATA_SCIENCE",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 1.0
+      },
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 1.0
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.52
+      },
+      {
+        "id": "SK591",
+        "name": "apache spark",
+        "weight": 0.476
+      },
+      {
+        "id": "SK124",
+        "name": "data analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.384
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.384
+      },
+      {
+        "id": "SK534",
+        "name": "scikit-learn",
+        "weight": 0.32
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "SENIOR_FE_DEV": {
+    "job_count": 174,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.96
+      },
+      {
+        "id": "SK005",
+        "name": "css",
+        "weight": 0.652
+      },
+      {
+        "id": "SK006",
+        "name": "html",
+        "weight": 0.64
+      },
+      {
+        "id": "SK312",
+        "name": "typescript",
+        "weight": 0.569
+      },
+      {
+        "id": "SK351",
+        "name": "react",
+        "weight": 0.534
+      },
+      {
+        "id": "SK353",
+        "name": "angular",
+        "weight": 0.489
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.345
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.338
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "SENIOR_FS_DEV": {
+    "job_count": 1,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 1.0
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 1.0
+      },
+      {
+        "id": "SK351",
+        "name": "react",
+        "weight": 1.0
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.7
+      },
+      {
+        "id": "SK005",
+        "name": "css",
+        "weight": 0.7
+      },
+      {
+        "id": "SK006",
+        "name": "html",
+        "weight": 0.7
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.7
+      },
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 0.7
+      },
+      {
+        "id": "SK077",
+        "name": "postgresql",
+        "weight": 0.7
+      },
+      {
+        "id": "SK008",
+        "name": "mysql",
+        "weight": 0.6
+      },
+      {
+        "id": "SK017",
+        "name": "php",
+        "weight": 0.6
+      },
+      {
+        "id": "SK053",
+        "name": "laravel",
+        "weight": 0.6
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.6
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 0.6
+      },
+      {
+        "id": "SK655",
+        "name": "jenkins",
+        "weight": 0.6
+      },
+      {
+        "id": "SK798",
+        "name": "react native",
+        "weight": 0.6
+      },
+      {
+        "id": "SK799",
+        "name": "flutter",
+        "weight": 0.6
+      },
+      {
+        "id": "SK007",
+        "name": "mobile",
+        "weight": 0.4
+      },
+      {
+        "id": "SK013",
+        "name": "rest",
+        "weight": 0.4
+      },
+      {
+        "id": "SK021",
+        "name": "api",
+        "weight": 0.4
+      },
+      {
+        "id": "SK037",
+        "name": "mvc",
+        "weight": 0.4
+      },
+      {
+        "id": "SK067",
+        "name": "business analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK068",
+        "name": "solution architect",
+        "weight": 0.4
+      },
+      {
+        "id": "SK094",
+        "name": "oop",
+        "weight": 0.4
+      },
+      {
+        "id": "SK099",
+        "name": "magento",
+        "weight": 0.4
+      },
+      {
+        "id": "SK102",
+        "name": "project manager",
+        "weight": 0.4
+      },
+      {
+        "id": "SK117",
+        "name": "system administrator",
+        "weight": 0.4
+      },
+      {
+        "id": "SK162",
+        "name": "lan",
+        "weight": 0.4
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.4
+      },
+      {
+        "id": "SK205",
+        "name": "design patterns",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 36
+  },
+  "SENIOR_ML_ENGINEER": {
+    "job_count": 50,
+    "domain": "AI_ML",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK121",
+        "name": "uml",
+        "weight": 0.42
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.4
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.36
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.344
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "SENIOR_MOBILE_DEV": {
+    "job_count": 125,
+    "domain": "MOBILE_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK055",
+        "name": "ios",
+        "weight": 0.72
+      },
+      {
+        "id": "SK265",
+        "name": "android",
+        "weight": 0.528
+      },
+      {
+        "id": "SK078",
+        "name": "swift",
+        "weight": 0.408
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.387
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.336
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "SENIOR_PROGRAM_MANAGER": {
+    "job_count": 21,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.381
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "SENIOR_QA_AUTOMATION": {
+    "job_count": 32,
+    "domain": "QA_TESTING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK135",
+        "name": "testing",
+        "weight": 0.875
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.416
+      },
+      {
+        "id": "SK427",
+        "name": "selenium",
+        "weight": 0.344
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.325
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.313
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "SENIOR_SE": {
+    "job_count": 72,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.4
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.361
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "SENIOR_SECURITY_ENG": {
+    "job_count": 21,
+    "domain": "SECURITY",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 0.524
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.4
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.343
+      },
+      {
+        "id": "SK068",
+        "name": "solution architect",
+        "weight": 0.305
+      }
+    ],
+    "total_active_skills": 4
+  },
+  "SENIOR_SRE": {
+    "job_count": 204,
+    "domain": "DEVOPS_SRE",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 0.544
+      },
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.52
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 0.48
+      },
+      {
+        "id": "SK655",
+        "name": "jenkins",
+        "weight": 0.475
+      },
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.369
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.323
+      },
+      {
+        "id": "SK671",
+        "name": "ansible",
+        "weight": 0.309
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.305
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "SENIOR_UI_UX_DESIGNER": {
+    "job_count": 5,
+    "domain": "UI_UX_DESIGN",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK184",
+        "name": "technical requirements",
+        "weight": 0.4
+      },
+      {
+        "id": "SK882",
+        "name": "code review skills",
+        "weight": 0.4
+      },
+      {
+        "id": "SK007",
+        "name": "mobile",
+        "weight": 0.32
+      }
+    ],
+    "total_active_skills": 3
+  },
+  "SE_II": {
+    "job_count": 869,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "1-3",
+    "top_skills": [],
+    "total_active_skills": 0
+  },
+  "SRE": {
+    "job_count": 1197,
+    "domain": "DEVOPS_SRE",
+    "typical_experience": "1-3",
+    "top_skills": [
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.429
+      },
+      {
+        "id": "SK020",
+        "name": "linux",
+        "weight": 0.416
+      },
+      {
+        "id": "SK655",
+        "name": "jenkins",
+        "weight": 0.408
+      },
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 0.361
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 0.313
+      },
+      {
+        "id": "SK671",
+        "name": "ansible",
+        "weight": 0.312
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.301
+      }
+    ],
+    "total_active_skills": 7
+  },
+  "STAFF_BE_DEV": {
+    "job_count": 16,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.5
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.481
+      },
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.45
+      },
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 0.375
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.3
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "STAFF_CLOUD_ENG": {
+    "job_count": 6,
+    "domain": "CLOUD_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.667
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.583
+      },
+      {
+        "id": "SK001",
+        "name": "java",
+        "weight": 0.4
+      },
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 0.333
+      },
+      {
+        "id": "SK239",
+        "name": "computer science",
+        "weight": 0.333
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 0.333
+      }
+    ],
+    "total_active_skills": 6
+  },
+  "STAFF_DATA_ENGINEER": {
+    "job_count": 80,
+    "domain": "DATA_ENGINEERING",
+    "typical_experience": "unknown",
+    "top_skills": [
+      {
+        "id": "SK880",
+        "name": "stakeholder management",
+        "weight": 0.488
+      },
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 0.42
+      },
+      {
+        "id": "SK124",
+        "name": "data analyst",
+        "weight": 0.365
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.325
+      },
+      {
+        "id": "SK117",
+        "name": "system administrator",
+        "weight": 0.305
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "STAFF_DATA_SCIENTIST": {
+    "job_count": 8,
+    "domain": "DATA_SCIENCE",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 1.0
+      },
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 1.0
+      },
+      {
+        "id": "SK534",
+        "name": "scikit-learn",
+        "weight": 0.625
+      },
+      {
+        "id": "SK591",
+        "name": "apache spark",
+        "weight": 0.612
+      },
+      {
+        "id": "SK531",
+        "name": "tensorflow",
+        "weight": 0.525
+      },
+      {
+        "id": "SK532",
+        "name": "pytorch",
+        "weight": 0.525
+      },
+      {
+        "id": "SK124",
+        "name": "data analyst",
+        "weight": 0.4
+      },
+      {
+        "id": "SK003",
+        "name": "sql",
+        "weight": 0.375
+      },
+      {
+        "id": "SK543",
+        "name": "numpy",
+        "weight": 0.375
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.35
+      },
+      {
+        "id": "SK043",
+        "name": "big data",
+        "weight": 0.3
+      },
+      {
+        "id": "SK277",
+        "name": "data science",
+        "weight": 0.3
+      }
+    ],
+    "total_active_skills": 12
+  },
+  "STAFF_ENGINEER": {
+    "job_count": 26,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "unknown",
+    "top_skills": [
+      {
+        "id": "SK880",
+        "name": "stakeholder management",
+        "weight": 0.6
+      },
+      {
+        "id": "SK911",
+        "name": "people management",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 2
+  },
+  "STAFF_FE_DEV": {
+    "job_count": 21,
+    "domain": "FULLSTACK_ENGINEERING",
+    "typical_experience": "unknown",
+    "top_skills": [
+      {
+        "id": "SK002",
+        "name": "javascript",
+        "weight": 1.0
+      },
+      {
+        "id": "SK312",
+        "name": "typescript",
+        "weight": 0.762
+      },
+      {
+        "id": "SK353",
+        "name": "angular",
+        "weight": 0.762
+      },
+      {
+        "id": "SK005",
+        "name": "css",
+        "weight": 0.6
+      },
+      {
+        "id": "SK006",
+        "name": "html",
+        "weight": 0.6
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.429
+      },
+      {
+        "id": "SK161",
+        "name": "agile",
+        "weight": 0.343
+      },
+      {
+        "id": "SK880",
+        "name": "stakeholder management",
+        "weight": 0.314
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "STAFF_ML_ENGINEER": {
+    "job_count": 5,
+    "domain": "AI_ML",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK031",
+        "name": "machine learning",
+        "weight": 0.8
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.4
+      },
+      {
+        "id": "SK531",
+        "name": "tensorflow",
+        "weight": 0.4
+      },
+      {
+        "id": "SK532",
+        "name": "pytorch",
+        "weight": 0.4
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.32
+      }
+    ],
+    "total_active_skills": 5
+  },
+  "STAFF_MOBILE_DEV": {
+    "job_count": 11,
+    "domain": "MOBILE_ENGINEERING",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK265",
+        "name": "android",
+        "weight": 0.727
+      },
+      {
+        "id": "SK055",
+        "name": "ios",
+        "weight": 0.455
+      },
+      {
+        "id": "SK949",
+        "name": "system design",
+        "weight": 0.327
+      }
+    ],
+    "total_active_skills": 3
+  },
+  "STAFF_SECURITY_ENG": {
+    "job_count": 3,
+    "domain": "SECURITY",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK016",
+        "name": "security",
+        "weight": 1.0
+      },
+      {
+        "id": "SK774",
+        "name": "network security",
+        "weight": 1.0
+      },
+      {
+        "id": "SK020",
+        "name": "linux",
+        "weight": 0.467
+      },
+      {
+        "id": "SK057",
+        "name": "network engineer",
+        "weight": 0.4
+      },
+      {
+        "id": "SK107",
+        "name": "network",
+        "weight": 0.4
+      },
+      {
+        "id": "SK117",
+        "name": "system administrator",
+        "weight": 0.4
+      },
+      {
+        "id": "SK265",
+        "name": "android",
+        "weight": 0.4
+      },
+      {
+        "id": "SK777",
+        "name": "cryptography",
+        "weight": 0.4
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "STAFF_SRE": {
+    "job_count": 23,
+    "domain": "DEVOPS_SRE",
+    "typical_experience": "5+",
+    "top_skills": [
+      {
+        "id": "SK029",
+        "name": "docker",
+        "weight": 0.652
+      },
+      {
+        "id": "SK655",
+        "name": "jenkins",
+        "weight": 0.565
+      },
+      {
+        "id": "SK004",
+        "name": "python",
+        "weight": 0.487
+      },
+      {
+        "id": "SK020",
+        "name": "linux",
+        "weight": 0.478
+      },
+      {
+        "id": "SK009",
+        "name": "git",
+        "weight": 0.396
+      },
+      {
+        "id": "SK646",
+        "name": "kubernetes",
+        "weight": 0.391
+      },
+      {
+        "id": "SK181",
+        "name": "aws",
+        "weight": 0.304
+      },
+      {
+        "id": "SK670",
+        "name": "terraform",
+        "weight": 0.304
+      }
+    ],
+    "total_active_skills": 8
+  },
+  "UI_UX_DESIGNER": {
+    "job_count": 29,
+    "domain": "UI_UX_DESIGN",
+    "typical_experience": "1-3",
+    "top_skills": [],
+    "total_active_skills": 0
+  },
+  "JR_ML_ENGINEER": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "AI_ML"
+  },
+  "ML_ENGINEER": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "AI_ML"
+  },
+  "DATA_SCIENTIST_INT": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "DATA_SCIENCE"
+  },
+  "JR_DATA_SCIENTIST": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "DATA_SCIENCE"
+  },
+  "DATA_SCIENTIST": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "DATA_SCIENCE"
+  },
+  "JR_GAME_DEV": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "GAME_DEVELOPMENT"
+  },
+  "GAME_DEVELOPER": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "GAME_DEVELOPMENT"
+  },
+  "GAME_DESIGNER": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "GAME_DEVELOPMENT"
+  },
+  "SENIOR_GAME_DEV": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "GAME_DEVELOPMENT"
+  },
+  "LEAD_GAME_DEV": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "GAME_DEVELOPMENT"
+  },
+  "TECHNICAL_GAME_DESIGNER": {
+    "source": "synthetic_expert",
+    "job_count": 0,
+    "domain": "GAME_DEVELOPMENT"
+  }
+}

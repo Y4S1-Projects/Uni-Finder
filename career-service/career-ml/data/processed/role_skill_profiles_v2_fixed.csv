@@ -1,10 +1,4 @@
 role_id,skill_id,frequency,importance,role_title,skill_name
-AI_ML_ENGINEER_INT,SK004,1.0,1.0,AI / ML Engineer (Entry Level),python
-AI_ML_ENGINEER_INT,SK031,1.0,1.0,AI / ML Engineer (Entry Level),machine learning
-AI_ML_ENGINEER_INT,SK057,1.0,1.0,AI / ML Engineer (Entry Level),network engineer
-AI_ML_ENGINEER_INT,SK107,1.0,1.0,AI / ML Engineer (Entry Level),network
-AI_ML_ENGINEER_INT,SK132,1.0,1.0,AI / ML Engineer (Entry Level),networking
-AI_ML_ENGINEER_INT,SK209,1.0,1.0,AI / ML Engineer (Entry Level),network administrator
 BE_DEV,SK001,0.7764,0.7764,Backend Developer,java
 BE_DEV,SK002,0.3848,0.3848,Backend Developer,javascript
 BE_DEV,SK003,0.5604,0.5604,Backend Developer,sql
@@ -8678,3 +8672,241 @@ UI_UX_DESIGNER,SK1009,0.0345,0.0345,UI/UX Designer,kpi definition
 UI_UX_DESIGNER,SK1011,0.3448,0.3448,UI/UX Designer,user experience focus
 UI_UX_DESIGNER,SK1017,0.0345,0.0345,UI/UX Designer,startup mindset
 UI_UX_DESIGNER,SK1025,0.069,0.069,UI/UX Designer,accessibility
+AI_ML_ENGINEER_INT,SK004,1.0,1.0,AI / ML Engineer (Entry Level),python
+AI_ML_ENGINEER_INT,SK031,0.9,0.9,AI / ML Engineer (Entry Level),machine learning
+AI_ML_ENGINEER_INT,SK1207,0.8,0.8,AI / ML Engineer (Entry Level),numpy
+AI_ML_ENGINEER_INT,SK1208,0.8,0.75,AI / ML Engineer (Entry Level),pandas
+AI_ML_ENGINEER_INT,SK1204,0.7,0.7,AI / ML Engineer (Entry Level),scikit-learn
+AI_ML_ENGINEER_INT,SK1202,0.6,0.6,AI / ML Engineer (Entry Level),deep learning
+AI_ML_ENGINEER_INT,SK1218,0.6,0.55,AI / ML Engineer (Entry Level),statistics
+AI_ML_ENGINEER_INT,SK034,0.5,0.5,AI / ML Engineer (Entry Level),algorithms
+AI_ML_ENGINEER_INT,SK1221,0.5,0.45,AI / ML Engineer (Entry Level),jupyter
+AI_ML_ENGINEER_INT,SK003,0.5,0.4,AI / ML Engineer (Entry Level),sql
+AI_ML_ENGINEER_INT,SK009,0.4,0.35,AI / ML Engineer (Entry Level),git
+AI_ML_ENGINEER_INT,SK028,0.4,0.3,AI / ML Engineer (Entry Level),problem solving
+AI_ML_ENGINEER_INT,SK1217,0.3,0.25,AI / ML Engineer (Entry Level),neural networks
+AI_ML_ENGINEER_INT,SK1200,0.3,0.2,AI / ML Engineer (Entry Level),tensorflow
+AI_ML_ENGINEER_INT,SK1201,0.3,0.2,AI / ML Engineer (Entry Level),pytorch
+AI_ML_ENGINEER_INT,SK020,0.2,0.15,AI / ML Engineer (Entry Level),linux
+AI_ML_ENGINEER_INT,SK177,0.2,0.15,AI / ML Engineer (Entry Level),data analysis
+AI_ML_ENGINEER_INT,SK091,0.2,0.1,AI / ML Engineer (Entry Level),artificial intelligence
+JR_ML_ENGINEER,SK004,1.0,1.0,Junior ML Engineer,python
+JR_ML_ENGINEER,SK031,0.9,0.95,Junior ML Engineer,machine learning
+JR_ML_ENGINEER,SK1202,0.8,0.85,Junior ML Engineer,deep learning
+JR_ML_ENGINEER,SK1207,0.8,0.8,Junior ML Engineer,numpy
+JR_ML_ENGINEER,SK1208,0.8,0.75,Junior ML Engineer,pandas
+JR_ML_ENGINEER,SK1204,0.7,0.7,Junior ML Engineer,scikit-learn
+JR_ML_ENGINEER,SK1200,0.6,0.65,Junior ML Engineer,tensorflow
+JR_ML_ENGINEER,SK1201,0.6,0.65,Junior ML Engineer,pytorch
+JR_ML_ENGINEER,SK1217,0.6,0.6,Junior ML Engineer,neural networks
+JR_ML_ENGINEER,SK003,0.6,0.55,Junior ML Engineer,sql
+JR_ML_ENGINEER,SK034,0.5,0.5,Junior ML Engineer,algorithms
+JR_ML_ENGINEER,SK1218,0.5,0.5,Junior ML Engineer,statistics
+JR_ML_ENGINEER,SK009,0.5,0.45,Junior ML Engineer,git
+JR_ML_ENGINEER,SK1221,0.4,0.4,Junior ML Engineer,jupyter
+JR_ML_ENGINEER,SK028,0.4,0.4,Junior ML Engineer,problem solving
+JR_ML_ENGINEER,SK020,0.4,0.35,Junior ML Engineer,linux
+JR_ML_ENGINEER,SK029,0.3,0.25,Junior ML Engineer,docker
+JR_ML_ENGINEER,SK1210,0.2,0.2,Junior ML Engineer,model deployment
+JR_ML_ENGINEER,SK1212,0.2,0.2,Junior ML Engineer,feature engineering
+JR_ML_ENGINEER,SK177,0.2,0.15,Junior ML Engineer,data analysis
+JR_ML_ENGINEER,SK013,0.1,0.1,Junior ML Engineer,rest
+JR_ML_ENGINEER,SK021,0.1,0.1,Junior ML Engineer,api
+JR_ML_ENGINEER,SK161,0.1,0.1,Junior ML Engineer,agile
+ML_ENGINEER,SK004,1.0,1.0,ML Engineer,python
+ML_ENGINEER,SK031,1.0,1.0,ML Engineer,machine learning
+ML_ENGINEER,SK1202,0.9,0.9,ML Engineer,deep learning
+ML_ENGINEER,SK1200,0.8,0.8,ML Engineer,tensorflow
+ML_ENGINEER,SK1201,0.8,0.8,ML Engineer,pytorch
+ML_ENGINEER,SK1217,0.7,0.75,ML Engineer,neural networks
+ML_ENGINEER,SK1207,0.7,0.75,ML Engineer,numpy
+ML_ENGINEER,SK1208,0.7,0.7,ML Engineer,pandas
+ML_ENGINEER,SK1204,0.7,0.65,ML Engineer,scikit-learn
+ML_ENGINEER,SK034,0.6,0.6,ML Engineer,algorithms
+ML_ENGINEER,SK003,0.6,0.55,ML Engineer,sql
+ML_ENGINEER,SK1210,0.5,0.5,ML Engineer,model deployment
+ML_ENGINEER,SK1212,0.5,0.5,ML Engineer,feature engineering
+ML_ENGINEER,SK1213,0.5,0.45,ML Engineer,model training
+ML_ENGINEER,SK029,0.4,0.4,ML Engineer,docker
+ML_ENGINEER,SK009,0.4,0.4,ML Engineer,git
+ML_ENGINEER,SK020,0.4,0.35,ML Engineer,linux
+ML_ENGINEER,SK1218,0.4,0.35,ML Engineer,statistics
+ML_ENGINEER,SK1214,0.3,0.3,ML Engineer,experiment tracking
+ML_ENGINEER,SK013,0.3,0.25,ML Engineer,rest
+ML_ENGINEER,SK021,0.3,0.25,ML Engineer,api
+ML_ENGINEER,SK028,0.3,0.25,ML Engineer,problem solving
+ML_ENGINEER,SK1221,0.2,0.2,ML Engineer,jupyter
+ML_ENGINEER,SK161,0.2,0.15,ML Engineer,agile
+ML_ENGINEER,SK1223,0.2,0.15,ML Engineer,spark
+ML_ENGINEER,SK177,0.1,0.1,ML Engineer,data analysis
+DATA_SCIENTIST_INT,SK004,1.0,1.0,Data Scientist (Entry Level),python
+DATA_SCIENTIST_INT,SK1218,0.9,0.9,Data Scientist (Entry Level),statistics
+DATA_SCIENTIST_INT,SK003,0.8,0.8,Data Scientist (Entry Level),sql
+DATA_SCIENTIST_INT,SK1208,0.8,0.75,Data Scientist (Entry Level),pandas
+DATA_SCIENTIST_INT,SK1207,0.7,0.7,Data Scientist (Entry Level),numpy
+DATA_SCIENTIST_INT,SK177,0.7,0.65,Data Scientist (Entry Level),data analysis
+DATA_SCIENTIST_INT,SK031,0.6,0.6,Data Scientist (Entry Level),machine learning
+DATA_SCIENTIST_INT,SK1204,0.6,0.55,Data Scientist (Entry Level),scikit-learn
+DATA_SCIENTIST_INT,SK1220,0.5,0.5,Data Scientist (Entry Level),data visualization
+DATA_SCIENTIST_INT,SK1221,0.5,0.45,Data Scientist (Entry Level),jupyter
+DATA_SCIENTIST_INT,SK034,0.4,0.4,Data Scientist (Entry Level),algorithms
+DATA_SCIENTIST_INT,SK009,0.4,0.35,Data Scientist (Entry Level),git
+DATA_SCIENTIST_INT,SK028,0.3,0.3,Data Scientist (Entry Level),problem solving
+DATA_SCIENTIST_INT,SK277,0.3,0.25,Data Scientist (Entry Level),data science
+DATA_SCIENTIST_INT,SK020,0.2,0.15,Data Scientist (Entry Level),linux
+JR_DATA_SCIENTIST,SK004,1.0,1.0,Junior Data Scientist,python
+JR_DATA_SCIENTIST,SK003,0.9,0.9,Junior Data Scientist,sql
+JR_DATA_SCIENTIST,SK1218,0.8,0.85,Junior Data Scientist,statistics
+JR_DATA_SCIENTIST,SK031,0.8,0.8,Junior Data Scientist,machine learning
+JR_DATA_SCIENTIST,SK1208,0.8,0.75,Junior Data Scientist,pandas
+JR_DATA_SCIENTIST,SK1207,0.7,0.7,Junior Data Scientist,numpy
+JR_DATA_SCIENTIST,SK177,0.7,0.65,Junior Data Scientist,data analysis
+JR_DATA_SCIENTIST,SK1204,0.6,0.6,Junior Data Scientist,scikit-learn
+JR_DATA_SCIENTIST,SK1220,0.6,0.55,Junior Data Scientist,data visualization
+JR_DATA_SCIENTIST,SK1202,0.5,0.45,Junior Data Scientist,deep learning
+JR_DATA_SCIENTIST,SK1221,0.4,0.4,Junior Data Scientist,jupyter
+JR_DATA_SCIENTIST,SK034,0.4,0.4,Junior Data Scientist,algorithms
+JR_DATA_SCIENTIST,SK009,0.4,0.35,Junior Data Scientist,git
+JR_DATA_SCIENTIST,SK028,0.3,0.3,Junior Data Scientist,problem solving
+JR_DATA_SCIENTIST,SK277,0.3,0.25,Junior Data Scientist,data science
+JR_DATA_SCIENTIST,SK1200,0.2,0.15,Junior Data Scientist,tensorflow
+JR_DATA_SCIENTIST,SK020,0.2,0.15,Junior Data Scientist,linux
+JR_DATA_SCIENTIST,SK161,0.1,0.1,Junior Data Scientist,agile
+DATA_SCIENTIST,SK004,1.0,1.0,Data Scientist,python
+DATA_SCIENTIST,SK031,1.0,0.95,Data Scientist,machine learning
+DATA_SCIENTIST,SK003,0.9,0.9,Data Scientist,sql
+DATA_SCIENTIST,SK1218,0.9,0.85,Data Scientist,statistics
+DATA_SCIENTIST,SK1208,0.8,0.8,Data Scientist,pandas
+DATA_SCIENTIST,SK1207,0.8,0.75,Data Scientist,numpy
+DATA_SCIENTIST,SK1204,0.7,0.7,Data Scientist,scikit-learn
+DATA_SCIENTIST,SK177,0.7,0.65,Data Scientist,data analysis
+DATA_SCIENTIST,SK1202,0.6,0.6,Data Scientist,deep learning
+DATA_SCIENTIST,SK1220,0.6,0.55,Data Scientist,data visualization
+DATA_SCIENTIST,SK034,0.5,0.5,Data Scientist,algorithms
+DATA_SCIENTIST,SK1200,0.5,0.45,Data Scientist,tensorflow
+DATA_SCIENTIST,SK1201,0.4,0.4,Data Scientist,pytorch
+DATA_SCIENTIST,SK1212,0.4,0.35,Data Scientist,feature engineering
+DATA_SCIENTIST,SK009,0.4,0.35,Data Scientist,git
+DATA_SCIENTIST,SK1221,0.3,0.3,Data Scientist,jupyter
+DATA_SCIENTIST,SK028,0.3,0.3,Data Scientist,problem solving
+DATA_SCIENTIST,SK1223,0.3,0.25,Data Scientist,spark
+DATA_SCIENTIST,SK277,0.2,0.2,Data Scientist,data science
+DATA_SCIENTIST,SK020,0.2,0.2,Data Scientist,linux
+DATA_SCIENTIST,SK029,0.2,0.15,Data Scientist,docker
+DATA_SCIENTIST,SK013,0.1,0.1,Data Scientist,rest
+DATA_SCIENTIST,SK161,0.1,0.1,Data Scientist,agile
+JR_GAME_DEV,SK1233,1.0,1.0,Junior Game Developer,c++
+JR_GAME_DEV,SK1232,0.9,0.9,Junior Game Developer,c#
+JR_GAME_DEV,SK1230,0.8,0.85,Junior Game Developer,unity
+JR_GAME_DEV,SK1240,0.7,0.7,Junior Game Developer,gameplay programming
+JR_GAME_DEV,SK034,0.6,0.6,Junior Game Developer,algorithms
+JR_GAME_DEV,SK1234,0.6,0.55,Junior Game Developer,game design
+JR_GAME_DEV,SK211,0.5,0.5,Junior Game Developer,games
+JR_GAME_DEV,SK009,0.5,0.45,Junior Game Developer,git
+JR_GAME_DEV,SK285,0.4,0.4,Junior Game Developer,programming
+JR_GAME_DEV,SK1238,0.4,0.35,Junior Game Developer,game physics
+JR_GAME_DEV,SK1241,0.3,0.3,Junior Game Developer,game ai
+JR_GAME_DEV,SK028,0.3,0.3,Junior Game Developer,problem solving
+JR_GAME_DEV,SK1242,0.3,0.25,Junior Game Developer,level design
+JR_GAME_DEV,SK1237,0.2,0.2,Junior Game Developer,3d modeling
+JR_GAME_DEV,SK1243,0.2,0.15,Junior Game Developer,animation systems
+GAME_DEVELOPER,SK1233,1.0,1.0,Game Developer,c++
+GAME_DEVELOPER,SK1232,0.9,0.95,Game Developer,c#
+GAME_DEVELOPER,SK1230,0.9,0.85,Game Developer,unity
+GAME_DEVELOPER,SK1231,0.8,0.8,Game Developer,unreal engine
+GAME_DEVELOPER,SK1240,0.7,0.75,Game Developer,gameplay programming
+GAME_DEVELOPER,SK034,0.7,0.65,Game Developer,algorithms
+GAME_DEVELOPER,SK1234,0.6,0.6,Game Developer,game design
+GAME_DEVELOPER,SK1238,0.6,0.55,Game Developer,game physics
+GAME_DEVELOPER,SK1241,0.5,0.5,Game Developer,game ai
+GAME_DEVELOPER,SK211,0.5,0.45,Game Developer,games
+GAME_DEVELOPER,SK1235,0.4,0.4,Game Developer,shader programming
+GAME_DEVELOPER,SK1236,0.4,0.4,Game Developer,opengl
+GAME_DEVELOPER,SK009,0.4,0.35,Game Developer,git
+GAME_DEVELOPER,SK285,0.3,0.35,Game Developer,programming
+GAME_DEVELOPER,SK028,0.3,0.3,Game Developer,problem solving
+GAME_DEVELOPER,SK1245,0.3,0.25,Game Developer,game optimization
+GAME_DEVELOPER,SK1243,0.3,0.25,Game Developer,animation systems
+GAME_DEVELOPER,SK1242,0.2,0.2,Game Developer,level design
+GAME_DEVELOPER,SK1244,0.2,0.15,Game Developer,multiplayer networking
+GAME_DEVELOPER,SK020,0.1,0.1,Game Developer,linux
+GAME_DEVELOPER,SK161,0.1,0.1,Game Developer,agile
+GAME_DESIGNER,SK1234,1.0,1.0,Game Designer,game design
+GAME_DESIGNER,SK1242,0.9,0.9,Game Designer,level design
+GAME_DESIGNER,SK211,0.8,0.85,Game Designer,games
+GAME_DESIGNER,SK1240,0.7,0.7,Game Designer,gameplay programming
+GAME_DESIGNER,SK1230,0.6,0.6,Game Designer,unity
+GAME_DESIGNER,SK1232,0.6,0.55,Game Designer,c#
+GAME_DESIGNER,SK1241,0.5,0.5,Game Designer,game ai
+GAME_DESIGNER,SK1238,0.4,0.4,Game Designer,game physics
+GAME_DESIGNER,SK285,0.4,0.35,Game Designer,programming
+GAME_DESIGNER,SK028,0.4,0.35,Game Designer,problem solving
+GAME_DESIGNER,SK1237,0.3,0.3,Game Designer,3d modeling
+GAME_DESIGNER,SK1243,0.3,0.25,Game Designer,animation systems
+GAME_DESIGNER,SK009,0.2,0.2,Game Designer,git
+GAME_DESIGNER,SK161,0.1,0.1,Game Designer,agile
+SENIOR_GAME_DEV,SK1233,1.0,1.0,Senior Game Developer,c++
+SENIOR_GAME_DEV,SK1232,1.0,0.95,Senior Game Developer,c#
+SENIOR_GAME_DEV,SK1231,0.9,0.9,Senior Game Developer,unreal engine
+SENIOR_GAME_DEV,SK1230,0.9,0.85,Senior Game Developer,unity
+SENIOR_GAME_DEV,SK1240,0.8,0.8,Senior Game Developer,gameplay programming
+SENIOR_GAME_DEV,SK1247,0.7,0.75,Senior Game Developer,game engine architecture
+SENIOR_GAME_DEV,SK034,0.7,0.7,Senior Game Developer,algorithms
+SENIOR_GAME_DEV,SK1235,0.7,0.65,Senior Game Developer,shader programming
+SENIOR_GAME_DEV,SK1236,0.6,0.6,Senior Game Developer,opengl
+SENIOR_GAME_DEV,SK1248,0.6,0.6,Senior Game Developer,rendering
+SENIOR_GAME_DEV,SK1238,0.6,0.55,Senior Game Developer,game physics
+SENIOR_GAME_DEV,SK1241,0.5,0.5,Senior Game Developer,game ai
+SENIOR_GAME_DEV,SK1234,0.5,0.5,Senior Game Developer,game design
+SENIOR_GAME_DEV,SK1245,0.5,0.45,Senior Game Developer,game optimization
+SENIOR_GAME_DEV,SK211,0.4,0.4,Senior Game Developer,games
+SENIOR_GAME_DEV,SK1244,0.4,0.4,Senior Game Developer,multiplayer networking
+SENIOR_GAME_DEV,SK009,0.4,0.35,Senior Game Developer,git
+SENIOR_GAME_DEV,SK028,0.4,0.35,Senior Game Developer,problem solving
+SENIOR_GAME_DEV,SK285,0.3,0.3,Senior Game Developer,programming
+SENIOR_GAME_DEV,SK1243,0.3,0.3,Senior Game Developer,animation systems
+SENIOR_GAME_DEV,SK1249,0.2,0.2,Senior Game Developer,audio programming
+SENIOR_GAME_DEV,SK020,0.2,0.15,Senior Game Developer,linux
+SENIOR_GAME_DEV,SK029,0.2,0.15,Senior Game Developer,docker
+SENIOR_GAME_DEV,SK161,0.1,0.1,Senior Game Developer,agile
+LEAD_GAME_DEV,SK1233,1.0,1.0,Lead Game Developer,c++
+LEAD_GAME_DEV,SK1247,0.9,0.95,Lead Game Developer,game engine architecture
+LEAD_GAME_DEV,SK1231,0.9,0.9,Lead Game Developer,unreal engine
+LEAD_GAME_DEV,SK1230,0.9,0.85,Lead Game Developer,unity
+LEAD_GAME_DEV,SK1232,0.9,0.85,Lead Game Developer,c#
+LEAD_GAME_DEV,SK1240,0.8,0.8,Lead Game Developer,gameplay programming
+LEAD_GAME_DEV,SK1248,0.7,0.7,Lead Game Developer,rendering
+LEAD_GAME_DEV,SK1235,0.7,0.65,Lead Game Developer,shader programming
+LEAD_GAME_DEV,SK1236,0.6,0.6,Lead Game Developer,opengl
+LEAD_GAME_DEV,SK034,0.6,0.6,Lead Game Developer,algorithms
+LEAD_GAME_DEV,SK1245,0.6,0.55,Lead Game Developer,game optimization
+LEAD_GAME_DEV,SK1234,0.5,0.5,Lead Game Developer,game design
+LEAD_GAME_DEV,SK1238,0.5,0.45,Lead Game Developer,game physics
+LEAD_GAME_DEV,SK1241,0.5,0.45,Lead Game Developer,game ai
+LEAD_GAME_DEV,SK1244,0.4,0.4,Lead Game Developer,multiplayer networking
+LEAD_GAME_DEV,SK211,0.4,0.35,Lead Game Developer,games
+LEAD_GAME_DEV,SK009,0.3,0.3,Lead Game Developer,git
+LEAD_GAME_DEV,SK028,0.3,0.3,Lead Game Developer,problem solving
+LEAD_GAME_DEV,SK285,0.3,0.25,Lead Game Developer,programming
+LEAD_GAME_DEV,SK161,0.2,0.2,Lead Game Developer,agile
+LEAD_GAME_DEV,SK1243,0.2,0.2,Lead Game Developer,animation systems
+LEAD_GAME_DEV,SK1249,0.2,0.15,Lead Game Developer,audio programming
+LEAD_GAME_DEV,SK020,0.2,0.15,Lead Game Developer,linux
+TECHNICAL_GAME_DESIGNER,SK1234,1.0,1.0,Technical Game Designer,game design
+TECHNICAL_GAME_DESIGNER,SK1240,0.9,0.9,Technical Game Designer,gameplay programming
+TECHNICAL_GAME_DESIGNER,SK1232,0.8,0.8,Technical Game Designer,c#
+TECHNICAL_GAME_DESIGNER,SK1230,0.8,0.75,Technical Game Designer,unity
+TECHNICAL_GAME_DESIGNER,SK1242,0.7,0.7,Technical Game Designer,level design
+TECHNICAL_GAME_DESIGNER,SK211,0.6,0.65,Technical Game Designer,games
+TECHNICAL_GAME_DESIGNER,SK1233,0.6,0.6,Technical Game Designer,c++
+TECHNICAL_GAME_DESIGNER,SK1241,0.6,0.55,Technical Game Designer,game ai
+TECHNICAL_GAME_DESIGNER,SK1238,0.5,0.5,Technical Game Designer,game physics
+TECHNICAL_GAME_DESIGNER,SK034,0.5,0.45,Technical Game Designer,algorithms
+TECHNICAL_GAME_DESIGNER,SK285,0.4,0.4,Technical Game Designer,programming
+TECHNICAL_GAME_DESIGNER,SK1243,0.4,0.35,Technical Game Designer,animation systems
+TECHNICAL_GAME_DESIGNER,SK1235,0.3,0.3,Technical Game Designer,shader programming
+TECHNICAL_GAME_DESIGNER,SK028,0.3,0.3,Technical Game Designer,problem solving
+TECHNICAL_GAME_DESIGNER,SK009,0.3,0.25,Technical Game Designer,git
+TECHNICAL_GAME_DESIGNER,SK1237,0.2,0.2,Technical Game Designer,3d modeling
+TECHNICAL_GAME_DESIGNER,SK1245,0.2,0.15,Technical Game Designer,game optimization
+TECHNICAL_GAME_DESIGNER,SK161,0.1,0.1,Technical Game Designer,agile

@@ -45,3 +45,13 @@ class ExplainRequest(BaseModel):
     education_level: Optional[str] = None
     career_goal: Optional[str] = None
     preferred_domain: Optional[str] = None
+    # Phase D additions
+    seniority: Optional[int] = None
+    ladder_position: Optional[int] = None
+    ladder_length: Optional[int] = None
+    confidence_score: Optional[float] = None
+    matched_core_skills: Optional[List[dict]] = None
+    matched_supporting_skills: Optional[List[dict]] = None
+    missing_critical_skills: Optional[List[dict]] = None
+    is_best_match: Optional[bool] = None
+    profile_source: Optional[str] = None

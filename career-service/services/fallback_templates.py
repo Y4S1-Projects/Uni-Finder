@@ -1,308 +1,425 @@
 """
 Fallback explanation templates for the career recommendation explainability service.
-These templates are structured to be direct and informative, similar to the original design.
+Phase D: All templates now use structured Phase D data — matched_core_skills,
+matched_supporting_skills, missing_critical_skills, seniority_fit, why_not_more_ready,
+domain_impact, ladder position, profile_source, and full score breakdown.
+No template produces generic text; every section references the user's actual data.
 """
 from .skill_service import get_skill_name
 
-def _get_readiness_text(readiness: float) -> str:
-    """Returns a descriptive string based on the readiness score."""
-    if readiness >= 70:
-        return "🌟 **Excellent!** You're well-prepared. Focus on applying to roles and highlighting your skills."
-    elif readiness >= 50:
-        return "👍 **Good Progress!** You have a solid foundation. A bit of focused learning will make you a strong candidate."
-    elif readiness >= 30:
-        return "📈 **Building Up!** You're on the right track. Prioritize skill-building to boost your confidence."
-    else:
-        return "🚀 **Growth Opportunity!** This is an exciting career direction. Start with foundational skills and build up."
 
-def _get_skill_advice(skill: str) -> str:
-    """Returns a brief, encouraging piece of advice for a given skill."""
-    skill_advice = {
-        'python': 'Essential for data work, automation, and backend development.',
-        'javascript': 'Critical for web development and modern applications.',
-        'sql': 'Fundamental for working with databases and data analysis.',
-        'react': 'A popular frontend framework used by top companies.',
-        'docker': 'A key DevOps skill for building and deploying applications.',
-        'git': 'Version control is a must-have for all development roles.',
-        'aws': 'Cloud skills are highly valued across the tech industry.',
-        'machine learning': 'A rapidly growing field with high demand for skilled professionals.',
-        'css': 'Essential for creating beautiful and responsive user interfaces.',
-        'html': 'The foundation of all web development and a great place to start.',
-        'node': 'A popular choice for building fast and scalable backend services.',
-        'api': 'Critical for connecting modern software applications.',
-    }
-    return skill_advice.get(skill.lower(), 'A highly valued skill in the industry.')
+# ---------------------------------------------------------------------------
+# Shared helpers
+# ---------------------------------------------------------------------------
+
+def _names_from_structured(skill_list: list) -> list:
+    """Extract human-readable names from [{id, name}] dicts."""
+    return [s.get("name", s.get("id", "")) for s in (skill_list or []) if s]
+
 
 def _generate_base_explanation(context: dict) -> dict:
-    """Generates the common components for all explanations."""
+    """Builds a rich base dict that every template can draw from."""
+    # Legacy flat skill lists (IDs -> names)
     matched_names = [get_skill_name(s) for s in context.get("matched_skills", [])]
     missing_names = [get_skill_name(s) for s in context.get("missing_skills", [])]
-    
-    # Profile context (NEW)
-    experience_level = context.get('experience_level') or 'not specified'
-    current_status = context.get('current_status') or 'not specified'
-    education_level = context.get('education_level') or 'not specified'
-    career_goal = context.get('career_goal') or 'not specified'
-    preferred_domain = context.get('preferred_domain') or ''
-    
-    # Score breakdown (NEW)
-    score_breakdown = context.get('score_breakdown', {})
-    explanations = context.get('explanations', {})
-    domain_impact = explanations.get('domain_impact', '')
-    
+
+    # Phase D structured skill lists (already contain names)
+    core_skills    = _names_from_structured(context.get("matched_core_skills", []))
+    support_skills = _names_from_structured(context.get("matched_supporting_skills", []))
+    missing_crit   = _names_from_structured(context.get("missing_critical_skills", []))
+
+    # Score breakdown
+    sb = context.get("score_breakdown", {})
+    explanations = context.get("explanations", {})
+
+    # Profile
+    experience_level = context.get("experience_level") or "not specified"
+    current_status   = context.get("current_status") or "not specified"
+    education_level  = context.get("education_level") or "not specified"
+    career_goal      = context.get("career_goal") or "not specified"
+    preferred_domain = context.get("preferred_domain") or ""
+
     return {
-        "role_title": context.get('role_title', 'this role'),
-        "domain": (context.get('domain') or 'Technology').replace('_', ' '),
-        "match_score": (context.get('match_score') or 0) * 100,
-        "readiness": (context.get('readiness_score') or 0) * 100,
-        "next_role": context.get('next_role_title'),
+        # Role basics
+        "role_title": context.get("role_title", "this role"),
+        "domain": (context.get("domain") or "Technology").replace("_", " "),
+        "match_score": (context.get("match_score") or 0) * 100,
+        "readiness": (context.get("readiness_score") or 0) * 100,
+        "next_role": context.get("next_role_title"),
+        # Legacy skill names (flat)
         "matched_names": matched_names,
         "missing_names": missing_names,
-        "priority_skills": missing_names[:3],
-        # Profile fields
+        # Phase D structured skills
+        "core_skills": core_skills,
+        "support_skills": support_skills,
+        "missing_critical": missing_crit,
+        "priority_skills": missing_crit[:3] if missing_crit else missing_names[:3],
+        # Scoring
+        "core_coverage": sb.get("core_skill_coverage_score", 0),
+        "domain_fit": sb.get("domain_preference_score", 0.5),
+        "experience_fit": sb.get("experience_fit_score", 0.7),
+        "seniority_fit_score": sb.get("seniority_fit_score", 0.7),
+        "confidence": sb.get("confidence_score", 1.0),
+        # Explanations from scoring engine
+        "why_ranked": explanations.get("why_ranked_here", ""),
+        "why_best": explanations.get("why_best_match", ""),
+        "why_not_ready": explanations.get("why_not_more_ready", ""),
+        "seniority_fit": explanations.get("seniority_fit", ""),
+        "domain_impact": explanations.get("domain_impact", ""),
+        "entry_level_note": explanations.get("entry_level_note", ""),
+        "data_confidence": explanations.get("data_confidence", ""),
+        # Ladder
+        "seniority": context.get("seniority"),
+        "ladder_position": context.get("ladder_position"),
+        "ladder_length": context.get("ladder_length"),
+        "is_best_match": context.get("is_best_match", False),
+        "profile_source": context.get("profile_source", "data_backed"),
+        # Profile
         "experience_level": experience_level,
         "current_status": current_status,
         "education_level": education_level,
         "career_goal": career_goal,
-        "preferred_domain": preferred_domain.replace('_', ' ') if preferred_domain else '',
-        "domain_impact": domain_impact,
-        "score_breakdown": score_breakdown
+        "preferred_domain": preferred_domain.replace("_", " ") if preferred_domain else "",
     }
 
 
-def _get_profile_section(base: dict) -> str:
-    """Generate profile context section for explanations."""
-    sections = []
-    
-    preferred_domain = base.get('preferred_domain', '')
-    domain_impact = base.get('domain_impact', '')
-    career_goal = base.get('career_goal', 'not specified')
-    experience_level = base.get('experience_level', 'not specified')
-    
-    if preferred_domain and preferred_domain != 'not specified':
-        if domain_impact:
-            sections.append(f"**🎯 Domain Preference:** {domain_impact}")
-        else:
-            sections.append(f"**🎯 Domain Preference:** Your preference for {preferred_domain} was considered in this ranking.")
-    
-    if career_goal and career_goal != 'not specified':
-        sections.append(f"**🎯 Career Goal:** This role aligns with your goal to {career_goal.lower().replace('_', ' ')}.")
-    
-    if experience_level and experience_level != 'not specified':
-        exp_text = experience_level.replace('_', ' ')
-        sections.append(f"**📊 Experience Match:** This role is suitable for someone at the {exp_text} level.")
-    
-    if sections:
-        return "\n**Your Profile Factors**\n" + "\n".join(sections) + "\n"
+def _render_core_skills(core_skills: list, role_title: str) -> str:
+    """Render matched core skills section."""
+    if not core_skills:
+        return "You don't currently match any of the core skills expected for this role.\n"
+    out = f"You match **{len(core_skills)}** core skill(s) that {role_title} requires:\n"
+    for s in core_skills[:6]:
+        out += f"- **{s.title()}** — directly required for this role\n"
+    if len(core_skills) > 6:
+        out += f"- ...and {len(core_skills) - 6} more core skills\n"
+    return out
+
+
+def _render_supporting_skills(support_skills: list) -> str:
+    """Render matched supporting skills section."""
+    if not support_skills:
+        return ""
+    out = f"You also have **{len(support_skills)}** supporting skill(s):\n"
+    for s in support_skills[:4]:
+        out += f"- **{s.title()}**\n"
+    if len(support_skills) > 4:
+        out += f"- ...plus {len(support_skills) - 4} more\n"
+    return out
+
+
+def _render_missing_critical(missing_crit: list, role_title: str) -> str:
+    """Render missing critical skills section."""
+    if not missing_crit:
+        return f"You have all the critical skills for {role_title}. Focus on deepening your expertise.\n"
+    out = f"These **{len(missing_crit)}** critical skill(s) are expected but missing:\n"
+    for s in missing_crit[:5]:
+        out += f"- **{s.title()}** — required by employers for this role\n"
+    if len(missing_crit) > 5:
+        out += f"- ...and {len(missing_crit) - 5} more critical gaps\n"
+    return out
+
+
+def _render_why_not_ready(why_not_ready: str, missing_crit: list) -> str:
+    """Render readiness limitations from scoring engine explanation."""
+    if why_not_ready:
+        return why_not_ready + "\n"
+    if missing_crit:
+        return f"Readiness is limited because you are missing {len(missing_crit)} critical skill(s): {', '.join(s.title() for s in missing_crit[:4])}.\n"
+    return "Your readiness is strong — no critical gaps detected.\n"
+
+
+def _render_ranking_reason(base: dict) -> str:
+    """Render why this role ranked where it did."""
+    parts = []
+    if base["why_ranked"]:
+        parts.append(base["why_ranked"])
+    if base["is_best_match"] and base["why_best"]:
+        parts.append(f"**Best match reason:** {base['why_best']}")
+    elif not base["is_best_match"] and base["why_best"]:
+        parts.append(base["why_best"])
+    if base["domain_impact"]:
+        parts.append(f"**Domain alignment:** {base['domain_impact']}")
+    if base["seniority_fit"]:
+        parts.append(f"**Seniority fit:** {base['seniority_fit']}")
+    return "\n".join(parts) if parts else "Ranking is based on overall skill match and domain alignment."
+
+
+def _render_ladder(base: dict) -> str:
+    """Render career ladder context."""
+    lp = base["ladder_position"]
+    ll = base["ladder_length"]
+    domain = base["domain"]
+    next_role = base["next_role"]
+    if lp and ll:
+        out = f"This role sits at position **{lp} of {ll}** in the {domain} career ladder."
+        if next_role:
+            out += f" Your next step would be **{next_role}**."
+        return out
+    if next_role:
+        return f"Your next career step from this role would be **{next_role}**."
     return ""
 
-# --- Template 1: The Direct Analyst ---
+
+def _render_profile_context(base: dict) -> str:
+    """Render a brief profile context block."""
+    parts = []
+    if base["preferred_domain"] and base["preferred_domain"] != "not specified":
+        parts.append(f"**Domain preference:** {base['preferred_domain']}")
+    if base["career_goal"] and base["career_goal"] != "not specified":
+        parts.append(f"**Career goal:** {base['career_goal'].replace('_', ' ')}")
+    if base["experience_level"] and base["experience_level"] != "not specified":
+        parts.append(f"**Experience level:** {base['experience_level'].replace('_', ' ')}")
+    if base["profile_source"] == "synthetic":
+        parts.append("Note: This role uses a synthetic profile — data confidence is lower.")
+    if base["entry_level_note"]:
+        parts.append(base["entry_level_note"])
+    return "\n".join(parts) if parts else ""
+
+
+def _render_actionable_steps(missing_crit: list, role_title: str) -> str:
+    """Generate specific improvement steps tied to missing critical skills."""
+    if not missing_crit:
+        return (
+            f"- Build a portfolio project showcasing your {role_title} skills.\n"
+            "- Contribute to open-source projects in this domain.\n"
+            "- Prepare for technical interviews targeting this role.\n"
+        )
+    steps = []
+    for i, skill in enumerate(missing_crit[:3]):
+        s = skill.lower()
+        if any(kw in s for kw in ("python", "java", "javascript", "typescript", "c++", "c#", "go", "rust")):
+            steps.append(f"{i+1}. **Learn {skill.title()}** — Complete an online course and build a small project using it.")
+        elif any(kw in s for kw in ("machine learning", "deep learning", "neural", "ai")):
+            steps.append(f"{i+1}. **Study {skill.title()}** — Take a structured ML course (e.g., Andrew Ng's), then implement a project end-to-end.")
+        elif any(kw in s for kw in ("docker", "kubernetes", "devops", "ci/cd", "cloud")):
+            steps.append(f"{i+1}. **Practice {skill.title()}** — Containerize an existing project or deploy to a cloud provider.")
+        elif any(kw in s for kw in ("sql", "database", "postgres", "mongo")):
+            steps.append(f"{i+1}. **Master {skill.title()}** — Design a database schema for a real-world scenario and practice queries.")
+        elif any(kw in s for kw in ("react", "angular", "vue", "frontend", "ui", "ux")):
+            steps.append(f"{i+1}. **Build with {skill.title()}** — Create a responsive web app to demonstrate proficiency.")
+        elif any(kw in s for kw in ("api", "rest", "graphql", "microservice")):
+            steps.append(f"{i+1}. **Implement {skill.title()}** — Build a RESTful API with auth, testing, and documentation.")
+        elif any(kw in s for kw in ("git", "version control")):
+            steps.append(f"{i+1}. **Use {skill.title()} daily** — Contribute to a collaborative repo; learn branching, rebasing, and PR workflows.")
+        elif any(kw in s for kw in ("testing", "unit test", "qa", "automation")):
+            steps.append(f"{i+1}. **Practice {skill.title()}** — Write unit and integration tests for an existing project.")
+        elif any(kw in s for kw in ("agile", "scrum", "project management")):
+            steps.append(f"{i+1}. **Apply {skill.title()}** — Use agile practices in your next project; try sprint planning and retrospectives.")
+        else:
+            steps.append(f"{i+1}. **Develop {skill.title()}** — Find a focused tutorial or course, then apply it in a hands-on project.")
+    return "\n".join(steps) + "\n"
+
+
+# ---------------------------------------------------------------------------
+# Template 1: The Direct Analyst
+# ---------------------------------------------------------------------------
 def get_analyst_explanation(context: dict) -> str:
     base = _generate_base_explanation(context)
-    role_title, domain, match_score, readiness, next_role = base["role_title"], base["domain"], base["match_score"], base["readiness"], base["next_role"]
-    matched_names, priority_skills = base["matched_names"], base["priority_skills"]
+    rt = base["role_title"]
 
-    explanation = f"""**Why {role_title} is a Great Match for You**
+    explanation = f"""**Analysis: Why {rt} Was Recommended**
 
-Based on our AI-powered analysis of your skill profile against real job market data, you have a **{match_score:.0f}% match** with this role in the **{domain}** domain.
 """
-    # Add profile context section (NEW)
-    profile_section = _get_profile_section(base)
-    if profile_section:
-        explanation += profile_section
-    
-    explanation += """
-**🎯 Your Strengths**
-"""
-    if matched_names:
-        explanation += f"You already possess {len(matched_names)} key skills that employers look for:\n"
-        for skill in matched_names[:5]:
-            explanation += f"• **{skill.title()}** - This is actively sought by employers.\n"
-        if len(matched_names) > 5:
-            explanation += f"• ...and {len(matched_names) - 5} more relevant skills!\n"
-    else:
-        explanation += "Your background shows strong adaptability, a great starting point for this career path.\n"
+    # Profile snapshot
+    profile = _render_profile_context(base)
+    if profile:
+        explanation += profile + "\n\n"
 
-    explanation += "\n**📚 Skills to Prioritize**\n"
-    if priority_skills:
-        explanation += "To increase your match score and readiness, focus on these high-impact skills:\n"
-        for i, skill in enumerate(priority_skills):
-            explanation += f"{i+1}. **{skill.title()}** - {_get_skill_advice(skill)}\n"
-    else:
-        explanation += "Excellent! You have all the core skills for this role.\n"
+    # Why this role matches
+    explanation += f"**Why This Role Matches**\n"
+    explanation += _render_core_skills(base["core_skills"], rt)
+    supp = _render_supporting_skills(base["support_skills"])
+    if supp:
+        explanation += "\n" + supp
 
-    explanation += f"\n**📊 Readiness Assessment: {readiness:.0f}%**\n"
-    explanation += _get_readiness_text(readiness)
+    # Ranking explanation
+    explanation += f"\n**What Determines the Ranking**\n"
+    explanation += _render_ranking_reason(base) + "\n"
 
-    if next_role:
-        explanation += f"\n\n**🔮 Career Path**\nAfter mastering {role_title}, your next logical step could be **{next_role}**. The skills you build now are an investment in that future."
+    # What lowers readiness
+    explanation += f"\n**What Lowers Your Readiness**\n"
+    explanation += _render_missing_critical(base["missing_critical"], rt)
+    explanation += _render_why_not_ready(base["why_not_ready"], base["missing_critical"])
 
-    explanation += "\n\n**💡 Recommended Actions**\n"
-    explanation += "• Build a portfolio project to showcase your abilities.\n"
-    explanation += "• Take relevant online courses (e.g., Coursera, Udemy).\n"
-    explanation += "• Network with professionals in this field on LinkedIn."
+    # Career ladder
+    ladder = _render_ladder(base)
+    if ladder:
+        explanation += f"\n**Career Ladder**\n{ladder}\n"
+
+    # Actionable steps
+    explanation += f"\n**How to Improve**\n"
+    explanation += _render_actionable_steps(base["missing_critical"], rt)
+
     return explanation
 
-# --- Template 2: The Encouraging Mentor ---
+
+# ---------------------------------------------------------------------------
+# Template 2: The Encouraging Coach
+# ---------------------------------------------------------------------------
 def get_coach_explanation(context: dict) -> str:
     base = _generate_base_explanation(context)
-    role_title, domain, match_score, readiness, next_role = base["role_title"], base["domain"], base["match_score"], base["readiness"], base["next_role"]
-    matched_names, priority_skills = base["matched_names"], base["priority_skills"]
+    rt = base["role_title"]
+    domain = base["domain"]
 
-    explanation = f"""**Your Potential as a {role_title}**
+    explanation = f"""**Your Path Toward {rt}**
 
-Our analysis indicates a **{match_score:.0f}% alignment** between your profile and the **{role_title}** role. This is a promising starting point for a career in the **{domain}** field.
-
-**🌟 Your Foundational Skills**
 """
-    if matched_names:
-        explanation += f"You're off to a great start with {len(matched_names)} relevant skills, including:\n"
-        for skill in matched_names[:5]:
-            explanation += f"• **{skill.title()}** - A great asset for this role.\n"
-        if len(matched_names) > 5:
-            explanation += f"• ...plus {len(matched_names) - 5} other foundational skills!\n"
-    else:
-        explanation += "Your unique experience provides a solid foundation for learning the technical skills required.\n"
+    profile = _render_profile_context(base)
+    if profile:
+        explanation += profile + "\n\n"
 
-    explanation += "\n**🚀 Your Growth Areas**\n"
-    if priority_skills:
-        explanation += "Embrace the challenge of learning these valuable skills to become a stronger candidate:\n"
-        for i, skill in enumerate(priority_skills):
-            explanation += f"{i+1}. **{skill.title()}** - {_get_skill_advice(skill)}\n"
-    else:
-        explanation += "Fantastic! Your current skillset is already well-aligned.\n"
+    # Strengths
+    explanation += f"**What You Bring to This Role**\n"
+    explanation += _render_core_skills(base["core_skills"], rt)
+    supp = _render_supporting_skills(base["support_skills"])
+    if supp:
+        explanation += "\n" + supp
 
-    explanation += f"\n**📈 Readiness Check: {readiness:.0f}%**\n"
-    explanation += _get_readiness_text(readiness)
+    # Ranking
+    explanation += f"\n**How This Role Ranks for You**\n"
+    explanation += _render_ranking_reason(base) + "\n"
 
-    if next_role:
-        explanation += f"\n\n**🛤️ Your Journey Ahead**\nSuccessfully growing in the {role_title} role can open the door to future opportunities like **{next_role}**."
+    # Gaps
+    explanation += f"\n**Where to Focus Next**\n"
+    explanation += _render_missing_critical(base["missing_critical"], rt)
+    explanation += _render_why_not_ready(base["why_not_ready"], base["missing_critical"])
 
-    explanation += "\n\n**🎯 Next Steps**\n"
-    explanation += "• Start a personal project to apply what you know.\n"
-    explanation += "• Explore free tutorials on platforms like freeCodeCamp.\n"
-    explanation += "• Follow industry leaders and companies on social media."
+    # Ladder
+    ladder = _render_ladder(base)
+    if ladder:
+        explanation += f"\n**Your Journey Ahead**\n{ladder}\n"
+
+    # Steps
+    explanation += f"\n**Concrete Next Steps**\n"
+    explanation += _render_actionable_steps(base["missing_critical"], rt)
+
     return explanation
 
-# --- Template 3: The Strategic Advisor ---
+
+# ---------------------------------------------------------------------------
+# Template 3: The Strategic Advisor
+# ---------------------------------------------------------------------------
 def get_strategist_explanation(context: dict) -> str:
     base = _generate_base_explanation(context)
-    role_title, domain, match_score, readiness, next_role = base["role_title"], base["domain"], base["match_score"], base["readiness"], base["next_role"]
-    matched_names, priority_skills = base["matched_names"], base["priority_skills"]
+    rt = base["role_title"]
+    domain = base["domain"]
 
-    explanation = f"""**Strategic Fit for the {role_title} Role**
+    explanation = f"""**Strategic Assessment: {rt} in {domain}**
 
-A strategic review of your profile shows a **{match_score:.0f}% match** for the **{role_title}** position within the **{domain}** industry. Let's outline a plan for success.
-
-**✅ Your Current Assets**
 """
-    if matched_names:
-        explanation += f"You have a competitive advantage with {len(matched_names)} existing skills:\n"
-        for skill in matched_names[:5]:
-            explanation += f"• **{skill.title()}** - Directly applicable to this role's duties.\n"
-        if len(matched_names) > 5:
-            explanation += f"• ...and {len(matched_names) - 5} more skills that give you an edge.\n"
-    else:
-        explanation += "Your professional background suggests you are a quick learner, which is a key asset.\n"
+    profile = _render_profile_context(base)
+    if profile:
+        explanation += profile + "\n\n"
 
-    explanation += "\n**🔧 Key Skills to Develop**\n"
-    if priority_skills:
-        explanation += "To strategically position yourself, focus on developing these key competencies:\n"
-        for i, skill in enumerate(priority_skills):
-            explanation += f"{i+1}. **{skill.title()}** - {_get_skill_advice(skill)}\n"
-    else:
-        explanation += "Your skill set is already comprehensive for this role.\n"
+    # Assets
+    explanation += f"**Your Current Assets**\n"
+    explanation += _render_core_skills(base["core_skills"], rt)
+    supp = _render_supporting_skills(base["support_skills"])
+    if supp:
+        explanation += "\n" + supp
 
-    explanation += f"\n**📊 Readiness Analysis: {readiness:.0f}%**\n"
-    explanation += _get_readiness_text(readiness)
+    # Strategy — ranking
+    explanation += f"\n**Ranking Strategy**\n"
+    explanation += _render_ranking_reason(base) + "\n"
 
-    if next_role:
-        explanation += f"\n\n**🔮 Future Outlook**\nThis role is a stepping stone. With dedication, you can progress to roles such as **{next_role}**."
+    # Gaps
+    explanation += f"\n**Critical Gaps to Close**\n"
+    explanation += _render_missing_critical(base["missing_critical"], rt)
+    explanation += _render_why_not_ready(base["why_not_ready"], base["missing_critical"])
 
-    explanation += "\n\n**💡 Action Plan**\n"
-    explanation += "• Contribute to an open-source project to gain practical experience.\n"
-    explanation += "• Earn certifications to validate your knowledge.\n"
-    explanation += "• Update your resume to highlight your most relevant skills."
+    # Ladder
+    ladder = _render_ladder(base)
+    if ladder:
+        explanation += f"\n**Career Progression**\n{ladder}\n"
+
+    # Action plan
+    explanation += f"\n**Action Plan**\n"
+    explanation += _render_actionable_steps(base["missing_critical"], rt)
+
     return explanation
 
-# --- Template 4: The Recruiter's Perspective ---
+
+# ---------------------------------------------------------------------------
+# Template 4: The Recruiter's Perspective
+# ---------------------------------------------------------------------------
 def get_recruiter_explanation(context: dict) -> str:
     base = _generate_base_explanation(context)
-    role_title, domain, match_score, readiness, next_role = base["role_title"], base["domain"], base["match_score"], base["readiness"], base["next_role"]
-    matched_names, priority_skills = base["matched_names"], base["priority_skills"]
+    rt = base["role_title"]
+    domain = base["domain"]
 
-    explanation = f"""**Why You're a Candidate to Watch for {role_title}**
+    explanation = f"""**Recruiter's View: Your Fit for {rt}**
 
-From a recruitment perspective, your profile has a **{match_score:.0f}%** alignment with what hiring managers are seeking for a **{role_title}** in the **{domain}** space.
-
-**돋 Your Marketable Skills**
 """
-    if matched_names:
-        explanation += f"You're already equipped with {len(matched_names)} skills that are in high demand:\n"
-        for skill in matched_names[:5]:
-            explanation += f"• **{skill.title()}** - A keyword that recruiters look for.\n"
-        if len(matched_names) > 5:
-            explanation += f"• ...and {len(matched_names) - 5} other valuable skills!\n"
-    else:
-        explanation += "Your resume shows a pattern of growth and learning, which is attractive to employers.\n"
+    profile = _render_profile_context(base)
+    if profile:
+        explanation += profile + "\n\n"
 
-    explanation += "\n**📈 How to Boost Your Profile**\n"
-    if priority_skills:
-        explanation += "To become a top-tier applicant, we recommend mastering these skills:\n"
-        for i, skill in enumerate(priority_skills):
-            explanation += f"{i+1}. **{skill.title()}** - {_get_skill_advice(skill)}\n"
-    else:
-        explanation += "Your skill set is what the market wants. Focus on showcasing it.\n"
+    # Marketable skills
+    explanation += f"**Your Marketable Skills**\n"
+    explanation += _render_core_skills(base["core_skills"], rt)
+    supp = _render_supporting_skills(base["support_skills"])
+    if supp:
+        explanation += "\n" + supp
 
-    explanation += f"\n**📊 Candidate Readiness: {readiness:.0f}%**\n"
-    explanation += _get_readiness_text(readiness)
+    # What hiring managers see
+    explanation += f"\n**What Hiring Managers See**\n"
+    explanation += _render_ranking_reason(base) + "\n"
 
-    if next_role:
-        explanation += f"\n\n**🔮 Career Advancement**\nThe {role_title} role is a gateway to more senior positions, such as **{next_role}**."
+    # What's missing
+    explanation += f"\n**How to Strengthen Your Application**\n"
+    explanation += _render_missing_critical(base["missing_critical"], rt)
+    explanation += _render_why_not_ready(base["why_not_ready"], base["missing_critical"])
 
-    explanation += "\n\n**💡 Professional Advice**\n"
-    explanation += "• Tailor your resume for each job application.\n"
-    explanation += "• Practice technical interview questions for this role.\n"
-    explanation += "• Prepare a portfolio that tells a story about your skills."
+    # Ladder
+    ladder = _render_ladder(base)
+    if ladder:
+        explanation += f"\n**Career Advancement**\n{ladder}\n"
+
+    # Professional advice
+    explanation += f"\n**Professional Development**\n"
+    explanation += _render_actionable_steps(base["missing_critical"], rt)
+
     return explanation
 
-# --- Template 5: The Simple & Clear Guide ---
+
+# ---------------------------------------------------------------------------
+# Template 5: The Clear Breakdown
+# ---------------------------------------------------------------------------
 def get_visual_explanation(context: dict) -> str:
     base = _generate_base_explanation(context)
-    role_title, domain, match_score, readiness, next_role = base["role_title"], base["domain"], base["match_score"], base["readiness"], base["next_role"]
-    matched_names, priority_skills = base["matched_names"], base["priority_skills"]
+    rt = base["role_title"]
+    domain = base["domain"]
 
-    explanation = f"""**Your Guide to Becoming a {role_title}**
+    explanation = f"""**Breakdown: {rt} ({domain})**
 
-Our system shows a **{match_score:.0f}%** match between you and this role in the **{domain}** field. Here’s a simple breakdown of what that means.
-
-**✅ What You've Got**
 """
-    if matched_names:
-        explanation += f"You have {len(matched_names)} skills that are a great fit:\n"
-        for skill in matched_names[:5]:
-            explanation += f"• **{skill.title()}** - A solid skill for this job.\n"
-        if len(matched_names) > 5:
-            explanation += f"• ...and {len(matched_names) - 5} more!\n"
-    else:
-        explanation += "You have a great foundation to build upon.\n"
+    profile = _render_profile_context(base)
+    if profile:
+        explanation += profile + "\n\n"
 
-    explanation += "\n**🚀 What to Learn Next**\n"
-    if priority_skills:
-        explanation += "Focus on these skills to get ready for your next step:\n"
-        for i, skill in enumerate(priority_skills):
-            explanation += f"{i+1}. **{skill.title()}** - {_get_skill_advice(skill)}\n"
-    else:
-        explanation += "You've got the key skills covered! Now it's time to apply them.\n"
+    # What you have
+    explanation += f"**Skills You Already Have**\n"
+    explanation += _render_core_skills(base["core_skills"], rt)
+    supp = _render_supporting_skills(base["support_skills"])
+    if supp:
+        explanation += "\n" + supp
 
-    explanation += f"\n**📊 How Ready Are You? ({readiness:.0f}%)**\n"
-    explanation += _get_readiness_text(readiness)
+    # Why this rank
+    explanation += f"\n**Why This Ranking**\n"
+    explanation += _render_ranking_reason(base) + "\n"
 
-    if next_role:
-        explanation += f"\n\n**🔮 The Next Chapter**\nAfter gaining experience as a {role_title}, you could advance to a **{next_role}** role."
+    # What's missing
+    explanation += f"\n**Skills to Acquire**\n"
+    explanation += _render_missing_critical(base["missing_critical"], rt)
+    explanation += _render_why_not_ready(base["why_not_ready"], base["missing_critical"])
 
-    explanation += "\n\n**💡 Simple Next Steps**\n"
-    explanation += "• Build something small to practice your skills.\n"
-    explanation += "• Watch tutorials and read articles about this field.\n"
-    explanation += "• Talk to people who are already in this role."
+    # Ladder
+    ladder = _render_ladder(base)
+    if ladder:
+        explanation += f"\n**What Comes Next**\n{ladder}\n"
+
+    # Steps
+    explanation += f"\n**Your Next Moves**\n"
+    explanation += _render_actionable_steps(base["missing_critical"], rt)
+
     return explanation

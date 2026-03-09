@@ -1,0 +1,9 @@
+{
+    "model_type": "Entry-level Role Classifier",
+    "accuracy": 0.4375,
+    "precision_weighted": 0.3416666666666667,
+    "recall_weighted": 0.4375,
+    "f1_weighted": 0.36681547619047616,
+    "test_samples": 16,
+    "total_classes": 15
+}
