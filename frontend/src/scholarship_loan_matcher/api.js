@@ -68,8 +68,19 @@ export async function triggerDatasetUpdate() {
 	});
 
 	if (!response.ok) {
-		const errorBody = await response.json().catch(() => ({}));
-		const message = errorBody?.error || errorBody?.message || "Failed to update datasets.";
+		let message = "Failed to update datasets.";
+		const contentType = response.headers.get("content-type") || "";
+		if (contentType.includes("application/json")) {
+			const errorBody = await response.json().catch(() => ({}));
+			message =
+				errorBody?.detail ||
+				errorBody?.error ||
+				errorBody?.message ||
+				message;
+		} else {
+			const errorText = await response.text().catch(() => "");
+			if (errorText) message = errorText;
+		}
 		throw new Error(message);
 	}
 
@@ -85,8 +96,19 @@ export async function getDatasetStats() {
 	});
 
 	if (!response.ok) {
-		const errorBody = await response.json().catch(() => ({}));
-		const message = errorBody?.error || errorBody?.message || "Failed to fetch dataset stats.";
+		let message = "Failed to fetch dataset stats.";
+		const contentType = response.headers.get("content-type") || "";
+		if (contentType.includes("application/json")) {
+			const errorBody = await response.json().catch(() => ({}));
+			message =
+				errorBody?.detail ||
+				errorBody?.error ||
+				errorBody?.message ||
+				message;
+		} else {
+			const errorText = await response.text().catch(() => "");
+			if (errorText) message = errorText;
+		}
 		throw new Error(message);
 	}
 
