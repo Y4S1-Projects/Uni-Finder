@@ -29,6 +29,7 @@ jobs:
               - 'deploy/hf/**'
               - 'Dockerfile'
               - '.gitattributes'
+              - '.gitignore'
             frontend:
               - 'frontend/**'
 
@@ -111,6 +112,9 @@ jobs:
           git lfs track "scholarship_and_loan_recommendation_service/scholarship_loan_matcher_ml/training/artifacts/*.joblib"
           git add .gitattributes
           git add --renormalize .
+          if [ -f "backend/package-lock.json" ]; then
+            git add -f backend/package-lock.json
+          fi
           git add .
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to deploy."

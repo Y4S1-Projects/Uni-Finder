@@ -30,7 +30,7 @@ RUN pip install --no-cache-dir -r /app/degree-recommendation-service/requirement
     && pip install --no-cache-dir -r /app/budget_optimizer_service/requirements.txt
 
 COPY backend/package*.json /app/backend/
-RUN cd /app/backend && npm ci --omit=dev
+RUN cd /app/backend && if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
 
 COPY backend /app/backend
 COPY degree-recommendation-service /app/degree-recommendation-service
