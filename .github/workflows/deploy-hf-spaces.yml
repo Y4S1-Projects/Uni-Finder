@@ -77,13 +77,24 @@ jobs:
           rsync -a --delete \
             --exclude '.git' \
             --exclude '.github' \
+            --exclude '**/.env' \
             --exclude '**/node_modules' \
             --exclude '**/.venv' \
             --exclude '**/__pycache__' \
-            --exclude 'frontend/build' \
+            --exclude '**/.pytest_cache' \
+            --exclude '**/.mypy_cache' \
+            --exclude '**/*.ipynb' \
+            --exclude 'frontend/**' \
+            --exclude 'hf-monolith/**' \
+            --exclude 'career-service/career-ml/backups/**' \
+            --exclude 'career-service/career-ml/data/raw/**' \
+            --exclude 'career-service/career-ml/analysis/**' \
+            --exclude 'career-service/career-ml/scripts/**' \
+            --exclude 'career-service/career-ml/training/**' \
             "./" "${workdir}/"
 
           pushd "${workdir}" > /dev/null
+          git lfs install --local
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to deploy."
             popd > /dev/null
