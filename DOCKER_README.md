@@ -124,7 +124,7 @@ docker build \
   --build-arg REACT_APP_DEGREE_SERVICE_URL=http://localhost:5001 \
   --build-arg REACT_APP_BUDGET_SERVICE_URL=http://localhost:5002 \
   --build-arg REACT_APP_CAREER_SERVICE_URL=http://localhost:5004 \
-  --build-arg REACT_APP_SCHOLARSHIP_SERVICE_URL=http://localhost:5005 \
+  --build-arg REACT_APP_SCHOLARSHIP_MATCHER_URL=http://localhost:5005 \
   -t unifinder-frontend .
 docker run -p 3000:80 unifinder-frontend
 ```

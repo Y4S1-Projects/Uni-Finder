@@ -31,7 +31,27 @@ from budget_calculator import BudgetCalculator
 from ml_budget_predictor import MLBudgetPredictor
 
 app = Flask(__name__)
-CORS(app)
+
+
+def _build_cors_origins():
+    cors_env = os.getenv("CORS_ORIGINS", "").strip()
+    if cors_env == "*":
+        return "*"
+    if cors_env:
+        return [origin.strip() for origin in cors_env.split(",") if origin.strip()]
+    return [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
+
+
+cors_origins = _build_cors_origins()
+if cors_origins == "*":
+    CORS(app)
+else:
+    CORS(app, origins=cors_origins)
 
 # ── Paths ──────────────────────────────────────────────────────────
 DATA_DIR = 'data'   # CSV data & trained model files live in data/
@@ -891,13 +911,18 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
+    port = int(os.getenv("PORT", "5002"))
     print("\n" + "="*60)
     print("🎯 AI-Powered Student Budget Optimizer API")
     print("="*60)
-    print("📍 Server: http://127.0.0.1:5002")
-    print("📍 Health: http://127.0.0.1:5002/health")
-    print("📍 CORS: Enabled for all origins")
+    print(f"📍 Server: http://127.0.0.1:{port}")
+    print(f"📍 Health: http://127.0.0.1:{port}/health")
+    if cors_origins == "*":
+        cors_label = "all origins"
+    else:
+        cors_label = ", ".join(cors_origins)
+    print(f"📍 CORS: {cors_label}")
     print("="*60 + "\n")
-    
-    app.run(debug=True, port=5002, host='0.0.0.0')
+
+    app.run(debug=True, port=port, host='0.0.0.0')
 

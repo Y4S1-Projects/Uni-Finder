@@ -161,7 +161,6 @@ export default function StudentProfileForm({
   matchType = 'scholarship'
 }) {
   const isScholarship = matchType === 'scholarship';
-  const isLoan = matchType === 'loan';
 
   const [scholarshipValues, setScholarshipValues] = useState(scholarshipInitialState);
   const [loanValues, setLoanValues] = useState(loanInitialState);

@@ -4,7 +4,6 @@ import './styles.css';
 
 export default function DatasetUpdateControl() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingStats, setIsLoadingStats] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(null);
   const [currentStats, setCurrentStats] = useState({ scholarships: null, loans: null });
   const [updateStatus, setUpdateStatus] = useState(null); // 'success' | 'error' | null
@@ -18,7 +17,6 @@ export default function DatasetUpdateControl() {
   }, []);
 
   const loadCurrentStats = async () => {
-    setIsLoadingStats(true);
     try {
       const stats = await getDatasetStats();
       if (stats.success !== false) {
@@ -34,7 +32,7 @@ export default function DatasetUpdateControl() {
       console.error('Failed to load dataset stats:', err);
       // Don't show error for stats loading, just keep defaults
     } finally {
-      setIsLoadingStats(false);
+      // No-op
     }
   };
 

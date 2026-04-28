@@ -2,6 +2,8 @@
 
 This guide covers deploying the Uni-Finder application to Azure Container Apps using Docker containers and GitHub Actions.
 
+For Vercel (frontend) + Hugging Face Spaces (backend services), see: [docs/VERCEL_HF_DEPLOYMENT.md](VERCEL_HF_DEPLOYMENT.md)
+
 ## 🏗️ Architecture
 
 The application consists of 6 microservices:
@@ -190,6 +192,7 @@ Open the frontend URL in your browser!
 - `MONGO`: MongoDB connection string
 - `JWT_SECRET`: Secret for JWT signing
 - `CORS_ORIGINS`: Allowed CORS origins (comma-separated)
+- `SCHOLARSHIP_SERVICE_URL`: Base URL of the scholarship matcher service
 
 #### Degree Service
 - `PORT`: Server port (default: 5001)

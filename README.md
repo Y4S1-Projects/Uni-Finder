@@ -93,6 +93,10 @@ python app.py
 - Career Service: [career-service/README.md](career-service/README.md)
 - Degree Service: [degree-recommendation-service/README.md](degree-recommendation-service/README.md)
 
+## Cloud deployment
+
+- Vercel + Hugging Face Spaces: [docs/VERCEL_HF_DEPLOYMENT.md](docs/VERCEL_HF_DEPLOYMENT.md)
+
 ## Environment variables
 
 The frontend expects service base URLs via CRA env vars. See [frontend/.env.example](frontend/.env.example).
