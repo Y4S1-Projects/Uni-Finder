@@ -1,0 +1,131 @@
+name: Deploy Backend to Hugging Face Space
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      monolith: ${{ steps.filter.outputs.monolith }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect changed services
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            monolith:
+              - 'backend/**'
+              - 'degree-recommendation-service/**'
+              - 'budget_optimizer_service/**'
+              - 'career-service/**'
+              - 'scholarship_and_loan_recommendation_service/**'
+              - 'deploy/hf/**'
+              - 'Dockerfile'
+              - '.gitattributes'
+              - '.gitignore'
+            frontend:
+              - 'frontend/**'
+
+  deploy:
+    needs: changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.monolith == 'true'
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_SPACE_MONO: ${{ secrets.HF_SPACE_MONO }}
+      CHANGED_FRONTEND: ${{ needs.changes.outputs.frontend }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsync git-lfs
+          git lfs install
+
+      - name: Configure git identity
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Deploy backend services to Hugging Face
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${HF_TOKEN:-}" ]; then
+            echo "HF_TOKEN is missing. Add it to GitHub Secrets." >&2
+            exit 1
+          fi
+
+          if [ -z "${HF_SPACE_MONO:-}" ]; then
+            echo "HF_SPACE_MONO is missing. Add it to GitHub Secrets." >&2
+            exit 1
+          fi
+
+          workdir="hf-monolith"
+          rm -rf "${workdir}"
+          git clone "https://huggingface.co/spaces/${HF_SPACE_MONO}" "${workdir}"
+
+          rsync -a --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '**/.env' \
+            --exclude '**/node_modules' \
+            --exclude '**/.venv' \
+            --exclude '**/__pycache__' \
+            --exclude '**/.pytest_cache' \
+            --exclude '**/.mypy_cache' \
+            --exclude '**/*.ipynb' \
+            --exclude 'frontend/**' \
+            --exclude 'hf-monolith/**' \
+            --exclude 'career-service/career-ml/backups/**' \
+            --exclude 'career-service/career-ml/data/raw/**' \
+            --exclude 'career-service/career-ml/analysis/**' \
+            --exclude 'career-service/career-ml/scripts/**' \
+            --exclude 'career-service/career-ml/training/**' \
+            "./" "${workdir}/"
+
+          # HF Spaces requires YAML front matter in root README.md.
+          cp "deploy/hf/README.spaces.md" "${workdir}/README.md"
+
+          pushd "${workdir}" > /dev/null
+          git lfs install --local
+          # Ensure HF-rejected binaries are always added as LFS pointers.
+          git lfs track "ProposalReport.pdf"
+          git lfs track "budget_optimizer_service/data/*.pkl"
+          git lfs track "career-service/career-ml/models/*.pkl"
+          git lfs track "career-service/career-ml/models/*.png"
+          git lfs track "career-service/evaluation_results/*.png"
+          git lfs track "career-service/career-ml/data/processed/*.csv"
+          git lfs track "career-service/career-ml/data/expanded/*.csv"
+          git lfs track "degree-recommendation-service/data/*.npy"
+          git lfs track "scholarship_and_loan_recommendation_service/scholarship_loan_matcher_ml/training/artifacts/*.joblib"
+          git add .gitattributes
+          git add --renormalize .
+          if [ -f "backend/package-lock.json" ]; then
+            git add -f backend/package-lock.json
+          fi
+          git add .
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to deploy."
+            popd > /dev/null
+            exit 0
+          fi
+
+          git commit -m "Deploy backend monolith from ${GITHUB_SHA}"
+          git push "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_MONO}"
+          popd > /dev/null
+
+          if [ "${GITHUB_EVENT_NAME}" != "workflow_dispatch" ] && [ "${CHANGED_FRONTEND}" == "true" ]; then
+            echo "Frontend changed. Vercel will deploy via Git integration."
+          fi

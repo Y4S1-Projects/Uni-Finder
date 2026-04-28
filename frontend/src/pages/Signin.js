@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess, signout } from "../redux/User/userSlice";
@@ -47,7 +47,7 @@ export default function SignIn() {
 
 			dispatch(signInSuccess(data));
 			// Redirect: admins to admin page, others to home
-			const adminUsernames = ['scholarshipadmin', 'scholarshipadmin2'];
+			const adminUsernames = ["scholarshipadmin", "scholarshipadmin2"];
 			if (data.username && adminUsernames.includes(data.username)) {
 				navigate("/scholarship-matcher/admin-datasets");
 			} else {
@@ -60,8 +60,8 @@ export default function SignIn() {
 
 	return (
 		<div className='container mt-5 d-flex justify-content-center align-items-center min-vh-100'>
-			<div className='card p-4 shadow-lg' style={{ maxWidth: "500px", width: "100%" }}>
-				<h2 className='text-center mb-4'>Sign In</h2>
+			<div className='p-4 shadow-lg card' style={{ maxWidth: "500px", width: "100%" }}>
+				<h2 className='mb-4 text-center'>Sign In</h2>
 				<form onSubmit={handleSubmit}>
 					<div className='mb-3'>
 						<label htmlFor='email' className='form-label'>
@@ -96,7 +96,7 @@ export default function SignIn() {
 					</button>
 				</form>
 
-				<div className='text-center mt-3'>
+				<div className='mt-3 text-center'>
 					<p>
 						Don't have an account?{" "}
 						<Link to='/signUp' className='text-decoration-none text-primary'>
@@ -104,13 +104,13 @@ export default function SignIn() {
 						</Link>
 					</p>
 					{error && (
-						<div className='alert alert-danger mt-3' role='alert'>
+						<div className='mt-3 alert alert-danger' role='alert'>
 							{error || "Something went wrong!"}
 						</div>
 					)}
 				</div>
 				{currentUser && (
-					<button className='btn btn-success mt-4' onClick={() => navigate("/addReview")}>
+					<button className='mt-4 btn btn-success' onClick={() => navigate("/addReview")}>
 						Add Review
 					</button>
 				)}

@@ -1,7 +1,7 @@
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const MATCHER_SERVICE_URL = process.env.REACT_APP_SCHOLARSHIP_MATCHER_URL
-	? process.env.REACT_APP_SCHOLARSHIP_MATCHER_URL.replace(/\/+$/, "")
-	: null;
+const MATCHER_SERVICE_URL_RAW =
+	process.env.REACT_APP_SCHOLARSHIP_MATCHER_URL || process.env.REACT_APP_SCHOLARSHIP_SERVICE_URL || null;
+const MATCHER_SERVICE_URL = MATCHER_SERVICE_URL_RAW ? MATCHER_SERVICE_URL_RAW.replace(/\/+$/, "") : null;
 
 if (!BACKEND_URL) {
 	throw new Error("Missing REACT_APP_BACKEND_URL in frontend .env");

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight, FaHeart, FaFire, FaBook, FaSpinner } from "react-icons/fa";
+import { FaArrowRight, FaBook, FaSpinner } from "react-icons/fa";
 import StickySearchHeader from "../../components/degree/StickySearchHeader";
 import CareerPathwayTree from "../../components/degree/CareerPathwayTree";
 import { fetchAllDegreeCourses, fetchOLCareerTree } from "../../api/degreeRecommendationApi";

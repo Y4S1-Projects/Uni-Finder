@@ -1,8 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight, FaUniversity, FaPercent, FaHeart, FaBook, FaSpinner } from "react-icons/fa";
+import { FaArrowRight, FaBook, FaSpinner } from "react-icons/fa";
 import ProgressStepper from "../../components/degree/ProgressStepper";
-import StickySearchHeader from "../../components/degree/StickySearchHeader";
 import LoadingState from "../../components/degree/LoadingState";
 import CourseCard from "../../components/degree/CourseCard";
 import { fetchDegreeRecommendations } from "../../api/degreeRecommendationApi";
@@ -195,7 +194,6 @@ export default function ALWizardFlow() {
 	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState(null);
 	const [error, setError] = useState("");
-	const [detectedScenario, setDetectedScenario] = useState(null);
 
 	// Stepper display state:
 	// - While submitting from step 3, show Results step as active.
@@ -375,7 +373,6 @@ export default function ALWizardFlow() {
 		try {
 			// Detect which scenario applies based on inputs
 			const scenario = detectScenario(formData);
-			setDetectedScenario(scenario);
 
 			const maxResults = scenario?.id === "s1" ? 10 : 5;
 			const stream = ALABAMA_STREAMS.find((s) => s.name === formData.stream);
