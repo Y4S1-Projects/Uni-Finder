@@ -111,6 +111,10 @@ jobs:
           git lfs track "degree-recommendation-service/data/*.npy"
           git lfs track "scholarship_and_loan_recommendation_service/scholarship_loan_matcher_ml/training/artifacts/*.joblib"
           git add .gitattributes
+          
+          # Remove old root-level file references that were moved to docs/
+          git rm --cached --force AI_BUDGET_OPTIMIZER_SUMMARY.md 2>/dev/null || true
+          
           git add --renormalize .
           if [ -f "backend/package-lock.json" ]; then
             git add -f backend/package-lock.json
