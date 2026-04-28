@@ -73,7 +73,7 @@ If you want GitHub Actions to deploy to your Spaces on push, add these secrets:
 - HF_SPACE_CAREER
 - HF_SPACE_SCHOLARSHIP
 
-Each HF_SPACE_* value must be the full Space ID, e.g. `YasiruKaveeshwara/UniFinder-Backend`.
+Each HF*SPACE*\* value must be the full Space ID, e.g. `YasiruKaveeshwara/UniFinder-Backend`.
 
 ### Common Space variables (all services)
 
@@ -163,4 +163,3 @@ Multi-Space:
 - Budget health: https://<budget-space>.hf.space/health
 - Career health: https://<career-space>.hf.space/health
 - Scholarship health: https://<scholarship-space>.hf.space/health
-
