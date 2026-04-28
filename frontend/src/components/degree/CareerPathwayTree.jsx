@@ -71,12 +71,6 @@ const LightbulbIcon = () => (
 	</svg>
 );
 
-const ArrowDownIcon = () => (
-	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2.5' viewBox='0 0 24 24'>
-		<path strokeLinecap='round' strokeLinejoin='round' d='M19.5 13.5 12 21m0 0-7.5-7.5M12 21V3' />
-	</svg>
-);
-
 const CompassIcon = () => (
 	<svg className='w-6 h-6' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
 		<path
@@ -92,7 +86,7 @@ export default function CareerPathwayTree({ treeData }) {
 		return null;
 	}
 
-	const { student_goal, pathways, ai_counselor_advice, total_streams, total_degrees } = treeData;
+	const { pathways, ai_counselor_advice, total_streams, total_degrees } = treeData;
 
 	const getReadinessStyle = (status) => {
 		// Only status-driven accent colors returned — common styles applied directly in JSX
