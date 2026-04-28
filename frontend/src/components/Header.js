@@ -3,6 +3,34 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signout } from "../redux/User/userSlice";
 
+/* ── SVG Icon Components ── */
+const LogoMark = ({ className = "w-8 h-8" }) => (
+	<svg className={className} viewBox='0 0 32 32' fill='none'>
+		<rect width='32' height='32' rx='8' fill='url(#logo-grad)' />
+		<path d='M16 7L8 12v8l8 5 8-5v-8l-8-5z' stroke='#fff' strokeWidth='1.6' strokeLinejoin='round' fill='none' />
+		<path d='M16 7v10m0 0l8-5m-8 5l-8-5m8 5v8' stroke='#fff' strokeWidth='1.2' strokeLinejoin='round' opacity='0.6' />
+		<circle cx='16' cy='17' r='2.5' fill='#fff' />
+		<defs>
+			<linearGradient id='logo-grad' x1='0' y1='0' x2='32' y2='32'>
+				<stop stopColor='#6366F1' />
+				<stop offset='1' stopColor='#7C3AED' />
+			</linearGradient>
+		</defs>
+	</svg>
+);
+
+const MenuIcon = () => (
+	<svg className='w-5 h-5' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path strokeLinecap='round' d='M4 7h16M4 12h16M4 17h16' />
+	</svg>
+);
+
+const CloseIcon = () => (
+	<svg className='w-5 h-5' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path strokeLinecap='round' d='M6 18L18 6M6 6l12 12' />
+	</svg>
+);
+
 const Header = () => {
 	const [scrolled, setScrolled] = useState(false);
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,20 +38,21 @@ const Header = () => {
 	const isHomePage = location.pathname === "/";
 
 	useEffect(() => {
-		const handleScroll = () => {
-			const isScrolled = window.scrollY > 50;
-			setScrolled(isScrolled);
-		};
-
-		window.addEventListener("scroll", handleScroll);
+		const handleScroll = () => setScrolled(window.scrollY > 32);
+		window.addEventListener("scroll", handleScroll, { passive: true });
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	// Close mobile menu on route change
+	useEffect(() => {
+		setMobileMenuOpen(false);
+	}, [location.pathname]);
 
 	const currentUser = useSelector((state) => state.user?.currentUser);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const isScholarshipAdmin = currentUser && ['scholarshipadmin', 'scholarshipadmin2'].includes(currentUser.username);
-	const isOnAdminPage = location.pathname === '/scholarship-matcher/admin-datasets';
+	const isScholarshipAdmin = currentUser && ["scholarshipadmin", "scholarshipadmin2"].includes(currentUser.username);
+	const isOnAdminPage = location.pathname === "/scholarship-matcher/admin-datasets";
 	const showAdminAuth = isScholarshipAdmin && isOnAdminPage;
 	const API_BASE = process.env.REACT_APP_BACKEND_URL;
 
@@ -33,186 +62,166 @@ const Header = () => {
 		} catch (e) {}
 		dispatch(signout());
 		navigate("/signInNew");
-		setMobileMenuOpen(false);
 	};
 
 	const navLinks = [
-		{ label: "Home", href: "/", icon: "🏠" },
-		{ label: "Degrees", href: "/degree-recommendations", icon: "🎓" },
-		{ label: "Career", href: "/career", icon: "📈" },
-		{ label: "Budget", href: "/budget-optimizer-new", icon: "💰" },
-		{ label: "Scholarships", href: "/scholarship-matcher", icon: "🏆" },
+		{ label: "Home", href: "/" },
+		{ label: "Degrees", href: "/degree-recommendations" },
+		{ label: "Career", href: "/career" },
+		{ label: "Budget", href: "/budget-optimizer-new" },
+		{ label: "Scholarships", href: "/scholarship-matcher" },
 	];
 
 	const isActive = (path) => location.pathname === path;
 
+	// Determine header visual style
+	const isTransparent = isHomePage && !scrolled;
+
 	return (
 		<header
-			className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-				scrolled ? "bg-white shadow-lg border-b border-purple-100"
-				: isHomePage ? "bg-white/20"
-				: "bg-white shadow-md border-b border-purple-100"
+			id='site-header'
+			className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+				isTransparent ?
+					"rgba(67,56,202,0.92) backdrop-blur-md shadow-sm"
+				:	"bg-white/90 backdrop-blur-xl shadow-[0_1px_3px_rgba(0,0,0,0.06)] border-b border-slate-200/60"
 			}`}>
 			<div className='px-4 mx-auto max-w-7xl sm:px-6 lg:px-8'>
 				<div className='flex items-center justify-between h-16'>
-					{/* Logo Section */}
-					<div className='flex items-center flex-shrink-0'>
-						<Link to='/' className='flex items-center gap-2 group'>
-							<div
-								className={`flex items-center justify-center w-10 h-10 rounded-lg transition-all duration-300 ${
-									scrolled || !isHomePage ?
-										"bg-gradient-to-br from-purple-600 to-blue-600"
-									:	"bg-white/20 backdrop-blur-md border border-white/30 group-hover:bg-white/30"
-								}`}>
-								<span className='text-xl'>🎓</span>
-							</div>
-							<span
-								className={`text-xl font-bold transition-colors duration-300 ${
-									scrolled || !isHomePage ? "text-slate-900" : "text-white"
-								}`}>
-								Uni-Finder
-							</span>
-						</Link>
-					</div>
+					{/* Logo */}
+					<Link to='/' className='flex items-center gap-2.5 group no-underline' id='header-logo'>
+						<LogoMark className='transition-transform duration-300 w-9 h-9 group-hover:scale-105' />
+						<span
+							className={`text-lg font-bold tracking-tight transition-colors duration-300 ${
+								isTransparent ? "text-white" : "text-slate-900"
+							}`}>
+							Uni-Finder
+						</span>
+					</Link>
 
-					{/* Desktop Navigation */}
-					<nav className='items-center hidden gap-1 md:flex'>
+					{/* Desktop Nav */}
+					<nav className='items-center hidden gap-1 md:flex' id='desktop-nav'>
 						{navLinks.map((link) => (
 							<Link
 								key={link.href}
 								to={link.href}
-								className={`px-3 py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center gap-1 ${
+								className={`relative px-2 py-2 mx-1.5 text-md font-bold no-underline transition-colors duration-300 group ${
 									isActive(link.href) ?
-										scrolled || !isHomePage ?
-											"text-purple-600 bg-purple-100"
-										:	"text-white bg-white/20"
-									: scrolled || !isHomePage ? "text-slate-700 hover:text-purple-600 hover:bg-purple-50"
-									: "text-white/90 hover:text-white hover:bg-white/10"
+										isTransparent ? "text-white"
+										:	"text-indigo-600"
+									: isTransparent ? "text-white/80 hover:text-white"
+									: "text-slate-600 hover:text-indigo-600"
 								}`}>
-								<span>{link.icon}</span>
-								<span>{link.label}</span>
+								{link.label}
+								{/* Animated Underline */}
+								<span
+									className={`absolute bottom-1 left-0 w-full h-0.5 rounded-full transition-transform duration-300 origin-left ${
+										isActive(link.href) ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+									} ${isTransparent ? "bg-white" : "bg-indigo-600"}`}
+								/>
 							</Link>
 						))}
 					</nav>
 
-					{/* Auth Buttons - Desktop */}
-					<div className='items-center hidden gap-3 md:flex'>
-						{showAdminAuth ? (
+					{/* Desktop Auth */}
+					<div className='items-center hidden gap-3 md:flex' id='desktop-auth'>
+						{showAdminAuth ?
 							<>
-								<span
-									className={`text-sm font-medium ${
-										scrolled || !isHomePage ? "text-slate-700" : "text-white/90"
-									}`}>
+								<span className={`text-sm font-medium ${isTransparent ? "text-white/80" : "text-slate-500"}`}>
 									Admin
 								</span>
 								<button
 									type='button'
 									onClick={handleLogout}
-									className='px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200'>
+									className='px-4 py-2 text-sm font-semibold text-indigo-600 transition-all duration-300 border border-indigo-200 rounded-lg bg-indigo-50 hover:bg-indigo-100'>
 									Logout
 								</button>
 							</>
-						) : (
-							<>
+						:	<>
 								<Link
 									to='/signInNew'
-									className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 border-2 ${
-										scrolled || !isHomePage ?
-											"text-purple-600 border-purple-600 hover:bg-purple-50"
-										:	"text-white border-white/40 hover:border-white hover:bg-white/10"
+									id='header-signin'
+									className={`px-4 py-2 text-sm font-semibold no-underline transition-all duration-300 rounded-lg ${
+										isTransparent ?
+											"text-white border border-white/30 hover:bg-white/10"
+										:	"text-slate-700 hover:text-indigo-600 hover:bg-slate-50"
 									}`}>
 									Sign In
 								</Link>
 								<Link
 									to='/signUp'
-									className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-300 ${
-										scrolled || !isHomePage ?
-											"bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg hover:-translate-y-0.5"
-										:	"bg-white text-purple-600 hover:shadow-lg hover:-translate-y-0.5"
+									id='header-signup'
+									className={`px-5 py-2 text-sm font-semibold no-underline transition-all duration-300 rounded-lg ${
+										isTransparent ?
+											"bg-white text-indigo-600 hover:bg-white/90 shadow-lg shadow-white/10"
+										:	"bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-600/20"
 									}`}>
 									Get Started
 								</Link>
 							</>
-						)}
+						}
 					</div>
 
-					{/* Mobile Menu Button */}
-					<div className='flex items-center gap-3 md:hidden'>
-						{showAdminAuth ? (
+					{/* Mobile Controls */}
+					<div className='flex items-center gap-2 md:hidden'>
+						{showAdminAuth ?
 							<button
 								type='button'
 								onClick={handleLogout}
-								className='px-3 py-1.5 rounded-lg font-semibold text-xs transition-all duration-300 bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200'>
+								className='px-3 py-1.5 text-xs font-semibold rounded-lg text-indigo-600 bg-indigo-50 border border-indigo-200'>
 								Logout
 							</button>
-						) : (
-							<Link
+						:	<Link
 								to='/signInNew'
-								className={`px-3 py-1.5 rounded-lg font-semibold text-xs transition-all duration-300 ${
-									scrolled || !isHomePage ?
-										"text-purple-600 border border-purple-600"
-									:	"text-white border border-white/40"
+								className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+									isTransparent ? "text-white border border-white/30" : "text-indigo-600 border border-indigo-200"
 								}`}>
 								Sign In
 							</Link>
-						)}
+						}
 						<button
 							onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
 							className={`p-2 rounded-lg transition-all duration-300 ${
-								scrolled || !isHomePage ? "text-slate-900 hover:bg-slate-100" : "text-white hover:bg-white/10"
+								isTransparent ? "text-white hover:bg-white/10" : "text-slate-700 hover:bg-slate-100"
 							}`}
-							aria-label='Toggle menu'>
-							<svg className='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-								{mobileMenuOpen ?
-									<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-								:	<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />}
-							</svg>
+							aria-label='Toggle menu'
+							id='mobile-menu-toggle'>
+							{mobileMenuOpen ?
+								<CloseIcon />
+							:	<MenuIcon />}
 						</button>
 					</div>
 				</div>
 
 				{/* Mobile Menu */}
-				{mobileMenuOpen && (
-					<div
-						className={`md:hidden pb-4 space-y-2 border-t ${
-							scrolled || !isHomePage ? "border-slate-200 bg-white" : "border-white/20 bg-black/20 backdrop-blur-md"
-						}`}>
+				<div
+					className={`md:hidden overflow-hidden transition-all duration-400 ease-in-out ${
+						mobileMenuOpen ? "max-h-96 opacity-100 pb-5" : "max-h-0 opacity-0"
+					}`}
+					id='mobile-menu'>
+					<div className={`pt-3 mt-2 space-y-1 border-t ${isTransparent ? "border-white/15" : "border-slate-200"}`}>
 						{navLinks.map((link) => (
 							<Link
 								key={link.href}
 								to={link.href}
-								onClick={() => setMobileMenuOpen(false)}
-								className={`block px-4 py-2 rounded-lg font-medium text-sm transition-all duration-300 ${
+								className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
 									isActive(link.href) ?
-										scrolled || !isHomePage ?
-											"text-purple-600 bg-purple-100"
-										:	"text-white bg-white/20"
-									: scrolled || !isHomePage ? "text-slate-700 hover:text-purple-600 hover:bg-purple-50"
-									: "text-white/90 hover:text-white hover:bg-white/10"
+										isTransparent ? "text-white bg-white/15"
+										:	"text-indigo-600 bg-indigo-50"
+									: isTransparent ? "text-white/80 hover:text-white hover:bg-white/10"
+									: "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
 								}`}>
-								<span className='inline-flex items-center gap-2'>
-									<span>{link.icon}</span>
-									<span>{link.label}</span>
-								</span>
+								{link.label}
 							</Link>
 						))}
-						{showAdminAuth ? (
-							<button
-								type='button'
-								onClick={handleLogout}
-								className='block w-full px-4 py-2 mt-4 text-sm font-semibold text-center text-purple-700 transition-all duration-300 rounded-lg bg-purple-100 hover:bg-purple-200 border border-purple-200'>
-								Logout
-							</button>
-						) : (
+						{!showAdminAuth && (
 							<Link
 								to='/signUp'
-								onClick={() => setMobileMenuOpen(false)}
-								className='block w-full px-4 py-2 mt-4 text-sm font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-lg'>
+								className='block w-full px-4 py-2.5 mt-3 text-sm font-semibold text-center text-white rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-all'>
 								Get Started Free
 							</Link>
 						)}
 					</div>
-				)}
+				</div>
 			</div>
 		</header>
 	);

@@ -26,7 +26,7 @@ jobs:
               - 'budget_optimizer_service/**'
               - 'career-service/**'
               - 'scholarship_and_loan_recommendation_service/**'
-              - 'deploy/hf/**'
+              - 'docs/hf/**'
               - 'Dockerfile'
               - '.gitattributes'
               - '.gitignore'
@@ -96,7 +96,7 @@ jobs:
             "./" "${workdir}/"
 
           # HF Spaces requires YAML front matter in root README.md.
-          cp "deploy/hf/README.spaces.md" "${workdir}/README.md"
+          cp "docs/hf/README.spaces.md" "${workdir}/README.md"
 
           pushd "${workdir}" > /dev/null
           git lfs install --local
