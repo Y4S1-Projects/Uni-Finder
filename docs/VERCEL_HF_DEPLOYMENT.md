@@ -1,10 +1,56 @@
 # Vercel + Hugging Face Spaces Deployment
 
-This guide deploys the frontend to Vercel and each backend service to its own Hugging Face (HF) Docker Space.
+This guide deploys the frontend to Vercel and the backend services to Hugging Face (HF) Docker Spaces.
 
-Why multiple Spaces? HF Spaces expose only one HTTP port (7860). Hosting each service in a separate Space is the simplest, most reliable option.
+You now have two options:
 
-## 1) Deploy backend services to Hugging Face Spaces
+- Option A: Single Space (recommended for simpler secrets)
+- Option B: One Space per service (legacy)
+
+## 1) Option A: Single Space (recommended)
+
+Run all backend services in one Docker Space using an internal reverse proxy.
+HF exposes only one port (7860), so routes are path-based:
+
+- /api -> Node backend (5000)
+- /degree -> Degree service (5001)
+- /budget -> Budget service (5002)
+- /career -> Career service (5004)
+- /scholarship -> Scholarship service (5005)
+
+### GitHub Actions (single Space)
+
+Add these secrets:
+
+- HF_TOKEN
+- HF_SPACE_MONO
+
+HF_SPACE_MONO must be the full Space ID, e.g. `YasiruKaveeshwara/UniFinder`.
+
+### Space variables (single Space)
+
+- PORT=7860
+- CORS_ORIGINS=https://<your-vercel-domain>
+- MONGO=<your-mongodb-connection-string>
+- JWT_SECRET=<your-jwt-secret>
+- OPENAI_API_KEY=<your-openai-api-key>
+- GEMINI_API_KEY=<your-gemini-api-key>
+
+Note: SCHOLARSHIP_SERVICE_URL is not required in single Space mode because the backend uses http://localhost:5005 by default.
+
+### Vercel env (single Space)
+
+- REACT_APP_BACKEND_URL=https://<your-space>.hf.space
+- REACT_APP_DEGREE_SERVICE_URL=https://<your-space>.hf.space/degree
+- REACT_APP_BUDGET_SERVICE_URL=https://<your-space>.hf.space/budget
+- REACT_APP_CAREER_SERVICE_URL=https://<your-space>.hf.space/career
+- REACT_APP_SCHOLARSHIP_MATCHER_URL=https://<your-space>.hf.space/scholarship
+
+Optional (compat alias):
+
+- REACT_APP_SCHOLARSHIP_SERVICE_URL=https://<your-space>.hf.space/scholarship
+
+## 2) Option B: One Space per service (legacy)
 
 Create one Docker Space per service:
 
@@ -15,6 +61,19 @@ Create one Docker Space per service:
 - scholarship_and_loan_recommendation_service (FastAPI)
 
 Point each Space to the corresponding folder and push the code (HF UI or git).
+
+### GitHub Actions (optional)
+
+If you want GitHub Actions to deploy to your Spaces on push, add these secrets:
+
+- HF_TOKEN
+- HF_SPACE_BACKEND
+- HF_SPACE_DEGREE
+- HF_SPACE_BUDGET
+- HF_SPACE_CAREER
+- HF_SPACE_SCHOLARSHIP
+
+Each HF_SPACE_* value must be the full Space ID, e.g. `YasiruKaveeshwara/UniFinder-Backend`.
 
 ### Common Space variables (all services)
 
@@ -57,7 +116,7 @@ Notes:
 - Use the HTTPS URL of your Vercel deployment in CORS_ORIGINS.
 - If you also want local dev, append localhost origins separated by commas.
 
-## 2) Deploy the frontend to Vercel
+## 3) Deploy the frontend to Vercel
 
 Create a Vercel project from frontend/ and set these environment variables:
 
@@ -80,14 +139,24 @@ Optional (compat alias):
 
 If REACT_APP_SCHOLARSHIP_MATCHER_URL is not set, the frontend will call the Node backend proxy at /api/scholarships.
 
-## 3) Inter-service communication checklist
+## 4) Inter-service communication checklist
 
 - Backend -> Scholarship service: set SCHOLARSHIP_SERVICE_URL to the scholarship Space URL.
 - Frontend -> all services: set REACT*APP*\* URLs to the HTTPS Space URLs.
 - CORS_ORIGINS for every service must include the Vercel domain.
 - Avoid CORS_ORIGINS=\* on services that use cookies (the backend uses credentials).
 
-## 4) Quick verification
+## 5) Quick verification
+
+Single Space:
+
+- Backend health: https://<your-space>.hf.space/health
+- Degree health: https://<your-space>.hf.space/degree/health
+- Budget health: https://<your-space>.hf.space/budget/health
+- Career health: https://<your-space>.hf.space/career/health
+- Scholarship health: https://<your-space>.hf.space/scholarship/health
+
+Multi-Space:
 
 - Backend health: https://<backend-space>.hf.space/health
 - Degree health: https://<degree-space>.hf.space/health
@@ -95,6 +164,3 @@ If REACT_APP_SCHOLARSHIP_MATCHER_URL is not set, the frontend will call the Node
 - Career health: https://<career-space>.hf.space/health
 - Scholarship health: https://<scholarship-space>.hf.space/health
 
-## 5) If you want a single Space for all services
-
-A single Space would need an internal reverse proxy and all services running inside one container. If you want this setup, tell me and I will prepare the proxy config and a combined Dockerfile.

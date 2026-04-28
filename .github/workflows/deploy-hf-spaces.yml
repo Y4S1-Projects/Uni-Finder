@@ -1,0 +1,100 @@
+name: Deploy Backend to Hugging Face Space
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      monolith: ${{ steps.filter.outputs.monolith }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Detect changed services
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            monolith:
+              - 'backend/**'
+              - 'degree-recommendation-service/**'
+              - 'budget_optimizer_service/**'
+              - 'career-service/**'
+              - 'scholarship_and_loan_recommendation_service/**'
+              - 'deploy/hf/**'
+              - 'Dockerfile'
+            frontend:
+              - 'frontend/**'
+
+  deploy:
+    needs: changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || needs.changes.outputs.monolith == 'true'
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      HF_SPACE_MONO: ${{ secrets.HF_SPACE_MONO }}
+      CHANGED_FRONTEND: ${{ needs.changes.outputs.frontend }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsync git-lfs
+          git lfs install
+
+      - name: Configure git identity
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+      - name: Deploy backend services to Hugging Face
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${HF_TOKEN:-}" ]; then
+            echo "HF_TOKEN is missing. Add it to GitHub Secrets." >&2
+            exit 1
+          fi
+
+          if [ -z "${HF_SPACE_MONO:-}" ]; then
+            echo "HF_SPACE_MONO is missing. Add it to GitHub Secrets." >&2
+            exit 1
+          fi
+
+          workdir="hf-monolith"
+          rm -rf "${workdir}"
+          git clone "https://huggingface.co/spaces/${HF_SPACE_MONO}" "${workdir}"
+
+          rsync -a --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '**/node_modules' \
+            --exclude '**/.venv' \
+            --exclude '**/__pycache__' \
+            --exclude 'frontend/build' \
+            "./" "${workdir}/"
+
+          pushd "${workdir}" > /dev/null
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to deploy."
+            popd > /dev/null
+            exit 0
+          fi
+
+          git add .
+          git commit -m "Deploy backend monolith from ${GITHUB_SHA}"
+          git push "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_MONO}"
+          popd > /dev/null
+
+          if [ "${GITHUB_EVENT_NAME}" != "workflow_dispatch" ] && [ "${CHANGED_FRONTEND}" == "true" ]; then
+            echo "Frontend changed. Vercel will deploy via Git integration."
+          fi
