@@ -96,13 +96,25 @@ jobs:
 
           pushd "${workdir}" > /dev/null
           git lfs install --local
+          # Ensure HF-rejected binaries are always added as LFS pointers.
+          git lfs track "ProposalReport.pdf"
+          git lfs track "budget_optimizer_service/data/*.pkl"
+          git lfs track "career-service/career-ml/models/*.pkl"
+          git lfs track "career-service/career-ml/models/*.png"
+          git lfs track "career-service/evaluation_results/*.png"
+          git lfs track "career-service/career-ml/data/processed/*.csv"
+          git lfs track "career-service/career-ml/data/expanded/*.csv"
+          git lfs track "degree-recommendation-service/data/*.npy"
+          git lfs track "scholarship_and_loan_recommendation_service/scholarship_loan_matcher_ml/training/artifacts/*.joblib"
+          git add .gitattributes
+          git add --renormalize .
+          git add .
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to deploy."
             popd > /dev/null
             exit 0
           fi
 
-          git add .
           git commit -m "Deploy backend monolith from ${GITHUB_SHA}"
           git push "https://user:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE_MONO}"
           popd > /dev/null

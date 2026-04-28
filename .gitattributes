@@ -1,5 +1,10 @@
 # LFS tracking for large model and dataset files used in the HF monolith
 budget_optimizer_service/data/*.pkl filter=lfs diff=lfs merge=lfs -text
 career-service/career-ml/models/*.pkl filter=lfs diff=lfs merge=lfs -text
+career-service/career-ml/models/*.png filter=lfs diff=lfs merge=lfs -text
+career-service/evaluation_results/*.png filter=lfs diff=lfs merge=lfs -text
 career-service/career-ml/data/processed/*.csv filter=lfs diff=lfs merge=lfs -text
 career-service/career-ml/data/expanded/*.csv filter=lfs diff=lfs merge=lfs -text
+degree-recommendation-service/data/*.npy filter=lfs diff=lfs merge=lfs -text
+scholarship_and_loan_recommendation_service/scholarship_loan_matcher_ml/training/artifacts/*.joblib filter=lfs diff=lfs merge=lfs -text
+ProposalReport.pdf filter=lfs diff=lfs merge=lfs -text
