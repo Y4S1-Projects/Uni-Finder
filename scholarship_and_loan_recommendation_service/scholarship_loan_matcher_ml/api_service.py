@@ -104,7 +104,7 @@ def match_scholarships_and_loans(req: MatchRequest) -> Dict[str, Any]:
 def dataset_stats() -> Dict[str, Any]:
     """Return dataset statistics (scholarships/loans counts, last_updated) for the public and admin UI."""
     stats = get_dataset_stats()
-    return {"success": True, **stats}
+    return {"success": True, **_json_safe(stats)}
 
 
 @app.post("/matcher/update-datasets")
@@ -129,7 +129,12 @@ if __name__ == "__main__":
     import uvicorn
 
     port = int(os.getenv("PORT", "5005"))
+    # Important: keep reload disabled for long-running update jobs.
+    # The dataset pipeline writes files under this project; with reload enabled,
+    # those file changes can trigger a server restart mid-request and the browser
+    # sees a network/CORS-style failure even though the update actually finished.
+    reload_enabled = os.getenv("UVICORN_RELOAD", "false").lower() == "true"
     # Use the fully-qualified module path so this works when run as
     # `python -m scholarship_loan_matcher_ml.api_service`.
     uvicorn.run("scholarship_loan_matcher_ml.api_service:app",
-                host="0.0.0.0", port=port, reload=True)
+                host="0.0.0.0", port=port, reload=reload_enabled)
