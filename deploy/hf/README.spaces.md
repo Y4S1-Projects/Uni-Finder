@@ -6,7 +6,7 @@ colorTo: green
 sdk: docker
 app_port: 7860
 pinned: false
-short_description: Multi-service backend for Uni-Finder (Node + FastAPI + Flask) behind Nginx.
+short_description: Unified backend APIs for Uni-Finder on Docker Space.
 ---
 
 # Uni-Finder Backend Monolith
