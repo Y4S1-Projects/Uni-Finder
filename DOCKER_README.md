@@ -4,14 +4,14 @@ This directory contains Docker configurations for all Uni-Finder services.
 
 ## 📦 Services
 
-| Service | Port | Description |
-|---------|------|-------------|
-| Frontend | 80 (3000 local) | React UI served by Nginx |
-| Backend | 5000 | Node/Express API |
-| Degree Service | 5001 | FastAPI degree recommendations |
-| Budget Service | 5002 | Flask budget optimizer |
-| Career Service | 5004 | FastAPI career recommendations |
-| Scholarship Service | 5005 | FastAPI scholarship matching |
+| Service             | Port            | Description                    |
+| ------------------- | --------------- | ------------------------------ |
+| Frontend            | 80 (3000 local) | React UI served by Nginx       |
+| Backend             | 5000            | Node/Express API               |
+| Degree Service      | 5001            | FastAPI degree recommendations |
+| Budget Service      | 5002            | Flask budget optimizer         |
+| Career Service      | 5004            | FastAPI career recommendations |
+| Scholarship Service | 5005            | FastAPI scholarship matching   |
 
 ## 🚀 Quick Start
 
@@ -82,6 +82,7 @@ See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for complete Azure deployment guide
 ## 🔧 Individual Service Docker Commands
 
 ### Backend
+
 ```bash
 cd backend
 docker build -t unifinder-backend .
@@ -89,6 +90,7 @@ docker run -p 5000:5000 --env-file .env unifinder-backend
 ```
 
 ### Degree Service
+
 ```bash
 cd degree-recommendation-service
 docker build -t unifinder-degree .
@@ -96,6 +98,7 @@ docker run -p 5001:5001 unifinder-degree
 ```
 
 ### Budget Service
+
 ```bash
 cd budget_optimizer_service
 docker build -t unifinder-budget .
@@ -103,6 +106,7 @@ docker run -p 5002:5002 --env-file .env unifinder-budget
 ```
 
 ### Career Service
+
 ```bash
 cd career-service
 docker build -t unifinder-career .
@@ -110,6 +114,7 @@ docker run -p 5004:5004 --env-file .env unifinder-career
 ```
 
 ### Scholarship Service
+
 ```bash
 cd scholarship_and_loan_recommendation_service
 docker build -t unifinder-scholarship .
@@ -117,6 +122,7 @@ docker run -p 5005:5005 unifinder-scholarship
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 docker build \
@@ -142,18 +148,19 @@ All services include health check endpoints:
 
 ## 📊 Docker Image Sizes (Approximate)
 
-| Service | Base Image | Approx Size |
-|---------|-----------|-------------|
-| Backend | node:20-alpine | ~200MB |
-| Degree Service | python:3.11-slim | ~800MB |
-| Budget Service | python:3.11-slim | ~700MB |
-| Career Service | python:3.11-slim | ~900MB |
-| Scholarship Service | python:3.11-slim | ~600MB |
-| Frontend | nginx:1.27-alpine | ~50MB |
+| Service             | Base Image        | Approx Size |
+| ------------------- | ----------------- | ----------- |
+| Backend             | node:20-alpine    | ~200MB      |
+| Degree Service      | python:3.11-slim  | ~800MB      |
+| Budget Service      | python:3.11-slim  | ~700MB      |
+| Career Service      | python:3.11-slim  | ~900MB      |
+| Scholarship Service | python:3.11-slim  | ~600MB      |
+| Frontend            | nginx:1.27-alpine | ~50MB       |
 
 ## 🛠️ Troubleshooting
 
 **Issue**: Container fails to start
+
 ```bash
 # View logs
 docker-compose logs <service-name>
@@ -163,6 +170,7 @@ docker-compose logs backend
 ```
 
 **Issue**: Port already in use
+
 ```bash
 # Find what's using the port
 netstat -ano | findstr :5000  # Windows
@@ -173,6 +181,7 @@ docker-compose down
 ```
 
 **Issue**: Services can't communicate
+
 - Make sure all services are on the same Docker network
 - Use service names (not localhost) for inter-service communication
 

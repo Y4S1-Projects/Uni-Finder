@@ -1,10 +1,8 @@
 // Proxy controller for dataset update operations
 export const triggerUpdate = async (req, res, next) => {
 	try {
-		const scholarshipServiceUrl = (
-			process.env.SCHOLARSHIP_SERVICE_URL || "http://localhost:5005"
-		).replace(/\/+$/, "");
-		
+		const scholarshipServiceUrl = (process.env.SCHOLARSHIP_SERVICE_URL || "http://localhost:5005").replace(/\/+$/, "");
+
 		const response = await fetch(`${scholarshipServiceUrl}/matcher/update-datasets`, {
 			method: "POST",
 			headers: {
@@ -30,10 +28,8 @@ export const triggerUpdate = async (req, res, next) => {
 
 export const getStats = async (req, res, next) => {
 	try {
-		const scholarshipServiceUrl = (
-			process.env.SCHOLARSHIP_SERVICE_URL || "http://localhost:5005"
-		).replace(/\/+$/, "");
-		
+		const scholarshipServiceUrl = (process.env.SCHOLARSHIP_SERVICE_URL || "http://localhost:5005").replace(/\/+$/, "");
+
 		const response = await fetch(`${scholarshipServiceUrl}/matcher/update-datasets/stats`, {
 			method: "GET",
 			headers: {

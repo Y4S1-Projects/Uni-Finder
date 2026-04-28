@@ -53,6 +53,7 @@ Point each Space to the corresponding folder and push the code (HF UI or git).
 - CORS_ORIGINS=https://<your-vercel-domain>
 
 Notes:
+
 - Use the HTTPS URL of your Vercel deployment in CORS_ORIGINS.
 - If you also want local dev, append localhost origins separated by commas.
 
@@ -74,6 +75,7 @@ Suggested Vercel project settings:
 - REACT_APP_SCHOLARSHIP_MATCHER_URL=https://<your-scholarship-space>.hf.space
 
 Optional (compat alias):
+
 - REACT_APP_SCHOLARSHIP_SERVICE_URL=https://<your-scholarship-space>.hf.space
 
 If REACT_APP_SCHOLARSHIP_MATCHER_URL is not set, the frontend will call the Node backend proxy at /api/scholarships.
@@ -81,9 +83,9 @@ If REACT_APP_SCHOLARSHIP_MATCHER_URL is not set, the frontend will call the Node
 ## 3) Inter-service communication checklist
 
 - Backend -> Scholarship service: set SCHOLARSHIP_SERVICE_URL to the scholarship Space URL.
-- Frontend -> all services: set REACT_APP_* URLs to the HTTPS Space URLs.
+- Frontend -> all services: set REACT*APP*\* URLs to the HTTPS Space URLs.
 - CORS_ORIGINS for every service must include the Vercel domain.
-- Avoid CORS_ORIGINS=* on services that use cookies (the backend uses credentials).
+- Avoid CORS_ORIGINS=\* on services that use cookies (the backend uses credentials).
 
 ## 4) Quick verification
 

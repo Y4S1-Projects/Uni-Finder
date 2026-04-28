@@ -39,12 +39,14 @@ The application consists of 6 microservices:
 ## 📋 Prerequisites
 
 ### Local Development
+
 - Docker Desktop (Windows/Mac) or Docker Engine (Linux)
 - Docker Compose
 - Node.js 18+ (for local development without Docker)
 - Python 3.11+ (for local development without Docker)
 
 ### Azure Deployment
+
 - Azure account with active subscription
 - Azure CLI installed locally
 - GitHub repository with secrets configured
@@ -140,10 +142,11 @@ Edit `.github/workflows/deploy-azure.yml` and change the ACR_NAME:
 
 ```yaml
 env:
-  ACR_NAME: unifinderacr  # Change this to a globally unique name!
+  ACR_NAME: unifinderacr # Change this to a globally unique name!
 ```
 
 The ACR name must be:
+
 - Globally unique across all Azure
 - Lowercase letters and numbers only
 - 5-50 characters
@@ -161,6 +164,7 @@ git push origin yasiru
 ```
 
 The GitHub Actions workflow will automatically:
+
 1. ✅ Create Azure infrastructure (ACR, Log Analytics, Container Apps Environment)
 2. ✅ Build all 6 Docker images
 3. ✅ Push images to Azure Container Registry
@@ -188,6 +192,7 @@ Open the frontend URL in your browser!
 ### Environment Variables
 
 #### Backend Service
+
 - `PORT`: Server port (default: 5000)
 - `MONGO`: MongoDB connection string
 - `JWT_SECRET`: Secret for JWT signing
@@ -195,28 +200,34 @@ Open the frontend URL in your browser!
 - `SCHOLARSHIP_SERVICE_URL`: Base URL of the scholarship matcher service
 
 #### Degree Service
+
 - `PORT`: Server port (default: 5001)
 - `CORS_ORIGINS`: Allowed CORS origins
 - `DATA_DIR`: Path to data files (default: data)
 - `EMBEDDING_MODEL_NAME`: Sentence transformer model
 
 #### Budget Service
+
 - `PORT`: Server port (default: 5002)
 - `OPENAI_API_KEY`: OpenAI API key for AI insights
 - `CORS_ORIGINS`: Allowed CORS origins
 
 #### Career Service
+
 - `PORT`: Server port (default: 5004)
 - `GEMINI_API_KEY`: Google Gemini API key
 - `CORS_ORIGINS`: Allowed CORS origins
 - `DATA_VERSION`: Dataset version (default: v2)
 
 #### Scholarship Service
+
 - `PORT`: Server port (default: 5005)
 - `CORS_ORIGINS`: Allowed CORS origins
 
 #### Frontend
+
 Build-time variables (baked into the build):
+
 - `REACT_APP_BACKEND_URL`: Backend API URL
 - `REACT_APP_DEGREE_SERVICE_URL`: Degree service URL
 - `REACT_APP_BUDGET_SERVICE_URL`: Budget service URL
@@ -243,6 +254,7 @@ Build-time variables (baked into the build):
 
 **Issue**: Container app failing to start
 **Solution**: Check logs with:
+
 ```bash
 az containerapp logs show \
   --name unifinder-backend \
@@ -255,7 +267,7 @@ az containerapp logs show \
 
 ### Local Development Issues
 
-**Issue**: "Missing REACT_APP_* in frontend .env"
+**Issue**: "Missing REACT*APP*\* in frontend .env"
 **Solution**: Copy `frontend/.env.example` to `frontend/.env` and fill in values
 
 **Issue**: MongoDB connection failed
@@ -325,6 +337,7 @@ Azure Container Apps pricing (approximate):
 Total estimated cost: **$85-135/month** for low-traffic usage
 
 You can reduce costs by:
+
 - Using smaller CPU/memory allocations
 - Setting min replicas to 0 (scale to zero)
 - Using consumption-only plan
@@ -347,6 +360,7 @@ You can reduce costs by:
 ## 🆘 Support
 
 For issues:
+
 1. Check the troubleshooting section above
 2. Review GitHub Actions workflow logs
 3. Check Azure Container App logs
