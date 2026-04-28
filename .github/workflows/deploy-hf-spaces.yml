@@ -94,6 +94,9 @@ jobs:
             --exclude 'career-service/career-ml/training/**' \
             "./" "${workdir}/"
 
+          # HF Spaces requires YAML front matter in root README.md.
+          cp "deploy/hf/README.spaces.md" "${workdir}/README.md"
+
           pushd "${workdir}" > /dev/null
           git lfs install --local
           # Ensure HF-rejected binaries are always added as LFS pointers.

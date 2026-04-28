@@ -8,7 +8,6 @@ import {
 	FaClock,
 	FaBuilding,
 	FaChevronDown,
-	FaStar,
 	FaBook,
 	FaFlask,
 	FaGraduationCap,
@@ -18,7 +17,6 @@ import AIExplanationBox from "./AIExplanationBox";
 export default function CourseCard({ course, isEligible = true, isAspirationnal = false, olMarks = null }) {
 	const [expanded, setExpanded] = useState(false);
 
-	const score = course.interest_match_score ?? course.match_score_percentage ?? course.score ?? 0;
 	const courseName = course.course_name || course.degree_name || "(Unnamed Degree)";
 	const universities = Array.isArray(course.universities) ? course.universities : [];
 
