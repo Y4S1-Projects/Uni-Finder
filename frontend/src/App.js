@@ -20,6 +20,7 @@ import AdminRouteGuard from "./scholarship_loan_matcher/AdminRouteGuard";
 import OnboardingGateway from "./pages/degree-recommendation/DegreeHome";
 import ALWizardFlow from "./pages/degree-recommendation/ALWizardFlow";
 import OLExplorerFlow from "./pages/degree-recommendation/OLExplorerFlow";
+import OLResultsPage from "./pages/degree-recommendation/OLResultsPage";
 
 function AppContent() {
 	const location = useLocation();
@@ -47,6 +48,7 @@ function AppContent() {
 					<Route path='/degree-recommendations' element={<OnboardingGateway />} />
 					<Route path='/degree-recommendations/al-students' element={<ALWizardFlow />} />
 					<Route path='/degree-recommendations/all-students' element={<OLExplorerFlow />} />
+					<Route path='/degree-recommendations/ol-results' element={<OLResultsPage />} />
 					<Route path='/budget-optimizer' element={<BudgetOptimizer />} /> {/* Budget Optimizer route */}
 					<Route path='/budget-optimizer-new' element={<BudgetOptimizerNew />} /> {/* New AI Budget Optimizer route */}
 					{/* Scholarship & Loan Matcher */}

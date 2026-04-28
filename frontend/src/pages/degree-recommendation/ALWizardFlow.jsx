@@ -1,10 +1,36 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaArrowRight, FaBook, FaSpinner } from "react-icons/fa";
 import ProgressStepper from "../../components/degree/ProgressStepper";
 import LoadingState from "../../components/degree/LoadingState";
 import CourseCard from "../../components/degree/CourseCard";
 import { fetchDegreeRecommendations } from "../../api/degreeRecommendationApi";
+
+// Inline SVG Icons
+const ArrowRightIcon = () => (
+	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path strokeLinecap='round' strokeLinejoin='round' d='M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3' />
+	</svg>
+);
+const SpinnerIcon = () => (
+	<svg className='w-4 h-4 animate-spin' fill='none' viewBox='0 0 24 24'>
+		<circle className='opacity-25' cx='12' cy='12' r='10' stroke='currentColor' strokeWidth='4' />
+		<path
+			className='opacity-75'
+			fill='currentColor'
+			d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
+		/>
+	</svg>
+);
+const MapPinIcon = () => (
+	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path strokeLinecap='round' strokeLinejoin='round' d='M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z' />
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z'
+		/>
+	</svg>
+);
 
 // Sri Lanka A/L Streams & subject rules (UGC-style flexible combinations)
 const ALABAMA_STREAMS = [
@@ -438,8 +464,8 @@ export default function ALWizardFlow() {
 									relative p-4 rounded-xl border transition-all duration-300 text-left
 									${
 										formData.stream === stream.name ?
-											`border-purple-500 bg-gradient-to-br from-purple-50 to-blue-50 shadow-lg`
-										:	`border-gray-200 bg-white hover:border-purple-300 hover:shadow-md`
+											`border-indigo-500 bg-gradient-to-br from-indigo-50 to-violet-50 shadow-lg`
+										:	`border-gray-200 bg-white hover:border-indigo-300 hover:shadow-md`
 									}
 								`}>
 								<div className='flex items-center gap-2'>
@@ -450,7 +476,7 @@ export default function ALWizardFlow() {
 									<h3 className='ml-4 text-sm font-semibold leading-tight text-gray-900'>{stream.name}</h3>
 								</div>
 								{formData.stream === stream.name && (
-									<div className='absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full top-2 right-2 bg-gradient-to-r from-purple-500 to-blue-500'>
+									<div className='absolute flex items-center justify-center w-5 h-5 text-xs font-bold text-white rounded-full top-2 right-2 bg-gradient-to-r from-indigo-500 to-violet-500'>
 										✓
 									</div>
 								)}
@@ -504,17 +530,17 @@ export default function ALWizardFlow() {
 											p-2.5 rounded-lg  border transition-all duration-200 text-left font-semibold text-xs
 											${
 												formData.subjects.includes(subject) ?
-													"border-purple-500 bg-gradient-to-r from-purple-50 to-blue-50 text-purple-900 shadow-md"
+													"border-indigo-500 bg-gradient-to-r from-indigo-50 to-violet-50 text-indigo-900 shadow-md"
 												: formData.subjects.length >= 3 ?
 													"border-gray-200 bg-gray-50 text-gray-600 cursor-not-allowed opacity-50"
-												:	"border-gray-300 bg-white text-gray-900 hover:border-purple-400 hover:bg-purple-50 cursor-pointer"
+												:	"border-gray-300 bg-white text-gray-900 hover:border-indigo-400 hover:bg-indigo-50 cursor-pointer"
 											}
 										`}
 										disabled={formData.subjects.length >= 3 && !formData.subjects.includes(subject)}>
 										<div className='flex items-center gap-2'>
 											<div
 												className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${
-													formData.subjects.includes(subject) ? "border-purple-500 bg-purple-500" : "border-gray-300"
+													formData.subjects.includes(subject) ? "border-indigo-500 bg-indigo-500" : "border-gray-300"
 												}`}>
 												{formData.subjects.includes(subject) && <span className='text-xs text-white'>✓</span>}
 											</div>
@@ -559,12 +585,12 @@ export default function ALWizardFlow() {
 					{/* District Selection */}
 					<div>
 						<label className='block mb-3 text-sm font-bold text-gray-900'>
-							<FaBook className='inline mr-2' /> District of Residence
+							<MapPinIcon className='inline mr-2' /> District of Residence
 						</label>
 						<select
 							value={formData.district}
 							onChange={(e) => setFormData({ ...formData, district: e.target.value })}
-							className='w-full px-4 py-3 transition-colors border-2 border-gray-300 rounded-lg focus:border-purple-500 focus:outline-none'>
+							className='w-full px-4 py-3 transition-colors border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:outline-none'>
 							<option value=''>Select your district...</option>
 							{SRI_LANKAN_DISTRICTS.map((district) => (
 								<option key={district} value={district}>
@@ -634,15 +660,15 @@ export default function ALWizardFlow() {
 							placeholder='e.g., I want to work in software development, AI/ML, or maybe start my own tech business. I love problem-solving and creative thinking...'
 							value={formData.interests}
 							onChange={(e) => setFormData({ ...formData, interests: e.target.value })}
-							className='w-full px-4 py-3 transition-colors border-2 border-gray-300 rounded-lg resize-none focus:border-purple-500 focus:outline-none'
+							className='w-full px-4 py-3 transition-colors border-2 border-gray-300 rounded-lg resize-none focus:border-indigo-500 focus:outline-none'
 							rows='6'
 						/>
-						<p className={`text-xs mt-2 ${formData.interests.length >= 10 ? "text-green-600" : "text-gray-500"}`}>
+						<p className={`text-xs mt-2 ${formData.interests.length >= 10 ? "text-indigo-600" : "text-gray-500"}`}>
 							{formData.interests.length} characters {formData.interests.length >= 10 ? "✓" : "(minimum 10)"}
 						</p>
 					</div>
 
-					<div className='flex items-center px-4 pt-3 border border-purple-200 rounded-lg bg-purple-50'>
+					<div className='flex items-center px-4 pt-3 border border-indigo-200 rounded-lg bg-indigo-50'>
 						<p className='text-sm text-gray-700'>
 							<strong>Why add interests?</strong> Our AI will analyze your goals and show you degrees with the highest
 							career match scores - helping you find your perfect fit!
@@ -718,20 +744,25 @@ export default function ALWizardFlow() {
 	};
 
 	return (
-		<div className='min-h-screen bg-gradient-to-br from-slate-50 to-blue-50'>
+		<div className='min-h-screen pb-20 bg-slate-50'>
+			{/* Hero Header — indigo/violet to match master design */}
 			{currentStep <= 3 && (
-				<div className='relative overflow-hidden text-white shadow-2xl bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700'>
-					{/* Animated background shapes */}
-					<div className='absolute top-0 right-0 w-40 h-40 bg-purple-400 rounded-full opacity-20 blur-3xl animate-blob'></div>
-					<div className='absolute bottom-0 left-0 w-40 h-40 bg-blue-400 rounded-full opacity-20 blur-3xl animate-blob animation-delay-2000'></div>
+				<div className='relative pt-24 overflow-hidden pb-28 bg-gradient-to-br from-indigo-900 via-violet-800 to-indigo-900'>
+					{/* Ambient blobs */}
+					<div className='absolute top-0 right-0 w-[500px] h-[500px] bg-violet-500/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen' />
+					<div className='absolute bottom-0 left-10 w-[400px] h-[400px] bg-indigo-400/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen' />
 
-					<div className='relative max-w-6xl px-4 mx-auto mt-20 sm:px-6 sm:py-5'>
-						<h1 className='mb-1 text-2xl font-bold leading-tight sm:text-3xl'>Find Your Perfect Degree</h1>
-						<p className='max-w-2xl text-sm text-white/80'>
-							Fill in your details step by step. You can skip optional fields - we'll automatically find the best
+					<div className='relative z-10 max-w-6xl px-6 mx-auto'>
+						<h1 className='mb-2 text-4xl font-extrabold tracking-tight text-white sm:text-5xl'>
+							Find Your{" "}
+							<span className='text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 to-violet-300'>
+								Perfect Degree
+							</span>
+						</h1>
+						<p className='max-w-2xl mb-6 text-lg text-indigo-100/80'>
+							Fill in your details step by step. You can skip optional fields — we'll automatically find the best
 							matches!
 						</p>
-
 						<ProgressStepper
 							steps={["Stream & District", "Z-Score (Optional)", "Interests (Optional)", "Results"]}
 							currentStep={progressDisplayStep}
@@ -740,23 +771,25 @@ export default function ALWizardFlow() {
 				</div>
 			)}
 
-			<div className='max-w-6xl px-6 py-8 mx-auto'>
+			<div className='relative z-20 max-w-6xl px-6 mx-auto -mt-10'>
 				{currentStep < 3 && (
-					<div className='p-8 mb-6 bg-white shadow-lg rounded-2xl'>
+					<div className='p-8 mb-6 bg-white border shadow-2xl sm:p-10 border-slate-200/60 rounded-3xl'>
 						{renderStep()}
 
 						{error && (
-							<div className='p-4 mt-6 text-red-700 border-2 border-red-200 rounded-lg bg-red-50'>
-								<p className='font-bold'>Error</p>
-								<p>{error}</p>
+							<div className='flex gap-3 p-4 mt-6 text-red-700 border rounded-xl bg-red-50 border-red-200/60'>
+								<div>
+									<p className='font-semibold'>Error</p>
+									<p className='text-sm'>{error}</p>
+								</div>
 							</div>
 						)}
 
 						{/* Navigation buttons */}
-						<div className='flex justify-between gap-4 mt-8'>
+						<div className='flex justify-between gap-4 pt-6 mt-8 border-t border-slate-100'>
 							<button
 								onClick={handleBack}
-								className='px-6 py-3 font-bold text-gray-900 transition-colors bg-gray-200 rounded-lg hover:bg-gray-300'>
+								className='inline-flex items-center gap-2 px-5 py-2.5 font-semibold text-slate-700 transition-colors bg-white border rounded-xl border-slate-200 hover:bg-slate-50'>
 								← Back
 							</button>
 
@@ -765,42 +798,33 @@ export default function ALWizardFlow() {
 								{currentStep > 0 && currentStep < 3 && (
 									<button
 										onClick={() => setCurrentStep(currentStep + 1)}
-										className='px-6 py-3 font-semibold text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200'>
-										Skip Step →
+										className='px-5 py-2.5 font-semibold text-slate-600 transition-colors bg-slate-100 rounded-xl hover:bg-slate-200'>
+										Skip Step
 									</button>
 								)}
 
-								{/* Show "Find Degrees" earlier if they have minimum required info */}
-								{/* {currentStep > 0 && formData.stream && formData.district && formData.subjects.length === 3 && (
-									<button
-										onClick={handleSkipToResults}
-										disabled={loading}
-										className='px-6 py-3 font-bold text-green-700 transition-colors bg-green-100 border-2 border-green-400 rounded-lg hover:bg-green-200'>
-										{loading ?
-											<FaSpinner className='inline mr-2 animate-spin' />
-										:	"🎯"}{" "}
-										Find Degrees Now
-									</button>
-								)} */}
-
-								{/* Next button */}
+								{/* Next / Submit button */}
 								<button
 									onClick={handleNext}
 									disabled={!isStepValid || loading}
 									className={`
-										inline-flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all
+										inline-flex items-center gap-2 px-7 py-2.5 rounded-xl font-semibold transition-all duration-300
 										${
 											isStepValid && !loading ?
-												"bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:shadow-lg cursor-pointer"
-											:	"bg-gray-300 text-gray-600 cursor-not-allowed"
+												"bg-gradient-to-r from-indigo-600 to-violet-600 text-white hover:shadow-lg hover:-translate-y-0.5 cursor-pointer shadow-indigo-500/25"
+											:	"bg-slate-100 text-slate-400 cursor-not-allowed"
 										}
 									`}>
 									{loading ?
 										<>
-											<FaSpinner className='animate-spin' /> Processing
+											<SpinnerIcon /> Processing...
+										</>
+									: currentStep === 2 ?
+										<>
+											Find My Degrees <ArrowRightIcon />
 										</>
 									:	<>
-											{currentStep === 2 ? "Find My Degrees" : "Next"} <FaArrowRight />
+											Next Step <ArrowRightIcon />
 										</>
 									}
 								</button>
