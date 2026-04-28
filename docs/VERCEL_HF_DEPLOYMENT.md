@@ -27,6 +27,9 @@ Add these secrets:
 
 HF_SPACE_MONO must be the full Space ID, e.g. `YasiruKaveeshwara/UniFinder`.
 
+If you see HF push errors for large files, ensure Git LFS is enabled for
+the Space and keep training/backups out of the deploy bundle.
+
 ### Space variables (single Space)
 
 - PORT=7860

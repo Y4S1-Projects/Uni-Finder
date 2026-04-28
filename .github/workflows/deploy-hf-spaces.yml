@@ -28,6 +28,7 @@ jobs:
               - 'scholarship_and_loan_recommendation_service/**'
               - 'deploy/hf/**'
               - 'Dockerfile'
+              - '.gitattributes'
             frontend:
               - 'frontend/**'
 

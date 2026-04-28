@@ -45,3 +45,4 @@ COPY deploy/hf/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 7860
 
 CMD ["/usr/bin/supervisord", "-c", "/app/deploy/hf/supervisord.conf"]
+

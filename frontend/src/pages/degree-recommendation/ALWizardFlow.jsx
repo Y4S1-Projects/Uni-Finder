@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft, FaArrowRight, FaUniversity, FaPercent, FaBook, FaSpinner } from "react-icons/fa";
+import { FaArrowRight, FaBook, FaSpinner } from "react-icons/fa";
 import ProgressStepper from "../../components/degree/ProgressStepper";
 import LoadingState from "../../components/degree/LoadingState";
 import CourseCard from "../../components/degree/CourseCard";
