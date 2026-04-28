@@ -1,10 +1,13 @@
 # Containerization Implementation - File Changes
 
+> NOTE: This changelog includes legacy Azure deployment artifacts. The current recommended cloud deployment path is Vercel + Hugging Face Spaces.
+
 ## 📦 New Files Created (28 files)
 
 ### Docker Configuration Files
 
 #### Service Dockerfiles (6 files)
+
 1. `backend/Dockerfile` - Backend Node/Express container
 2. `degree-recommendation-service/Dockerfile` - Degree recommendation FastAPI container
 3. `budget_optimizer_service/Dockerfile` - Budget optimizer Flask container
@@ -13,6 +16,7 @@
 6. `frontend/Dockerfile` - Frontend React + Nginx multi-stage container
 
 #### .dockerignore Files (6 files)
+
 7. `backend/.dockerignore` - Exclude node_modules, .env, etc.
 8. `degree-recommendation-service/.dockerignore` - Exclude Python cache, venv
 9. `budget_optimizer_service/.dockerignore` - Exclude Python cache, notebooks
@@ -21,6 +25,7 @@
 12. `frontend/.dockerignore` - Exclude node_modules, build artifacts
 
 #### Nginx Configuration
+
 13. `frontend/deploy/nginx/default.conf` - Nginx config for SPA routing
 
 ### Orchestration Files
@@ -31,11 +36,13 @@
 ### Azure Deployment Files
 
 #### Infrastructure as Code
+
 16. `deploy/azure/main.bicep` - Main Azure infrastructure template
 17. `deploy/azure/container-app.bicep` - Container app template
 18. `deploy/azure/env.example` - Azure environment configuration guide
 
 #### CI/CD Pipeline
+
 19. `.github/workflows/deploy-azure.yml` - GitHub Actions deployment workflow
 
 ### Documentation Files
@@ -48,11 +55,13 @@
 ## ✏️ Files Modified (3 files)
 
 ### Backend Updates
+
 1. `backend/index.js`
    - Added health check endpoint: `GET /health`
    - Returns: `{ status: "ok", service: "backend" }`
 
 ### Frontend Updates
+
 2. `frontend/src/pages/BudgetOptimizerNew.js`
    - Changed hardcoded `backendUrl` from `http://127.0.0.1:5002` to `process.env.REACT_APP_BUDGET_SERVICE_URL`
    - Changed hardcoded backend save URL from `http://localhost:3000/api/budget/save` to `${backendUrl}/api/budget/save`
@@ -109,23 +118,25 @@ frontend/
 
 ## 🎯 Service Port Mapping
 
-| Service | Local Port | Container Port | Protocol |
-|---------|-----------|----------------|----------|
-| Frontend | 3000 | 80 | HTTP |
-| Backend | 5000 | 5000 | HTTP |
-| Degree Service | 5001 | 5001 | HTTP |
-| Budget Service | 5002 | 5002 | HTTP |
-| Career Service | 5004 | 5004 | HTTP |
-| Scholarship Service | 5005 | 5005 | HTTP |
+| Service             | Local Port | Container Port | Protocol |
+| ------------------- | ---------- | -------------- | -------- |
+| Frontend            | 3000       | 80             | HTTP     |
+| Backend             | 5000       | 5000           | HTTP     |
+| Degree Service      | 5001       | 5001           | HTTP     |
+| Budget Service      | 5002       | 5002           | HTTP     |
+| Career Service      | 5004       | 5004           | HTTP     |
+| Scholarship Service | 5005       | 5005           | HTTP     |
 
 ## 🌐 Network Configuration
 
 ### Local Development (Docker Compose)
+
 - Network: `unifinder-network` (bridge driver)
 - Services communicate using service names
 - Frontend depends on all backend services
 
 ### Azure Container Apps
+
 - Ingress: External (all services publicly accessible)
 - CORS configured dynamically with frontend URL
 - HTTPS automatic via Azure
@@ -134,15 +145,18 @@ frontend/
 ## 🔐 Secret Management
 
 ### Local Development
+
 - Stored in root `.env` file (not committed)
 - Loaded by docker-compose
 
 ### Azure Deployment
+
 - Stored as GitHub Secrets
 - Passed to containers as environment variables
 - Never exposed in logs or code
 
 ### Required Secrets
+
 1. `MONGO_URI` - MongoDB connection string
 2. `JWT_SECRET` - JWT signing key
 3. `OPENAI_API_KEY` - OpenAI API key
@@ -152,11 +166,13 @@ frontend/
 ## 📈 Deployment Flow
 
 ### Local
+
 ```
 .env → docker-compose.yml → Docker Build → Containers Running
 ```
 
 ### Azure
+
 ```
 Code Push → GitHub Actions Trigger → Azure Login →
 Infrastructure Provision (Bicep) → Docker Build →
@@ -180,6 +196,7 @@ Services Live
 ## 🚦 Testing Status
 
 ### ✅ Validated
+
 - Docker syntax (all Dockerfiles)
 - YAML syntax (GitHub Actions workflow)
 - Bicep template structure
@@ -188,6 +205,7 @@ Services Live
 - Environment variable references
 
 ### ⏳ Pending User Testing
+
 - Local docker-compose deployment
 - Azure deployment (requires secrets)
 - End-to-end service communication
@@ -225,6 +243,7 @@ Services Live
 ## 🎉 Success Metrics
 
 All objectives completed:
+
 - ✅ 6 services containerized
 - ✅ Proper port allocation
 - ✅ Service communication configured

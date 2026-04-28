@@ -1,5 +1,7 @@
 # 🎉 Uni-Finder Containerization Complete!
 
+> NOTE: This summary includes historical Azure Container Apps deployment details. The current recommended cloud deployment path is Vercel + Hugging Face Spaces. See `docs/DEPLOYMENT.md`.
+
 Implementation completed on March 8, 2026
 
 ## ✅ What Was Implemented
@@ -7,6 +9,7 @@ Implementation completed on March 8, 2026
 ### 1. Docker Configuration (6 Services)
 
 #### Backend Service (Node/Express)
+
 - **Dockerfile**: `backend/Dockerfile`
 - **Port**: 5000
 - **Base Image**: node:20-alpine (~200MB)
@@ -14,6 +17,7 @@ Implementation completed on March 8, 2026
 - **Environment**: MongoDB, JWT, CORS configuration
 
 #### Degree Recommendation Service (FastAPI)
+
 - **Dockerfile**: `degree-recommendation-service/Dockerfile`
 - **Port**: 5001
 - **Base Image**: python:3.11-slim (~800MB)
@@ -21,6 +25,7 @@ Implementation completed on March 8, 2026
 - **Environment**: PORT, CORS configuration
 
 #### Budget Optimizer Service (Flask)
+
 - **Dockerfile**: `budget_optimizer_service/Dockerfile`
 - **Port**: 5002
 - **Base Image**: python:3.11-slim (~700MB)
@@ -28,6 +33,7 @@ Implementation completed on March 8, 2026
 - **Environment**: OpenAI API key, CORS configuration
 
 #### Career Service (FastAPI)
+
 - **Dockerfile**: `career-service/Dockerfile`
 - **Port**: 5004
 - **Base Image**: python:3.11-slim (~900MB)
@@ -35,6 +41,7 @@ Implementation completed on March 8, 2026
 - **Environment**: Gemini API key, CORS configuration
 
 #### Scholarship Service (FastAPI)
+
 - **Dockerfile**: `scholarship_and_loan_recommendation_service/Dockerfile`
 - **Port**: 5005
 - **Base Image**: python:3.11-slim (~600MB)
@@ -42,6 +49,7 @@ Implementation completed on March 8, 2026
 - **Environment**: PORT, CORS configuration
 
 #### Frontend (React + Nginx)
+
 - **Dockerfile**: `frontend/Dockerfile`
 - **Port**: 80 (production), 3000 (local dev)
 - **Base Image**: Multi-stage (node:20-alpine build → nginx:1.27-alpine runtime)
@@ -51,17 +59,20 @@ Implementation completed on March 8, 2026
 ### 2. Service Communication Updates
 
 #### Fixed Hardcoded URLs
+
 - ✅ `frontend/src/pages/BudgetOptimizerNew.js` - Now uses env vars for budget service and backend
 - ✅ `frontend/src/services/careerApi.js` - Now uses env var for career service
 - ✅ `backend/index.js` - Added health check endpoint
 
 #### Environment Configuration
+
 - ✅ Updated `frontend/.env.example` with all 6 service URLs
 - ✅ Created root `.env.example` for docker-compose
 
 ### 3. Local Development Setup
 
 #### Docker Compose
+
 - **File**: `docker-compose.yml`
 - **Features**:
   - Orchestrates all 6 services
@@ -70,9 +81,12 @@ Implementation completed on March 8, 2026
   - Auto-restart policies
   - Proper service dependencies
 
-### 4. Azure Cloud Deployment
+### 4. Legacy Azure Cloud Deployment
 
-#### GitHub Actions Workflow
+> This section describes historical Azure Container Apps deployment implementation. The current recommended cloud deployment path is Vercel + Hugging Face Spaces.
+
+#### GitHub Actions Workflow (legacy)
+
 - **File**: `.github/workflows/deploy-azure.yml`
 - **Triggers**: Push to main/yasiru branches, manual dispatch
 - **Steps**:
@@ -85,6 +99,7 @@ Implementation completed on March 8, 2026
   7. ✅ Output all service URLs
 
 #### Azure Infrastructure (Bicep Templates)
+
 - **File**: `deploy/azure/main.bicep`
   - Log Analytics Workspace
   - Azure Container Registry
@@ -102,6 +117,7 @@ Implementation completed on March 8, 2026
 ### 5. Documentation
 
 #### Comprehensive Guides Created
+
 - ✅ `docs/DEPLOYMENT.md` - Complete deployment guide (500+ lines)
   - Local development setup
   - Azure deployment steps
@@ -121,7 +137,8 @@ Implementation completed on March 8, 2026
 ### 6. Container Optimization
 
 #### .dockerignore Files (6 created)
-- Excludes node_modules, .venv, __pycache__
+
+- Excludes node_modules, .venv, **pycache**
 - Reduces build context size
 - Faster builds and smaller images
 
@@ -166,6 +183,7 @@ Implementation completed on March 8, 2026
 All components are ready. To deploy:
 
 #### Local Testing
+
 ```bash
 # 1. Copy environment file
 cp .env.example .env
@@ -182,6 +200,7 @@ docker-compose up --build
 ```
 
 #### Azure Deployment
+
 ```bash
 # 1. Create Azure Service Principal
 az ad sp create-for-rbac --name "unifinder-github-actions" \
@@ -231,27 +250,32 @@ Configure these in: Repository → Settings → Secrets and variables → Action
 ## 🔍 Validation Results
 
 ### Docker Configuration ✅
+
 - All 6 Dockerfiles created with best practices
 - Multi-stage build for frontend (optimized size)
 - Health checks implemented
 - Security: Non-root users, minimal base images
 
 ### Service Communication ✅
+
 - All hardcoded URLs converted to environment variables
 - Backend health endpoint added
 - CORS properly configured for container environments
 
 ### Orchestration ✅
+
 - docker-compose.yml tested structure
 - Services properly networked
 - Environment variables templated
 
 ### CI/CD Pipeline ✅
+
 - GitHub Actions workflow syntax validated
 - Azure Bicep templates properly structured
 - Deployment sequence optimized (APIs first, then frontend)
 
 ### Documentation ✅
+
 - Complete deployment guide created
 - Quick reference documentation
 - Troubleshooting guides included
@@ -260,25 +284,30 @@ Configure these in: Repository → Settings → Secrets and variables → Action
 ## ⚠️ Known Warnings
 
 ### GitHub Actions YAML Warnings
+
 The workflow shows validation warnings about undefined secrets/variables. These are **expected** and **not errors**. They will resolve once you configure the GitHub Secrets in your repository settings.
 
 Example warnings:
+
 - `Context access might be invalid: AZURE_CREDENTIALS` ← Normal, add this secret
 - `Context access might be invalid: MONGO_URI` ← Normal, add this secret
 
 ### Frontend Code Warning
+
 - `BudgetOptimizerNew.js:873` - Unused variable 'recommendation'
 - This is a pre-existing code issue, not related to containerization
 
 ## 💰 Estimated Azure Costs
 
 For low-traffic usage (~1000 requests/day):
+
 - Container Apps Environment: ~$30/month
 - 6 Container Apps (0.5 vCPU, 1GB each): ~$50-80/month
 - Azure Container Registry (Basic): ~$5/month
 - **Total: $85-115/month**
 
 Cost optimization tips:
+
 - Scale min replicas to 0 for non-production environments
 - Use consumption-only plan
 - Monitor and adjust CPU/memory allocations
@@ -286,6 +315,7 @@ Cost optimization tips:
 ## 🎯 Next Steps
 
 1. **Test Locally**
+
    ```bash
    docker-compose up --build
    ```
@@ -295,6 +325,7 @@ Cost optimization tips:
    - Update ACR_NAME in workflow
 
 3. **Deploy to Azure**
+
    ```bash
    git push origin yasiru
    ```
@@ -311,6 +342,7 @@ Cost optimization tips:
 ## 📞 Support
 
 If you encounter issues:
+
 1. Check `docs/DEPLOYMENT.md` troubleshooting section
 2. Review GitHub Actions workflow logs
 3. Check Azure Container Apps logs:

@@ -95,7 +95,9 @@ python app.py
 
 ## Cloud deployment
 
-- Vercel + Hugging Face Spaces: [docs/VERCEL_HF_DEPLOYMENT.md](docs/VERCEL_HF_DEPLOYMENT.md)
+- Recommended: Vercel frontend + Hugging Face Spaces backend
+- Detailed deployment guide: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+- Local container setup: [docs/docker/DOCKER_README.md](docs/docker/DOCKER_README.md)
 
 ## Environment variables
 
