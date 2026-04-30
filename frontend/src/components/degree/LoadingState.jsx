@@ -37,7 +37,7 @@ export default function LoadingState({ theme = "blue", stages = DEFAULT_STAGES, 
 			});
 		}, 1400);
 		return () => clearInterval(id);
-	}, []);
+	}, [stages.length]);
 
 	// Smooth progress bar that fills over ~7 s
 	useEffect(() => {
