@@ -130,7 +130,7 @@ export default function OnboardingGateway() {
 					<button
 						type='button'
 						onClick={() => navigate("/degree-recommendations/al-students")}
-						className='relative flex flex-col p-8 text-left transition-all duration-300 bg-white border shadow-lg group rounded-3xl hover:shadow-xl hover:-translate-y-1 border-slate-200/80 hover:border-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40'>
+						className='relative flex flex-col p-8 text-left transition-all duration-300 bg-blue-100 border shadow-lg group rounded-3xl hover:shadow-xl hover:-translate-y-1 border-slate-200/80 hover:border-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40'>
 						<div className='absolute inset-0 transition-opacity duration-300 opacity-0 rounded-3xl bg-gradient-to-br from-blue-50/50 to-indigo-50/50 group-hover:opacity-100' />
 
 						<div className='relative z-10 flex flex-col h-full'>

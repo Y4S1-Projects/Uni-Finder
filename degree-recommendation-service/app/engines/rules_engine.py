@@ -1,10 +1,11 @@
 # app/engines/rules_engine.py
 from typing import Tuple, List, Dict
+import json
+from pathlib import Path
 
 from app.domain.student import StudentProfile
 from app.domain.program import DegreeProgram
 from app.engines.cutoff_matcher import CutoffMatcher
-
 
 cutoff_matcher = CutoffMatcher()
 
@@ -68,23 +69,121 @@ def check_eligibility(
     if program.subject_requirements:
         student_subjects_lower = [s.lower() for s in student.subjects]
 
-        # Check if any required subjects are missing
-        missing = []
-        for req_subject in program.subject_requirements:
-            req_lower = req_subject.lower()
-            # Check for partial matches (e.g., "Mathematics" in "Combined Mathematics")
-            found = any(
-                req_lower in student_sub or student_sub in req_lower
-                for student_sub in student_subjects_lower
-            )
-            if not found:
-                missing.append(req_subject)
+        # Load the pre-compiled AST logic mapping
+        rules_path = Path("data/course_subject_rules.json")
+        course_rules = {}
+        if rules_path.exists():
+            with open(rules_path, "r", encoding="utf-8") as f:
+                course_rules = json.load(f)
 
-        if missing:
+        # Get the course rule (fallback to ANY_SUBJECT if not found)
+        # JSON keys are padded to 3 digits (e.g., '008', '065')
+        try:
+            course_code_norm = f"{int(program.course_code):03d}"
+        except ValueError:
+            course_code_norm = program.course_code
+
+        rule_ast = course_rules.get(course_code_norm, {"type": "ANY_SUBJECT"})
+
+        def evaluate_ast(node) -> bool:
+            if not node:
+                return True
+
+            node_type = node.get("type", "UNKNOWN")
+
+            if node_type == "ANY_SUBJECT":
+                return True
+
+            if node_type == "SUBJECT":
+                req_sub = node.get("name", "").lower()
+                # Substring match robustly
+                aliases = {
+                    "ict": [
+                        "ict",
+                        "information & communication technology",
+                        "information and communication technology",
+                        "it",
+                    ],
+                    "information & communication technology": [
+                        "ict",
+                        "information & communication technology",
+                        "information and communication technology",
+                        "it",
+                    ],
+                    "math": ["mathematics", "math", "maths"],
+                    "mathematics": ["mathematics", "math", "maths"],
+                    "combined math": [
+                        "combined mathematics",
+                        "combined math",
+                        "combined maths",
+                    ],
+                    "combined mathematics": [
+                        "combined mathematics",
+                        "combined math",
+                        "combined maths",
+                    ],
+                    "higher math": [
+                        "higher mathematics",
+                        "higher math",
+                        "higher maths",
+                    ],
+                    "higher mathematics": [
+                        "higher mathematics",
+                        "higher math",
+                        "higher maths",
+                    ],
+                    "agri sci": ["agri sci", "agricultural science"],
+                    "agricultural science": ["agri sci", "agricultural science"],
+                }
+
+                for student_sub in student_subjects_lower:
+                    if req_sub == student_sub:
+                        return True
+                    if req_sub in student_sub or student_sub in req_sub:
+                        if req_sub == "mathematics" and (
+                            "combined" in student_sub or "higher" in student_sub
+                        ):
+                            pass
+                        else:
+                            return True
+
+                    req_aliases = aliases.get(req_sub, [])
+                    if any(a == student_sub for a in req_aliases):
+                        return True
+
+                    student_aliases = aliases.get(student_sub, [])
+                    if any(a == req_sub for a in student_aliases):
+                        return True
+                return False
+
+            if node_type == "AND":
+                operands = node.get("operands", [])
+                return all(evaluate_ast(op) for op in operands)
+
+            if node_type == "OR":
+                operands = node.get("operands", [])
+                return any(evaluate_ast(op) for op in operands)
+
+            if node_type == "MIN_COUNT":
+                count = node.get("count", 1)
+                operands = node.get("operands", [])
+                matches = sum(1 for op in operands if evaluate_ast(op))
+                return matches >= count
+
+            return False
+
+        # Evaluate the AST against the student's subjects
+        is_subject_match = evaluate_ast(rule_ast)
+
+        if is_subject_match:
+            details["subjects_match"] = True
+        else:
             details["subjects_match"] = False
-            return False, f"Missing required subjects: {', '.join(missing)}", details
-
-        details["subjects_match"] = True
+            return (
+                False,
+                f"Missing required subjects based on rule evaluation.",
+                details,
+            )
     else:
         # No specific subject requirements
         details["subjects_match"] = True

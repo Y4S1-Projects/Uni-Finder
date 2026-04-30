@@ -1,14 +1,5 @@
 import React from "react";
-
-const UserIcon = () => (
-	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
-		<path
-			strokeLinecap='round'
-			strokeLinejoin='round'
-			d='M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z'
-		/>
-	</svg>
-);
+import { UserIcon, RefreshIcon } from "../../ui/DegreeIcons";
 
 /**
  * ALResultsSummary — shown at top of Step 3 results.
@@ -19,15 +10,24 @@ export default function ALResultsSummary({ formData }) {
 
 	return (
 		<div className='p-6 bg-white border-2 border-blue-100 shadow-lg rounded-3xl'>
-			<div className='flex flex-row items-center gap-2 mb-2'>
-				<div className='flex items-center justify-center w-8 h-8 text-blue-600 bg-blue-100 rounded-lg aspect-square shrink-0'>
-					<UserIcon />
+			<div className='flex items-center justify-between'>
+				<div className='flex flex-row items-center gap-2 mb-2'>
+					<div className='flex items-center justify-center w-8 h-8 text-blue-600 bg-blue-100 rounded-lg aspect-square shrink-0'>
+						<UserIcon className='w-4 h-4' />
+					</div>
+					<div className='flex flex-col '>
+						<p className='pt-3 text-base font-bold tracking-widest text-blue-600 uppercase'>Your Profile Summary</p>
+					</div>
 				</div>
-				<div className='flex flex-col '>
-					<p className='pt-3 text-base font-bold tracking-widest text-blue-600 uppercase'>Your Profile Summary</p>
+
+				<div>
+					<button
+						onClick={() => (window.location.href = "/")}
+						className='inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-blue-700 transition-all border border-blue-200 rounded-xl bg-blue-50 hover:bg-blue-100 hover:shadow-md'>
+						<RefreshIcon className='w-4 h-4' /> Search Again
+					</button>
 				</div>
 			</div>
-
 			<div className='flex flex-wrap gap-6'>
 				{/* Stream */}
 				{stream && (
