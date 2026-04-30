@@ -5,18 +5,7 @@ import { signout } from "../redux/User/userSlice";
 
 /* ── SVG Icon Components ── */
 const LogoMark = ({ className = "w-8 h-8" }) => (
-	<svg className={className} viewBox='0 0 32 32' fill='none'>
-		<rect width='32' height='32' rx='8' fill='url(#logo-grad)' />
-		<path d='M16 7L8 12v8l8 5 8-5v-8l-8-5z' stroke='#fff' strokeWidth='1.6' strokeLinejoin='round' fill='none' />
-		<path d='M16 7v10m0 0l8-5m-8 5l-8-5m8 5v8' stroke='#fff' strokeWidth='1.2' strokeLinejoin='round' opacity='0.6' />
-		<circle cx='16' cy='17' r='2.5' fill='#fff' />
-		<defs>
-			<linearGradient id='logo-grad' x1='0' y1='0' x2='32' y2='32'>
-				<stop stopColor='#6366F1' />
-				<stop offset='1' stopColor='#7C3AED' />
-			</linearGradient>
-		</defs>
-	</svg>
+	<img src='/favicon.png' alt='Uni-Finder Logo' className={`${className} object-contain`} />
 );
 
 const MenuIcon = () => (
