@@ -1,24 +1,5 @@
 import React from "react";
-
-const InfoIcon = () => (
-	<svg className='flex-shrink-0 w-5 h-5' fill='none' stroke='currentColor' strokeWidth='1.8' viewBox='0 0 24 24'>
-		<path
-			strokeLinecap='round'
-			strokeLinejoin='round'
-			d='m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z'
-		/>
-	</svg>
-);
-
-const ZScoreIcon = () => (
-	<svg className='w-6 h-6' fill='none' stroke='currentColor' strokeWidth='1.5' viewBox='0 0 24 24'>
-		<path
-			strokeLinecap='round'
-			strokeLinejoin='round'
-			d='M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605'
-		/>
-	</svg>
-);
+import { InfoIcon, ZScoreIcon } from "../../ui/DegreeIcons";
 
 /**
  * ZScoreStep — Step 1 (optional)
@@ -78,7 +59,7 @@ export default function ZScoreStep({ zscore, onChange }) {
 			<div className='items-center border-2 border-blue-100 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl'>
 				<div className='flex flex-row gap-4 px-5 pt-3'>
 					<div className='flex items-center justify-center flex-shrink-0 w-12 h-12 text-blue-600 bg-blue-100 rounded-xl'>
-						<ZScoreIcon />
+						<ZScoreIcon className='w-6 h-6' />
 					</div>
 					<div className='flex flex-col justify-center flex-1'>
 						<p className='text-sm font-bold text-blue-900'>What is a Z-Score?</p>
@@ -134,11 +115,11 @@ export default function ZScoreStep({ zscore, onChange }) {
 
 			{/* Skip hint */}
 			<div className='flex items-start gap-3 px-4 pt-3 border border-slate-200 rounded-xl bg-slate-50'>
-				<InfoIcon />
+				<InfoIcon className='flex-shrink-0 w-5 h-5' />
 				<p className='text-sm text-slate-600'>
 					<strong className='text-slate-800'>Don't have your Z-score yet?</strong> Hit{" "}
-					<span className='font-semibold text-blue-600'>Skip Step</span> to explore all courses available in your stream
-					— no Z-score required.
+					<span className='font-semibold text-blue-600'>Skip</span> to explore all courses available in your stream — no
+					Z-score required.
 				</p>
 			</div>
 		</div>

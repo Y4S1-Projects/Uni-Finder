@@ -21,14 +21,7 @@ debug_results = pipeline.recommend_debug(
 results = debug_results["eligible_recommendations"]
 
 print(f"Total eligible results: {len(results)}")
-for r in results:
+for r in results[:10]:
     print(
         f"[{r['course_code']}] {r['course_name']} - Eligible: {r['eligibility']} - Score: {r.get('score', 0):.4f}"
     )
-
-rejected = debug_results.get("rejected_programs", [])
-for r in rejected:
-    if "Low relevance" in r.get("reason", ""):
-        print(
-            f"[REJECTED] [{r['course_code']}] {r['course_name']} - Reason: {r['reason']}"
-        )
