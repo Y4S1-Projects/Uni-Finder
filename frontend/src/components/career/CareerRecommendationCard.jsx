@@ -28,22 +28,22 @@ export function CareerRecommendationCard({
   } = recommendation;
 
   const viewCareerLadder = () => {
-    navigate('/career-ladder', {
+    navigate("/career-ladder", {
       state: {
         userSkills: userSkills,
         selectedDomain: domain,
-        recommendations: [recommendation]
-      }
+        recommendations: [recommendation],
+      },
     });
   };
 
-  const readinessPercent = skill_gap && skill_gap.readiness_score !== undefined
-    ? (skill_gap.readiness_score * 100).toFixed(0)
-    : 0;
+  const readinessPercent =
+    skill_gap && skill_gap.readiness_score !== undefined
+      ? (skill_gap.readiness_score * 100).toFixed(0)
+      : 0;
 
-  const matchPercent = match_score !== undefined 
-    ? (match_score * 100).toFixed(0) 
-    : 0;
+  const matchPercent =
+    match_score !== undefined ? (match_score * 100).toFixed(0) : 0;
 
   return (
     <div
@@ -68,11 +68,11 @@ export function CareerRecommendationCard({
           </h4>
           <div className="inline-flex">
             <span className="text-[10px] font-bold uppercase tracking-widest text-[#6b21a8] bg-[#f3e8ff] px-2.5 py-1 rounded-md">
-              {domain?.replace(/_/g, ' ')}
+              {domain?.replace(/_/g, " ")}
             </span>
           </div>
         </div>
-        
+
         <div className="text-right shrink-0">
           <div className="text-2xl font-bold text-[#4338ca]">
             {matchPercent}%
@@ -85,8 +85,8 @@ export function CareerRecommendationCard({
 
       {/* Progress Bar */}
       <div className="w-full bg-[#e2e8f0] rounded-full h-1.5 mb-6 overflow-hidden">
-        <div 
-          className="bg-[#3b82f6] h-1.5 rounded-full" 
+        <div
+          className="bg-[#3b82f6] h-1.5 rounded-full"
           style={{ width: `${matchPercent}%` }}
         ></div>
       </div>
@@ -94,19 +94,23 @@ export function CareerRecommendationCard({
       {/* Next Step Box */}
       {next_role && (
         <div className="bg-[#fcfaff] rounded-xl p-4 mb-6 flex justify-between items-center border border-[#f3e8ff]">
-           <div>
-              <div className="flex items-center gap-1.5 text-xs text-[#6b21a8] font-bold mb-1">
-                 <FaRocket className="text-sm" /> Next Step:
-              </div>
-              <div className="text-sm text-[#4b5563] ml-5">{next_role_title || next_role}</div>
-           </div>
-           <button 
-             onClick={viewCareerLadder}
-             className="text-white text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm hover:shadow-md hover:scale-[1.02]"
-             style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}
-           >
-             View Path
-           </button>
+          <div>
+            <div className="flex items-center gap-1.5 text-xs text-[#6b21a8] font-bold mb-1">
+              <FaRocket className="text-sm" /> Next Step:
+            </div>
+            <div className="text-sm text-[#4b5563] ml-5">
+              {next_role_title || next_role}
+            </div>
+          </div>
+          <button
+            onClick={viewCareerLadder}
+            className="text-white text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm hover:shadow-md hover:scale-[1.02]"
+            style={{
+              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            }}
+          >
+            View Path
+          </button>
         </div>
       )}
 
@@ -114,19 +118,28 @@ export function CareerRecommendationCard({
       <div className="flex flex-col md:flex-row gap-6 mb-6">
         {/* Readiness */}
         <div className="shrink-0 md:w-24">
-          <div className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">Readiness</div>
-          <div className="text-xl font-bold text-[#6b21a8]">{readinessPercent}%</div>
+          <div className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">
+            Readiness
+          </div>
+          <div className="text-xl font-bold text-[#6b21a8]">
+            {readinessPercent}%
+          </div>
         </div>
 
         {/* Skills You Have */}
         <div className="flex-1">
           <div className="flex items-center gap-1.5 mb-2.5">
             <FaCheckCircle className="text-[#9333ea] text-sm" />
-            <span className="text-xs font-bold text-[#7e22ce]">Skills You Have ({skill_gap?.matched_skills?.length || 0})</span>
+            <span className="text-xs font-bold text-[#7e22ce]">
+              Skills You Have ({skill_gap?.matched_skills?.length || 0})
+            </span>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {skill_gap?.matched_skills?.slice(0, 5).map(s => (
-              <span key={s.id || s} className="text-[11px] font-medium bg-[#f3e8ff] border border-[#e9d5ff] text-[#7e22ce] px-2.5 py-1 rounded-full whitespace-nowrap">
+            {skill_gap?.matched_skills?.slice(0, 5).map((s) => (
+              <span
+                key={s.id || s}
+                className="text-[11px] font-medium bg-[#f3e8ff] border border-[#e9d5ff] text-[#7e22ce] px-2.5 py-1 rounded-full whitespace-nowrap"
+              >
                 {s.name || s.id || s}
               </span>
             ))}
@@ -142,11 +155,16 @@ export function CareerRecommendationCard({
         <div className="flex-1">
           <div className="flex items-center gap-1.5 mb-2.5">
             <FaBookOpen className="text-gray-600 text-sm" />
-            <span className="text-xs font-bold text-gray-800">Skills to Learn ({skill_gap?.missing_skills?.length || 0})</span>
+            <span className="text-xs font-bold text-gray-800">
+              Skills to Learn ({skill_gap?.missing_skills?.length || 0})
+            </span>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {skill_gap?.missing_skills?.slice(0, 5).map(s => (
-              <span key={s.id || s} className="text-[11px] font-medium border border-gray-200 text-gray-600 px-2.5 py-1 rounded-full bg-white whitespace-nowrap">
+            {skill_gap?.missing_skills?.slice(0, 5).map((s) => (
+              <span
+                key={s.id || s}
+                className="text-[11px] font-medium border border-gray-200 text-gray-600 px-2.5 py-1 rounded-full bg-white whitespace-nowrap"
+              >
                 {s.name || s.id || s}
               </span>
             ))}
@@ -164,7 +182,9 @@ export function CareerRecommendationCard({
         <button
           onClick={() => onViewDetails(recommendation)}
           className="text-white text-xs font-bold px-5 py-2.5 rounded-lg transition-all shadow-md hover:shadow-lg hover:scale-[1.02] flex items-center gap-2 inline-flex"
-          style={{ background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}
+          style={{
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          }}
         >
           <FaEye className="text-sm" /> View Details & AI Explanation
         </button>
