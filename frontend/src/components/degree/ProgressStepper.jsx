@@ -1,11 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-const CheckIcon = () => (
-	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2.5' viewBox='0 0 24 24'>
-		<path strokeLinecap='round' strokeLinejoin='round' d='M4.5 12.75l6 6 9-13.5' />
-	</svg>
-);
+import { CheckIcon } from "../ui/DegreeIcons";
 
 /**
  * ProgressStepper
@@ -61,7 +56,7 @@ export default function ProgressStepper({ steps = [], currentStep = 0, theme = "
 									${getStepClassName(index)}
 								`}>
 								{index < currentStep ?
-									<CheckIcon />
+									<CheckIcon className='w-4 h-4' />
 								:	index + 1}
 							</div>
 

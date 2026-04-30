@@ -8,6 +8,17 @@ from app.domain.program import DegreeProgram
 from app.core.paths import UNIVERSITY_COURSES_PATH
 
 
+def _normalize_code(code: str) -> str:
+    """Normalize course code for consistent lookup.
+    Both '99' and '099' → '99' (strip leading zeros).
+    """
+    code = str(code).strip()
+    try:
+        return str(int(code))
+    except ValueError:
+        return code
+
+
 class ProgramRepository:
     """
     Repository responsible for loading degree programs
@@ -40,9 +51,11 @@ class ProgramRepository:
                     program = DegreeProgram.from_csv(normalized_row)
                     self._programs.append(program)
 
-                    # Index by course code for quick lookup
+                    # Index by normalized course code for consistent lookup
                     if program.course_code:
-                        self._programs_by_code[program.course_code] = program
+                        self._programs_by_code[_normalize_code(program.course_code)] = (
+                            program
+                        )
                 except Exception as e:
                     # Log but don't fail on individual parsing errors
                     print(f"Warning: Failed to parse program row: {e}")
@@ -59,10 +72,11 @@ class ProgramRepository:
     def get_program_by_code(self, course_code: str) -> Optional[DegreeProgram]:
         """
         Get a specific program by its course code.
+        Handles both zero-padded ('099') and unpadded ('99') codes.
         """
         if not self._programs:
             self.load_programs()
-        return self._programs_by_code.get(course_code)
+        return self._programs_by_code.get(_normalize_code(course_code))
 
     def get_programs_by_stream(self, stream: str) -> List[DegreeProgram]:
         """
