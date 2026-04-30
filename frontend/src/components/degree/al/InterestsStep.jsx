@@ -46,6 +46,13 @@ export default function InterestsStep({ interests, onChange }) {
 					</p>
 				</div>
 			</div>
+			<div className='flex items-start gap-3 px-4 pt-3 border border-amber-200 rounded-xl bg-amber-50/50'>
+				<InfoIcon className='flex-shrink-0 w-5 h-5 text-amber-500' />
+				<p className='text-sm leading-relaxed text-amber-800'>
+					<strong className='font-bold text-amber-900'>Pro Tip:</strong> Keep interests relevant to your A/L Stream.
+					Unrelated interests (e.g., "doctor" for Physical Science) may yield zero results.
+				</p>
+			</div>
 			<div className='flex items-start gap-3 px-4 py-4 border border-slate-200 rounded-xl bg-slate-50'>
 				<InfoIcon className='flex-shrink-0 w-5 h-5' />
 				<p className='text-sm text-slate-600'>

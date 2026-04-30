@@ -43,10 +43,10 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 
 	if (isAspirationnal) {
 		accentBar = "from-amber-400 to-orange-500";
-		headerBg = "bg-amber-600";
+		headerBg = "bg-gradient-to-br from-amber-500 to-orange-600";
 		statusBadge = (
 			<span className='inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 text-amber-800 border border-amber-300'>
-				<StarIcon className='w-3.5 h-3.5' /> Dream Match
+				<StarIcon className='w-3.5 h-3.5' /> Ambitious
 			</span>
 		);
 	} else if (isEligible) {
@@ -66,6 +66,9 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 			</span>
 		);
 	}
+
+	// Z-score gap info for aspirational courses
+	const zscoreGap = course.zscore_gap;
 
 	return (
 		<div
@@ -95,6 +98,25 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 
 			{/* Card body */}
 			<div className='flex flex-col flex-1 p-5 space-y-4'>
+				{/* Z-Score gap — aspirational courses */}
+				{isAspirationnal && zscoreGap && (
+					<div className='flex items-center gap-3 p-3 border rounded-xl bg-amber-50 border-amber-200'>
+						<div className='flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-lg bg-amber-100 text-amber-700'>
+							<StarIcon className='w-4 h-4' />
+						</div>
+						<div className='text-sm'>
+							<p className='font-bold text-amber-800'>
+								Your Z-Score: {Number(zscoreGap.student_zscore).toFixed(4)} &nbsp;|&nbsp; Required:{" "}
+								{Number(zscoreGap.required_cutoff).toFixed(4)}
+							</p>
+							<p className='text-amber-600 text-xs mt-0.5'>
+								Gap: {(Number(zscoreGap.required_cutoff) - Number(zscoreGap.student_zscore)).toFixed(4)} — keep
+								striving!
+							</p>
+						</div>
+					</div>
+				)}
+
 				{/* Universities */}
 				{universities.length > 0 && (
 					<div>

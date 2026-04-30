@@ -42,6 +42,7 @@ export default function ALWizardFlow() {
 	const [loading, setLoading] = useState(false);
 	const [results, setResults] = useState(null);
 	const [error, setError] = useState("");
+	const [filter, setFilter] = useState("all");
 
 	// Stepper display: while loading show step 3 as active; on results mark all done (step 4)
 	const progressDisplayStep =
@@ -99,14 +100,16 @@ export default function ALWizardFlow() {
 					stream: stream?.backendName || formData.stream,
 					subjects: formData.subjects.length > 0 ? formData.subjects : ["All"],
 					zscore: formData.zscore !== "" ? Number(formData.zscore) : null,
-					interests: formData.interests || "General university studies",
+					interests: formData.interests.trim() || "",
 				},
 				district: formData.district,
 				max_results: maxResults,
+				above_score_count: 50,
 			};
 
 			const data = await fetchDegreeRecommendations(payload);
 			setResults(data);
+			setFilter("all");
 			setCurrentStep(3);
 			window.scrollTo(0, 0);
 		} catch (err) {
@@ -141,13 +144,24 @@ export default function ALWizardFlow() {
 				/>
 			);
 
-		if (currentStep === 3)
+		if (currentStep === 3) {
+			const eligible = results?.eligible_recommendations || [];
+			const aspirational = results?.above_score_recommendations || [];
+			const hasZscore = formData.zscore !== "";
+
+			const allResults = [...eligible, ...aspirational];
+
+			const filtered =
+				filter === "eligible" ? eligible
+				: filter === "aspirational" ? aspirational
+				: allResults.sort((a, b) => (b.score || 0) - (a.score || 0));
+
 			return (
 				<div className='max-w-6xl px-6 py-8 mx-auto space-y-8'>
 					{/* Profile summary */}
 					<ALResultsSummary formData={formData} />
 
-					{Array.isArray(results) && results.length > 0 ?
+					{allResults.length > 0 ?
 						<>
 							{/* Results banner */}
 							<div className='relative p-6 overflow-hidden border border-blue-200 shadow-lg bg-gradient-to-br from-blue-700 to-indigo-700 rounded-3xl'>
@@ -160,7 +174,9 @@ export default function ALWizardFlow() {
 									<div>
 										<p className='text-xs font-bold tracking-widest uppercase text-blue-200 mb-0.5'>Results Ready</p>
 										<h3 className='text-2xl font-extrabold text-white'>
-											{results.length} Degree{results.length !== 1 ? "s" : ""} Found
+											{eligible.length} Eligible
+											{aspirational.length > 0 ? ` + ${aspirational.length} Ambitious` : ""} Degree
+											{allResults.length !== 1 ? "s" : ""}
 										</h3>
 									</div>
 									{formData.stream && (
@@ -171,14 +187,63 @@ export default function ALWizardFlow() {
 								</div>
 							</div>
 
+							{/* Filter toggle — only show when there are aspirational courses */}
+							{hasZscore && aspirational.length > 0 && (
+								<div className='flex items-center gap-2 p-1.5 bg-white border border-blue-100 shadow-sm rounded-2xl w-fit'>
+									{[
+										{ key: "all", label: `All (${allResults.length})` },
+										{ key: "eligible", label: `Eligible (${eligible.length})` },
+										{ key: "aspirational", label: `Ambitious (${aspirational.length})` },
+									].map((opt) => (
+										<button
+											key={opt.key}
+											onClick={() => setFilter(opt.key)}
+											className={`px-4 py-2 text-sm font-bold rounded-xl transition-all duration-200 ${
+												filter === opt.key ?
+													opt.key === "aspirational" ?
+														"bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md"
+													:	"bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md"
+												:	"text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+											}`}>
+											{opt.label}
+										</button>
+									))}
+								</div>
+							)}
+
 							{/* Degree list */}
 							<div className='flex flex-col gap-4'>
-								{results
-									.sort((a, b) => (b.score || 0) - (a.score || 0))
+								{filtered
+									.sort((a, b) => {
+										// Eligible first, then aspirational
+										if (filter === "all") {
+											const aElig = a.eligibility !== false ? 1 : 0;
+											const bElig = b.eligibility !== false ? 1 : 0;
+											if (aElig !== bElig) return bElig - aElig;
+										}
+										return (b.score || 0) - (a.score || 0);
+									})
 									.map((course, idx) => (
-										<CourseCard key={idx} course={course} isEligible={course.eligibility !== false} />
+										<CourseCard
+											key={`${course.course_code}-${idx}`}
+											course={course}
+											isEligible={course.eligibility !== false}
+											isAspirationnal={course.aspirational === true}
+										/>
 									))}
 							</div>
+
+							{/* Filter empty state */}
+							{filtered.length === 0 && (
+								<div className='py-12 text-center text-slate-500'>
+									<p className='font-semibold'>No {filter} degrees found.</p>
+									<button
+										onClick={() => setFilter("all")}
+										className='mt-2 text-sm font-bold text-blue-600 underline hover:text-blue-800'>
+										Show all results
+									</button>
+								</div>
+							)}
 						</>
 					:	/* Empty state */
 						<div className='flex flex-col items-center py-16 text-center border-2 border-blue-200 border-dashed bg-blue-50/40 rounded-3xl'>
@@ -186,8 +251,9 @@ export default function ALWizardFlow() {
 								<GraduationIcon />
 							</div>
 							<h4 className='mb-2 text-lg font-bold text-slate-800'>No Results Found</h4>
-							<p className='max-w-sm mb-6 text-sm text-slate-500'>
-								We couldn't find any degrees matching your criteria. Try adjusting your stream, subjects, or Z-score.
+							<p className='max-w-md mb-6 text-sm leading-relaxed text-slate-600'>
+								{results?.summary?.global_explanation ||
+									"We couldn't find any degrees matching your criteria. Try adjusting your stream, subjects, or Z-score."}
 							</p>
 							<button
 								onClick={() => {
@@ -218,6 +284,7 @@ export default function ALWizardFlow() {
 					</div>
 				</div>
 			);
+		}
 	};
 
 	// ── Render ───────────────────────────────────────────────────────────────────
