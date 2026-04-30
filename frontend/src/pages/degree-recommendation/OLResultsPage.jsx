@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import CareerPathwayTree from "../../components/degree/CareerPathwayTree";
+import { RefreshIcon } from "../../components/ui/DegreeIcons";
 
 // Inline SVG Icons
 const ArrowLeftIcon = () => (
@@ -25,16 +26,6 @@ const ClipboardIcon = () => (
 			strokeLinecap='round'
 			strokeLinejoin='round'
 			d='M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z'
-		/>
-	</svg>
-);
-
-const RefreshIcon = () => (
-	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
-		<path
-			strokeLinecap='round'
-			strokeLinejoin='round'
-			d='M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99'
 		/>
 	</svg>
 );
@@ -81,6 +72,16 @@ export default function OLResultsPage() {
 		}))
 		.filter((o) => o.subject);
 
+	const GraduationIcon = () => (
+		<svg className='w-5 h-5' fill='none' stroke='currentColor' strokeWidth='1.8' viewBox='0 0 24 24'>
+			<path
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				d='M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5'
+			/>
+		</svg>
+	);
+
 	return (
 		<div className='min-h-screen pb-20 bg-slate-50'>
 			{/* Hero Header */}
@@ -89,7 +90,11 @@ export default function OLResultsPage() {
 				<div className='absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen' />
 				<div className='absolute bottom-0 left-10 w-[400px] h-[400px] bg-teal-400/15 rounded-full blur-[100px] pointer-events-none mix-blend-screen' />
 
-				<div className='relative z-10 max-w-5xl px-6 mx-auto mt-4'>
+				<div className='relative z-10 max-w-6xl px-6 mx-auto'>
+					<div className='inline-flex items-center gap-2 px-4 py-1.5 mb-4 text-xs font-bold tracking-widest uppercase rounded-full bg-white/10 text-emerald-50 border border-emerald-400/40'>
+						<GraduationIcon />
+						<span>O/L Education Explorer</span>
+					</div>
 					<h1 className='mb-4 text-4xl font-extrabold tracking-tight text-white sm:text-5xl'>
 						Your Career{" "}
 						<span className='text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-teal-300'>
@@ -103,7 +108,7 @@ export default function OLResultsPage() {
 			</div>
 
 			{/* Main Content */}
-			<div className='relative z-20 px-6 mx-auto -mt-16 max-w-7xl'>
+			<div className='relative z-20 max-w-6xl px-6 mx-auto -mt-16'>
 				{/* User Input Summary Card */}
 				<div className='p-6 mb-8 bg-white border border-green-100 shadow-xl rounded-3xl'>
 					<div className='flex flex-wrap items-start gap-8'>
@@ -179,7 +184,7 @@ export default function OLResultsPage() {
 							<button
 								onClick={() => navigate("/degree-recommendations/all-students")}
 								className='inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold transition-all border text-emerald-700 border-emerald-200 rounded-xl bg-emerald-50 hover:bg-emerald-100 hover:shadow-md'>
-								<RefreshIcon /> Try Again
+								<RefreshIcon className='w-4 h-4' /> Try Again
 							</button>
 						</div>
 					</div>
@@ -193,7 +198,7 @@ export default function OLResultsPage() {
 					<button
 						onClick={() => navigate("/degree-recommendations/all-students")}
 						className='inline-flex items-center gap-2 px-8 py-3.5 font-semibold transition-all bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl hover:shadow-lg hover:-translate-y-0.5 shadow-emerald-500/25'>
-						<RefreshIcon /> Explore Again
+						<RefreshIcon className='w-4 h-4' /> Explore Again
 					</button>
 					<button
 						onClick={() => navigate("/degree-recommendations")}

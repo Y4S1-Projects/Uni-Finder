@@ -7,6 +7,17 @@ from app.domain.course_recommendation import CourseRecommendation
 from app.core.paths import DATA_DIR
 
 
+def _normalize_code(code: str) -> str:
+    """Normalize course code to a canonical form for consistent lookup.
+    Both '99' and '099' → '99' (strip leading zeros but keep at least 1 digit).
+    """
+    code = str(code).strip()
+    try:
+        return str(int(code))  # "099" → "99", "001" → "1"
+    except ValueError:
+        return code
+
+
 class CourseRecommendationRepository:
     """
     Repository responsible for loading course recommendations with interest/skill metadata
@@ -41,9 +52,10 @@ class CourseRecommendationRepository:
                     course = CourseRecommendation.from_csv(normalized_row)
                     self._courses.append(course)
 
-                    # Index by course code for quick lookup
+                    # Index by normalized course code for consistent lookup
                     if course.course_code:
-                        self._courses_by_code[course.course_code] = course
+                        key = _normalize_code(course.course_code)
+                        self._courses_by_code[key] = course
                 except Exception as e:
                     # Log but don't fail on individual parsing errors
                     print(f"Warning: Failed to parse course row: {e}")
@@ -63,7 +75,7 @@ class CourseRecommendationRepository:
         """
         if not self._courses:
             self.load_courses()
-        return self._courses_by_code.get(course_code)
+        return self._courses_by_code.get(_normalize_code(course_code))
 
     def get_courses_by_stream(self, stream: str) -> List[CourseRecommendation]:
         """
@@ -78,11 +90,12 @@ class CourseRecommendationRepository:
     ) -> List[CourseRecommendation]:
         """
         Get multiple courses by their course codes.
+        Handles both zero-padded ('099') and unpadded ('99') codes.
         """
         if not self._courses:
             self.load_courses()
         return [
-            self._courses_by_code[code]
+            self._courses_by_code[_normalize_code(code)]
             for code in course_codes
-            if code in self._courses_by_code
+            if _normalize_code(code) in self._courses_by_code
         ]
