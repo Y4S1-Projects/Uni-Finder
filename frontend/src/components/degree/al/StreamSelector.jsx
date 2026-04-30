@@ -94,17 +94,20 @@ export default function StreamSelector({ formData, setFormData, subjectRuleError
 									:	"border-slate-200 bg-white hover:border-blue-300"
 								}
 							`}>
-							{/* Icon */}
-							<div
-								className={`inline-flex items-center justify-center w-10 h-10 mb-3 rounded-xl bg-gradient-to-br ${stream.accentFrom} ${stream.accentTo} text-white shadow-sm`}>
-								<StreamIcon iconKey={stream.icon} className='w-5 h-5' />
+							{/* Icon + name — horizontal */}
+							<div className='flex items-center gap-3'>
+								<div
+									className={`flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br ${stream.accentFrom} ${stream.accentTo} text-white shadow-sm`}>
+									<StreamIcon iconKey={stream.icon} className='w-5 h-5' />
+								</div>
+								<div>
+									<h3
+										className={`font-bold text-sm leading-tight mb-0.5 ${isSelected ? "text-blue-900" : "text-slate-800"}`}>
+										{stream.name}
+									</h3>
+									<p className='text-xs leading-snug text-slate-500'>{stream.tagline}</p>
+								</div>
 							</div>
-
-							<h3
-								className={`font-bold text-sm leading-tight mb-0.5 ${isSelected ? "text-blue-900" : "text-slate-800"}`}>
-								{stream.name}
-							</h3>
-							<p className='text-xs leading-snug text-slate-500'>{stream.tagline}</p>
 
 							{/* Selected check */}
 							{isSelected && (

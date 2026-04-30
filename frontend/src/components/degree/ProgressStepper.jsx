@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 
 const CheckIcon = () => (
 	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2.5' viewBox='0 0 24 24'>
@@ -15,13 +15,18 @@ const CheckIcon = () => (
 export default function ProgressStepper({ steps = [], currentStep = 0, theme = "emerald" }) {
 	const active =
 		theme === "blue" ?
-			"bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-xl scale-105 border-2 border-blue-300 ring-2 ring-blue-300/60"
-		:	"bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-xl scale-105 border-2 border-emerald-200 ring-2 ring-emerald-200/70";
+			"bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-xl scale-110 border-2 outline-2 border-white outline outline-[3px] outline-blue-300 outline-offset-2"
+		:	"bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-xl scale-110 border-2 outline-2 border-white outline outline-[3px] outline-emerald-300 outline-offset-2";
 
 	const done =
 		theme === "blue" ?
-			"bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg scale-100 border-2 border-blue-300"
-		:	"bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-lg scale-100 border-2 border-emerald-200";
+			"bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg scale-100 outline outline-2 outline-white outline-offset-2"
+		:	"bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-lg scale-100 outline outline-2 outline-white outline-offset-2";
+
+	const upcoming =
+		theme === "blue" ?
+			"bg-white/10 border border-blue-300/40 text-white/50 scale-95 outline outline-2 outline-blue-300/50 outline-offset-2"
+		:	"bg-white/10 border border-emerald-300/40 text-white/50 scale-95 outline outline-2 outline-emerald-300/50 outline-offset-2";
 
 	const progressLine =
 		theme === "blue" ?
@@ -42,7 +47,7 @@ export default function ProgressStepper({ steps = [], currentStep = 0, theme = "
 									${
 										index < currentStep ? done
 										: index === currentStep ? active
-										: "bg-white border-2 border-gray-300 text-gray-500 shadow-sm scale-95"
+										: upcoming
 									}
 								`}>
 								{index < currentStep ?

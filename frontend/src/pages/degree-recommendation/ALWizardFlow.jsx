@@ -176,54 +176,76 @@ export default function ALWizardFlow() {
 
 		if (currentStep === 3)
 			return (
-				<div className='max-w-6xl px-6 py-8 mx-auto'>
+				<div className='max-w-6xl px-6 py-8 mx-auto space-y-8'>
+					{/* Profile summary */}
 					<ALResultsSummary formData={formData} />
 
 					{Array.isArray(results) && results.length > 0 ?
-						<div className='space-y-4'>
-							{/* Results header */}
-							<div className='flex items-center gap-3 mb-2'>
-								<div className='flex items-center justify-center w-8 h-8 text-white bg-blue-600 shadow-sm rounded-xl'>
-									<GraduationIcon />
+						<>
+							{/* Results banner */}
+							<div className='relative p-6 overflow-hidden border border-blue-200 shadow-lg bg-gradient-to-br from-blue-700 to-indigo-700 rounded-3xl'>
+								<div className='absolute top-0 right-0 w-48 h-48 rounded-full pointer-events-none bg-cyan-400/20 blur-3xl' />
+								<div className='absolute bottom-0 left-0 w-32 h-32 rounded-full pointer-events-none bg-indigo-400/20 blur-3xl' />
+								<div className='relative z-10 flex flex-wrap items-center gap-4'>
+									<div className='flex items-center justify-center w-12 h-12 text-blue-700 bg-white shadow-md rounded-2xl'>
+										<GraduationIcon />
+									</div>
+									<div>
+										<p className='text-xs font-bold tracking-widest uppercase text-blue-200 mb-0.5'>Results Ready</p>
+										<h3 className='text-2xl font-extrabold text-white'>
+											{results.length} Degree{results.length !== 1 ? "s" : ""} Found
+										</h3>
+									</div>
+									{formData.stream && (
+										<div className='flex-shrink-0 px-4 py-2 ml-auto text-sm font-semibold text-white border rounded-2xl bg-white/15 border-white/25'>
+											{formData.stream}
+										</div>
+									)}
 								</div>
-								<h3 className='text-xl font-extrabold text-slate-900'>
-									Recommended Degrees <span className='text-base font-semibold text-slate-400'>({results.length})</span>
-								</h3>
 							</div>
-							<div className='grid gap-4'>
+
+							{/* Degree list */}
+							<div className='flex flex-col gap-4'>
 								{results
 									.sort((a, b) => (b.score || 0) - (a.score || 0))
 									.map((course, idx) => (
 										<CourseCard key={idx} course={course} isEligible={course.eligibility !== false} />
 									))}
 							</div>
-						</div>
-					:	<div className='p-8 text-center border-2 border-blue-100 bg-blue-50/40 rounded-3xl'>
-							<p className='text-slate-600'>No recommendations found for your criteria. Try adjusting your inputs.</p>
+						</>
+					:	/* Empty state */
+						<div className='flex flex-col items-center py-16 text-center border-2 border-blue-200 border-dashed bg-blue-50/40 rounded-3xl'>
+							<div className='flex items-center justify-center w-16 h-16 mb-4 text-blue-400 bg-blue-100 rounded-2xl'>
+								<GraduationIcon />
+							</div>
+							<h4 className='mb-2 text-lg font-bold text-slate-800'>No Results Found</h4>
+							<p className='max-w-sm mb-6 text-sm text-slate-500'>
+								We couldn't find any degrees matching your criteria. Try adjusting your stream, subjects, or Z-score.
+							</p>
 							<button
 								onClick={() => {
 									setResults(null);
 									setCurrentStep(0);
 								}}
-								className='inline-flex items-center gap-2 px-5 py-2.5 mt-4 text-sm font-semibold text-white bg-blue-600 rounded-xl hover:bg-blue-700 transition-colors'>
+								className='inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white transition-all bg-blue-600 rounded-2xl hover:bg-blue-700 hover:shadow-lg'>
 								<ArrowLeftIcon /> Try Again
 							</button>
 						</div>
 					}
 
 					{/* Footer actions */}
-					<div className='flex flex-wrap items-center justify-center gap-4 mt-12'>
+					<div className='flex flex-wrap items-center justify-center gap-4 pt-6 border-t border-slate-100'>
 						<button
 							onClick={() => {
 								setResults(null);
 								setCurrentStep(0);
 							}}
-							className='inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-blue-700 transition-all border-2 border-blue-200 rounded-2xl bg-blue-50 hover:bg-blue-100 hover:shadow-md'>
+							className='inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-blue-700 transition-all border-2 border-blue-200 rounded-2xl bg-blue-50 hover:bg-blue-100 hover:shadow-md'>
 							<ArrowLeftIcon /> Search Again
 						</button>
 						<button
 							onClick={() => navigate("/degree-recommendations")}
-							className='inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold transition-all bg-white border-2 text-slate-600 border-slate-200 rounded-2xl hover:bg-slate-50 hover:shadow-md'>
+							className='inline-flex items-center gap-2 px-6 py-3 text-sm font-bold transition-all bg-white border-2 text-slate-600 border-slate-200 rounded-2xl hover:bg-slate-50 hover:shadow-md'>
 							<HomeIcon /> Main Menu
 						</button>
 					</div>
@@ -252,7 +274,7 @@ export default function ALWizardFlow() {
 						</span>
 					</h1>
 					<p className='max-w-xl mb-8 text-lg leading-relaxed text-blue-100/80'>
-						Fill in your details step by step. Optional fields can be skipped — we'll find the best matches
+						Fill in your details step by step. Optional fields can be skipped, We'll find the best matches
 						automatically.
 					</p>
 					<ProgressStepper steps={STEPS} currentStep={progressDisplayStep} theme='blue' />

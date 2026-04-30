@@ -10,14 +10,6 @@ const UserIcon = () => (
 	</svg>
 );
 
-const Badge = ({ label, value, colorClass }) =>
-	value ?
-		<span
-			className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg border ${colorClass}`}>
-			{label}: <span className='font-extrabold'>{value}</span>
-		</span>
-	:	null;
-
 /**
  * ALResultsSummary — shown at top of Step 3 results.
  * Displays the user's inputs as a clean summary card.
@@ -26,12 +18,14 @@ export default function ALResultsSummary({ formData }) {
 	const { stream, subjects, district, zscore, interests } = formData;
 
 	return (
-		<div className='p-6 mb-8 bg-white border-2 border-blue-100 shadow-lg rounded-3xl'>
-			<div className='flex items-center gap-2 mb-4'>
-				<div className='p-1.5 rounded-lg bg-blue-100 text-blue-600'>
+		<div className='p-6 bg-white border-2 border-blue-100 shadow-lg rounded-3xl'>
+			<div className='flex flex-row items-center gap-2 mb-2'>
+				<div className='flex items-center justify-center w-8 h-8 text-blue-600 bg-blue-100 rounded-lg aspect-square shrink-0'>
 					<UserIcon />
 				</div>
-				<p className='text-xs font-bold tracking-widest text-blue-600 uppercase'>Your Profile Summary</p>
+				<div className='flex flex-col '>
+					<p className='pt-3 text-base font-bold tracking-widest text-blue-600 uppercase'>Your Profile Summary</p>
+				</div>
 			</div>
 
 			<div className='flex flex-wrap gap-6'>

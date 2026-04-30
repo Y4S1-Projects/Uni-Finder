@@ -1,221 +1,289 @@
 import React, { useState } from "react";
-import {
-	FaUniversity,
-	FaCheckCircle,
-	FaLock,
-	FaAward,
-	FaBriefcase,
-	FaClock,
-	FaBuilding,
-	FaChevronDown,
-	FaBook,
-	FaFlask,
-	FaGraduationCap,
-} from "react-icons/fa";
 import AIExplanationBox from "./AIExplanationBox";
 
+// ── Inline SVG icons ──────────────────────────────────────────────────────────
+const CheckIcon = () => (
+	<svg className='w-3.5 h-3.5' fill='none' stroke='currentColor' strokeWidth='2.5' viewBox='0 0 24 24'>
+		<path strokeLinecap='round' strokeLinejoin='round' d='M4.5 12.75l6 6 9-13.5' />
+	</svg>
+);
+const LockIcon = () => (
+	<svg className='w-3.5 h-3.5' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z'
+		/>
+	</svg>
+);
+const StarIcon = () => (
+	<svg className='w-3.5 h-3.5' fill='currentColor' viewBox='0 0 24 24'>
+		<path d='M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.499Z' />
+	</svg>
+);
+const UniversityIcon = () => (
+	<svg className='w-3 h-3' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z'
+		/>
+	</svg>
+);
+const BuildingIcon = () => (
+	<svg className='w-3 h-3' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21'
+		/>
+	</svg>
+);
+const BriefcaseIcon = () => (
+	<svg className='w-3 h-3' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0M12 12.75h.008v.008H12v-.008Z'
+		/>
+	</svg>
+);
+const ClockIcon = () => (
+	<svg className='w-3 h-3' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path strokeLinecap='round' strokeLinejoin='round' d='M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
+	</svg>
+);
+const GraduationIcon = () => (
+	<svg className='w-3 h-3' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5'
+		/>
+	</svg>
+);
+const BookIcon = () => (
+	<svg className='w-3 h-3' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25'
+		/>
+	</svg>
+);
+const FlaskIcon = () => (
+	<svg className='w-3 h-3' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15M14.25 3.104c.251.023.501.05.75.082M19.8 15a2.25 2.25 0 0 1 .45 1.319c0 1.305-1.044 2.381-2.36 2.381H6.11c-1.316 0-2.36-1.076-2.36-2.381 0-.483.153-.93.45-1.319'
+		/>
+	</svg>
+);
+const ChevronDown = () => (
+	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2.5' viewBox='0 0 24 24'>
+		<path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
+	</svg>
+);
+
+// ── Score ring helper ─────────────────────────────────────────────────────────
+function ScoreRing({ score }) {
+	const pct = Math.round(score ?? 0);
+	const color =
+		pct >= 75 ? "text-emerald-600"
+		: pct >= 50 ? "text-blue-600"
+		: "text-slate-400";
+	return (
+		<div
+			className={`flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full border-4 border-current ${color} bg-white shadow-sm`}>
+			<span className='text-base font-extrabold leading-none'>{pct}</span>
+			<span className='text-[9px] font-bold leading-none opacity-70'>%</span>
+		</div>
+	);
+}
+
+// ── Main component ────────────────────────────────────────────────────────────
 export default function CourseCard({ course, isEligible = true, isAspirationnal = false, olMarks = null }) {
 	const [expanded, setExpanded] = useState(false);
 
 	const courseName = course.course_name || course.degree_name || "(Unnamed Degree)";
 	const universities = Array.isArray(course.universities) ? course.universities : [];
+	const score = course.score ?? course.match_score_percentage ?? null;
 
-	// Determine Card Styling & Badges based on status
-	let cardStyle = "bg-white border-slate-200 hover:border-blue-400 shadow-md";
-	let badgeStyle = "bg-blue-50 border-blue-200 text-blue-800 text-blue-600";
-	let accentColor = "from-blue-400 to-blue-500";
-	let statusBadge = null;
+	// ── Card theme by status ─────────────────────────────────────────────────
+	let accentBar, headerBg, statusBadge;
 
 	if (isAspirationnal) {
-		cardStyle = "bg-gradient-to-br from-amber-50 to-orange-50 border-amber-300 hover:border-amber-400 shadow-md";
-		badgeStyle = "bg-amber-100 border-amber-300 text-amber-900 text-amber-700";
-		accentColor = "from-amber-400 to-orange-500";
+		accentBar = "from-amber-400 to-orange-500";
+		headerBg = "bg-amber-600";
 		statusBadge = (
-			<div
-				className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${badgeStyle} text-xs font-bold tracking-wide uppercase shadow-sm`}>
-				<FaAward className='text-lg' />
-				Dream Path Match
-			</div>
+			<span className='inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg bg-amber-100 text-amber-800 border border-amber-300'>
+				<StarIcon /> Dream Match
+			</span>
 		);
 	} else if (isEligible) {
-		cardStyle = "bg-gradient-to-br from-emerald-50 to-teal-50 border-emerald-300 hover:border-emerald-400 shadow-md";
-		badgeStyle = "bg-emerald-100 border-emerald-300 text-emerald-900 text-emerald-700";
-		accentColor = "from-emerald-400 to-teal-500";
+		accentBar = "from-blue-500 via-indigo-500 to-cyan-400";
+		headerBg = "bg-gradient-to-br from-blue-500 to-indigo-700";
 		statusBadge = (
-			<div
-				className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${badgeStyle} text-xs font-bold tracking-wide uppercase shadow-sm`}>
-				<FaCheckCircle className='text-lg' />
-				Eligible
-			</div>
+			<span className='inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg bg-blue-100 text-blue-800 border border-blue-300'>
+				<CheckIcon /> Eligible
+			</span>
 		);
 	} else {
-		cardStyle =
-			"bg-gradient-to-br from-slate-50 to-gray-50 border-slate-300 hover:border-slate-400 shadow-sm opacity-85 hover:opacity-95";
-		badgeStyle = "bg-slate-200 border-slate-300 text-slate-700 text-slate-600";
-		accentColor = "from-slate-400 to-slate-500";
+		accentBar = "from-slate-400 to-slate-500";
+		headerBg = "bg-slate-600";
 		statusBadge = (
-			<div
-				className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border ${badgeStyle} text-xs font-bold tracking-wide uppercase shadow-sm`}>
-				<FaLock className='text-lg' />
-				Requires Higher Z-Score
-			</div>
+			<span className='inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 border border-slate-300'>
+				<LockIcon /> Higher Z-Score Needed
+			</span>
 		);
 	}
 
 	return (
 		<div
 			onClick={() => setExpanded(!expanded)}
-			className={`relative p-0 rounded-2xl border transition-all duration-300 flex flex-col h-full overflow-hidden cursor-pointer ${
-				expanded ? "hover:shadow-2xl" : "hover:-translate-y-1 hover:shadow-2xl"
-			} ${cardStyle}`}>
-			{/* Top Accent Bar */}
-			<div className={`h-1 bg-gradient-to-r ${accentColor}`}></div>
+			className={`group relative flex flex-col overflow-hidden border rounded-3xl transition-all duration-300 cursor-pointer bg-white shadow-md
+				${
+					isEligible ? "border-blue-100 hover:border-blue-300 hover:shadow-xl hover:-translate-y-1"
+					: isAspirationnal ? "border-amber-200 hover:border-amber-400 hover:shadow-xl hover:-translate-y-1"
+					: "border-slate-200 hover:border-slate-300 hover:shadow-md opacity-85 hover:opacity-100"
+				}`}>
+			{/* Top accent bar */}
+			<div className={`h-1.5 bg-gradient-to-r ${accentBar}`} />
 
-			<div className='flex flex-col h-full p-6'>
-				<div className='flex items-start justify-between gap-4 mb-3'>
-					{/* Title */}
-					<h3 className='flex-1 text-xl font-extrabold leading-tight tracking-tight transition-colors md:text-2xl text-slate-900 hover:text-blue-600'>
-						{courseName}
-					</h3>
-					<div className='flex-shrink-0'>{statusBadge}</div>
+			{/* Card header */}
+			<div className={`relative px-6 py-4 ${headerBg}`}>
+				{/* Corner blob */}
+				<div className='absolute top-0 right-0 w-24 h-24 rounded-full pointer-events-none bg-white/10 blur-2xl' />
+
+				<div className='relative z-10 flex items-start justify-between gap-3'>
+					<div className='flex-1 min-w-0'>
+						<h3 className='text-lg font-extrabold leading-snug text-white'>{courseName}</h3>
+					</div>
+					<div className='flex flex-col items-end flex-shrink-0 gap-2'>
+						{score !== null && <ScoreRing score={score} />}
+					</div>
 				</div>
 
-				{/* Universities + Metadata Tags */}
-				{(universities.length > 0 ||
-					course.industry ||
-					course.job_role ||
-					course.duration ||
-					course.faculty_department) && (
-					<div className='grid grid-cols-1 gap-4 pb-3 mb-3 border-b border-slate-100 md:grid-cols-2'>
-						{universities.length > 0 && (
-							<div>
-								<p className='mb-2 text-xs font-bold tracking-wider uppercase text-slate-500'>
-									<FaUniversity className='inline mr-1.5' />
-									Offering Universities
-								</p>
-								<div className='flex flex-wrap gap-2'>
-									{universities.map((uni, idx) => (
-										<span
-											key={idx}
-											className='inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-full bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 transition-colors'>
-											{uni}
-										</span>
-									))}
-								</div>
-							</div>
-						)}
+				{/* Status badge */}
+				<div className='relative z-10 -mt-2'>{statusBadge}</div>
+			</div>
 
-						{(course.industry || course.job_role || course.duration || course.faculty_department) && (
-							<div>
-								<p className='mb-2 text-xs font-bold tracking-wider uppercase text-slate-500'>Details</p>
-								<div className='flex flex-wrap gap-2'>
-									{course.faculty_department && (
-										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200 hover:bg-indigo-100 transition-colors'>
-											<FaBuilding className='text-indigo-500' />
-											{course.faculty_department}
-										</span>
-									)}
-									{course.industry && (
-										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 transition-colors'>
-											<FaBuilding className='text-purple-500' />
-											{course.industry}
-										</span>
-									)}
-									{course.job_role && (
-										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 hover:bg-cyan-100 transition-colors'>
-											<FaBriefcase className='text-cyan-500' />
-											{course.job_role}
-										</span>
-									)}
-									{course.duration && (
-										<span className='inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg bg-orange-50 text-orange-700 border border-orange-200 hover:bg-orange-100 transition-colors'>
-											<FaClock className='text-orange-500' />
-											{course.duration}
-										</span>
-									)}
-								</div>
-							</div>
+			{/* Card body */}
+			<div className='flex flex-col flex-1 p-5 space-y-4'>
+				{/* Universities */}
+				{universities.length > 0 && (
+					<div>
+						<p className='flex items-center gap-1.5 mb-2 text-xs font-bold tracking-widest uppercase text-blue-500'>
+							<UniversityIcon /> Offering Universities
+						</p>
+						<div className='flex flex-wrap gap-1.5'>
+							{universities.map((uni, i) => (
+								<span
+									key={i}
+									className='inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-blue-50 text-blue-800 border border-blue-200 hover:bg-blue-100 transition-colors'>
+									<UniversityIcon />
+									{uni}
+								</span>
+							))}
+						</div>
+					</div>
+				)}
+
+				{/* Metadata tags */}
+				{(course.faculty_department || course.industry || course.job_role || course.duration) && (
+					<div className='flex flex-wrap gap-1.5'>
+						{course.faculty_department && (
+							<span className='inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200'>
+								<BuildingIcon />
+								{course.faculty_department}
+							</span>
+						)}
+						{course.industry && (
+							<span className='inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200'>
+								<BuildingIcon />
+								{course.industry}
+							</span>
+						)}
+						{course.job_role && (
+							<span className='inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-sky-50 text-sky-700 border border-sky-200'>
+								<BriefcaseIcon />
+								{course.job_role}
+							</span>
+						)}
+						{course.duration && (
+							<span className='inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-slate-50 text-slate-600 border border-slate-200'>
+								<ClockIcon />
+								{course.duration}
+							</span>
 						)}
 					</div>
 				)}
 
-				{/* Expanded Content */}
+				{/* Expanded details */}
 				{expanded && (
-					<div className='pb-3 mb-3 space-y-3 duration-300 border-b border-slate-100 animate-in fade-in slide-in-from-top-2'>
-						{/* Degree Programme */}
+					<div className='pt-3 mt-1 space-y-3 duration-200 border-t border-slate-100 animate-in fade-in slide-in-from-top-2'>
 						{course.degree_programme && (
 							<div>
-								<p className='flex items-center gap-2 mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>
-									<FaGraduationCap /> Programme
+								<p className='flex items-center gap-1.5 mb-1 text-xs font-bold tracking-widest uppercase text-blue-500 pt-2'>
+									<GraduationIcon /> Programme
 								</p>
 								<p className='text-sm leading-relaxed text-slate-700'>{course.degree_programme}</p>
 							</div>
 						)}
-
-						{/* Subject Requirements */}
 						{(course.raw_subject_requirements || course.metadata?.raw_subject_requirements) && (
 							<div>
-								<p className='flex items-center gap-2 mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>
-									<FaBook /> Subject Requirements
+								<p className='flex items-center gap-1.5 mb-1 text-xs font-bold tracking-widest uppercase text-blue-500 pt-2'>
+									<BookIcon /> Subject Requirements
 								</p>
 								<p className='text-sm leading-relaxed text-slate-700'>
 									{course.raw_subject_requirements || course.metadata?.raw_subject_requirements}
 								</p>
 							</div>
 						)}
-
-						{/* Medium of Instruction */}
 						{course.medium_of_instruction && (
 							<div>
-								<p className='mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>Medium</p>
+								<p className='pt-2 mb-1 text-xs font-bold tracking-widest text-blue-500 uppercase'>Medium</p>
 								<p className='text-sm text-slate-700'>{course.medium_of_instruction}</p>
 							</div>
 						)}
-
-						{/* Practical Test */}
 						{course.practical_test !== undefined && (
 							<div>
-								<p className='flex items-center gap-2 mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>
-									<FaFlask /> Practical Test
+								<p className='flex items-center gap-1.5 mb-1 text-xs font-bold tracking-widest uppercase text-blue-500 pt-2'>
+									<FlaskIcon /> Practical Test
 								</p>
-								<p className='text-sm text-slate-700'>
-									{course.practical_test ? "Yes - Required" : "No - Not Required"}
-								</p>
+								<p className='text-sm text-slate-700'>{course.practical_test ? "Required" : "Not Required"}</p>
 							</div>
 						)}
-
-						{/* Proposed Intake */}
 						{course.proposed_intake && (
 							<div>
-								<p className='mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>Proposed Intake</p>
+								<p className='pt-2 mb-1 text-xs font-bold tracking-widest text-blue-500 uppercase'>Proposed Intake</p>
 								<p className='text-sm font-semibold text-slate-700'>{course.proposed_intake} students</p>
 							</div>
 						)}
-
-						{/* Notes */}
 						{course.notes && (
 							<div>
-								<p className='mb-1 text-xs font-bold tracking-wider uppercase text-slate-500'>Additional Notes</p>
-								<p className='text-sm italic leading-relaxed text-slate-700'>{course.notes}</p>
+								<p className='pt-2 mb-1 text-xs font-bold tracking-widest text-blue-500 uppercase'>Notes</p>
+								<p className='text-sm italic leading-relaxed text-slate-600'>{course.notes}</p>
 							</div>
 						)}
 					</div>
 				)}
 
-				{/* Explanation Box */}
+				{/* AI Explanation */}
 				{course.explanation && (
-					<div className='pt-3 mt-auto'>
+					<div className='pt-3 mt-auto mb-4'>
 						<AIExplanationBox explanation={course.explanation} olMarks={olMarks} />
 					</div>
 				)}
 
-				{/* Expand/Collapse Indicator */}
-				<div className='flex items-center justify-center pt-3 mt-3 border-t border-slate-100'>
-					<button className='flex items-center justify-center w-full gap-2 px-4 py-2 text-sm font-bold transition-all rounded-lg text-slate-600 bg-slate-50 hover:bg-slate-100 hover:gap-3'>
-						{expanded ? "Show Less" : "Show More Details"}
-						<FaChevronDown className={`text-xs transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} />
-					</button>
-				</div>
+				{/* Expand toggle */}
+				<button className='flex items-center justify-center w-full gap-2 px-4 py-2 mt-auto text-xs font-bold transition-all rounded-xl text-slate-500 bg-slate-50 hover:bg-slate-100 hover:text-slate-700 group-hover:bg-blue-50 group-hover:text-blue-600'>
+					{expanded ? "Show Less" : "Show More Details"}
+					<span className={`transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}>
+						<ChevronDown />
+					</span>
+				</button>
 			</div>
 		</div>
 	);
