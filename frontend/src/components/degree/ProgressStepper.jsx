@@ -1,4 +1,5 @@
 ﻿import React from "react";
+import PropTypes from "prop-types";
 
 const CheckIcon = () => (
 	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2.5' viewBox='0 0 24 24'>
@@ -13,42 +14,51 @@ const CheckIcon = () => (
  * @param {"emerald"|"blue"} theme  — default "emerald" (OL path), "blue" for AL path
  */
 export default function ProgressStepper({ steps = [], currentStep = 0, theme = "emerald" }) {
+	const isBlueTheme = theme === "blue";
 	const active =
-		theme === "blue" ?
+		isBlueTheme ?
 			"bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-xl scale-110 border-2 outline-2 border-white outline outline-[3px] outline-blue-300 outline-offset-2"
 		:	"bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-xl scale-110 border-2 outline-2 border-white outline outline-[3px] outline-emerald-300 outline-offset-2";
 
 	const done =
-		theme === "blue" ?
+		isBlueTheme ?
 			"bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg scale-100 outline outline-2 outline-white outline-offset-2"
 		:	"bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-lg scale-100 outline outline-2 outline-white outline-offset-2";
 
 	const upcoming =
-		theme === "blue" ?
+		isBlueTheme ?
 			"bg-white/10 border border-blue-300/40 text-white/50 scale-95 outline outline-2 outline-blue-300/50 outline-offset-2"
 		:	"bg-white/10 border border-emerald-300/40 text-white/50 scale-95 outline outline-2 outline-emerald-300/50 outline-offset-2";
 
 	const progressLine =
-		theme === "blue" ?
+		isBlueTheme ?
 			"bg-gradient-to-r from-blue-400 to-indigo-500 shadow-md"
 		:	"bg-gradient-to-r from-emerald-400 to-teal-500 shadow-md";
+
+	const getStepClassName = (index) => {
+		if (index < currentStep) return done;
+		if (index === currentStep) return active;
+		return upcoming;
+	};
+
+	const getLabelClassName = (index) => {
+		if (index === currentStep) return "text-white drop-shadow scale-105";
+		if (index < currentStep) return "text-white/90";
+		return "text-white/55";
+	};
 
 	return (
 		<div>
 			<div className='flex items-center justify-between'>
 				{steps.map((step, index) => (
-					<React.Fragment key={index}>
+					<React.Fragment key={`${step}-${index}`}>
 						<div className='relative flex flex-col items-center flex-1'>
 							{/* Step circle */}
 							<div
 								className={`
 									w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm
 									transition-all duration-300 ease-out mb-2 relative z-10
-									${
-										index < currentStep ? done
-										: index === currentStep ? active
-										: upcoming
-									}
+									${getStepClassName(index)}
 								`}>
 								{index < currentStep ?
 									<CheckIcon />
@@ -59,11 +69,7 @@ export default function ProgressStepper({ steps = [], currentStep = 0, theme = "
 							<p
 								className={`
 									text-[11px] leading-tight font-semibold text-center transition-all duration-300 px-1 max-w-[96px]
-									${
-										index === currentStep ? "text-white drop-shadow scale-105"
-										: index < currentStep ? "text-white/90"
-										: "text-white/55"
-									}
+									${getLabelClassName(index)}
 								`}>
 								{step}
 							</p>
@@ -87,3 +93,9 @@ export default function ProgressStepper({ steps = [], currentStep = 0, theme = "
 		</div>
 	);
 }
+
+ProgressStepper.propTypes = {
+	steps: PropTypes.arrayOf(PropTypes.string),
+	currentStep: PropTypes.number,
+	theme: PropTypes.oneOf(["emerald", "blue"]),
+};
