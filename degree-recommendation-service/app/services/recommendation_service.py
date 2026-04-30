@@ -66,3 +66,6 @@ class RecommendationService:
             max_results=max_results,
             above_score_count=above_score_count,
         )
+
+
+# note: the above code is a service layer that interfaces with the recommendation pipeline. It validates incoming student data and then calls the pipeline to get recommendations. The debug method allows for more detailed output, which can be useful for troubleshooting or understanding how recommendations are generated.
