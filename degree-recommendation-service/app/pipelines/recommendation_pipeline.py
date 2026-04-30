@@ -80,13 +80,17 @@ class RecommendationPipeline:
             # Keep: eligibility, aspirational, stream_required, score
 
         # Split back into eligible and aspirational
-        final_eligible = [item for item in all_recommendations if item.get("eligibility") is not False]
-        final_aspirational = [item for item in all_recommendations if item.get("aspirational") is True]
+        final_eligible = [
+            item for item in all_recommendations if item.get("eligibility") is not False
+        ]
+        final_aspirational = [
+            item for item in all_recommendations if item.get("aspirational") is True
+        ]
 
         return {
             "eligible_recommendations": final_eligible,
             "above_score_recommendations": final_aspirational,
-            "summary": debug.get("summary", {})
+            "summary": debug.get("summary", {}),
         }
 
     def recommend_debug(
@@ -165,8 +169,9 @@ class RecommendationPipeline:
                 continue
 
             if is_eligible:
-                score = self.ranking_engine.score(is_eligible, similarity)
-                debug_entry["score"] = score
+                # We use pure similarity * 100 so the UI Match Score truly reflects interest alignment.
+                # Since all courses in this list are eligible, the eligibility weight is redundant.
+                debug_entry["score"] = similarity * 100
                 eligible.append(debug_entry)
             else:
                 # Check if rejection was due to z-score (aspirational course)
@@ -177,8 +182,8 @@ class RecommendationPipeline:
                     and details.get("subjects_match")
                 ):
                     # This is a course the student could reach with higher z-score
-                    score = self.ranking_engine.score(False, similarity)
-                    debug_entry["score"] = score
+                    # Again, use pure similarity * 100 for the UI
+                    debug_entry["score"] = similarity * 100
                     debug_entry["aspirational"] = True
                     # Include Z-score gap info for frontend display
                     zscore_details = details.get("zscore_details", {})
@@ -216,7 +221,7 @@ class RecommendationPipeline:
                 "rejected_count": len(rejected),
             },
         }
-        
+
         # Add a global explanation if there are NO recommendations
         if len(eligible_recommendations) == 0 and len(above_score_recommendations) == 0:
             if has_interests:
@@ -235,7 +240,7 @@ class RecommendationPipeline:
                     f"Unfortunately, we couldn't find any state university degrees that strictly match your specific combination of A/L subjects in the {student.stream} stream. "
                     "Some degrees require a very specific combination of subjects (e.g., Chemistry AND Physics)."
                 )
-                
+
         return response
 
     # ------------------------------------------------------------------

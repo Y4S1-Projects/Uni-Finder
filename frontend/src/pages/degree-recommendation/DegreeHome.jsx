@@ -91,7 +91,7 @@ export default function OnboardingGateway() {
 									<CompassIcon className='text-white' />
 								</div>
 								<div className='px-3 py-1 text-xs font-bold border rounded-full bg-emerald-50 text-emerald-700 border-emerald-100'>
-									O/L Students
+									For O/L Students
 								</div>
 							</div>
 
@@ -140,7 +140,7 @@ export default function OnboardingGateway() {
 									<CapIcon className='text-white' />
 								</div>
 								<div className='px-3 py-1 text-xs font-bold text-blue-700 border border-blue-100 rounded-full bg-blue-50'>
-									A/L Students
+									For A/L Students
 								</div>
 							</div>
 
