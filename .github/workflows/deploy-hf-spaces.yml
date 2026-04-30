@@ -114,8 +114,10 @@ jobs:
           
           # Remove old root-level file references that were moved to docs/
           git rm --cached --force AI_BUDGET_OPTIMIZER_SUMMARY.md 2>/dev/null || true
+          git rm --cached --force AZURE_DEPLOYMENT_SETUP.md 2>/dev/null || true
           
-          git add --renormalize .
+          git add -A
+          git add --renormalize . 2>/dev/null || true
           if [ -f "backend/package-lock.json" ]; then
             git add -f backend/package-lock.json
           fi
