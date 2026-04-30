@@ -1,0 +1,2279 @@
+{
+	"019": {
+		"type": "ANY_SUBJECT"
+	},
+	"020": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			}
+		]
+	},
+	"041": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			}
+		]
+	},
+	"021": {
+		"type": "ANY_SUBJECT"
+	},
+	"029": {
+		"type": "ANY_SUBJECT"
+	},
+	"031": {
+		"type": "ANY_SUBJECT"
+	},
+	"063": {
+		"type": "ANY_SUBJECT"
+	},
+	"084": {
+		"type": "ANY_SUBJECT"
+	},
+	"105": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "english"
+			}
+		]
+	},
+	"112": {
+		"type": "ANY_SUBJECT"
+	},
+	"128": {
+		"type": "ANY_SUBJECT"
+	},
+	"068": {
+		"type": "ANY_SUBJECT"
+	},
+	"069": {
+		"type": "ANY_SUBJECT"
+	},
+	"071": {
+		"type": "ANY_SUBJECT"
+	},
+	"085": {
+		"type": "ANY_SUBJECT"
+	},
+	"072": {
+		"type": "ANY_SUBJECT"
+	},
+	"070": {
+		"type": "ANY_SUBJECT"
+	},
+	"016": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "accounting"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "MIN_COUNT",
+						"count": 2,
+						"operands": [
+							{
+								"type": "SUBJECT",
+								"name": "business studies"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "accounting"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "economics"
+							}
+						]
+					},
+					{
+						"type": "MIN_COUNT",
+						"count": 1,
+						"operands": [
+							{
+								"type": "SUBJECT",
+								"name": "agri sci"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "geography"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "business stats"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "german"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "combined mathematics"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "mathematics"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "history"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "political sci"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "english"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "logic & scientific method"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "french"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "ict"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"028": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "accounting"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					}
+				]
+			}
+		]
+	},
+	"017": {
+		"type": "ANY_SUBJECT"
+	},
+	"018": {
+		"type": "ANY_SUBJECT"
+	},
+	"022": {
+		"type": "ANY_SUBJECT"
+	},
+	"077": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "accounting"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "MIN_COUNT",
+						"count": 2,
+						"operands": [
+							{
+								"type": "SUBJECT",
+								"name": "business studies"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "accounting"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "economics"
+							}
+						]
+					},
+					{
+						"type": "MIN_COUNT",
+						"count": 1,
+						"operands": [
+							{
+								"type": "SUBJECT",
+								"name": "ict"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "combined mathematics"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "logic & scientific method"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "business stats"
+							},
+							{
+								"type": "SUBJECT",
+								"name": "physics"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"127": {
+		"type": "MIN_COUNT",
+		"count": 4,
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "business studies"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "business stats"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"133": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			}
+		]
+	},
+	"140": {
+		"type": "ANY_SUBJECT"
+	},
+	"001": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"002": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"003": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"039": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"004": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"005": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"035": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"032": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"033": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"036": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"006": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"007": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"050": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"037": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"051": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"052": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"053": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"054": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"058": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"062": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"055": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"086": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"087": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"093": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"094": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "technology"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"095": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "technology"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"067": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"073": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"088": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"115": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"116": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"118": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			}
+		]
+	},
+	"120": {
+		"type": "ANY_SUBJECT"
+	},
+	"129": {
+		"type": "ANY_SUBJECT"
+	},
+	"130": {
+		"type": "ANY_SUBJECT"
+	},
+	"138": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"083": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"008": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "combined mathematics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"009": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "combined mathematics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"010": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "combined mathematics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"057": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "combined mathematics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"013": {
+		"type": "MIN_COUNT",
+		"count": 2,
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"012": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "MIN_COUNT",
+				"count": 2,
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"015": {
+		"type": "MIN_COUNT",
+		"count": 3,
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"059": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "MIN_COUNT",
+				"count": 2,
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"060": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "MIN_COUNT",
+				"count": 2,
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"108": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "information & communication technology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"117": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "MIN_COUNT",
+				"count": 2,
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"119": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"136": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "MIN_COUNT",
+				"count": 2,
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"102": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "engineering technology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "science for technology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "geography"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "english"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"103": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "science for technology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biosystems technology"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "geography"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "english"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"104": {
+		"type": "MIN_COUNT",
+		"count": 4,
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "information & communication technology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "engineering technology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "science for technology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biosystems technology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"026": {
+		"type": "SUBJECT",
+		"name": "physics"
+	},
+	"027": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"011": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "business stats"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "accounting"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"014": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "combined mathematics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"030": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"023": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "geography"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"034": {
+		"type": "ANY_SUBJECT"
+	},
+	"097": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "geography"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			}
+		]
+	},
+	"024": {
+		"type": "ANY_SUBJECT"
+	},
+	"025": {
+		"type": "MIN_COUNT",
+		"count": 8,
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "business studies"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "political sci"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "history"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"056": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "combined mathematics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "accounting"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					}
+				]
+			},
+			{
+				"type": "MIN_COUNT",
+				"count": 2,
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "accounting"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					}
+				]
+			}
+		]
+	},
+	"079": {
+		"type": "ANY_SUBJECT"
+	},
+	"064": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"065": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"066": {
+		"type": "ANY_SUBJECT"
+	},
+	"075": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"076": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"090": {
+		"type": "ANY_SUBJECT"
+	},
+	"081": {
+		"type": "ANY_SUBJECT"
+	},
+	"082": {
+		"type": "ANY_SUBJECT"
+	},
+	"091": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "business stats"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "chemistry"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"092": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "business stats"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "economics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "geography"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "it"
+					}
+				]
+			}
+		]
+	},
+	"096": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"098": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "sinhala"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "tamil"
+			}
+		]
+	},
+	"100": {
+		"type": "ANY_SUBJECT"
+	},
+	"101": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "business studies"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "business stats"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "geography"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "biology"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"038": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"099": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"107": {
+		"type": "MIN_COUNT",
+		"count": 4,
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "business studies"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "physics"
+			}
+		]
+	},
+	"106": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"109": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "ict"
+			}
+		]
+	},
+	"110": {
+		"type": "AND",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "accounting"
+			},
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			},
+			{
+				"type": "OR",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "logic & scientific method"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "business studies"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "business stats"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "political sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "geography"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "agri sci"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "history"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "ict"
+					}
+				]
+			}
+		]
+	},
+	"111": {
+		"type": "ANY_SUBJECT"
+	},
+	"113": {
+		"type": "SUBJECT",
+		"name": "combined mathematics"
+	},
+	"114": {
+		"type": "ANY_SUBJECT"
+	},
+	"121": {
+		"type": "ANY_SUBJECT"
+	},
+	"122": {
+		"type": "ANY_SUBJECT"
+	},
+	"123": {
+		"type": "ANY_SUBJECT"
+	},
+	"124": {
+		"type": "ANY_SUBJECT"
+	},
+	"125": {
+		"type": "ANY_SUBJECT"
+	},
+	"126": {
+		"type": "ANY_SUBJECT"
+	},
+	"131": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "SUBJECT",
+				"name": "economics"
+			}
+		]
+	},
+	"132": {
+		"type": "ANY_SUBJECT"
+	},
+	"134": {
+		"type": "ANY_SUBJECT"
+	},
+	"135": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "SUBJECT",
+				"name": "agri sci"
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	},
+	"137": {
+		"type": "ANY_SUBJECT"
+	},
+	"139": {
+		"type": "OR",
+		"operands": [
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "biology"
+					}
+				]
+			},
+			{
+				"type": "AND",
+				"operands": [
+					{
+						"type": "SUBJECT",
+						"name": "chemistry"
+					},
+					{
+						"type": "SUBJECT",
+						"name": "physics"
+					}
+				]
+			}
+		]
+	}
+}

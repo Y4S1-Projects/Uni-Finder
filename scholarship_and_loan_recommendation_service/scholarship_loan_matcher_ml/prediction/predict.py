@@ -36,6 +36,13 @@ def run_prediction(profile: Dict[str, Any], top_n: int = 5) -> Dict[str, Any]:
 def _json_safe(obj):
     if obj is None:
         return None
+    # Handle numpy/pandas scalar types robustly (int64, float64, bool_, etc.)
+    try:
+        import numpy as np  # local import to avoid hard dependency at import time
+        if isinstance(obj, np.generic):
+            obj = obj.item()
+    except Exception:
+        pass
     if isinstance(obj, float):
         if obj != obj:  # NaN check
             return None
