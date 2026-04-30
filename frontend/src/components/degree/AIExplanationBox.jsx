@@ -1,100 +1,90 @@
 import React from "react";
-import { FaStar } from "react-icons/fa";
+
+const SparkleIcon = () => (
+	<svg className='w-6 h-6' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
+		<path
+			strokeLinecap='round'
+			strokeLinejoin='round'
+			d='M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z'
+		/>
+	</svg>
+);
+
+const KEYWORDS = [
+	"AI",
+	"interest",
+	"match",
+	"eligible",
+	"requires",
+	"perfect",
+	"ideal",
+	"stream",
+	"degree",
+	"career",
+	"skills",
+	"excellent",
+	"great",
+	"good",
+	"best",
+	"top",
+	"recommended",
+];
+
+function highlightText(text, extraKeywords = []) {
+	// Strip any existing HTML from the input first
+	const safe = text
+		.replace(/<[^>]*>/g, "")
+		.replace(/\s+/g, " ")
+		.trim();
+
+	const allKws = [...KEYWORDS, ...extraKeywords].filter(Boolean);
+	if (allKws.length === 0) return safe;
+
+	// Build ONE combined regex so each position is replaced at most once
+	// (avoids re-processing already-injected <strong> tags)
+	const escaped = allKws.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+	const combined = new RegExp(`\\b(${escaped.join("|")}s?)\\b`, "gi");
+
+	return safe.replace(
+		combined,
+		(m) => `<strong class="bg-blue-100 text-blue-800 px-1 py-0.5 rounded font-bold">${m}</strong>`,
+	);
+}
 
 export default function AIExplanationBox({ explanation = "", olMarks = null }) {
-	if (!explanation || explanation.trim().length === 0) {
-		return null;
-	}
+	if (!explanation || explanation.trim().length === 0) return null;
 
-	// Improved UX: Makes keywords look like they were highlighted with a marker pen
-	const highlightKeywords = (text) => {
-		const sanitizedText = text
-			.replace(/<[^>]*>/g, "")
-			.replace(/&lt;[^&]*&gt;/g, "")
-			.replace(/\s+/g, " ")
-			.trim();
-
-		// Base keywords to always highlight
-		let keywords = [
-			"AI",
-			"interest",
-			"match",
-			"eligible",
-			"requires",
-			"strong",
-			"perfect",
-			"ideal",
-			"stream",
-			"degree",
-			"career",
-			"skills",
-			"excellent",
-			"great",
-			"good",
-			"best",
-			"top",
-		];
-
-		// Add student's selected subject names to highlighted keywords
-		if (olMarks) {
-			if (olMarks.core) {
-				Object.keys(olMarks.core).forEach((key) => {
-					if (key !== "bucket_1_grade" && key !== "bucket_2_grade" && key !== "bucket_3_grade") {
-						const subjectName = key.replace(/_/g, " ");
-						keywords.push(subjectName);
-					}
-				});
-			}
-
-			// Add selected bucket subject names
-			if (olMarks.bucket_1) {
-				const bucketSubject = olMarks.bucket_1.replace(/_/g, " ");
-				keywords.push(bucketSubject);
-			}
-			if (olMarks.bucket_2) {
-				const bucketSubject = olMarks.bucket_2.replace(/_/g, " ");
-				keywords.push(bucketSubject);
-			}
-			if (olMarks.bucket_3) {
-				const bucketSubject = olMarks.bucket_3.replace(/_/g, " ");
-				keywords.push(bucketSubject);
-			}
-		}
-
-		let highlightedText = sanitizedText;
-
-		keywords.forEach((keyword) => {
-			const regex = new RegExp(`\\b(${keyword}s?)\\b`, "gi");
-			highlightedText = highlightedText.replace(
-				regex,
-				(match) =>
-					`<strong class="bg-gradient-to-r from-purple-200 to-pink-200 text-purple-900 px-2 py-0.5 rounded font-bold">${match}</strong>`,
-			);
+	// Extra keywords from student subjects
+	const extras = [];
+	if (olMarks?.core) {
+		Object.keys(olMarks.core).forEach((k) => {
+			if (!k.includes("bucket") && !k.includes("grade")) extras.push(k.replace(/_/g, " "));
 		});
-
-		return highlightedText;
-	};
+	}
+	["bucket_1", "bucket_2", "bucket_3"].forEach((b) => {
+		if (olMarks?.[b]) extras.push(olMarks[b].replace(/_/g, " "));
+	});
 
 	return (
-		<div className='relative p-4 overflow-hidden transition-all border border-purple-200 shadow-sm rounded-xl bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 hover:shadow-md'>
-			{/* Decorative gradient background elements */}
-			<div className='absolute w-20 h-20 bg-purple-300 rounded-full -top-6 -right-6 opacity-10 blur-xl'></div>
-			<div className='absolute w-20 h-20 bg-blue-300 rounded-full -bottom-6 -left-6 opacity-10 blur-xl'></div>
+		<div className='relative overflow-hidden border border-blue-200 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50'>
+			{/* Ambient orb */}
+			<div className='absolute w-16 h-16 rounded-full pointer-events-none -top-4 -right-4 bg-blue-300/20 blur-xl' />
 
-			<div className='relative flex items-start gap-3'>
-				{/* Icon Container */}
-				<div className='p-2.5 bg-gradient-to-br from-purple-400 to-indigo-500 rounded-lg shadow-md flex-shrink-0 mt-0.5'>
-					<FaStar className='text-sm text-white' />
+			{/* Top accent stripe */}
+			<div className='h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400' />
+
+			<div className='flex items-start gap-3 px-4 pt-3'>
+				{/* Icon */}
+				<div className='flex-shrink-0 px-2 py-2 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-sm mt-0.5'>
+					<SparkleIcon />
 				</div>
 
-				{/* Text Content */}
+				{/* Text */}
 				<div className='flex-1 min-w-0'>
-					<h4 className='text-xs font-bold uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-indigo-700 mb-1.5'>
-						✨ AI Insight
-					</h4>
+					<p className='mb-1.5 text-xs font-bold tracking-widest uppercase text-blue-600'>AI Insight</p>
 					<p
-						className='text-sm font-medium leading-relaxed text-slate-700'
-						dangerouslySetInnerHTML={{ __html: highlightKeywords(explanation) }}
+						className='text-sm leading-relaxed text-slate-700'
+						dangerouslySetInnerHTML={{ __html: highlightText(explanation, extras) }}
 					/>
 				</div>
 			</div>
