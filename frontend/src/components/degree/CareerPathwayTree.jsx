@@ -1,4 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+
+// ── Generic score badge with tooltip (Portal-based) ────────────────────────────────
+function ScoreTooltip({ label, title, desc, className = "" }) {
+	const [show, setShow] = useState(false);
+	const [pos, setPos] = useState({ top: 0, left: 0 });
+
+	const handleEnter = (e) => {
+		const rect = e.currentTarget.getBoundingClientRect();
+		// Centre the tooltip below the badge
+		setPos({
+			top: rect.bottom + window.scrollY + 10,
+			left: Math.min(
+				rect.left + window.scrollX,
+				window.innerWidth - 264 - 8, // keep within viewport
+			),
+		});
+		setShow(true);
+	};
+
+	const tooltip =
+		show ?
+			<div
+				style={{ position: "absolute", top: pos.top, left: pos.left, zIndex: 99999 }}
+				className='w-64 overflow-hidden text-left border shadow-2xl pointer-events-none rounded-xl border-emerald-400/30'>
+				{/* Header accent */}
+				<div className='h-1 bg-gradient-to-r from-teal-400 to-emerald-400' />
+				<div className='p-3 bg-gradient-to-br from-teal-900 via-emerald-900 to-teal-900'>
+					<p className='mb-1 text-xs font-bold tracking-wide text-emerald-200'>{title}</p>
+					<p className='text-xs leading-relaxed text-emerald-100/80'>{desc}</p>
+				</div>
+				<div className='absolute left-4 -top-1.5 w-3 h-3 bg-teal-900 rotate-45 border-l border-t border-emerald-400/30' />
+			</div>
+		:	null;
+
+	return (
+		<>
+			<div onMouseEnter={handleEnter} onMouseLeave={() => setShow(false)} className={`cursor-help ${className}`}>
+				{label}
+			</div>
+			{ReactDOM.createPortal(tooltip, document.body)}
+		</>
+	);
+}
 
 // Inline SVG Icons — Emerald/Teal themed, no external deps
 const GraduationIcon = () => (
@@ -184,19 +228,19 @@ export default function CareerPathwayTree({ treeData }) {
 					<>
 						{/* Best Choice highlight banner */}
 						{bestChoice && (
-							<div className='relative p-6 overflow-hidden border shadow-xl rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 border-amber-300'>
-								<div className='absolute top-0 right-0 w-40 h-40 rounded-full pointer-events-none bg-white/20 blur-2xl' />
-								<div className='relative z-10 flex flex-wrap items-center gap-4'>
-									<div className='flex items-center justify-center flex-shrink-0 w-12 h-12 bg-white/30 rounded-2xl text-amber-900'>
+							<div className='relative p-4 overflow-hidden border shadow-xl sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-400 border-amber-300'>
+								<div className='absolute top-0 right-0 w-24 h-24 rounded-full pointer-events-none sm:w-40 sm:h-40 bg-white/20 blur-2xl' />
+								<div className='relative z-10 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4'>
+									<div className='flex items-center justify-center flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-white/30 rounded-xl sm:rounded-2xl text-amber-900'>
 										<StarIcon />
 									</div>
-									<div className='flex-1'>
-										<p className='text-xs font-bold tracking-widest uppercase text-amber-900/70 mb-0.5'>
+									<div className='flex-1 min-w-0'>
+										<p className='text-[10px] sm:text-xs font-bold tracking-wider sm:tracking-widest uppercase text-amber-900/70 mb-0.5'>
 											AI Recommended — Best Choice
 										</p>
-										<p className='text-xl font-extrabold text-amber-900'>{bestChoice}</p>
+										<p className='text-lg font-extrabold break-words sm:text-xl text-amber-900'>{bestChoice}</p>
 									</div>
-									<div className='flex-shrink-0 px-4 py-2 text-sm font-bold border bg-amber-900/20 border-amber-900/30 rounded-2xl text-amber-900'>
+									<div className='flex-shrink-0 w-full sm:w-auto text-center sm:text-left px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-bold border bg-amber-900/20 border-amber-900/30 rounded-xl sm:rounded-2xl text-amber-900'>
 										Top Pick
 									</div>
 								</div>
@@ -205,20 +249,22 @@ export default function CareerPathwayTree({ treeData }) {
 						{/* Counselor panel — light card */}
 						<div className='relative overflow-hidden border-2 shadow-xl bg-emerald-200 border-emerald-200 rounded-3xl'>
 							{/* Top accent bar */}
-							<div className='h-2 bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-500' />
+							<div className='h-1 sm:h-2 bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-500' />
 							{/* Soft background tint */}
 							<div className='absolute inset-0 pointer-events-none bg-gradient-to-br from-emerald-50/60 to-teal-50/40' />
 
-							<div className='relative z-10 flex items-start gap-5 p-8'>
-								<div className='flex-shrink-0 p-3.5 rounded-2xl bg-white border border-emerald-200 text-emerald-700'>
-									<LightbulbIcon />
-								</div>
-								<div className='flex-1'>
-									<p className='mb-1 text-lg font-bold tracking-widest uppercase text-emerald-600'>
-										AI Counselor's Advice
-									</p>
+							<div className='relative z-10 p-4 sm:p-8'>
+								<div className='flex flex-col items-start gap-3'>
+									<div className='flex items-center gap-3'>
+										<div className='p-2.5 sm:p-3.5 rounded-2xl bg-white border border-emerald-200 text-emerald-700'>
+											<LightbulbIcon className='w-5 h-5 sm:w-6 sm:h-6' />
+										</div>
+										<p className='mb-0 text-base font-bold tracking-widest uppercase sm:text-lg text-emerald-600'>
+											AI Counselor's Advice
+										</p>
+									</div>
 									<p
-										className='text-base leading-relaxed text-slate-700'
+										className='text-sm leading-relaxed sm:text-base text-slate-700'
 										dangerouslySetInnerHTML={{ __html: cleanAdvice }}
 									/>
 								</div>
@@ -246,9 +292,12 @@ export default function CareerPathwayTree({ treeData }) {
 							<div className='relative z-10 px-6 py-4 bg-emerald-600'>
 								<div className='flex items-start justify-between gap-3 mb-2'>
 									<h3 className='flex-1 text-lg font-extrabold leading-tight text-white'>{pathway.stream_name}</h3>
-									<div className='flex-shrink-0 px-3 py-1 text-base font-extrabold text-white border rounded-xl bg-white/25 border-white/30'>
-										{pathway.match_score.toFixed(0)}%
-									</div>
+									<ScoreTooltip
+										label={`${pathway.match_score.toFixed(0)}%`}
+										title='Stream Match Score'
+										desc='Indicates how well this A/L stream aligns with your career goals, calculated using AI semantic analysis of your interests.'
+										className='flex-shrink-0 px-3 py-1 text-base font-extrabold text-white border rounded-xl bg-white/25 border-white/30'
+									/>
 								</div>
 								<div
 									className={`inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-lg border ${styles.badge}`}>
@@ -273,9 +322,12 @@ export default function CareerPathwayTree({ treeData }) {
 													<h4 className='flex-1 text-sm font-semibold leading-tight text-slate-800'>
 														{degree.course_name}
 													</h4>
-													<span className='flex-shrink-0 px-2 py-0.5 text-xs font-bold text-emerald-700 bg-emerald-100 border border-emerald-300 rounded-lg'>
-														{degree.match_score_percentage.toFixed(0)}%
-													</span>
+													<ScoreTooltip
+														label={`${degree.match_score_percentage.toFixed(0)}%`}
+														title='Degree Match Score'
+														desc='How closely this specific degree aligns with your stated interests, calculated using AI semantic analysis.'
+														className='flex-shrink-0 px-2 py-0.5 text-xs font-bold text-emerald-700 bg-emerald-100 border border-emerald-300 rounded-lg'
+													/>
 												</div>
 												{degree.universities && degree.universities.length > 0 && (
 													<div className='flex flex-wrap gap-1.5 mt-1.5'>

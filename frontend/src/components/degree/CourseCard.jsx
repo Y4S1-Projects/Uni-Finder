@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import AIExplanationBox from "./AIExplanationBox";
 import {
 	CheckIcon,
@@ -21,12 +22,42 @@ function ScoreRing({ score }) {
 		pct >= 75 ? "text-emerald-600"
 		: pct >= 50 ? "text-blue-600"
 		: "text-slate-400";
+	const [show, setShow] = useState(false);
+	const [pos, setPos] = useState({ top: 0, left: 0 });
+
+	const handleEnter = (e) => {
+		const rect = e.currentTarget.getBoundingClientRect();
+		setPos({
+			top: rect.bottom + window.scrollY + 10,
+			left: Math.min(rect.left + window.scrollX, window.innerWidth - 240 - 8),
+		});
+		setShow(true);
+	};
+
+	const tooltip =
+		show ?
+			<div
+				style={{ position: "absolute", top: pos.top, left: pos.left, zIndex: 99999 }}
+				className='w-56 p-3 text-xs font-normal text-left border shadow-2xl pointer-events-none bg-slate-800 text-slate-100 rounded-xl border-slate-600'>
+				<p className='mb-1 font-bold text-white'>AI Match Score</p>
+				<p className='leading-relaxed text-slate-300'>
+					How well this degree matches your entered interests and career goals, calculated using AI semantic analysis.
+				</p>
+				<div className='absolute left-4 -top-1.5 w-3 h-3 bg-slate-800 rotate-45 border-l border-t border-slate-600' />
+			</div>
+		:	null;
+
 	return (
-		<div
-			className={`flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full border-4 border-current ${color} bg-white shadow-sm`}>
-			<span className='text-base font-extrabold leading-none'>{pct}</span>
-			<span className='text-[9px] font-bold leading-none opacity-70'>%</span>
-		</div>
+		<>
+			<div
+				onMouseEnter={handleEnter}
+				onMouseLeave={() => setShow(false)}
+				className={`flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full border-4 border-current ${color} bg-white shadow-sm cursor-help`}>
+				<span className='text-base font-extrabold leading-none'>{pct}</span>
+				<span className='text-[9px] font-bold leading-none opacity-70'>%</span>
+			</div>
+			{ReactDOM.createPortal(tooltip, document.body)}
+		</>
 	);
 }
 
