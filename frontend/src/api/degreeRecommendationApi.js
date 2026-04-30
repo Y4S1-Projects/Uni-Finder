@@ -40,7 +40,7 @@ export async function fetchAllDegreeCourses() {
 export async function fetchInterestOnlyRecommendations({
 	studentInput,
 	eligibleCourseCodes,
-	maxResults = 5,
+	maxResults = 100,
 	explain = true,
 	olMarks = null,
 }) {
