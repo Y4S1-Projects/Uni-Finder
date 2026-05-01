@@ -296,6 +296,19 @@ def analyze_career_progression(
             'is_current': is_current
         })
     
+    if not eligible_levels:
+        return {
+            'domain': target_domain,
+            'current_position': {
+                'level': current_level_num,
+                'role_id': current_position['role_id'] if current_position else None,
+                'role_title': current_position['role_title'] if current_position else None
+            },
+            'eligible_levels': [],
+            'message': 'No matching career levels found for current skill set',
+            'total_levels_in_domain': len(ladder['levels']) if ladder and 'levels' in ladder else 0
+        }
+
     return {
         'domain': target_domain,
         'current_position': {
