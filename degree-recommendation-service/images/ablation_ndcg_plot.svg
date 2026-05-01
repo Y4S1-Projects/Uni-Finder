@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+    <rect width="600" height="400" fill="#ffffff" rx="10"/>
+    <text x="300" y="40" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#333333">Ablation Study: nDCG@5 Ranking Quality</text>
+    
+    <!-- Y Axis -->
+    <line x1="100" y1="320" x2="100" y2="80" stroke="#cccccc" stroke-width="2"/>
+    <text x="90" y="325" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">0.70</text>
+    <text x="90" y="245" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">0.75</text>
+    <text x="90" y="165" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">0.80</text>
+    <text x="90" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">0.85</text>
+    
+    <!-- Grid Lines -->
+    <line x1="100" y1="240" x2="550" y2="240" stroke="#eeeeee" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="100" y1="160" x2="550" y2="160" stroke="#eeeeee" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="100" y1="80" x2="550" y2="80" stroke="#eeeeee" stroke-width="1" stroke-dasharray="4"/>
+
+    <!-- X Axis -->
+    <line x1="100" y1="320" x2="550" y2="320" stroke="#cccccc" stroke-width="2"/>
+    
+    <!-- Bar 1: Config A (0.8289) -> height = (0.8289 - 0.7) / 0.15 * 240 = 206.24, y = 320 - 206.24 = 113.76 -->
+    <rect x="140" y="113.76" width="60" height="206.24" fill="#440154" rx="4"/>
+    <text x="170" y="105" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#440154">0.8289</text>
+    <text x="170" y="340" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Config A</text>
+    <text x="170" y="355" font-family="Arial" font-size="10" text-anchor="middle" fill="#666666">(1.0 / 0.0)</text>
+    
+    <!-- Bar 2: Config B (0.7664) -> height = (0.7664 - 0.7) / 0.15 * 240 = 106.24, y = 320 - 106.24 = 213.76 -->
+    <rect x="240" y="213.76" width="60" height="106.24" fill="#31688e" rx="4"/>
+    <text x="270" y="205" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#31688e">0.7664</text>
+    <text x="270" y="340" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Config B</text>
+    <text x="270" y="355" font-family="Arial" font-size="10" text-anchor="middle" fill="#666666">(0.0 / 1.0)</text>
+
+    <!-- Bar 3: Config C (0.7827) -> height = (0.7827 - 0.7) / 0.15 * 240 = 132.32, y = 320 - 132.32 = 187.68 -->
+    <rect x="340" y="187.68" width="60" height="132.32" fill="#35b779" rx="4"/>
+    <text x="370" y="179" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#35b779">0.7827</text>
+    <text x="370" y="340" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Config C</text>
+    <text x="370" y="355" font-family="Arial" font-size="10" text-anchor="middle" fill="#666666">(0.3 / 0.7)</text>
+
+    <!-- Bar 4: Config D (0.7827) -> height = (0.7827 - 0.7) / 0.15 * 240 = 132.32, y = 320 - 132.32 = 187.68 -->
+    <rect x="440" y="187.68" width="60" height="132.32" fill="#fde725" rx="4"/>
+    <text x="470" y="179" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#b0a100">0.7827</text>
+    <text x="470" y="340" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Config D</text>
+    <text x="470" y="355" font-family="Arial" font-size="10" text-anchor="middle" fill="#666666">(0.7 / 0.3)</text>
+</svg>
