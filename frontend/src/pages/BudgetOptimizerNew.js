@@ -87,12 +87,6 @@ const BudgetOptimizerNew = () => {
     'Ratnapura', 'Batticaloa', 'Trincomalee', 'Badulla'
   ];
 
-  const universities = [
-    'SLIIT', 'University of Colombo', 'University of Moratuwa',
-    'University of Kelaniya', 'University of Peradeniya', 'NSBM Green University',
-    'IIT Campus', 'Other'
-  ];
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -103,6 +97,100 @@ const BudgetOptimizerNew = () => {
         ? (value === '' ? '' : (parseInt(value) || 0))
         : value
     }));
+  };
+
+  const parseStepLinks = (rawLinks) => {
+    if (!rawLinks || /^none$/i.test(rawLinks.trim())) return [];
+
+    const links = [];
+    const markdownRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+    let match;
+
+    while ((match = markdownRegex.exec(rawLinks)) !== null) {
+      links.push({ label: match[1].trim(), url: match[2].trim() });
+    }
+
+    if (links.length === 0) {
+      const urlRegex = /(https?:\/\/[^\s|,]+)/g;
+      const urls = rawLinks.match(urlRegex) || [];
+      urls.forEach((url, index) => {
+        links.push({ label: `Resource ${index + 1}`, url: url.trim() });
+      });
+    }
+
+    return links.filter((link, index, arr) =>
+      link.url && arr.findIndex((item) => item.url === link.url) === index
+    );
+  };
+
+  const slugifyLocation = (value) => {
+    if (!value) return '';
+    return value
+      .toLowerCase()
+      .replace(/university of /g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .trim()
+      .replace(/\s+/g, '-');
+  };
+
+  const buildIkmanAccommodationLinks = () => {
+    const districtSlug = slugifyLocation(formData.district || 'colombo') || 'colombo';
+    const districtName = formData.district || 'Colombo';
+    const campusKeywords = [
+      formData.district,
+      'boarding room',
+      'annex',
+      'rent',
+    ].filter(Boolean).join(' ');
+
+    return [
+      {
+        label: `ikman rooms in ${districtName}`,
+        url: `https://ikman.lk/en/ads/i/${districtSlug}/room-annex-rentals/other`,
+      },
+      {
+        label: `Search boarding in ${districtName}`,
+        url: `https://www.google.com/search?q=${encodeURIComponent(`site:ikman.lk ${campusKeywords}`)}`,
+      },
+    ];
+  };
+
+  const getFallbackStepLinks = (step) => {
+    const content = `${step.title} ${step.how}`.toLowerCase();
+    const fallbackLinks = [];
+
+    const isAccommodationStep =
+      step.category?.toLowerCase().includes('accommodation') ||
+      content.includes('rent') ||
+      content.includes('room') ||
+      content.includes('boarding') ||
+      content.includes('annex') ||
+      content.includes('hostel');
+
+    if (content.includes('cargills')) {
+      fallbackLinks.push({ label: 'Cargills Online', url: 'https://cargillsonline.com/' });
+    }
+    if (content.includes('keells')) {
+      fallbackLinks.push({ label: 'Keells Super', url: 'https://www.keellssuper.com/' });
+    }
+    if (isAccommodationStep) {
+      fallbackLinks.push(...buildIkmanAccommodationLinks());
+    }
+
+    return fallbackLinks.filter((link, index, arr) =>
+      link.url && arr.findIndex((item) => item.url === link.url) === index
+    );
+  };
+
+  const sanitizeAiMoneyText = (value) => {
+    if (!value) return value;
+    return value
+      .replace(/\/month\b/gi, '')
+      .replace(/\bper month\b/gi, '')
+      .replace(/\bmonthly savings?\b/gi, 'buffer')
+      .replace(/\bsaving\s+LKR/gi, 'buffer LKR')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
   };
 
   // ── Gemini AI Enhanced Strategy ─────────────────────────────
@@ -928,7 +1016,7 @@ const BudgetOptimizerNew = () => {
       );
     }
 
-    const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment, recommendation } = analysisResult;
+    const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment } = analysisResult;
 
     return (
       <div>
@@ -1375,138 +1463,6 @@ const BudgetOptimizerNew = () => {
                 </Col>
               </Row>
 
-              {/* Maximum Savings Potential
-              {analysisResult.optimal_strategy.maximum_savings_potential > 0 && (
-                <Alert variant="success" className="mb-4">
-                  <h5>💰 Total Savings Potential: LKR {analysisResult.optimal_strategy.maximum_savings_potential.toLocaleString()}/month</h5>
-                  <p className="mb-0">By implementing all recommendations below, you could save this amount monthly!</p>
-                </Alert>
-              )} */}
-
-              {/* ── Journey to Optimised Target flow strip ── */}
-              {analysisResult.optimal_strategy.optimal_alternatives &&
-                analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
-                  <div className="opt-journey-wrap">
-                    {/* Warning — optimised target still exceeds income */}
-                    {analysisResult.optimal_strategy.optimal_target.target_expenses > financial_summary.monthly_income && (
-                      <div className="d-flex align-items-start gap-3 rounded-3 px-3 py-3 mb-3"
-                        style={{
-                          background: 'linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)',
-                          border: '1.5px solid #f59e42',
-                          boxShadow: '0 2px 8px rgba(245,158,66,0.13)'
-                        }}>
-                        <div style={{
-                          fontSize: '1.6rem', lineHeight: 1, flexShrink: 0, marginTop: 2
-                        }}>⚠️</div>
-                        <div>
-                          <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#92400e', marginBottom: 3 }}>
-                            Optimised Target Exceeds Your Monthly Income
-                          </div>
-                          <div style={{ fontSize: '0.82rem', color: '#78350f', lineHeight: 1.55 }}>
-                            Your optimised target of{' '}
-                            <strong style={{ color: '#b45309' }}>
-                              LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
-                            </strong>{' '}
-                            is greater than your monthly income of{' '}
-                            <strong style={{ color: '#b45309' }}>
-                              LKR {financial_summary.monthly_income.toLocaleString()}
-                            </strong>.
-                            Therefore, you need to follow the{' '}
-                            <strong>AI-Powered Optimization Strategy</strong>{' '}
-                            below to achieve a more optimised and realistic budget.
-                          </div>
-                          <button
-                            className="btn btn-sm mt-2"
-                            style={{
-                              background: '#f59e0b', color: '#fff', fontWeight: 700,
-                              fontSize: '0.78rem', border: 'none', borderRadius: 6,
-                              padding: '4px 14px'
-                            }}
-                            onClick={scrollToAISection}
-                          >
-                            Go to AI Strategy 🚀
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                    <div className="opt-journey-header">
-                      <span className="opt-journey-badge">Step 1</span>
-                      <span className="opt-journey-title">🗺️ Your Path to the Optimised Target</span>
-                      <span className="opt-journey-hint">
-                        Follow these changes first; then let the AI build your detailed action plan.
-                      </span>
-                    </div>
-
-                    {/* Step nodes rail (no percentage text) */}
-                    <div className="opt-step-rail">
-                      {analysisResult.optimal_strategy.optimal_alternatives.slice(0, 5).map((alt, idx) => (
-                        <React.Fragment key={idx}>
-                          <div className={`opt-step-node opt-step-node--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
-                            <div className="opt-step-num">{idx + 1}</div>
-                            <div className="opt-step-icon">
-                              {alt.category.toLowerCase().includes('food') ? '🍱' :
-                                alt.category.toLowerCase().includes('trans') ? '🚌' :
-                                  alt.category.toLowerCase().includes('accom') ? '🏠' :
-                                    alt.category.toLowerCase().includes('internet') ? '📶' :
-                                      alt.category.toLowerCase().includes('util') ? '💡' :
-                                        alt.category.toLowerCase().includes('study') || alt.category.toLowerCase().includes('material') ? '📚' :
-                                          alt.category.toLowerCase().includes('entertain') ? '🎮' :
-                                            alt.category.toLowerCase().includes('health') ? '🏥' :
-                                              alt.category.toLowerCase().includes('income') || alt.category.toLowerCase().includes('earn') ? '💼' : '⚡'}
-                            </div>
-                            <div className="opt-step-name">{alt.category}</div>
-                            {alt.estimated_savings > 0 && (
-                              <div className="opt-step-save">-LKR {alt.estimated_savings.toLocaleString()}/mo</div>
-                            )}
-                            <div className={`opt-step-priority opt-step-priority--${alt.priority === 'High' ? 'high' : alt.priority === 'Medium' ? 'mid' : 'low'}`}>
-                              {alt.priority}
-                            </div>
-                          </div>
-                          {idx < Math.min(analysisResult.optimal_strategy.optimal_alternatives.length, 5) - 1 && (
-                            <div className="opt-step-connector">
-                              <div className="opt-connector-line" />
-                              <div className="opt-connector-arrow">▶</div>
-                            </div>
-                          )}
-                        </React.Fragment>
-                      ))}
-                      {/* Final target node */}
-                      <div className="opt-step-connector">
-                        <div className="opt-connector-line" />
-                        <div className="opt-connector-arrow">▶</div>
-                      </div>
-                      <div className="opt-step-node opt-step-node--target">
-                        <div className="opt-step-num opt-step-num--target">🎯</div>
-                        <div className="opt-step-icon" style={{ fontSize: '1.5rem' }}>✅</div>
-                        <div className="opt-step-name" style={{ fontWeight: 700, color: '#155724' }}>Optimised!</div>
-                        <div className="opt-step-save" style={{ color: '#155724', fontWeight: 700 }}>
-                          LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
-                        </div>
-                        <div className="opt-step-priority opt-step-priority--target">
-                          {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% saved
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="opt-journey-footer">
-                    <p className="opt-journey-footer-text">
-  If your improved budget is lower than your income, you can follow these steps.
-  If you need to further optimize and improve your budget, proceed to the
-  <strong> Budget Optimization</strong> section for additional guidance.
-</p>
-                      <div className="opt-journey-footer-btn">
-                        <Button
-                          size="sm"
-                          variant="success"
-                          onClick={scrollToAISection}
-                        >
-                          Go to AI-Powered Optimization Strategy 🚀
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
               {/* Optimal Alternatives */}
               {analysisResult.optimal_strategy.optimal_alternatives &&
                 analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
@@ -1557,6 +1513,55 @@ const BudgetOptimizerNew = () => {
                     ))}
                   </div>
                 )}
+
+              {/* Maximum Savings Potential
+              {analysisResult.optimal_strategy.maximum_savings_potential > 0 && (
+                <Alert variant="success" className="mb-4">
+                  <h5>💰 Total Savings Potential: LKR {analysisResult.optimal_strategy.maximum_savings_potential.toLocaleString()}/month</h5>
+                  <p className="mb-0">By implementing all recommendations below, you could save this amount monthly!</p>
+                </Alert>
+              )} */}
+
+              {/* ── Warning — optimised target still exceeds income ── */}
+              {analysisResult.optimal_strategy.optimal_target.target_expenses > financial_summary.monthly_income && (
+                <div className="d-flex align-items-start gap-3 rounded-3 px-3 py-3 mb-3"
+                  style={{
+                    background: 'linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)',
+                    border: '1.5px solid #f59e42',
+                    boxShadow: '0 2px 8px rgba(245,158,66,0.13)'
+                  }}>
+                  <div style={{ fontSize: '1.6rem', lineHeight: 1, flexShrink: 0, marginTop: 2 }}>⚠️</div>
+                  <div>
+                    <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#92400e', marginBottom: 3 }}>
+                      Optimised Target Exceeds Your Monthly Income
+                    </div>
+                    <div style={{ fontSize: '0.82rem', color: '#78350f', lineHeight: 1.55 }}>
+                      Your optimised target of{' '}
+                      <strong style={{ color: '#b45309' }}>
+                        LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+                      </strong>{' '}
+                      is greater than your monthly income of{' '}
+                      <strong style={{ color: '#b45309' }}>
+                        LKR {financial_summary.monthly_income.toLocaleString()}
+                      </strong>.
+                      Therefore, you need to follow the{' '}
+                      <strong>AI-Powered Optimization Strategy</strong>{' '}
+                      below to achieve a more optimised and realistic budget.
+                    </div>
+                    <button
+                      className="btn btn-sm mt-2"
+                      style={{
+                        background: '#f59e0b', color: '#fff', fontWeight: 700,
+                        fontSize: '0.78rem', border: 'none', borderRadius: 6,
+                        padding: '4px 14px'
+                      }}
+                      onClick={scrollToAISection}
+                    >
+                      Go to AI Strategy 🚀
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* ── AI strategy connector bridge ── */}
               <div className="opt-ai-bridge">
@@ -1805,45 +1810,32 @@ const BudgetOptimizerNew = () => {
             if (isStructured) {
               // Parse GAP_SUMMARY
               const gapMatch = rawText.match(/GAP_SUMMARY\s*:\s*(.+)/i);
-              const gapSummary = gapMatch ? gapMatch[1].trim() : null;
+              const gapSummary = gapMatch ? sanitizeAiMoneyText(gapMatch[1].trim()) : null;
 
               // Parse all STEP blocks
               const stepBlocks = [];
-              const stepRegex = /STEP\s+(\d+)\s*:\s*([^\n]+)\nCATEGORY\s*:\s*([^\n]+)\nSAVE\s*:\s*([^\n]+)\nHOW\s*:\s*([^\n]+)\nTIMEFRAME\s*:\s*([^\n]+)/gi;
+              const stepRegex = /STEP\s+(\d+)\s*:\s*([^\n]+)\nCATEGORY\s*:\s*([^\n]+)\nSAVE\s*:\s*([^\n]+)\nHOW\s*:\s*([^\n]+)\nTIMEFRAME\s*:\s*([^\n]+)(?:\nLINKS\s*:\s*([^\n]+))?/gi;
               let m;
               while ((m = stepRegex.exec(rawText)) !== null) {
+                const parsedLinks = parseStepLinks(m[7] || '');
                 stepBlocks.push({
                   num: m[1],
                   title: m[2].trim(),
                   category: m[3].trim(),
-                  save: m[4].trim(),
+                  save: sanitizeAiMoneyText(m[4].trim()),
                   how: m[5].trim(),
                   timeframe: m[6].trim(),
+                  links: parsedLinks.length > 0 ? parsedLinks : getFallbackStepLinks({
+                    title: m[2].trim(),
+                    how: m[5].trim(),
+                  }),
                 });
               }
 
               const quickWinMatch = rawText.match(/QUICK_WIN\s*:\s*(.+)/i);
               const motivationMatch = rawText.match(/MOTIVATION\s*:\s*(.+)/i);
-              const finalBudgetMatch = rawText.match(/FINAL_BUDGET\s*:\s*(.+)/i);
               const quickWin = quickWinMatch ? quickWinMatch[1].trim() : null;
-              const motivation = motivationMatch ? motivationMatch[1].trim() : null;
-
-              // Parse FINAL_BUDGET pipe-separated key:value pairs
-              const finalBudgetItems = finalBudgetMatch
-                ? finalBudgetMatch[1].split('|').map(s => {
-                    const [label, ...rest] = s.split(':');
-                    return { label: label.trim(), value: rest.join(':').trim() };
-                  }).filter(x => x.label && x.value)
-                : [];
-
-              // Identify the TOTAL and SAVINGS items for emphasis
-              const fbTotal   = finalBudgetItems.find(x => x.label.toUpperCase() === 'TOTAL');
-              const fbSavings = finalBudgetItems.find(x => x.label.toUpperCase() === 'SAVINGS');
-              const fbFits    = finalBudgetItems.find(x => x.label.toUpperCase().includes('FITS'));
-              const fbCats    = finalBudgetItems.filter(x =>
-                !['TOTAL','SAVINGS'].includes(x.label.toUpperCase()) &&
-                !x.label.toUpperCase().includes('FITS')
-              );
+              const motivation = motivationMatch ? sanitizeAiMoneyText(motivationMatch[1].trim()) : null;
 
               const catIcon = (cat) => {
                 const c = cat.toLowerCase();
@@ -1913,7 +1905,7 @@ const BudgetOptimizerNew = () => {
                             </div>
                             <div className="ai-tl-save-pill">
                               <div className="ai-tl-save-amt">{step.save}</div>
-                              <div className="ai-tl-save-label">monthly saving</div>
+                              <div className="ai-tl-save-label">estimated reduction</div>
                             </div>
                           </div>
                           <div className="ai-tl-card-how">
@@ -1921,6 +1913,21 @@ const BudgetOptimizerNew = () => {
                           </div>
                           <div className="ai-tl-card-footer">
                             <span className="ai-tl-timeframe-tag">🗓 {step.timeframe}</span>
+                            {step.links && step.links.length > 0 && (
+                              <div className="ai-tl-links">
+                                {step.links.map((link, linkIdx) => (
+                                  <a
+                                    key={`${link.url}-${linkIdx}`}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="ai-tl-link-chip"
+                                  >
+                                    🔗 {link.label}
+                                  </a>
+                                ))}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -1936,9 +1943,9 @@ const BudgetOptimizerNew = () => {
                         <div className="ai-tl-card ai-tl-card--target">
                           <div className="ai-tl-target-title">🎯 Optimised Target Reached!</div>
                           {analysisResult?.optimal_strategy?.optimal_target && (
-                            <div className="ai-tl-target-sub">
-                              LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}/month
-                              · {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% savings rate
+                              <div className="ai-tl-target-sub">
+                              LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+                              · {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% target rate
                             </div>
                           )}
                           {motivation && <div className="ai-tl-motivation">"{motivation}"</div>}
@@ -1947,61 +1954,7 @@ const BudgetOptimizerNew = () => {
                     )}
                   </div>
 
-                  {/* ── FINAL BUDGET WITHIN INCOME card ── */}
-                  {finalBudgetItems.length > 0 && !isStreaming && (
-                    <div className="ai-fb-wrap">
-                      <div className="ai-fb-header">
-                        <span className="ai-fb-header-icon">📋</span>
-                        <div>
-                          <div className="ai-fb-title">Optimised Budget — All Within Income</div>
-                          <div className="ai-fb-subtitle">
-                            After applying all steps above · minimum LKR 7,500 savings buffer guaranteed
-                          </div>
-                        </div>
-                        {fbFits && (
-                          <span className="ai-fb-fits-badge">
-                            {fbFits.value.toUpperCase().includes('YES') ? '✅ Fits within income' : fbFits.value}
-                          </span>
-                        )}
-                      </div>
 
-                      {/* Category grid */}
-                      <div className="ai-fb-cats">
-                        {fbCats.map((item, i) => (
-                          <div key={i} className="ai-fb-cat-item">
-                            <div className="ai-fb-cat-label">{item.label}</div>
-                            <div className="ai-fb-cat-value">{item.value}</div>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Total row */}
-                      <div className="ai-fb-totals">
-                        {fbTotal && (
-                          <div className="ai-fb-total-box ai-fb-total-box--exp">
-                            <div className="ai-fb-total-label">Total Expenses</div>
-                            <div className="ai-fb-total-value">{fbTotal.value}</div>
-                          </div>
-                        )}
-                        <div className="ai-fb-total-sep">vs</div>
-                        <div className="ai-fb-total-box ai-fb-total-box--income">
-                          <div className="ai-fb-total-label">Monthly Income</div>
-                          <div className="ai-fb-total-value">
-                            LKR {(financial_summary.monthly_income || 0).toLocaleString()}
-                          </div>
-                        </div>
-                        {fbSavings && (
-                          <div className="ai-fb-total-box ai-fb-total-box--save">
-                            <div className="ai-fb-total-label">💰 Savings</div>
-                            <div className="ai-fb-total-value ai-fb-saving-val">{fbSavings.value}</div>
-                            <div style={{fontSize:'0.62rem', color:'#276749', marginTop:3, fontWeight:700}}>
-                              ≥ LKR 7,500 buffer ✅
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
 
                   {/* Quick Win banner */}
                   {quickWin && !isStreaming && (
@@ -2079,25 +2032,28 @@ const BudgetOptimizerNew = () => {
         {showTransformation && analysisResult.optimal_strategy && (() => {
           const inc = financial_summary.monthly_income || 0;
 
-          // Prefer the exact numbers the AI strategy was computed with;
-          // fall back to optimal_strategy data if AI hasn't been generated yet.
-          const aiM    = aiStrategyMeta;  // shorthand
-          const curExp = aiM?.current_expenses
-                         ?? analysisResult.optimal_strategy.current_situation?.total_expenses
-                         ?? financial_summary.total_expenses ?? 0;
-          const tgtExp = aiFinalBudgetNums?.total
-                         ?? aiM?.real_target
-                         ?? analysisResult.optimal_strategy.optimal_target?.target_expenses
-                         ?? curExp;
-          const curSav = Number.isFinite(inc - curExp) ? inc - curExp : (financial_summary.monthly_savings || 0);
-          const tgtSav = aiFinalBudgetNums?.savings
-                         ?? aiM?.min_saving
-                         ?? (Number.isFinite(inc - tgtExp) ? inc - tgtExp : curSav);
-          const extraSav = tgtSav - curSav;
+          // Always use the same source as the top strategy section so both figures match.
+          const curExp  = analysisResult.optimal_strategy.current_situation?.total_expenses
+                          ?? financial_summary.total_expenses ?? 0;
+          const tgtExp  = analysisResult.optimal_strategy.optimal_target?.target_expenses
+                          ?? curExp;
+          const aiPlanTargetExp = Math.min(
+            tgtExp,
+            aiFinalBudgetNums?.total
+              ?? aiStrategyMeta?.real_target
+              ?? aiStrategyMeta?.income_ceiling
+              ?? tgtExp
+          );
+          const curSav  = Number.isFinite(inc - curExp) ? inc - curExp : (financial_summary.monthly_savings || 0);
+          const tgtSav  = Number.isFinite(inc - tgtExp) ? inc - tgtExp : curSav;
+          const aiPlanSav = Number.isFinite(inc - aiPlanTargetExp) ? inc - aiPlanTargetExp : tgtSav;
+          const extraSav = Math.max(aiPlanSav - curSav, 0);
           const curRate = analysisResult.optimal_strategy.current_situation?.savings_rate || financial_summary.savings_rate || 0;
-          const tgtRate = aiM?.target_rate
-                          ?? analysisResult.optimal_strategy.optimal_target?.target_savings_rate
-                          ?? curRate;
+          const tgtRate = analysisResult.optimal_strategy.optimal_target?.target_savings_rate ?? curRate;
+          const aiPlanRate = inc > 0
+            ? Math.round((aiPlanSav / inc) * 100)
+            : tgtRate;
+
           return (
             <div className="bta-wrap mb-4">
 
@@ -2105,123 +2061,129 @@ const BudgetOptimizerNew = () => {
               <div className="bta-header">
                 <span className="bta-header-icon">💰</span>
                 <div>
-                  <h4 className="bta-title">
-                    {aiStrategyMeta ? 'AI-Confirmed Budget Transformation' : 'Your Budget Transformation'}
-                  </h4>
+                  <h4 className="bta-title">Budget Summary</h4>
                   <p className="bta-subtitle">
-                    {aiStrategyMeta
-                      ? `AI strategy targets LKR ${(aiStrategyMeta.real_target || 0).toLocaleString()}/month — saving LKR ${(aiStrategyMeta.min_saving || 0).toLocaleString()} every month`
-                      : 'See exactly how your finances change with the AI strategy applied'}
+                    Your financial snapshot — current state, optimised target, and AI-powered strategy
                   </p>
                 </div>
               </div>
 
-              {/* Before / After cards row */}
-              <div className="bta-cards-row">
+              {/* 3-column detailed summary cards */}
+              <Row className="g-3 mb-4">
 
-                {/* ── BEFORE card ── */}
-                <div className="bta-card bta-card--before">
-                  <div className="bta-card-label bta-card-label--before">📊 Before Strategy</div>
-                  <div className="bta-coin-row">
-                    {[0,1,2].map(i => (
-                      <span key={i} className="bta-coin bta-coin--red"
-                            style={{animationDelay:`${i*0.35}s`}}>💸</span>
-                    ))}
+                {/* Card 1: Current Expenses */}
+                <Col md={4}>
+                  <div style={{
+                    background: 'linear-gradient(145deg, #fff0f0, #ffe0e0)',
+                    border: '2px solid #f5c6c6',
+                    borderRadius: 16,
+                    padding: '20px',
+                    height: '100%',
+                    boxShadow: '0 4px 12px rgba(220,53,69,0.1)'
+                  }}>
+                    <div style={{ marginBottom: 16 }}>
+                      <span style={{
+                        background: '#dc3545', color: 'white',
+                        fontSize: '0.7rem', fontWeight: 700,
+                        padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
+                      }}>📊 BEFORE STRATEGY</span>
+                    </div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
+                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em', marginBottom: 2 }}>TOTAL EXPENSES</div>
+                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#dc3545', marginBottom: 14 }}>LKR {curExp.toLocaleString()}</div>
+                    <div style={{ background: 'rgba(255,255,255,0.75)', borderRadius: 10, padding: '12px 14px' }}>
+                      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
+                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#dc3545' }}>LKR {curSav.toLocaleString()}</div>
+                      <span style={{
+                        background: '#fffde7', color: '#666',
+                        fontSize: '0.73rem', fontWeight: 600,
+                        padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
+                      }}>{curRate}% savings rate</span>
+                    </div>
                   </div>
-                  <div className="bta-stat-row">
-                    <div className="bta-stat">
-                      <div className="bta-stat-label">Monthly Income</div>
-                      <div className="bta-stat-value bta-stat-value--neutral">LKR {inc.toLocaleString()}</div>
-                    </div>
-                    <div className="bta-stat">
-                      <div className="bta-stat-label">Total Expenses</div>
-                      <div className="bta-stat-value bta-stat-value--red">LKR {curExp.toLocaleString()}</div>
-                    </div>
-                    <div className="bta-stat bta-stat--hl">
-                      <div className="bta-stat-label">Monthly Savings</div>
-                      <div className={`bta-stat-value ${curSav >= 0 ? 'bta-stat-value--warn' : 'bta-stat-value--red'}`}>
-                        LKR {curSav.toLocaleString()}
-                      </div>
-                      <span className="bta-rate-badge bta-rate-badge--warn">{curRate}% savings rate</span>
-                    </div>
-                  </div>
-                </div>
+                </Col>
 
-                {/* ── Arrow divider ── */}
-                <div className="bta-arrow-col">
-                  <div className="bta-arrow-wrap">
-                    <span className="bta-arrow-pulse">⚡</span>
-                    <div className="bta-arrow-line" />
-                    <span className="bta-arrow-head">▶</span>
-                    <span className="bta-arrow-label">AI Optimised</span>
-                  </div>
-                </div>
-
-                {/* ── AFTER card ── */}
-                <div className="bta-card bta-card--after">
-                  <div className="bta-card-label bta-card-label--after">
-                    {aiStrategyMeta ? '🤖 AI Confirmed Target' : '🚀 After Strategy'}
-                  </div>
-                  <div className="bta-coin-row">
-                    {[0,1,2,3,4].map(i => (
-                      <span key={i} className="bta-coin bta-coin--green"
-                            style={{animationDelay:`${i*0.22}s`}}>💰</span>
-                    ))}
-                  </div>
-                  <div className="bta-stat-row">
-                    <div className="bta-stat">
-                      <div className="bta-stat-label">Monthly Income</div>
-                      <div className="bta-stat-value bta-stat-value--neutral">LKR {inc.toLocaleString()}</div>
+                {/* Card 2: Optimised Target */}
+                <Col md={4}>
+                  <div style={{
+                    background: 'linear-gradient(145deg, #e8f5e9, #c8e6c9)',
+                    border: '2px solid #a5d6a7',
+                    borderRadius: 16,
+                    padding: '20px',
+                    height: '100%',
+                    boxShadow: '0 4px 12px rgba(40,167,69,0.12)'
+                  }}>
+                    <div style={{ marginBottom: 16 }}>
+                      <span style={{
+                        background: '#28a745', color: 'white',
+                        fontSize: '0.7rem', fontWeight: 700,
+                        padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
+                      }}>🎯 OPTIMISED TARGET</span>
                     </div>
-                    {/* {aiStrategyMeta?.income_ceiling > 0 && (
-                      <div className="bta-stat">
-                        <div className="bta-stat-label">AI Safe-Spend Ceiling</div>
-                        <div className="bta-stat-value" style={{color:'#d97706', fontSize:'0.92rem'}}>
-                          LKR {aiStrategyMeta.income_ceiling.toLocaleString()}
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
+                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>TARGET EXPENSES</div>
+                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#155724', marginBottom: 14 }}>LKR {tgtExp.toLocaleString()}</div>
+                    <div style={{ background: 'rgba(255,255,255,0.65)', borderRadius: 10, padding: '12px 14px' }}>
+                      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
+                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#155724' }}>LKR {tgtSav.toLocaleString()}</div>
+                      <span style={{
+                        background: '#fffde7', color: '#666',
+                        fontSize: '0.73rem', fontWeight: 600,
+                        padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
+                      }}>{tgtRate}% savings rate</span>
+                    </div>
+                  </div>
+                </Col>
+
+                {/* Card 3: AI Powered Optimization Strategy */}
+                <Col md={4}>
+                  <div style={{
+                    background: 'linear-gradient(145deg, #e3f2fd, #bbdefb)',
+                    border: '2px solid #90caf9',
+                    borderRadius: 16,
+                    padding: '20px',
+                    height: '100%',
+                    boxShadow: '0 4px 12px rgba(33,150,243,0.12)',
+                    display: 'flex', flexDirection: 'column'
+                  }}>
+                    <div style={{ marginBottom: 16 }}>
+                      <span style={{
+                        background: '#1565c0', color: 'white',
+                        fontSize: '0.7rem', fontWeight: 700,
+                        padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
+                      }}>🤖 AI POWERED STRATEGY</span>
+                    </div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
+                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
+                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>TARGET EXPENSES</div>
+                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#0d47a1', marginBottom: 14 }}>LKR {aiPlanTargetExp.toLocaleString()}</div>
+                    <div style={{ background: 'rgba(255,255,255,0.65)', borderRadius: 10, padding: '12px 14px' }}>
+                      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
+                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0d47a1' }}>LKR {aiPlanSav.toLocaleString()}</div>
+                      <span style={{
+                        background: '#fffde7', color: '#666',
+                        fontSize: '0.73rem', fontWeight: 600,
+                        padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
+                      }}>{aiPlanRate}% savings rate</span>
+                    </div>
+                    {curExp - aiPlanTargetExp > 0 && (
+                      <div style={{
+                        marginTop: 12, background: '#e8f5e9',
+                        border: '1px solid #a5d6a7', borderRadius: 8,
+                        padding: '8px 12px', fontSize: '0.73rem', color: '#1b5e20', fontWeight: 600
+                      }}>
+                        📉 By reducing expenses by{' '}
+                        <span style={{ fontSize: '0.85rem' }}>LKR {(curExp - aiPlanTargetExp).toLocaleString()}</span>
+                        <div style={{ fontWeight: 400, fontSize: '0.68rem', color: '#2e7d32', marginTop: 3 }}>
+                          From LKR {curExp.toLocaleString()} → Target LKR {aiPlanTargetExp.toLocaleString()}
                         </div>
                       </div>
-                    )} */}
-                    <div className="bta-stat">
-                      <div className="bta-stat-label">
-                        {aiFinalBudgetNums ? '🤖 Optimized Total Expenses' : 'Total Expenses'}
-                      </div>
-                      <div className="bta-stat-value bta-stat-value--green">LKR {tgtExp.toLocaleString()}</div>
-                    </div>
-
-                    {/* Per-category breakdown from AI FINAL_BUDGET */}
-                    {aiFinalBudgetNums?.categories?.length > 0 && (
-                      <div style={{
-                        display:'flex', flexWrap:'wrap', gap:'6px',
-                        margin:'8px 0', padding:'8px 10px',
-                        background:'rgba(39,103,73,0.08)', borderRadius:10
-                      }}>
-                        {aiFinalBudgetNums.categories.map((cat, idx) => (
-                          <div key={idx} style={{
-                            background:'#e6fffa', border:'1px solid #81e6d9',
-                            borderRadius:20, padding:'3px 10px',
-                            fontSize:'0.74rem', color:'#234e52', fontWeight:600
-                          }}>
-                            {cat.label}: <span style={{color:'#276749'}}>
-                              LKR {cat.value ? cat.value.toLocaleString() : cat.raw}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
                     )}
-
-                    <div className="bta-stat bta-stat--hl">
-                      <div className="bta-stat-label">Monthly Savings</div>
-                      <div className="bta-stat-value bta-stat-value--green">LKR {tgtSav.toLocaleString()}</div>
-                      <span className="bta-rate-badge bta-rate-badge--green">{tgtRate}% savings rate</span>
-                      {aiStrategyMeta?.min_savings_buffer > 0 && (
-                        <span className="bta-rate-badge bta-rate-badge--green" style={{marginTop:3, background:'#c6f6d5'}}>
-                          ✅ ≥ LKR {aiStrategyMeta.min_savings_buffer.toLocaleString()} buffer
-                        </span>
-                      )}
-                    </div>
                   </div>
-                </div>
-              </div>
+                </Col>
+              </Row>
 
               {/* Hero extra-savings banner */}
               {extraSav > 0 && (
@@ -2243,8 +2205,8 @@ const BudgetOptimizerNew = () => {
                     </div> */}
                     {aiStrategyMeta && (
                       <div style={{marginTop:10, fontSize:'0.8rem', color:'rgba(255,255,255,0.75)'}}>
-                        Expenses LKR {tgtExp.toLocaleString()} vs Income LKR {inc.toLocaleString()}
-                        {' '}— LKR {tgtSav.toLocaleString()} safely saved every month
+                        Expenses LKR {aiPlanTargetExp.toLocaleString()} vs Income LKR {inc.toLocaleString()}
+                        {' '}— LKR {aiPlanSav.toLocaleString()} kept as buffer
                       </div>
                     )}
                   </div>
