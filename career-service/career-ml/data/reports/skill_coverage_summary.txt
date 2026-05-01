@@ -1,0 +1,106 @@
+SKILL COVERAGE AUDIT SUMMARY
+==================================================
+
+Total Skills: 1147
+Total Jobs:   15230
+
+Orphan Skills (0 jobs):      207
+Weak Skills (1-4 jobs):      118
+Well-Mapped (5+ jobs):       822
+Near-Duplicate Pairs:        2
+Generic/Soft Skills:         24
+Enhanced Features Stale:     YES
+
+Domain Coverage:
+--------------------------------------------------
+  FRONTEND_ENGINEERING:
+    Core:       12/12 resolved, 19766 job appearances
+    Supporting: 7/8 resolved, 5979 job appearances
+    MISSING SUPPORTING: figma
+  BACKEND_ENGINEERING:
+    Core:       14/14 resolved, 15282 job appearances
+    Supporting: 11/11 resolved, 15647 job appearances
+  FULLSTACK_ENGINEERING:
+    Core:       10/10 resolved, 13874 job appearances
+    Supporting: 10/10 resolved, 20631 job appearances
+  AI_ML:
+    Core:       13/15 resolved, 5000 job appearances
+    Supporting: 24/27 resolved, 14032 job appearances
+    MISSING CORE: deep learning, computer vision
+    MISSING SUPPORTING: statistics, model deployment, feature engineering
+  DATA_SCIENCE:
+    Core:       10/12 resolved, 11348 job appearances
+    Supporting: 5/7 resolved, 1372 job appearances
+    MISSING CORE: statistics, jupyter
+    MISSING SUPPORTING: deep learning, excel
+  DATA_ENGINEERING:
+    Core:       11/11 resolved, 13245 job appearances
+    Supporting: 9/12 resolved, 7235 job appearances
+    MISSING SUPPORTING: gcp, dynamodb, databricks
+  DEVOPS_SRE:
+    Core:       11/14 resolved, 9599 job appearances
+    Supporting: 7/9 resolved, 7041 job appearances
+    MISSING CORE: ci/cd, gcp, monitoring
+    MISSING SUPPORTING: bash, helm
+  CLOUD_ENGINEERING:
+    Core:       7/10 resolved, 5412 job appearances
+    Supporting: 6/8 resolved, 6480 job appearances
+    MISSING CORE: gcp, cloud architecture, serverless
+    MISSING SUPPORTING: ci/cd, vpc
+  SECURITY:
+    Core:       10/14 resolved, 3252 job appearances
+    Supporting: 7/8 resolved, 8639 job appearances
+    MISSING CORE: encryption, oauth, identity management, soc
+    MISSING SUPPORTING: compliance
+  MOBILE_ENGINEERING:
+    Core:       9/10 resolved, 5851 job appearances
+    Supporting: 6/9 resolved, 14484 job appearances
+    MISSING CORE: objective-c
+    MISSING SUPPORTING: firebase, ui/ux, figma
+  UI_UX_DESIGN:
+    Core:       0/11 resolved, 0 job appearances
+    Supporting: 3/8 resolved, 7924 job appearances
+    MISSING CORE: figma, sketch, adobe xd, ui design, ux design, user research, wireframing, prototyping, usability testing, design systems, interaction design
+    MISSING SUPPORTING: photoshop, illustrator, invision, typography, color theory
+  QA_TESTING:
+    Core:       5/11 resolved, 4451 job appearances
+    Supporting: 6/9 resolved, 18405 job appearances
+    MISSING CORE: test automation, pytest, qa methodology, manual testing, performance testing, load testing
+    MISSING SUPPORTING: ci/cd, api testing, postman
+  GAME_DEVELOPMENT:
+    Core:       18/18 resolved, 257 job appearances
+    Supporting: 6/9 resolved, 10945 job appearances
+    MISSING SUPPORTING: blender, maya, photoshop
+  BLOCKCHAIN_WEB3:
+    Core:       6/11 resolved, 127 job appearances
+    Supporting: 8/8 resolved, 12767 job appearances
+    MISSING CORE: web3, blockchain, nft, cryptocurrency, consensus algorithms
+  EMBEDDED_SYSTEMS:
+    Core:       7/14 resolved, 173 job appearances
+    Supporting: 6/10 resolved, 4905 job appearances
+    MISSING CORE: embedded systems, firmware, microcontroller, arm, iot, device drivers, hardware debugging
+    MISSING SUPPORTING: oscilloscope, uart, spi, i2c
+  PRODUCT_MANAGEMENT:
+    Core:       5/9 resolved, 1382 job appearances
+    Supporting: 5/7 resolved, 10582 job appearances
+    MISSING CORE: product management, competitive analysis, product analytics, a/b testing
+    MISSING SUPPORTING: scrum, figma
+  BUSINESS_ANALYSIS:
+    Core:       6/9 resolved, 7657 job appearances
+    Supporting: 5/7 resolved, 4754 job appearances
+    MISSING CORE: process mapping, bpmn, excel
+    MISSING SUPPORTING: scrum, visio
+  PROJECT_MANAGEMENT:
+    Core:       7/10 resolved, 5095 job appearances
+    Supporting: 3/6 resolved, 892 job appearances
+    MISSING CORE: scrum, resource planning, scheduling
+    MISSING SUPPORTING: ms project, communication, leadership
+  TECHNICAL_WRITING:
+    Core:       3/8 resolved, 1904 job appearances
+    Supporting: 5/9 resolved, 12168 job appearances
+    MISSING CORE: content strategy, markdown, information architecture, style guides, docs-as-code
+    MISSING SUPPORTING: diagrams, dita, swagger, openapi
+
+==================================================
+Skills per job: mean=19.7, min=3, max=50
+Jobs per skill: mean=261.7, min=0, max=6241

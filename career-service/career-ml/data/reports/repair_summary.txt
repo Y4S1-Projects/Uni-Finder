@@ -1,0 +1,36 @@
+JOB-SKILL MAPPING REPAIR SUMMARY
+==================================================
+
+Total jobs: 15230
+Total skill columns: 1147
+
+Domain Distribution:
+  FULLSTACK_ENGINEERING: 7422
+  MOBILE_ENGINEERING: 2487
+  DATA_ENGINEERING: 2276
+  DEVOPS_SRE: 1443
+  PROJECT_MANAGEMENT: 454
+  AI_ML: 446
+  CLOUD_ENGINEERING: 281
+  SECURITY: 186
+  QA_TESTING: 166
+  UI_UX_DESIGN: 35
+  DATA_SCIENCE: 34
+
+Tier Assignments:
+  optional: 167940
+  domain_signal: 45584
+  generic_soft: 40388
+  core_required: 25986
+  supporting: 20238
+
+Problem Jobs (0 core skills): 4415
+  FULLSTACK_ENGINEERING: 3044
+  DATA_ENGINEERING: 573
+  DEVOPS_SRE: 413
+  AI_ML: 149
+  CLOUD_ENGINEERING: 80
+  MOBILE_ENGINEERING: 56
+  SECURITY: 45
+  UI_UX_DESIGN: 35
+  QA_TESTING: 20

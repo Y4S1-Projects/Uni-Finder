@@ -146,12 +146,18 @@ export default function CareerPath() {
   };
 
   const handleViewJob = (recommendation) => {
-    fetchJobDetail(recommendation, selectedSkills);
+    fetchJobDetail(recommendation, selectedSkills, {
+      experienceLevel: experienceLevel.value,
+      currentStatus: currentStatus.value,
+      educationLevel: educationLevel.value,
+      careerGoal: careerGoal.value,
+      preferredDomain: preferredDomain.value,
+    });
   };
 
   const handleViewCareerLadder = () => {
     if (!jobDetail) return;
-    navigate('/career-ladder', {
+    navigate("/career-ladder", {
       state: {
         userSkills: selectedSkills,
         selectedDomain: jobDetail.domain,
@@ -161,8 +167,8 @@ export default function CareerPath() {
           currentStatus: currentStatus.value,
           educationLevel: educationLevel.value,
           careerGoal: careerGoal.value,
-        }
-      }
+        },
+      },
     });
   };
 

@@ -1,0 +1,2166 @@
+{
+  "recommendations": [
+    {
+      "role_id": "ML_RESEARCH_SCIENTIST",
+      "role_title": "ML Research Scientist",
+      "domain": "AI_ML",
+      "seniority": 3,
+      "ladder_position": 4,
+      "ladder_length": 10,
+      "next_role": "SENIOR_ML_ENGINEER",
+      "next_role_title": "Senior ML Engineer",
+      "match_score": 0.6902,
+      "readiness_score": 0.245,
+      "skill_match_score": 0.6464,
+      "confidence_score": 1.0,
+      "score_breakdown": {
+        "skill_match_score": 0.6464,
+        "core_skill_coverage_score": 0.0,
+        "domain_preference_score": 1.0,
+        "experience_fit_score": 1.0,
+        "current_status_fit_score": 1.0,
+        "education_fit_score": 0.95,
+        "career_goal_fit_score": 1.0,
+        "seniority_fit_score": 1.0,
+        "confidence_score": 1.0,
+        "final_match_score": 0.6902,
+        "readiness_score": 0.245,
+        "penalty_total": -0.15,
+        "boost_total": 0.17,
+        "penalties_applied": [
+          "weak_core_coverage(0%)"
+        ],
+        "boosts_applied": [
+          "exact_domain_match",
+          "perfect_seniority",
+          "career_goal_aligned"
+        ],
+        "matched_core_skills": [],
+        "matched_supporting_skills": [],
+        "missing_critical_skills": [
+          "SK004",
+          "SK028",
+          "SK031",
+          "SK034",
+          "SK041",
+          "SK067",
+          "SK124",
+          "SK225"
+        ],
+        "total_core_skills": 8,
+        "total_supporting_skills": 34,
+        "supporting_skill_coverage": 0.0,
+        "is_entry_level_user": false,
+        "entry_level_adjustment": 0.0,
+        "profile_source": "data_backed"
+      },
+      "matched_core_skills": [],
+      "matched_supporting_skills": [],
+      "missing_critical_skills": [
+        {
+          "id": "SK004",
+          "name": "python"
+        },
+        {
+          "id": "SK028",
+          "name": "problem solving"
+        },
+        {
+          "id": "SK031",
+          "name": "machine learning"
+        },
+        {
+          "id": "SK034",
+          "name": "algorithms"
+        },
+        {
+          "id": "SK041",
+          "name": "software engineer"
+        },
+        {
+          "id": "SK067",
+          "name": "business analyst"
+        },
+        {
+          "id": "SK124",
+          "name": "data analyst"
+        },
+        {
+          "id": "SK225",
+          "name": "it manager"
+        }
+      ],
+      "is_best_match": true,
+      "profile_source": "data_backed",
+      "skill_gap": {
+        "target_role": "ML_RESEARCH_SCIENTIST",
+        "readiness_score": 0.0,
+        "missing_skills": [
+          {
+            "id": "SK001",
+            "name": "java"
+          },
+          {
+            "id": "SK002",
+            "name": "javascript"
+          },
+          {
+            "id": "SK003",
+            "name": "sql"
+          },
+          {
+            "id": "SK004",
+            "name": "python"
+          },
+          {
+            "id": "SK005",
+            "name": "css"
+          },
+          {
+            "id": "SK006",
+            "name": "html"
+          },
+          {
+            "id": "SK007",
+            "name": "mobile"
+          },
+          {
+            "id": "SK008",
+            "name": "mysql"
+          },
+          {
+            "id": "SK009",
+            "name": "git"
+          },
+          {
+            "id": "SK011",
+            "name": "infrastructure"
+          },
+          {
+            "id": "SK012",
+            "name": "database"
+          },
+          {
+            "id": "SK013",
+            "name": "rest"
+          },
+          {
+            "id": "SK016",
+            "name": "security"
+          },
+          {
+            "id": "SK020",
+            "name": "linux"
+          },
+          {
+            "id": "SK021",
+            "name": "api"
+          },
+          {
+            "id": "SK023",
+            "name": "xml"
+          },
+          {
+            "id": "SK024",
+            "name": "devops"
+          },
+          {
+            "id": "SK026",
+            "name": "web developer"
+          },
+          {
+            "id": "SK027",
+            "name": "debugging"
+          },
+          {
+            "id": "SK028",
+            "name": "problem solving"
+          },
+          {
+            "id": "SK029",
+            "name": "docker"
+          },
+          {
+            "id": "SK031",
+            "name": "machine learning"
+          },
+          {
+            "id": "SK034",
+            "name": "algorithms"
+          },
+          {
+            "id": "SK038",
+            "name": "team player"
+          },
+          {
+            "id": "SK039",
+            "name": "nosql"
+          },
+          {
+            "id": "SK040",
+            "name": "software engineering"
+          },
+          {
+            "id": "SK041",
+            "name": "software engineer"
+          },
+          {
+            "id": "SK043",
+            "name": "big data"
+          },
+          {
+            "id": "SK044",
+            "name": "data structures"
+          },
+          {
+            "id": "SK045",
+            "name": "information technology"
+          },
+          {
+            "id": "SK046",
+            "name": "soap"
+          },
+          {
+            "id": "SK049",
+            "name": ".net"
+          },
+          {
+            "id": "SK050",
+            "name": "written communication"
+          },
+          {
+            "id": "SK057",
+            "name": "network engineer"
+          },
+          {
+            "id": "SK060",
+            "name": "hadoop"
+          },
+          {
+            "id": "SK061",
+            "name": "windows"
+          },
+          {
+            "id": "SK063",
+            "name": "github"
+          },
+          {
+            "id": "SK067",
+            "name": "business analyst"
+          },
+          {
+            "id": "SK068",
+            "name": "solution architect"
+          },
+          {
+            "id": "SK074",
+            "name": "fundamentals"
+          },
+          {
+            "id": "SK075",
+            "name": "rdbms"
+          },
+          {
+            "id": "SK080",
+            "name": "technical skills"
+          },
+          {
+            "id": "SK085",
+            "name": "scala"
+          },
+          {
+            "id": "SK091",
+            "name": "artificial intelligence"
+          },
+          {
+            "id": "SK095",
+            "name": "hardware"
+          },
+          {
+            "id": "SK1001",
+            "name": "linear"
+          },
+          {
+            "id": "SK1003",
+            "name": "requirements gathering"
+          },
+          {
+            "id": "SK1009",
+            "name": "kpi definition"
+          },
+          {
+            "id": "SK1017",
+            "name": "startup mindset"
+          },
+          {
+            "id": "SK102",
+            "name": "project manager"
+          },
+          {
+            "id": "SK106",
+            "name": "hive"
+          },
+          {
+            "id": "SK107",
+            "name": "network"
+          },
+          {
+            "id": "SK110",
+            "name": "django"
+          },
+          {
+            "id": "SK115",
+            "name": "data mining"
+          },
+          {
+            "id": "SK117",
+            "name": "system administrator"
+          },
+          {
+            "id": "SK121",
+            "name": "uml"
+          },
+          {
+            "id": "SK122",
+            "name": "software development"
+          },
+          {
+            "id": "SK124",
+            "name": "data analyst"
+          },
+          {
+            "id": "SK126",
+            "name": "wan"
+          },
+          {
+            "id": "SK132",
+            "name": "networking"
+          },
+          {
+            "id": "SK135",
+            "name": "testing"
+          },
+          {
+            "id": "SK137",
+            "name": "ccna"
+          },
+          {
+            "id": "SK138",
+            "name": "hardware engineer"
+          },
+          {
+            "id": "SK145",
+            "name": "business analysis"
+          },
+          {
+            "id": "SK148",
+            "name": "business requirements"
+          },
+          {
+            "id": "SK149",
+            "name": "switching"
+          },
+          {
+            "id": "SK156",
+            "name": "routing"
+          },
+          {
+            "id": "SK157",
+            "name": "application development"
+          },
+          {
+            "id": "SK161",
+            "name": "agile"
+          },
+          {
+            "id": "SK162",
+            "name": "lan"
+          },
+          {
+            "id": "SK164",
+            "name": "consultant"
+          },
+          {
+            "id": "SK166",
+            "name": "coding"
+          },
+          {
+            "id": "SK169",
+            "name": "network configuration maintenance"
+          },
+          {
+            "id": "SK173",
+            "name": "dns"
+          },
+          {
+            "id": "SK177",
+            "name": "data analysis"
+          },
+          {
+            "id": "SK181",
+            "name": "aws"
+          },
+          {
+            "id": "SK182",
+            "name": "configuration"
+          },
+          {
+            "id": "SK192",
+            "name": "etl"
+          },
+          {
+            "id": "SK194",
+            "name": "natural language processing"
+          },
+          {
+            "id": "SK201",
+            "name": "it hardware engineer"
+          },
+          {
+            "id": "SK202",
+            "name": "installation"
+          },
+          {
+            "id": "SK223",
+            "name": "technical support engineer"
+          },
+          {
+            "id": "SK225",
+            "name": "it manager"
+          },
+          {
+            "id": "SK226",
+            "name": "use cases"
+          },
+          {
+            "id": "SK228",
+            "name": "image processing"
+          },
+          {
+            "id": "SK239",
+            "name": "computer science"
+          },
+          {
+            "id": "SK253",
+            "name": "data analytics"
+          },
+          {
+            "id": "SK254",
+            "name": "information systems"
+          },
+          {
+            "id": "SK261",
+            "name": "jira"
+          },
+          {
+            "id": "SK266",
+            "name": "functional requirements"
+          },
+          {
+            "id": "SK271",
+            "name": "troubleshooting"
+          },
+          {
+            "id": "SK273",
+            "name": "data visualization"
+          },
+          {
+            "id": "SK277",
+            "name": "data science"
+          },
+          {
+            "id": "SK282",
+            "name": "implementation"
+          },
+          {
+            "id": "SK284",
+            "name": "user stories"
+          },
+          {
+            "id": "SK285",
+            "name": "programming"
+          },
+          {
+            "id": "SK296",
+            "name": "business process"
+          },
+          {
+            "id": "SK317",
+            "name": "matlab"
+          },
+          {
+            "id": "SK320",
+            "name": "bash scripting"
+          },
+          {
+            "id": "SK331",
+            "name": "carbon"
+          },
+          {
+            "id": "SK347",
+            "name": "cuda programming"
+          },
+          {
+            "id": "SK379",
+            "name": "flask"
+          },
+          {
+            "id": "SK531",
+            "name": "tensorflow"
+          },
+          {
+            "id": "SK532",
+            "name": "pytorch"
+          },
+          {
+            "id": "SK533",
+            "name": "keras"
+          },
+          {
+            "id": "SK534",
+            "name": "scikit-learn"
+          },
+          {
+            "id": "SK542",
+            "name": "pandas"
+          },
+          {
+            "id": "SK543",
+            "name": "numpy"
+          },
+          {
+            "id": "SK544",
+            "name": "scipy"
+          },
+          {
+            "id": "SK545",
+            "name": "matplotlib"
+          },
+          {
+            "id": "SK546",
+            "name": "seaborn"
+          },
+          {
+            "id": "SK558",
+            "name": "fine tuning llms"
+          },
+          {
+            "id": "SK591",
+            "name": "apache spark"
+          },
+          {
+            "id": "SK592",
+            "name": "apache kafka"
+          },
+          {
+            "id": "SK608",
+            "name": "data governance"
+          },
+          {
+            "id": "SK619",
+            "name": "excel analytics"
+          },
+          {
+            "id": "SK621",
+            "name": "opencv"
+          },
+          {
+            "id": "SK623",
+            "name": "object detection"
+          },
+          {
+            "id": "SK624",
+            "name": "image segmentation"
+          },
+          {
+            "id": "SK625",
+            "name": "ocr"
+          },
+          {
+            "id": "SK632",
+            "name": "nltk"
+          },
+          {
+            "id": "SK643",
+            "name": "knowledge graphs"
+          },
+          {
+            "id": "SK644",
+            "name": "text analytics"
+          },
+          {
+            "id": "SK646",
+            "name": "kubernetes"
+          },
+          {
+            "id": "SK655",
+            "name": "jenkins"
+          },
+          {
+            "id": "SK866",
+            "name": "firmware development"
+          },
+          {
+            "id": "SK875",
+            "name": "sensor integration"
+          },
+          {
+            "id": "SK881",
+            "name": "documentation"
+          },
+          {
+            "id": "SK884",
+            "name": "verbal communication"
+          },
+          {
+            "id": "SK890",
+            "name": "feedback delivery"
+          },
+          {
+            "id": "SK896",
+            "name": "report writing"
+          },
+          {
+            "id": "SK909",
+            "name": "mentoring"
+          },
+          {
+            "id": "SK910",
+            "name": "strategic thinking"
+          },
+          {
+            "id": "SK912",
+            "name": "change management"
+          },
+          {
+            "id": "SK933",
+            "name": "vision setting"
+          },
+          {
+            "id": "SK934",
+            "name": "accountability"
+          },
+          {
+            "id": "SK943",
+            "name": "goal setting"
+          },
+          {
+            "id": "SK944",
+            "name": "time management leadership"
+          },
+          {
+            "id": "SK948",
+            "name": "analytical thinking"
+          },
+          {
+            "id": "SK950",
+            "name": "debugging skills"
+          },
+          {
+            "id": "SK952",
+            "name": "innovation"
+          },
+          {
+            "id": "SK953",
+            "name": "critical thinking"
+          },
+          {
+            "id": "SK962",
+            "name": "estimation skills"
+          },
+          {
+            "id": "SK966",
+            "name": "performance analysis"
+          },
+          {
+            "id": "SK973",
+            "name": "agile methodology"
+          },
+          {
+            "id": "SK974",
+            "name": "scrum framework"
+          },
+          {
+            "id": "SK981",
+            "name": "user story writing"
+          },
+          {
+            "id": "SK995",
+            "name": "confluence"
+          },
+          {
+            "id": "SK996",
+            "name": "jira management"
+          }
+        ],
+        "matched_skills": []
+      },
+      "explanations": {
+        "domain_impact": "Exact match with your preferred domain (AI_ML).",
+        "why_ranked_here": "Best Match \u2014 strong domain match, ideal seniority fit.",
+        "why_best_match": "Highest overall fit (69%) with 0/8 core skills matched.",
+        "readiness": "Growth opportunity (24%) \u2014 focus on building core skills first.",
+        "why_not_more_ready": "Missing 8 core skills: python, problem solving, machine learning and 5 more | Only 0% of supporting skills covered (34 expected).",
+        "seniority_fit": "Ideal seniority match for your experience level.",
+        "adjustments": "Penalties: weak_core_coverage(0%) | Boosts: exact_domain_match, perfect_seniority, career_goal_aligned"
+      }
+    },
+    {
+      "role_id": "SE_II",
+      "role_title": "Software Engineer II",
+      "domain": "SOFTWARE_ENGINEERING",
+      "seniority": 3,
+      "ladder_position": 4,
+      "ladder_length": 14,
+      "next_role": "SENIOR_SE",
+      "next_role_title": "Senior Software Engineer",
+      "match_score": 0.5004,
+      "readiness_score": 0.245,
+      "skill_match_score": 0.5262,
+      "confidence_score": 0.96,
+      "score_breakdown": {
+        "skill_match_score": 0.5262,
+        "core_skill_coverage_score": 0.0,
+        "domain_preference_score": 0.7,
+        "experience_fit_score": 1.0,
+        "current_status_fit_score": 1.0,
+        "education_fit_score": 0.95,
+        "career_goal_fit_score": 1.0,
+        "seniority_fit_score": 1.0,
+        "confidence_score": 0.96,
+        "final_match_score": 0.5004,
+        "readiness_score": 0.245,
+        "penalty_total": -0.15,
+        "boost_total": 0.09,
+        "penalties_applied": [
+          "weak_core_coverage(0%)"
+        ],
+        "boosts_applied": [
+          "perfect_seniority",
+          "career_goal_aligned"
+        ],
+        "matched_core_skills": [],
+        "matched_supporting_skills": [],
+        "missing_critical_skills": [
+          "SK041",
+          "SK057",
+          "SK067",
+          "SK107",
+          "SK117",
+          "SK225"
+        ],
+        "total_core_skills": 6,
+        "total_supporting_skills": 21,
+        "supporting_skill_coverage": 0.0,
+        "is_entry_level_user": false,
+        "entry_level_adjustment": 0.0,
+        "profile_source": "data_backed"
+      },
+      "matched_core_skills": [],
+      "matched_supporting_skills": [],
+      "missing_critical_skills": [
+        {
+          "id": "SK041",
+          "name": "software engineer"
+        },
+        {
+          "id": "SK057",
+          "name": "network engineer"
+        },
+        {
+          "id": "SK067",
+          "name": "business analyst"
+        },
+        {
+          "id": "SK107",
+          "name": "network"
+        },
+        {
+          "id": "SK117",
+          "name": "system administrator"
+        },
+        {
+          "id": "SK225",
+          "name": "it manager"
+        }
+      ],
+      "is_best_match": false,
+      "profile_source": "data_backed",
+      "skill_gap": {
+        "target_role": "SE_II",
+        "readiness_score": 0.0,
+        "missing_skills": [
+          {
+            "id": "SK004",
+            "name": "python"
+          },
+          {
+            "id": "SK007",
+            "name": "mobile"
+          },
+          {
+            "id": "SK009",
+            "name": "git"
+          },
+          {
+            "id": "SK011",
+            "name": "infrastructure"
+          },
+          {
+            "id": "SK016",
+            "name": "security"
+          },
+          {
+            "id": "SK020",
+            "name": "linux"
+          },
+          {
+            "id": "SK026",
+            "name": "web developer"
+          },
+          {
+            "id": "SK027",
+            "name": "debugging"
+          },
+          {
+            "id": "SK028",
+            "name": "problem solving"
+          },
+          {
+            "id": "SK038",
+            "name": "team player"
+          },
+          {
+            "id": "SK041",
+            "name": "software engineer"
+          },
+          {
+            "id": "SK045",
+            "name": "information technology"
+          },
+          {
+            "id": "SK050",
+            "name": "written communication"
+          },
+          {
+            "id": "SK057",
+            "name": "network engineer"
+          },
+          {
+            "id": "SK061",
+            "name": "windows"
+          },
+          {
+            "id": "SK064",
+            "name": "unix"
+          },
+          {
+            "id": "SK067",
+            "name": "business analyst"
+          },
+          {
+            "id": "SK068",
+            "name": "solution architect"
+          },
+          {
+            "id": "SK080",
+            "name": "technical skills"
+          },
+          {
+            "id": "SK095",
+            "name": "hardware"
+          },
+          {
+            "id": "SK096",
+            "name": "software developer"
+          },
+          {
+            "id": "SK1003",
+            "name": "requirements gathering"
+          },
+          {
+            "id": "SK1009",
+            "name": "kpi definition"
+          },
+          {
+            "id": "SK102",
+            "name": "project manager"
+          },
+          {
+            "id": "SK1021",
+            "name": "compliance management"
+          },
+          {
+            "id": "SK107",
+            "name": "network"
+          },
+          {
+            "id": "SK108",
+            "name": "crm"
+          },
+          {
+            "id": "SK111",
+            "name": "project management"
+          },
+          {
+            "id": "SK117",
+            "name": "system administrator"
+          },
+          {
+            "id": "SK122",
+            "name": "software development"
+          },
+          {
+            "id": "SK123",
+            "name": "senior software engineer"
+          },
+          {
+            "id": "SK124",
+            "name": "data analyst"
+          },
+          {
+            "id": "SK126",
+            "name": "wan"
+          },
+          {
+            "id": "SK130",
+            "name": "telecom"
+          },
+          {
+            "id": "SK132",
+            "name": "networking"
+          },
+          {
+            "id": "SK135",
+            "name": "testing"
+          },
+          {
+            "id": "SK137",
+            "name": "ccna"
+          },
+          {
+            "id": "SK138",
+            "name": "hardware engineer"
+          },
+          {
+            "id": "SK139",
+            "name": "system engineer"
+          },
+          {
+            "id": "SK145",
+            "name": "business analysis"
+          },
+          {
+            "id": "SK148",
+            "name": "business requirements"
+          },
+          {
+            "id": "SK149",
+            "name": "switching"
+          },
+          {
+            "id": "SK153",
+            "name": "data entry"
+          },
+          {
+            "id": "SK156",
+            "name": "routing"
+          },
+          {
+            "id": "SK159",
+            "name": "protocols"
+          },
+          {
+            "id": "SK161",
+            "name": "agile"
+          },
+          {
+            "id": "SK162",
+            "name": "lan"
+          },
+          {
+            "id": "SK163",
+            "name": "data entry operator"
+          },
+          {
+            "id": "SK164",
+            "name": "consultant"
+          },
+          {
+            "id": "SK172",
+            "name": "computer operator"
+          },
+          {
+            "id": "SK173",
+            "name": "dns"
+          },
+          {
+            "id": "SK182",
+            "name": "configuration"
+          },
+          {
+            "id": "SK197",
+            "name": "windows server"
+          },
+          {
+            "id": "SK202",
+            "name": "installation"
+          },
+          {
+            "id": "SK209",
+            "name": "network administrator"
+          },
+          {
+            "id": "SK218",
+            "name": "system architecture"
+          },
+          {
+            "id": "SK223",
+            "name": "technical support engineer"
+          },
+          {
+            "id": "SK225",
+            "name": "it manager"
+          },
+          {
+            "id": "SK226",
+            "name": "use cases"
+          },
+          {
+            "id": "SK232",
+            "name": "senior network engineer"
+          },
+          {
+            "id": "SK241",
+            "name": "requirement gathering"
+          },
+          {
+            "id": "SK250",
+            "name": "dhcp"
+          },
+          {
+            "id": "SK260",
+            "name": "desktop support engineer"
+          },
+          {
+            "id": "SK261",
+            "name": "jira"
+          },
+          {
+            "id": "SK263",
+            "name": "brd"
+          },
+          {
+            "id": "SK266",
+            "name": "functional requirements"
+          },
+          {
+            "id": "SK271",
+            "name": "troubleshooting"
+          },
+          {
+            "id": "SK281",
+            "name": "system admin"
+          },
+          {
+            "id": "SK282",
+            "name": "implementation"
+          },
+          {
+            "id": "SK284",
+            "name": "user stories"
+          },
+          {
+            "id": "SK285",
+            "name": "programming"
+          },
+          {
+            "id": "SK288",
+            "name": "desktop engineer"
+          },
+          {
+            "id": "SK290",
+            "name": "operator"
+          },
+          {
+            "id": "SK296",
+            "name": "business process"
+          },
+          {
+            "id": "SK879",
+            "name": "presentation skills"
+          },
+          {
+            "id": "SK881",
+            "name": "documentation"
+          },
+          {
+            "id": "SK884",
+            "name": "verbal communication"
+          },
+          {
+            "id": "SK890",
+            "name": "feedback delivery"
+          },
+          {
+            "id": "SK893",
+            "name": "persuasion"
+          },
+          {
+            "id": "SK896",
+            "name": "report writing"
+          },
+          {
+            "id": "SK897",
+            "name": "proposal writing"
+          },
+          {
+            "id": "SK910",
+            "name": "strategic thinking"
+          },
+          {
+            "id": "SK912",
+            "name": "change management"
+          },
+          {
+            "id": "SK917",
+            "name": "hiring and interviewing"
+          },
+          {
+            "id": "SK934",
+            "name": "accountability"
+          },
+          {
+            "id": "SK939",
+            "name": "influence without authority"
+          },
+          {
+            "id": "SK943",
+            "name": "goal setting"
+          },
+          {
+            "id": "SK944",
+            "name": "time management leadership"
+          },
+          {
+            "id": "SK948",
+            "name": "analytical thinking"
+          },
+          {
+            "id": "SK950",
+            "name": "debugging skills"
+          },
+          {
+            "id": "SK952",
+            "name": "innovation"
+          },
+          {
+            "id": "SK953",
+            "name": "critical thinking"
+          },
+          {
+            "id": "SK962",
+            "name": "estimation skills"
+          },
+          {
+            "id": "SK972",
+            "name": "continuous improvement"
+          },
+          {
+            "id": "SK973",
+            "name": "agile methodology"
+          },
+          {
+            "id": "SK974",
+            "name": "scrum framework"
+          },
+          {
+            "id": "SK976",
+            "name": "roadmap planning"
+          },
+          {
+            "id": "SK981",
+            "name": "user story writing"
+          },
+          {
+            "id": "SK991",
+            "name": "quality assurance process"
+          },
+          {
+            "id": "SK996",
+            "name": "jira management"
+          }
+        ],
+        "matched_skills": []
+      },
+      "explanations": {
+        "domain_impact": "Related to your preferred domain (AI_ML). Moderate boost applied.",
+        "why_ranked_here": "Ranked #2 \u2014 scored 50% overall.",
+        "why_best_match": null,
+        "readiness": "Growth opportunity (24%) \u2014 focus on building core skills first.",
+        "why_not_more_ready": "Missing 6 core skills: software engineer, network engineer, business analyst and 3 more | Only 0% of supporting skills covered (21 expected).",
+        "seniority_fit": "Ideal seniority match for your experience level.",
+        "adjustments": "Penalties: weak_core_coverage(0%) | Boosts: perfect_seniority, career_goal_aligned"
+      }
+    },
+    {
+      "role_id": "SENIOR_ML_ENGINEER",
+      "role_title": "Senior ML Engineer",
+      "domain": "AI_ML",
+      "seniority": 4,
+      "ladder_position": 5,
+      "ladder_length": 10,
+      "next_role": "STAFF_ML_ENGINEER",
+      "next_role_title": "Staff ML Engineer",
+      "match_score": 0.4933,
+      "readiness_score": 0.2075,
+      "skill_match_score": 0.4124,
+      "confidence_score": 0.94,
+      "score_breakdown": {
+        "skill_match_score": 0.4124,
+        "core_skill_coverage_score": 0.0,
+        "domain_preference_score": 1.0,
+        "experience_fit_score": 0.6,
+        "current_status_fit_score": 1.0,
+        "education_fit_score": 0.95,
+        "career_goal_fit_score": 1.0,
+        "seniority_fit_score": 0.75,
+        "confidence_score": 0.94,
+        "final_match_score": 0.4933,
+        "readiness_score": 0.2075,
+        "penalty_total": -0.15,
+        "boost_total": 0.12,
+        "penalties_applied": [
+          "weak_core_coverage(0%)"
+        ],
+        "boosts_applied": [
+          "exact_domain_match",
+          "career_goal_aligned"
+        ],
+        "matched_core_skills": [],
+        "matched_supporting_skills": [],
+        "missing_critical_skills": [
+          "SK004",
+          "SK011",
+          "SK031",
+          "SK041",
+          "SK057",
+          "SK067",
+          "SK068",
+          "SK102",
+          "SK107",
+          "SK117",
+          "SK121",
+          "SK124",
+          "SK161",
+          "SK184",
+          "SK225",
+          "SK282",
+          "SK285",
+          "SK934",
+          "SK948",
+          "SK949",
+          "SK973"
+        ],
+        "total_core_skills": 21,
+        "total_supporting_skills": 63,
+        "supporting_skill_coverage": 0.0,
+        "is_entry_level_user": false,
+        "entry_level_adjustment": 0.0,
+        "profile_source": "data_backed"
+      },
+      "matched_core_skills": [],
+      "matched_supporting_skills": [],
+      "missing_critical_skills": [
+        {
+          "id": "SK004",
+          "name": "python"
+        },
+        {
+          "id": "SK011",
+          "name": "infrastructure"
+        },
+        {
+          "id": "SK031",
+          "name": "machine learning"
+        },
+        {
+          "id": "SK041",
+          "name": "software engineer"
+        },
+        {
+          "id": "SK057",
+          "name": "network engineer"
+        },
+        {
+          "id": "SK067",
+          "name": "business analyst"
+        },
+        {
+          "id": "SK068",
+          "name": "solution architect"
+        },
+        {
+          "id": "SK102",
+          "name": "project manager"
+        },
+        {
+          "id": "SK107",
+          "name": "network"
+        },
+        {
+          "id": "SK117",
+          "name": "system administrator"
+        },
+        {
+          "id": "SK121",
+          "name": "uml"
+        },
+        {
+          "id": "SK124",
+          "name": "data analyst"
+        },
+        {
+          "id": "SK161",
+          "name": "agile"
+        },
+        {
+          "id": "SK184",
+          "name": "technical requirements"
+        },
+        {
+          "id": "SK225",
+          "name": "it manager"
+        },
+        {
+          "id": "SK282",
+          "name": "implementation"
+        },
+        {
+          "id": "SK285",
+          "name": "programming"
+        },
+        {
+          "id": "SK934",
+          "name": "accountability"
+        },
+        {
+          "id": "SK948",
+          "name": "analytical thinking"
+        },
+        {
+          "id": "SK949",
+          "name": "system design"
+        },
+        {
+          "id": "SK973",
+          "name": "agile methodology"
+        }
+      ],
+      "is_best_match": false,
+      "profile_source": "data_backed",
+      "skill_gap": {
+        "target_role": "SENIOR_ML_ENGINEER",
+        "readiness_score": 0.0,
+        "missing_skills": [
+          {
+            "id": "SK001",
+            "name": "java"
+          },
+          {
+            "id": "SK002",
+            "name": "javascript"
+          },
+          {
+            "id": "SK003",
+            "name": "sql"
+          },
+          {
+            "id": "SK004",
+            "name": "python"
+          },
+          {
+            "id": "SK007",
+            "name": "mobile"
+          },
+          {
+            "id": "SK009",
+            "name": "git"
+          },
+          {
+            "id": "SK011",
+            "name": "infrastructure"
+          },
+          {
+            "id": "SK012",
+            "name": "database"
+          },
+          {
+            "id": "SK016",
+            "name": "security"
+          },
+          {
+            "id": "SK020",
+            "name": "linux"
+          },
+          {
+            "id": "SK021",
+            "name": "api"
+          },
+          {
+            "id": "SK023",
+            "name": "xml"
+          },
+          {
+            "id": "SK024",
+            "name": "devops"
+          },
+          {
+            "id": "SK026",
+            "name": "web developer"
+          },
+          {
+            "id": "SK027",
+            "name": "debugging"
+          },
+          {
+            "id": "SK028",
+            "name": "problem solving"
+          },
+          {
+            "id": "SK030",
+            "name": "j2ee"
+          },
+          {
+            "id": "SK031",
+            "name": "machine learning"
+          },
+          {
+            "id": "SK034",
+            "name": "algorithms"
+          },
+          {
+            "id": "SK035",
+            "name": "storage"
+          },
+          {
+            "id": "SK038",
+            "name": "team player"
+          },
+          {
+            "id": "SK039",
+            "name": "nosql"
+          },
+          {
+            "id": "SK040",
+            "name": "software engineering"
+          },
+          {
+            "id": "SK041",
+            "name": "software engineer"
+          },
+          {
+            "id": "SK043",
+            "name": "big data"
+          },
+          {
+            "id": "SK044",
+            "name": "data structures"
+          },
+          {
+            "id": "SK049",
+            "name": ".net"
+          },
+          {
+            "id": "SK050",
+            "name": "written communication"
+          },
+          {
+            "id": "SK057",
+            "name": "network engineer"
+          },
+          {
+            "id": "SK060",
+            "name": "hadoop"
+          },
+          {
+            "id": "SK061",
+            "name": "windows"
+          },
+          {
+            "id": "SK067",
+            "name": "business analyst"
+          },
+          {
+            "id": "SK068",
+            "name": "solution architect"
+          },
+          {
+            "id": "SK074",
+            "name": "fundamentals"
+          },
+          {
+            "id": "SK080",
+            "name": "technical skills"
+          },
+          {
+            "id": "SK091",
+            "name": "artificial intelligence"
+          },
+          {
+            "id": "SK094",
+            "name": "oop"
+          },
+          {
+            "id": "SK095",
+            "name": "hardware"
+          },
+          {
+            "id": "SK097",
+            "name": "software design"
+          },
+          {
+            "id": "SK098",
+            "name": "mvvm"
+          },
+          {
+            "id": "SK100",
+            "name": "memory management"
+          },
+          {
+            "id": "SK1003",
+            "name": "requirements gathering"
+          },
+          {
+            "id": "SK1004",
+            "name": "product strategy"
+          },
+          {
+            "id": "SK1007",
+            "name": "value proposition"
+          },
+          {
+            "id": "SK1009",
+            "name": "kpi definition"
+          },
+          {
+            "id": "SK101",
+            "name": "cloud services"
+          },
+          {
+            "id": "SK1011",
+            "name": "user experience focus"
+          },
+          {
+            "id": "SK1013",
+            "name": "technical sales"
+          },
+          {
+            "id": "SK1017",
+            "name": "startup mindset"
+          },
+          {
+            "id": "SK1018",
+            "name": "enterprise architecture"
+          },
+          {
+            "id": "SK102",
+            "name": "project manager"
+          },
+          {
+            "id": "SK1021",
+            "name": "compliance management"
+          },
+          {
+            "id": "SK1022",
+            "name": "it governance"
+          },
+          {
+            "id": "SK107",
+            "name": "network"
+          },
+          {
+            "id": "SK108",
+            "name": "crm"
+          },
+          {
+            "id": "SK1093",
+            "name": "itil foundation"
+          },
+          {
+            "id": "SK1096",
+            "name": "togaf certification"
+          },
+          {
+            "id": "SK111",
+            "name": "project management"
+          },
+          {
+            "id": "SK114",
+            "name": "multithreading"
+          },
+          {
+            "id": "SK117",
+            "name": "system administrator"
+          },
+          {
+            "id": "SK118",
+            "name": "san"
+          },
+          {
+            "id": "SK120",
+            "name": "object oriented programming"
+          },
+          {
+            "id": "SK121",
+            "name": "uml"
+          },
+          {
+            "id": "SK122",
+            "name": "software development"
+          },
+          {
+            "id": "SK123",
+            "name": "senior software engineer"
+          },
+          {
+            "id": "SK124",
+            "name": "data analyst"
+          },
+          {
+            "id": "SK130",
+            "name": "telecom"
+          },
+          {
+            "id": "SK132",
+            "name": "networking"
+          },
+          {
+            "id": "SK133",
+            "name": "threading"
+          },
+          {
+            "id": "SK135",
+            "name": "testing"
+          },
+          {
+            "id": "SK136",
+            "name": "cloud computing"
+          },
+          {
+            "id": "SK148",
+            "name": "business requirements"
+          },
+          {
+            "id": "SK152",
+            "name": "web services"
+          },
+          {
+            "id": "SK156",
+            "name": "routing"
+          },
+          {
+            "id": "SK157",
+            "name": "application development"
+          },
+          {
+            "id": "SK159",
+            "name": "protocols"
+          },
+          {
+            "id": "SK161",
+            "name": "agile"
+          },
+          {
+            "id": "SK164",
+            "name": "consultant"
+          },
+          {
+            "id": "SK166",
+            "name": "coding"
+          },
+          {
+            "id": "SK177",
+            "name": "data analysis"
+          },
+          {
+            "id": "SK179",
+            "name": "soa"
+          },
+          {
+            "id": "SK181",
+            "name": "aws"
+          },
+          {
+            "id": "SK182",
+            "name": "configuration"
+          },
+          {
+            "id": "SK184",
+            "name": "technical requirements"
+          },
+          {
+            "id": "SK187",
+            "name": "operating system"
+          },
+          {
+            "id": "SK190",
+            "name": "middleware"
+          },
+          {
+            "id": "SK194",
+            "name": "natural language processing"
+          },
+          {
+            "id": "SK195",
+            "name": "visual studio"
+          },
+          {
+            "id": "SK205",
+            "name": "design patterns"
+          },
+          {
+            "id": "SK223",
+            "name": "technical support engineer"
+          },
+          {
+            "id": "SK224",
+            "name": "authoring"
+          },
+          {
+            "id": "SK225",
+            "name": "it manager"
+          },
+          {
+            "id": "SK226",
+            "name": "use cases"
+          },
+          {
+            "id": "SK228",
+            "name": "image processing"
+          },
+          {
+            "id": "SK239",
+            "name": "computer science"
+          },
+          {
+            "id": "SK252",
+            "name": "mqtt"
+          },
+          {
+            "id": "SK266",
+            "name": "functional requirements"
+          },
+          {
+            "id": "SK277",
+            "name": "data science"
+          },
+          {
+            "id": "SK282",
+            "name": "implementation"
+          },
+          {
+            "id": "SK284",
+            "name": "user stories"
+          },
+          {
+            "id": "SK285",
+            "name": "programming"
+          },
+          {
+            "id": "SK286",
+            "name": "software testing"
+          },
+          {
+            "id": "SK288",
+            "name": "desktop engineer"
+          },
+          {
+            "id": "SK292",
+            "name": "director"
+          },
+          {
+            "id": "SK295",
+            "name": "mentor"
+          },
+          {
+            "id": "SK316",
+            "name": "assembly"
+          },
+          {
+            "id": "SK317",
+            "name": "matlab"
+          },
+          {
+            "id": "SK339",
+            "name": "ada"
+          },
+          {
+            "id": "SK347",
+            "name": "cuda programming"
+          },
+          {
+            "id": "SK397",
+            "name": "play framework"
+          },
+          {
+            "id": "SK522",
+            "name": "google apigee"
+          },
+          {
+            "id": "SK531",
+            "name": "tensorflow"
+          },
+          {
+            "id": "SK532",
+            "name": "pytorch"
+          },
+          {
+            "id": "SK533",
+            "name": "keras"
+          },
+          {
+            "id": "SK534",
+            "name": "scikit-learn"
+          },
+          {
+            "id": "SK542",
+            "name": "pandas"
+          },
+          {
+            "id": "SK580",
+            "name": "feature store"
+          },
+          {
+            "id": "SK591",
+            "name": "apache spark"
+          },
+          {
+            "id": "SK596",
+            "name": "apache nifi"
+          },
+          {
+            "id": "SK619",
+            "name": "excel analytics"
+          },
+          {
+            "id": "SK621",
+            "name": "opencv"
+          },
+          {
+            "id": "SK623",
+            "name": "object detection"
+          },
+          {
+            "id": "SK625",
+            "name": "ocr"
+          },
+          {
+            "id": "SK628",
+            "name": "pose estimation"
+          },
+          {
+            "id": "SK633",
+            "name": "text classification"
+          },
+          {
+            "id": "SK634",
+            "name": "named entity recognition"
+          },
+          {
+            "id": "SK636",
+            "name": "machine translation"
+          },
+          {
+            "id": "SK639",
+            "name": "question answering"
+          },
+          {
+            "id": "SK642",
+            "name": "information retrieval"
+          },
+          {
+            "id": "SK643",
+            "name": "knowledge graphs"
+          },
+          {
+            "id": "SK655",
+            "name": "jenkins"
+          },
+          {
+            "id": "SK709",
+            "name": "configuration management"
+          },
+          {
+            "id": "SK750",
+            "name": "database migration"
+          },
+          {
+            "id": "SK775",
+            "name": "cloud security"
+          },
+          {
+            "id": "SK777",
+            "name": "cryptography"
+          },
+          {
+            "id": "SK828",
+            "name": "ethereum"
+          },
+          {
+            "id": "SK832",
+            "name": "hardhat"
+          },
+          {
+            "id": "SK835",
+            "name": "defi"
+          },
+          {
+            "id": "SK839",
+            "name": "solana"
+          },
+          {
+            "id": "SK842",
+            "name": "cosmos blockchain"
+          },
+          {
+            "id": "SK843",
+            "name": "layer 2 solutions"
+          },
+          {
+            "id": "SK846",
+            "name": "rust blockchain"
+          },
+          {
+            "id": "SK865",
+            "name": "rtos"
+          },
+          {
+            "id": "SK866",
+            "name": "firmware development"
+          },
+          {
+            "id": "SK868",
+            "name": "iot protocols"
+          },
+          {
+            "id": "SK874",
+            "name": "signal processing"
+          },
+          {
+            "id": "SK875",
+            "name": "sensor integration"
+          },
+          {
+            "id": "SK876",
+            "name": "edge computing"
+          },
+          {
+            "id": "SK877",
+            "name": "robotics"
+          },
+          {
+            "id": "SK879",
+            "name": "presentation skills"
+          },
+          {
+            "id": "SK881",
+            "name": "documentation"
+          },
+          {
+            "id": "SK882",
+            "name": "code review skills"
+          },
+          {
+            "id": "SK888",
+            "name": "negotiation skills"
+          },
+          {
+            "id": "SK890",
+            "name": "feedback delivery"
+          },
+          {
+            "id": "SK891",
+            "name": "storytelling"
+          },
+          {
+            "id": "SK893",
+            "name": "persuasion"
+          },
+          {
+            "id": "SK896",
+            "name": "report writing"
+          },
+          {
+            "id": "SK897",
+            "name": "proposal writing"
+          },
+          {
+            "id": "SK908",
+            "name": "team leadership"
+          },
+          {
+            "id": "SK909",
+            "name": "mentoring"
+          },
+          {
+            "id": "SK910",
+            "name": "strategic thinking"
+          },
+          {
+            "id": "SK911",
+            "name": "people management"
+          },
+          {
+            "id": "SK913",
+            "name": "engineering management"
+          },
+          {
+            "id": "SK919",
+            "name": "team building"
+          },
+          {
+            "id": "SK920",
+            "name": "decision making"
+          },
+          {
+            "id": "SK921",
+            "name": "emotional intelligence"
+          },
+          {
+            "id": "SK926",
+            "name": "stakeholder alignment"
+          },
+          {
+            "id": "SK934",
+            "name": "accountability"
+          },
+          {
+            "id": "SK936",
+            "name": "innovation leadership"
+          },
+          {
+            "id": "SK937",
+            "name": "thought leadership"
+          },
+          {
+            "id": "SK939",
+            "name": "influence without authority"
+          },
+          {
+            "id": "SK943",
+            "name": "goal setting"
+          },
+          {
+            "id": "SK944",
+            "name": "time management leadership"
+          },
+          {
+            "id": "SK948",
+            "name": "analytical thinking"
+          },
+          {
+            "id": "SK949",
+            "name": "system design"
+          },
+          {
+            "id": "SK950",
+            "name": "debugging skills"
+          },
+          {
+            "id": "SK952",
+            "name": "innovation"
+          },
+          {
+            "id": "SK958",
+            "name": "trade-off analysis"
+          },
+          {
+            "id": "SK962",
+            "name": "estimation skills"
+          },
+          {
+            "id": "SK963",
+            "name": "technical research"
+          },
+          {
+            "id": "SK966",
+            "name": "performance analysis"
+          },
+          {
+            "id": "SK969",
+            "name": "scalability planning"
+          },
+          {
+            "id": "SK972",
+            "name": "continuous improvement"
+          },
+          {
+            "id": "SK973",
+            "name": "agile methodology"
+          },
+          {
+            "id": "SK974",
+            "name": "scrum framework"
+          },
+          {
+            "id": "SK976",
+            "name": "roadmap planning"
+          },
+          {
+            "id": "SK981",
+            "name": "user story writing"
+          },
+          {
+            "id": "SK982",
+            "name": "safe framework"
+          },
+          {
+            "id": "SK983",
+            "name": "lean methodology"
+          },
+          {
+            "id": "SK994",
+            "name": "daily standups"
+          }
+        ],
+        "matched_skills": []
+      },
+      "explanations": {
+        "domain_impact": "Exact match with your preferred domain (AI_ML).",
+        "why_ranked_here": "Ranked #3 \u2014 scored 49% overall.",
+        "why_best_match": null,
+        "readiness": "Growth opportunity (20%) \u2014 focus on building core skills first.",
+        "why_not_more_ready": "Missing 21 core skills: python, infrastructure, machine learning and 18 more | Only 0% of supporting skills covered (63 expected).",
+        "seniority_fit": "Reasonable seniority fit \u2014 slight stretch or underlap.",
+        "adjustments": "Penalties: weak_core_coverage(0%) | Boosts: exact_domain_match, career_goal_aligned"
+      }
+    }
+  ],
+  "skills_analyzed": [
+    "SK0001",
+    "SK0003",
+    "SK0010",
+    "SK0015",
+    "SK0020",
+    "SK0045",
+    "SK0046",
+    "SK0047",
+    "SK0048",
+    "SK0050",
+    "SK0055",
+    "SK0060"
+  ],
+  "total_roles_compared": 73,
+  "mode": "enhanced+legacy",
+  "domain_filter_applied": true,
+  "preferred_domain": "AI_ML",
+  "is_entry_level_user": false,
+  "profile_used": {
+    "experience_level": "1-3",
+    "current_status": "working",
+    "education_level": "masters",
+    "career_goal": "get_promoted",
+    "preferred_domain": "AI_ML"
+  }
+}

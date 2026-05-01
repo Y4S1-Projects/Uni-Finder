@@ -114,7 +114,7 @@ class CutoffRepository:
         """
         self.load()
         course_code = _normalize_course_code(course_code)  # Normalize lookup key
-        key = (course_code.strip(), university.strip(), district.strip())
+        key = (course_code.strip(), university.strip(), district.strip().upper())
         return self._cache.get(key)
 
     def get_all_cutoffs_for_course(self, course_code: str) -> List[Dict]:
@@ -144,7 +144,7 @@ class CutoffRepository:
         min_university = None
 
         for offering in all_offerings:
-            zscore = offering["cutoffs_by_district"].get(district.strip())
+            zscore = offering["cutoffs_by_district"].get(district.strip().upper())
             if zscore is not None:
                 if min_zscore is None or zscore < min_zscore:
                     min_zscore = zscore

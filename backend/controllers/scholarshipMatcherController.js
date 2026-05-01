@@ -1,7 +1,7 @@
 // Proxy controller for scholarship service
 export const matchScholarships = async (req, res, next) => {
 	try {
-		const scholarshipServiceUrl = process.env.SCHOLARSHIP_SERVICE_URL || "https://unifinder-scholarship-service.whiteplant-cce1fd12.southeastasia.azurecontainerapps.io";
+		const scholarshipServiceUrl = (process.env.SCHOLARSHIP_SERVICE_URL || "http://localhost:5005").replace(/\/+$/, "");
 		const topN = Number(req.query.topN) || 5;
 		const matchType = req.body?.match_type || req.query?.matchType || null;
 

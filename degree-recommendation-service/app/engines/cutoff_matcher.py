@@ -63,7 +63,7 @@ class CutoffMatcher:
         results = []
         for offering in all_offerings:
             university = offering["university"]
-            zscore = offering["cutoffs_by_district"].get(district)
+            zscore = offering["cutoffs_by_district"].get(district.strip().upper())
             if zscore is not None:
                 results.append((university, zscore))
 

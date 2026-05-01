@@ -211,10 +211,13 @@ def _parse_subject_requirements(text: str) -> List[str]:
         "Chemistry",
         "Biology",
         "Combined Mathematics",
+        "Higher Mathematics",
         "Mathematics",
         "Botany",
         "Zoology",
         "Agricultural Science",
+        "Information & Communication Technology",
+        "ICT",
         "Economics",
         "Business Studies",
         "Accounting",
@@ -234,6 +237,9 @@ def _parse_subject_requirements(text: str) -> List[str]:
         "Music",
         "Drama",
         "Engineering Technology",
+        "Bio Systems Technology",
+        "Bio-Systems Technology",
+        "Science for Technology",
         "Science",
         "Technology",
     ]
@@ -241,10 +247,19 @@ def _parse_subject_requirements(text: str) -> List[str]:
     found_subjects = []
     text_lower = text.lower()
 
-    for subject in common_subjects:
-        if subject.lower() in text_lower:
+    # Sort common_subjects by length descending to match longest first
+    # This prevents "Mathematics" from matching inside "Combined Mathematics"
+    sorted_subjects = sorted(common_subjects, key=len, reverse=True)
+
+    # We will replace matched subjects with a placeholder to avoid double-counting
+    temp_text = text_lower
+
+    for subject in sorted_subjects:
+        if subject.lower() in temp_text:
             if subject not in found_subjects:
                 found_subjects.append(subject)
+            # Remove the matched subject from temp_text to prevent overlapping matches
+            temp_text = temp_text.replace(subject.lower(), " *** ")
 
     # If no specific subjects found, return general description
     if not found_subjects and text.strip():

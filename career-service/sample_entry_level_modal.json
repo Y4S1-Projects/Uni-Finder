@@ -1,0 +1,205 @@
+{
+  "role_id": "AI_ML_ENGINEER_INT",
+  "role_title": "AI / ML Engineer (Entry Level)",
+  "domain": "AI_ML",
+  "match_score": 0.4536,
+  "readiness_score": 0.0,
+  "matched_skills": [],
+  "missing_skills": [
+    {
+      "id": "SK003",
+      "name": "sql"
+    },
+    {
+      "id": "SK004",
+      "name": "python"
+    },
+    {
+      "id": "SK009",
+      "name": "git"
+    },
+    {
+      "id": "SK020",
+      "name": "linux"
+    },
+    {
+      "id": "SK028",
+      "name": "problem solving"
+    },
+    {
+      "id": "SK031",
+      "name": "machine learning"
+    },
+    {
+      "id": "SK034",
+      "name": "algorithms"
+    },
+    {
+      "id": "SK091",
+      "name": "artificial intelligence"
+    },
+    {
+      "id": "SK1200",
+      "name": "tensorflow"
+    },
+    {
+      "id": "SK1201",
+      "name": "pytorch"
+    },
+    {
+      "id": "SK1202",
+      "name": "deep learning"
+    },
+    {
+      "id": "SK1204",
+      "name": "scikit-learn"
+    },
+    {
+      "id": "SK1207",
+      "name": "numpy"
+    },
+    {
+      "id": "SK1208",
+      "name": "pandas"
+    },
+    {
+      "id": "SK1217",
+      "name": "neural networks"
+    },
+    {
+      "id": "SK1218",
+      "name": "statistics"
+    },
+    {
+      "id": "SK1221",
+      "name": "jupyter"
+    },
+    {
+      "id": "SK177",
+      "name": "data analysis"
+    }
+  ],
+  "next_role": "JR_ML_ENGINEER",
+  "next_role_title": "Junior ML Engineer",
+  "explanation": "**Analysis: Why AI / ML Engineer (Entry Level) Was Recommended**\n\n**Career goal:** first job\n**Experience level:** student\nRecommendations prioritize entry-level and junior roles for your profile.\n\n**Why This Role Matches**\nYou don't currently match any of the core skills expected for this role.\n\n**What Determines the Ranking**\nBest Match \u2014 ideal seniority fit.\n**Best match reason:** Highest overall fit (45%) with 0/12 core skills matched.\n**Domain alignment:** No domain preference \u2014 ranking driven by skill fit and profile alignment.\n**Seniority fit:** Ideal seniority match for your experience level.\n\n**What Lowers Your Readiness**\nThese **12** critical skill(s) are expected but missing:\n- **Sql** \u2014 required by employers for this role\n- **Python** \u2014 required by employers for this role\n- **Git** \u2014 required by employers for this role\n- **Problem Solving** \u2014 required by employers for this role\n- **Machine Learning** \u2014 required by employers for this role\n- ...and 7 more critical gaps\nMissing 12 core skills: sql, python, git and 9 more | Only 0% of supporting skills covered (6 expected).\n\n**Career Ladder**\nThis role sits at position **1 of 10** in the AI ML career ladder. Your next step would be **Junior ML Engineer**.\n\n**How to Improve**\n1. **Master Sql** \u2014 Design a database schema for a real-world scenario and practice queries.\n2. **Learn Python** \u2014 Complete an online course and build a small project using it.\n3. **Use Git daily** \u2014 Contribute to a collaborative repo; learn branching, rebasing, and PR workflows.\n",
+  "score_breakdown": {
+    "skill_match_score": 0.4523,
+    "core_skill_coverage_score": 0.0,
+    "domain_preference_score": 0.5,
+    "experience_fit_score": 1.0,
+    "current_status_fit_score": 1.0,
+    "education_fit_score": 0.85,
+    "career_goal_fit_score": 1.0,
+    "seniority_fit_score": 1.0,
+    "confidence_score": 0.73,
+    "final_match_score": 0.4536,
+    "readiness_score": 0.235,
+    "penalty_total": -0.15,
+    "boost_total": 0.09,
+    "penalties_applied": [
+      "weak_core_coverage(0%)"
+    ],
+    "boosts_applied": [
+      "perfect_seniority",
+      "career_goal_aligned"
+    ],
+    "matched_core_skills": [],
+    "matched_supporting_skills": [],
+    "missing_critical_skills": [
+      "SK003",
+      "SK004",
+      "SK009",
+      "SK028",
+      "SK031",
+      "SK034",
+      "SK1202",
+      "SK1204",
+      "SK1207",
+      "SK1208",
+      "SK1218",
+      "SK1221"
+    ],
+    "total_core_skills": 12,
+    "total_supporting_skills": 6,
+    "supporting_skill_coverage": 0.0,
+    "is_entry_level_user": true,
+    "entry_level_adjustment": 0.12,
+    "profile_source": "synthetic_repair"
+  },
+  "explanations": {
+    "domain_impact": "No domain preference \u2014 ranking driven by skill fit and profile alignment.",
+    "why_ranked_here": "Best Match \u2014 ideal seniority fit.",
+    "why_best_match": "Highest overall fit (45%) with 0/12 core skills matched.",
+    "readiness": "Growth opportunity (23%) \u2014 focus on building core skills first.",
+    "why_not_more_ready": "Missing 12 core skills: sql, python, git and 9 more | Only 0% of supporting skills covered (6 expected).",
+    "seniority_fit": "Ideal seniority match for your experience level.",
+    "entry_level_note": "Recommendations prioritize entry-level and junior roles for your profile.",
+    "adjustments": "Penalties: weak_core_coverage(0%) | Boosts: perfect_seniority, career_goal_aligned",
+    "data_confidence": "This role's profile is expert-defined (not derived from job-market data). Confidence is lower \u2014 treat as indicative, not definitive."
+  },
+  "seniority": 1,
+  "ladder_position": 1,
+  "ladder_length": 10,
+  "confidence_score": 0.73,
+  "matched_core_skills": [],
+  "matched_supporting_skills": [],
+  "missing_critical_skills": [
+    {
+      "id": "SK003",
+      "name": "sql"
+    },
+    {
+      "id": "SK004",
+      "name": "python"
+    },
+    {
+      "id": "SK009",
+      "name": "git"
+    },
+    {
+      "id": "SK028",
+      "name": "problem solving"
+    },
+    {
+      "id": "SK031",
+      "name": "machine learning"
+    },
+    {
+      "id": "SK034",
+      "name": "algorithms"
+    },
+    {
+      "id": "SK1202",
+      "name": "deep learning"
+    },
+    {
+      "id": "SK1204",
+      "name": "scikit-learn"
+    },
+    {
+      "id": "SK1207",
+      "name": "numpy"
+    },
+    {
+      "id": "SK1208",
+      "name": "pandas"
+    },
+    {
+      "id": "SK1218",
+      "name": "statistics"
+    },
+    {
+      "id": "SK1221",
+      "name": "jupyter"
+    }
+  ],
+  "is_best_match": true,
+  "profile_source": "synthetic_repair",
+  "profile_used": {
+    "experience_level": "student",
+    "current_status": "student",
+    "education_level": "bachelors",
+    "career_goal": "first_job",
+    "preferred_domain": null
+  }
+}
