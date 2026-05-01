@@ -37,31 +37,62 @@ def detect_skill_gap(user_skill_ids: set, target_role_id: str, importance_thresh
     }
 
 
-def get_next_role(domain: str, current_role: str) -> Optional[str]:
+def get_next_role(domain: str, current_role: str, current_seniority: int = None) -> Optional[str]:
     """
-    Get the next role in a career ladder.
+    Get the next role in a career ladder with graceful fallback.
+    
+    Phase D improvements:
+    - If role is not in ladder, attempts nearest-seniority placement
+    - Ensures entry-level roles don't jump more than 2 seniority levels
+    - Returns None gracefully instead of raising for missing roles
     
     Args:
         domain: Career domain (e.g., 'SOFTWARE_ENGINEERING')
         current_role: Current role ID
+        current_seniority: Optional seniority level (1-7) for fallback placement
         
     Returns:
-        Next role ID or None if at top of ladder
+        Next role ID or None if at top of ladder or not found
     """
     ladder = DataStore.career_ladders.get(domain)
     if not ladder:
-        raise ValueError(f"Unknown career domain: {domain}")
-    if current_role not in ladder:
-        raise ValueError(f"{current_role} not found in career ladder for {domain}")
-    idx = ladder.index(current_role)
-    if idx + 1 >= len(ladder):
-        return None
-    return ladder[idx + 1]
+        # Try alternate domain lookup
+        alt_domain = get_domain_for_role(current_role)
+        if alt_domain and alt_domain != domain:
+            ladder = DataStore.career_ladders.get(alt_domain)
+        if not ladder:
+            return None  # Graceful: no crash
+
+    if current_role in ladder:
+        idx = ladder.index(current_role)
+        if idx + 1 >= len(ladder):
+            return None  # At top of ladder
+        return ladder[idx + 1]
+
+    # Fallback: role not in ladder — try nearest placement by seniority
+    if current_seniority is not None and len(ladder) > 0:
+        # Approximate position: map seniority (1-7) to ladder index
+        approx_idx = min(
+            int((current_seniority - 1) / 7.0 * len(ladder)),
+            len(ladder) - 1
+        )
+        # Next role is one above the approximate position
+        next_idx = min(approx_idx + 1, len(ladder) - 1)
+        if next_idx > approx_idx:
+            return ladder[next_idx]
+        return None  # Already at/near top
+
+    return None
 
 
 def get_domain_for_role(role_id: str) -> Optional[str]:
     """
     Find which domain a role belongs to.
+    
+    Phase D improvements:
+    - First checks career_ladders
+    - Falls back to role_metadata domain field
+    - Falls back to role_id prefix pattern matching
     
     Args:
         role_id: The role ID to look up
@@ -69,9 +100,61 @@ def get_domain_for_role(role_id: str) -> Optional[str]:
     Returns:
         Domain name or None if not found
     """
+    # Primary: check career ladders
     for domain, roles in DataStore.career_ladders.items():
         if role_id in roles:
             return domain
+
+    # Fallback: check role_metadata if loaded
+    if hasattr(DataStore, 'role_metadata') and DataStore.role_metadata:
+        # role_metadata may be a list of dicts or a dict keyed by role_id
+        if isinstance(DataStore.role_metadata, dict):
+            meta = DataStore.role_metadata.get(role_id, {})
+            if meta.get("domain"):
+                return meta["domain"]
+        elif isinstance(DataStore.role_metadata, list):
+            for entry in DataStore.role_metadata:
+                if isinstance(entry, dict) and entry.get("role_id") == role_id:
+                    if entry.get("domain"):
+                        return entry["domain"]
+                    break
+
+    # Fallback: check role_profiles_df for domain column
+    if DataStore.role_profiles_df is not None and "domain" in DataStore.role_profiles_df.columns:
+        role_rows = DataStore.role_profiles_df[DataStore.role_profiles_df["role_id"] == role_id]
+        if not role_rows.empty:
+            domain_val = role_rows.iloc[0].get("domain")
+            if domain_val:
+                return str(domain_val)
+
+    # Fallback: infer from role_id prefix patterns
+    rid_upper = role_id.upper()
+    domain_prefixes = {
+        "SE_": "SOFTWARE_ENGINEERING",
+        "BE_": "BACKEND_ENGINEERING",
+        "FE_": "FRONTEND_ENGINEERING",
+        "FS_": "FULLSTACK_DEVELOPMENT",
+        "DS_": "DATA_SCIENCE",
+        "ML_": "AI_ML",
+        "AI_": "AI_ML",
+        "DE_": "DATA_ENGINEERING",
+        "DO_": "DEVOPS",
+        "CS_": "CYBERSECURITY",
+        "QA_": "QA_TESTING",
+        "GD_": "GAME_DEVELOPMENT",
+        "MD_": "MOBILE_DEVELOPMENT",
+        "PM_": "PROJECT_MANAGEMENT",
+        "UI_": "UI_UX_DESIGN",
+        "UX_": "UI_UX_DESIGN",
+        "BA_": "BUSINESS_ANALYSIS",
+        "CL_": "CLOUD_ENGINEERING",
+        "BD_": "BLOCKCHAIN",
+        "EM_": "EMBEDDED_SYSTEMS",
+    }
+    for prefix, domain in domain_prefixes.items():
+        if rid_upper.startswith(prefix):
+            return domain
+
     return None
 
 import json

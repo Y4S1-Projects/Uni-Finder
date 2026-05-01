@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar, Modal } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import './BudgetOptimizerNew.css';
+import React, { useState, useEffect, useRef } from "react";
+import { Container, Row, Col, Card, Form, Button, Alert, Spinner, ProgressBar, Modal } from "react-bootstrap";
+import { useSelector } from "react-redux";
+import "./BudgetOptimizerNew.css";
 
 const BudgetOptimizerNew = () => {
   // Get current user from Redux store
@@ -2282,33 +2282,41 @@ const BudgetOptimizerNew = () => {
             </div>
           </td>
         </tr>`;
-      }).join('');
+			})
+			.join("");
 
-    const riskRecs = (risk_assessment?.recommendations || [])
-      .map(r => `<li><strong>${r.category}:</strong> ${r.message}${r.potential_savings > 0 ? ` <span style="color:#28a745">(Save LKR ${r.potential_savings.toLocaleString()}/mo)</span>` : ''}</li>`)
-      .join('');
+		const riskRecs = (risk_assessment?.recommendations || [])
+			.map(
+				(r) =>
+					`<li><strong>${r.category}:</strong> ${r.message}${r.potential_savings > 0 ? ` <span style="color:#28a745">(Save LKR ${r.potential_savings.toLocaleString()}/mo)</span>` : ""}</li>`,
+			)
+			.join("");
 
-    const altRows = (strategy?.optimal_alternatives || [])
-      .map(a => `<tr>
-        <td>${a.category || ''}</td>
-        <td>${a.current_method || ''}</td>
-        <td>${a.alternative || a.recommendation || ''}</td>
+		const altRows = (strategy?.optimal_alternatives || [])
+			.map(
+				(a) => `<tr>
+        <td>${a.category || ""}</td>
+        <td>${a.current_method || ""}</td>
+        <td>${a.alternative || a.recommendation || ""}</td>
         <td style="color:#e53e3e;text-align:right">LKR ${(a.current_cost || 0).toLocaleString()}</td>
         <td style="color:#28a745;text-align:right">LKR ${(a.optimised_cost || a.target_cost || 0).toLocaleString()}</td>
-        <td style="color:#28a745;font-weight:700;text-align:right">${a.savings_percentage || a.potential_savings_pct || ''}%</td>
-      </tr>`).join('');
+        <td style="color:#28a745;font-weight:700;text-align:right">${a.savings_percentage || a.potential_savings_pct || ""}%</td>
+      </tr>`,
+			)
+			.join("");
 
-    const actionSteps = (recommendation?.action_steps || [])
-      .map((s, i) => `<li style="margin-bottom:6px"><strong>Step ${i + 1}:</strong> ${s}</li>`).join('');
+		const actionSteps = (recommendation?.action_steps || [])
+			.map((s, i) => `<li style="margin-bottom:6px"><strong>Step ${i + 1}:</strong> ${s}</li>`)
+			.join("");
 
-    const foodInfo = calculated_budgets?.food;
-    const transInfo = calculated_budgets?.transport;
+		const foodInfo = calculated_budgets?.food;
+		const transInfo = calculated_budgets?.transport;
 
-    const html = `<!DOCTYPE html>
+		const html = `<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8"/>
-<title>Student Budget Report - ${formData.full_name || 'Student'}</title>
+<title>Student Budget Report - ${formData.full_name || "Student"}</title>
 <style>
   * { box-sizing: border-box; margin:0; padding:0; }
   body { font-family: 'Segoe UI', Arial, sans-serif; color: #2d3748; background: #fff; font-size:13px; }
@@ -2382,8 +2390,8 @@ const BudgetOptimizerNew = () => {
     <h1>🎓 Student Budget Analysis Report</h1>
     <div class="sub">AI-Powered Financial Insights — UniFinder LK</div>
     <div class="meta">
-      <div><span>Student</span><strong>${formData.full_name || '—'}</strong></div>
-      <div><span>University</span><strong>${formData.university || '—'}</strong></div>
+      <div><span>Student</span><strong>${formData.full_name || "—"}</strong></div>
+      <div><span>University</span><strong>${formData.university || "—"}</strong></div>
       <div><span>Year / Field</span><strong>${formData.year_of_study} · ${formData.field_of_study}</strong></div>
       <div><span>District</span><strong>${formData.district}</strong></div>
       <div><span>Report Date</span><strong>${date}</strong></div>
@@ -2399,7 +2407,7 @@ const BudgetOptimizerNew = () => {
         <div class="summary-box">
           <div class="label">Monthly Income</div>
           <div class="value blue">LKR ${financial_summary.monthly_income.toLocaleString()}</div>
-          ${financial_summary.home_money > 0 ? `<div style="font-size:11px;color:#888;margin-top:3px">Base: LKR ${(financial_summary.base_income || 0).toLocaleString()} + Family: LKR ${financial_summary.home_money.toLocaleString()}</div>` : ''}
+          ${financial_summary.home_money > 0 ? `<div style="font-size:11px;color:#888;margin-top:3px">Base: LKR ${(financial_summary.base_income || 0).toLocaleString()} + Family: LKR ${financial_summary.home_money.toLocaleString()}</div>` : ""}
         </div>
         <div class="summary-box">
           <div class="label">Total Expenses</div>
@@ -2407,11 +2415,11 @@ const BudgetOptimizerNew = () => {
         </div>
         <div class="summary-box">
           <div class="label">Monthly Savings</div>
-          <div class="value ${financial_summary.monthly_savings >= 0 ? 'green-c' : 'red'}">LKR ${financial_summary.monthly_savings.toLocaleString()}</div>
+          <div class="value ${financial_summary.monthly_savings >= 0 ? "green-c" : "red"}">LKR ${financial_summary.monthly_savings.toLocaleString()}</div>
         </div>
         <div class="summary-box">
           <div class="label">Savings Rate</div>
-          <div class="value ${financial_summary.savings_rate >= 0 ? 'green-c' : 'red'}">${financial_summary.savings_rate}%</div>
+          <div class="value ${financial_summary.savings_rate >= 0 ? "green-c" : "red"}">${financial_summary.savings_rate}%</div>
         </div>
       </div>
     </div>
@@ -2440,43 +2448,57 @@ const BudgetOptimizerNew = () => {
     <div class="section-header orange">🤖 AI-Calculated Budgets</div>
     <div class="section-body">
       <div class="two-col">
-        ${foodInfo ? `<div class="detail-box">
+        ${
+					foodInfo ?
+						`<div class="detail-box">
           <h4>🍽️ Food Budget — LKR ${foodInfo.monthly_total.toLocaleString()}/month</h4>
           <div class="detail-row"><span>Food Type</span><span>${foodInfo.food_type}</span></div>
           <div class="detail-row"><span>Daily Average</span><span>LKR ${foodInfo.daily_cost.toLocaleString()}</span></div>
-          ${foodInfo.breakdown?.groceries !== undefined ? `<div class="detail-row"><span>🛒 Groceries (cooking)</span><span>LKR ${Math.round(foodInfo.breakdown.groceries).toLocaleString()}</span></div>` : ''}
-          ${foodInfo.breakdown?.outside_meals !== undefined ? `<div class="detail-row"><span>🍜 Outside meals</span><span>LKR ${Math.round(foodInfo.breakdown.outside_meals).toLocaleString()}</span></div>` : ''}
+          ${foodInfo.breakdown?.groceries !== undefined ? `<div class="detail-row"><span>🛒 Groceries (cooking)</span><span>LKR ${Math.round(foodInfo.breakdown.groceries).toLocaleString()}</span></div>` : ""}
+          ${foodInfo.breakdown?.outside_meals !== undefined ? `<div class="detail-row"><span>🍜 Outside meals</span><span>LKR ${Math.round(foodInfo.breakdown.outside_meals).toLocaleString()}</span></div>` : ""}
           <div class="detail-row"><span>Monthly Total</span><span>LKR ${foodInfo.monthly_total.toLocaleString()}</span></div>
-        </div>` : '<div class="detail-box"><h4>🍽️ Food Budget</h4><p style="color:#999">Not available</p></div>'}
-        ${transInfo ? `<div class="detail-box">
+        </div>`
+					:	'<div class="detail-box"><h4>🍽️ Food Budget</h4><p style="color:#999">Not available</p></div>'
+				}
+        ${
+					transInfo ?
+						`<div class="detail-box">
           <h4>🚌 Transport Budget — LKR ${transInfo.monthly_total.toLocaleString()}/month</h4>
           <div class="detail-row"><span>Method</span><span>${transInfo.transport_method}</span></div>
-          <div class="detail-row"><span>Commute Days/Month</span><span>${transInfo.commute_days_per_month || '~22'}</span></div>
+          <div class="detail-row"><span>Commute Days/Month</span><span>${transInfo.commute_days_per_month || "~22"}</span></div>
           <div class="detail-row"><span>Round-trip Fare</span><span>LKR ${transInfo.daily_cost.toLocaleString()}</span></div>
-          ${transInfo.one_way_trip_cost > 0 ? `<div class="detail-row"><span>One-way Fare</span><span>LKR ${transInfo.one_way_trip_cost.toLocaleString()}</span></div>` : ''}
-          ${transInfo.breakdown?.daily_commute > 0 ? `<div class="detail-row"><span>🏫 Campus Commute</span><span>LKR ${transInfo.breakdown.daily_commute.toLocaleString()}</span></div>` : ''}
-          ${transInfo.breakdown?.misc_trips > 0 ? `<div class="detail-row"><span>🌧️ Emergency Trips</span><span>LKR ${transInfo.breakdown.misc_trips.toLocaleString()}</span></div>` : ''}
-          ${transInfo.breakdown?.home_visits > 0 ? `<div class="detail-row"><span>🏡 Home Visits</span><span>LKR ${transInfo.breakdown.home_visits.toLocaleString()}</span></div>` : ''}
+          ${transInfo.one_way_trip_cost > 0 ? `<div class="detail-row"><span>One-way Fare</span><span>LKR ${transInfo.one_way_trip_cost.toLocaleString()}</span></div>` : ""}
+          ${transInfo.breakdown?.daily_commute > 0 ? `<div class="detail-row"><span>🏫 Campus Commute</span><span>LKR ${transInfo.breakdown.daily_commute.toLocaleString()}</span></div>` : ""}
+          ${transInfo.breakdown?.misc_trips > 0 ? `<div class="detail-row"><span>🌧️ Emergency Trips</span><span>LKR ${transInfo.breakdown.misc_trips.toLocaleString()}</span></div>` : ""}
+          ${transInfo.breakdown?.home_visits > 0 ? `<div class="detail-row"><span>🏡 Home Visits</span><span>LKR ${transInfo.breakdown.home_visits.toLocaleString()}</span></div>` : ""}
           <div class="detail-row"><span>Monthly Total</span><span>LKR ${transInfo.monthly_total.toLocaleString()}</span></div>
-        </div>` : '<div class="detail-box"><h4>🚌 Transport Budget</h4><p style="color:#999">Not available</p></div>'}
+        </div>`
+					:	'<div class="detail-box"><h4>🚌 Transport Budget</h4><p style="color:#999">Not available</p></div>'
+				}
       </div>
     </div>
   </div>
 
   <!-- RISK ASSESSMENT -->
-  ${risk_assessment ? `<div class="section">
-    <div class="section-header ${risk_assessment.risk_level === 'High Risk' ? 'danger' : 'success-bg'}">${risk_assessment.risk_level === 'High Risk' ? '⚠️' : '✅'} Risk Assessment — ${risk_assessment.risk_level}</div>
+  ${
+		risk_assessment ?
+			`<div class="section">
+    <div class="section-header ${risk_assessment.risk_level === "High Risk" ? "danger" : "success-bg"}">${risk_assessment.risk_level === "High Risk" ? "⚠️" : "✅"} Risk Assessment — ${risk_assessment.risk_level}</div>
     <div class="section-body">
-      <div class="${risk_assessment.risk_level === 'High Risk' ? 'risk-high' : 'risk-low'}" style="margin-bottom:${riskRecs ? '14px' : '0'}">
+      <div class="${risk_assessment.risk_level === "High Risk" ? "risk-high" : "risk-low"}" style="margin-bottom:${riskRecs ? "14px" : "0"}">
         <strong>Risk Probability: ${risk_assessment.risk_probability}%</strong>
-        <span style="margin-left:16px;font-size:12px;color:#555">${risk_assessment.risk_level === 'High Risk' ? 'Your current spending puts you at financial risk. Review the recommendations below.' : 'Your financial situation looks healthy. Keep maintaining good spending habits!'}</span>
+        <span style="margin-left:16px;font-size:12px;color:#555">${risk_assessment.risk_level === "High Risk" ? "Your current spending puts you at financial risk. Review the recommendations below." : "Your financial situation looks healthy. Keep maintaining good spending habits!"}</span>
       </div>
-      ${riskRecs ? `<h5 style="font-size:13px;margin-bottom:8px;font-weight:700">📋 Risk Recommendations:</h5><ul>${riskRecs}</ul>` : ''}
+      ${riskRecs ? `<h5 style="font-size:13px;margin-bottom:8px;font-weight:700">📋 Risk Recommendations:</h5><ul>${riskRecs}</ul>` : ""}
     </div>
-  </div>` : ''}
+  </div>`
+		:	""
+	}
 
   <!-- OPTIMAL STRATEGY -->
-  ${strategy ? `<div class="section">
+  ${
+		strategy ?
+			`<div class="section">
     <div class="section-header success-bg">🎯 Personalised Optimal Budget Strategy</div>
     <div class="section-body">
       <div class="strategy-grid" style="margin-bottom:18px">
@@ -2492,28 +2514,38 @@ const BudgetOptimizerNew = () => {
         </div>
         <div class="strategy-box s-improve">
           <div class="s-label">💰 Potential Saving</div>
-          <div class="s-value ${strategy.potential_improvement.extra_savings > 0 ? 'green-c' : 'blue'}">
-            ${strategy.potential_improvement.extra_savings > 0 ? '+LKR ' + strategy.potential_improvement.extra_savings.toLocaleString() : 'Already Optimised ✅'}
+          <div class="s-value ${strategy.potential_improvement.extra_savings > 0 ? "green-c" : "blue"}">
+            ${strategy.potential_improvement.extra_savings > 0 ? "+LKR " + strategy.potential_improvement.extra_savings.toLocaleString() : "Already Optimised ✅"}
           </div>
-          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.potential_improvement.extra_savings > 0 ? 'extra/month possible' : 'Well done!'}</div>
+          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.potential_improvement.extra_savings > 0 ? "extra/month possible" : "Well done!"}</div>
         </div>
       </div>
-      ${altRows ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:10px">🔄 Optimisation Alternatives:</h5>
+      ${
+				altRows ?
+					`<h5 style="font-size:13px;font-weight:700;margin-bottom:10px">🔄 Optimisation Alternatives:</h5>
       <table>
         <thead><tr><th>Category</th><th>Current</th><th>Alternative</th><th style="text-align:right">Current Cost</th><th style="text-align:right">Target Cost</th><th style="text-align:right">Savings</th></tr></thead>
         <tbody>${altRows}</tbody>
-      </table>` : ''}
+      </table>`
+				:	""
+			}
     </div>
-  </div>` : ''}
+  </div>`
+		:	""
+	}
 
   <!-- RECOMMENDATIONS -->
-  ${recommendation ? `<div class="section">
+  ${
+		recommendation ?
+			`<div class="section">
     <div class="section-header purple">💡 Personalised Recommendations</div>
     <div class="section-body">
-      ${recommendation.primary_advice ? `<div class="alert-box" style="margin-bottom:14px"><strong>📌 Primary Advice:</strong> ${recommendation.primary_advice}</div>` : ''}
-      ${actionSteps ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:8px">✅ Action Steps:</h5><ul>${actionSteps}</ul>` : ''}
+      ${recommendation.primary_advice ? `<div class="alert-box" style="margin-bottom:14px"><strong>📌 Primary Advice:</strong> ${recommendation.primary_advice}</div>` : ""}
+      ${actionSteps ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:8px">✅ Action Steps:</h5><ul>${actionSteps}</ul>` : ""}
     </div>
-  </div>` : ''}
+  </div>`
+		:	""
+	}
 
   <!-- STUDENT PROFILE SUMMARY -->
   <div class="section">
@@ -2546,162 +2578,147 @@ const BudgetOptimizerNew = () => {
 </body>
 </html>`;
 
-    const win = window.open('', '_blank', 'width=1000,height=800');
-    win.document.write(html);
-    win.document.close();
-  };
+		const win = window.open("", "_blank", "width=1000,height=800");
+		win.document.write(html);
+		win.document.close();
+	};
 
-  const renderNavigationButtons = () => {
-    if (currentStep === 7 && analysisResult) {
-      return null; // No navigation buttons on results page
-    }
+	const renderNavigationButtons = () => {
+		if (currentStep === 7 && analysisResult) {
+			return null; // No navigation buttons on results page
+		}
 
-    return (
-      <div className="d-flex justify-content-between mt-4">
-        <Button
-          variant="outline-secondary"
-          onClick={prevStep}
-          disabled={currentStep === 2}
-        >
-          ← Previous
-        </Button>
+		return (
+			<div className='mt-4 d-flex justify-content-between'>
+				<Button variant='outline-secondary' onClick={prevStep} disabled={currentStep === 2}>
+					← Previous
+				</Button>
 
-        {currentStep < 6 ? (
-          <Button variant="primary" onClick={nextStep}>
-            Next →
-          </Button>
-        ) : (
-          <Button
-            variant="success"
-            onClick={submitAnalysis}
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <Spinner animation="border" size="sm" className="me-2" />
-                Analyzing...
-              </>
-            ) : (
-              '🔍 Analyze Budget'
-            )}
-          </Button>
-        )}
-      </div>
-    );
-  };
+				{currentStep < 6 ?
+					<Button variant='primary' onClick={nextStep}>
+						Next →
+					</Button>
+				:	<Button variant='success' onClick={submitAnalysis} disabled={loading}>
+						{loading ?
+							<>
+								<Spinner animation='border' size='sm' className='me-2' />
+								Analyzing...
+							</>
+						:	"🔍 Analyze Budget"}
+					</Button>
+				}
+			</div>
+		);
+	};
 
-  return (
-    <div className="budget-optimizer-new-page">
-      <Container className="my-5">
-        {/* Header */}
-        <Row className="mb-5">
-          <Col>
-            <div className="text-center">
-              <h1 className="display-4 gradient-text mb-3">
-                🤖💰 AI-Powered Student Budget Optimizer
-              </h1>
-              <p className="lead text-muted">
-                Complete your profile in 6 simple steps to get personalized budget insights
-              </p>
-            </div>
-          </Col>
-        </Row>
+	return (
+		<div className='budget-optimizer-new-page'>
+			<Container className='my-5'>
+				{/* Header */}
+				<Row className='mb-5'>
+					<Col>
+						<div className='text-center'>
+							<h1 className='mb-3 display-4 gradient-text'>🤖💰 AI-Powered Student Budget Optimizer</h1>
+							<p className='lead text-muted'>
+								Complete your profile in 6 simple steps to get personalized budget insights
+							</p>
+						</div>
+					</Col>
+				</Row>
 
-        {/* Step Indicator */}
-        {renderStepIndicator()}
+				{/* Step Indicator */}
+				{renderStepIndicator()}
 
-        {/* Error Display */}
-        {error && (
-          <Alert variant="danger" onClose={() => setError(null)} dismissible>
-            <Alert.Heading>❌ Error</Alert.Heading>
-            {error}
-          </Alert>
-        )}
+				{/* Error Display */}
+				{error && (
+					<Alert variant='danger' onClose={() => setError(null)} dismissible>
+						<Alert.Heading>❌ Error</Alert.Heading>
+						{error}
+					</Alert>
+				)}
 
-        {/* Form Steps */}
-        <Row>
-          <Col lg={10} className="mx-auto">
-            {currentStep === 2 && renderStep2()}
-            {currentStep === 3 && renderStep3()}
-            {currentStep === 4 && renderStep4()}
-            {currentStep === 5 && renderStep5()}
-            {currentStep === 6 && renderStep6()}
-            {currentStep === 7 && renderStep7()}
+				{/* Form Steps */}
+				<Row>
+					<Col lg={10} className='mx-auto'>
+						{currentStep === 2 && renderStep2()}
+						{currentStep === 3 && renderStep3()}
+						{currentStep === 4 && renderStep4()}
+						{currentStep === 5 && renderStep5()}
+						{currentStep === 6 && renderStep6()}
+						{currentStep === 7 && renderStep7()}
 
-            {renderNavigationButtons()}
-          </Col>
-        </Row>
+						{renderNavigationButtons()}
+					</Col>
+				</Row>
 
-        {/* Footer Info */}
-        <Row className="mt-5">
-          <Col>
-            <Card className="border-0 bg-light">
-              <Card.Body className="p-4">
-                <h4 className="text-center mb-4">🇱🇰 Sri Lanka-Specific Features</h4>
-                <Row>
-                  <Col md={3} className="text-center mb-3">
-                    <div className="feature-icon mb-2">💰</div>
-                    <h6>LKR Currency</h6>
-                    <small className="text-muted">Local currency calculations</small>
-                  </Col>
-                  <Col md={3} className="text-center mb-3">
-                    <div className="feature-icon mb-2">🏙️</div>
-                    <h6>District Pricing</h6>
-                    <small className="text-muted">25 districts covered</small>
-                  </Col>
-                  <Col md={3} className="text-center mb-3">
-                    <div className="feature-icon mb-2">🎓</div>
-                    <h6>Real Student Data</h6>
-                    <small className="text-muted">1,020 student responses</small>
-                  </Col>
-                  <Col md={3} className="text-center mb-3">
-                    <div className="feature-icon mb-2">📈</div>
-                    <h6>86.89% Accuracy</h6>
-                    <small className="text-muted">AI-powered predictions</small>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+				{/* Footer Info */}
+				<Row className='mt-5'>
+					<Col>
+						<Card className='border-0 bg-light'>
+							<Card.Body className='p-4'>
+								<h4 className='mb-4 text-center'>🇱🇰 Sri Lanka-Specific Features</h4>
+								<Row>
+									<Col md={3} className='mb-3 text-center'>
+										<div className='mb-2 feature-icon'>💰</div>
+										<h6>LKR Currency</h6>
+										<small className='text-muted'>Local currency calculations</small>
+									</Col>
+									<Col md={3} className='mb-3 text-center'>
+										<div className='mb-2 feature-icon'>🏙️</div>
+										<h6>District Pricing</h6>
+										<small className='text-muted'>25 districts covered</small>
+									</Col>
+									<Col md={3} className='mb-3 text-center'>
+										<div className='mb-2 feature-icon'>🎓</div>
+										<h6>Real Student Data</h6>
+										<small className='text-muted'>1,020 student responses</small>
+									</Col>
+									<Col md={3} className='mb-3 text-center'>
+										<div className='mb-2 feature-icon'>📈</div>
+										<h6>86.89% Accuracy</h6>
+										<small className='text-muted'>AI-powered predictions</small>
+									</Col>
+								</Row>
+							</Card.Body>
+						</Card>
+					</Col>
+				</Row>
+			</Container>
 
-      {/* Distance Warning Modal */}
-      <Modal show={distanceWarning.show} onHide={cancelDistanceWarning} centered>
-        <Modal.Header closeButton className="border-0 pb-0">
-          <Modal.Title className="d-flex align-items-center gap-2">
-            <span style={{ fontSize: '1.5rem' }}>⚠️</span>
-            <span>Unusual Distance Detected</span>
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="pt-2">
-          <div className="alert alert-warning mb-3" style={{ borderRadius: '10px' }}>
-            <strong>Are you sure?</strong>
-          </div>
-          <p className="mb-1">
-            You entered <strong>{distanceWarning.pendingValue} km</strong> for <em>Home to University</em>.
-          </p>
-          <p className="text-muted" style={{ fontSize: '0.9rem' }}>
-            Sri Lanka's maximum end-to-end distance is about <strong>~430 km</strong>.
-            A value over <strong>800 km</strong> is unusual for a student commute.
-            Please double-check the distance.
-          </p>
-          <p className="mb-0" style={{ fontSize: '0.9rem', color: '#555' }}>
-            If you travel abroad or have a special case, you can confirm below.
-          </p>
-        </Modal.Body>
-        <Modal.Footer className="border-0">
-          <Button variant="outline-secondary" onClick={cancelDistanceWarning}>
-            ✏️ Correct it
-          </Button>
-          <Button variant="warning" onClick={confirmDistanceWarning}>
-            ✅ Yes, it's correct
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-    </div>
-  );
+			{/* Distance Warning Modal */}
+			<Modal show={distanceWarning.show} onHide={cancelDistanceWarning} centered>
+				<Modal.Header closeButton className='pb-0 border-0'>
+					<Modal.Title className='gap-2 d-flex align-items-center'>
+						<span style={{ fontSize: "1.5rem" }}>⚠️</span>
+						<span>Unusual Distance Detected</span>
+					</Modal.Title>
+				</Modal.Header>
+				<Modal.Body className='pt-2'>
+					<div className='mb-3 alert alert-warning' style={{ borderRadius: "10px" }}>
+						<strong>Are you sure?</strong>
+					</div>
+					<p className='mb-1'>
+						You entered <strong>{distanceWarning.pendingValue} km</strong> for <em>Home to University</em>.
+					</p>
+					<p className='text-muted' style={{ fontSize: "0.9rem" }}>
+						Sri Lanka's maximum end-to-end distance is about <strong>~430 km</strong>. A value over{" "}
+						<strong>800 km</strong> is unusual for a student commute. Please double-check the distance.
+					</p>
+					<p className='mb-0' style={{ fontSize: "0.9rem", color: "#555" }}>
+						If you travel abroad or have a special case, you can confirm below.
+					</p>
+				</Modal.Body>
+				<Modal.Footer className='border-0'>
+					<Button variant='outline-secondary' onClick={cancelDistanceWarning}>
+						✏️ Correct it
+					</Button>
+					<Button variant='warning' onClick={confirmDistanceWarning}>
+						✅ Yes, it's correct
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		</div>
+	);
 };
 
 export default BudgetOptimizerNew;

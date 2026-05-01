@@ -24,7 +24,6 @@ const CATEGORY_MAP = {
   mobile: { group: "Technical Skills", sub: "Mobile" },
   embedded: { group: "Technical Skills", sub: "Embedded & IoT" },
   blockchain: { group: "Technical Skills", sub: "Blockchain & Web3" },
-  game_dev: { group: "Technical Skills", sub: "Game Development" },
   other: { group: "Technical Skills", sub: "Other Technical" },
   // Soft Skills
   soft_skill: { group: "Soft Skills", sub: "General" },
@@ -142,18 +141,21 @@ export default function SkillSelector({ selected = [], onChange }) {
   const [visibleCount, setVisibleCount] = useState(WINDOW_SIZE);
   const containerRef = useRef(null);
   const listRef = useRef(null);
+  const inputRef = useRef(null);
 
   const debouncedQuery = useDebounce(query, DEBOUNCE_MS);
 
   // ── Normalized skills list (cached once) ──────────────────────────────
   const normalized = useMemo(() => {
-    return skillsList.map((s) => ({
-      id: String(s.skill_id),
-      label: s.name,
-      category: s.category || "other",
-      type: s.type || "technical",
-      skill_id: s.skill_id,
-    }));
+    return skillsList
+      .filter((s) => (s.category || "other") !== "game_dev")
+      .map((s) => ({
+        id: String(s.skill_id),
+        label: s.name,
+        category: s.category || "other",
+        type: s.type || "technical",
+        skill_id: s.skill_id,
+      }));
   }, []);
 
   const idToLabel = useMemo(() => {
@@ -184,68 +186,74 @@ export default function SkillSelector({ selected = [], onChange }) {
   }, [activeFilter]);
 
   // ── Filtered + grouped skills ────────────────────────────────────────
-  const { grouped, flatFiltered, totalMatches, availableCategories } = useMemo(() => {
-    const quickFn = QUICK_FILTERS[activeFilter].filter;
-    const q = debouncedQuery.trim();
+  const { grouped, flatFiltered, totalMatches, availableCategories } =
+    useMemo(() => {
+      const quickFn = QUICK_FILTERS[activeFilter].filter;
+      const q = debouncedQuery.trim();
 
-    // 1. Filter by Quick Filter & Search Query
-    const baseMatches = normalized.filter((s) => {
-      if (!quickFn(s)) return false;
-      
-      const mapping = CATEGORY_MAP[s.category] || { group: "Technical Skills", sub: "Other" };
-      const searchableText = `${s.label} ${mapping.group} ${mapping.sub}`.toLowerCase();
-      return fuzzyMatch(searchableText, q) || fuzzyMatch(s.id, q);
-    });
+      // 1. Filter by Quick Filter & Search Query
+      const baseMatches = normalized.filter((s) => {
+        if (!quickFn(s)) return false;
 
-    // 2. Extract available categories from base matching results
-    const categoriesSet = new Set();
-    for (const s of baseMatches) {
-      const mapping = CATEGORY_MAP[s.category] || { sub: "Other" };
-      categoriesSet.add(mapping.sub);
-    }
-    const availableCategories = Array.from(categoriesSet).sort();
+        const mapping = CATEGORY_MAP[s.category] || {
+          group: "Technical Skills",
+          sub: "Other",
+        };
+        const searchableText =
+          `${s.label} ${mapping.group} ${mapping.sub}`.toLowerCase();
+        return fuzzyMatch(searchableText, q) || fuzzyMatch(s.id, q);
+      });
 
-    // 3. Apply active category filter
-    const matches = activeCategory === "All" 
-      ? baseMatches 
-      : baseMatches.filter((s) => {
-          const mapping = CATEGORY_MAP[s.category] || { sub: "Other" };
-          return mapping.sub === activeCategory;
-        });
+      // 2. Extract available categories from base matching results
+      const categoriesSet = new Set();
+      for (const s of baseMatches) {
+        const mapping = CATEGORY_MAP[s.category] || { sub: "Other" };
+        categoriesSet.add(mapping.sub);
+      }
+      const availableCategories = Array.from(categoriesSet).sort();
 
-    // Group by group → sub
-    const groups = {};
-    for (const s of matches) {
-      const mapping = CATEGORY_MAP[s.category] || {
-        group: "Technical Skills",
-        sub: "Other",
-      };
-      if (!groups[mapping.group]) groups[mapping.group] = {};
-      if (!groups[mapping.group][mapping.sub])
-        groups[mapping.group][mapping.sub] = [];
-      groups[mapping.group][mapping.sub].push(s);
-    }
+      // 3. Apply active category filter
+      const matches =
+        activeCategory === "All"
+          ? baseMatches
+          : baseMatches.filter((s) => {
+              const mapping = CATEGORY_MAP[s.category] || { sub: "Other" };
+              return mapping.sub === activeCategory;
+            });
 
-    // Sort groups by GROUP_ORDER
-    const ordered = {};
-    for (const g of GROUP_ORDER) {
-      if (groups[g]) {
-        ordered[g] = {};
-        for (const sub of Object.keys(groups[g]).sort()) {
-          ordered[g][sub] = groups[g][sub];
+      // Group by group → sub
+      const groups = {};
+      for (const s of matches) {
+        const mapping = CATEGORY_MAP[s.category] || {
+          group: "Technical Skills",
+          sub: "Other",
+        };
+        if (!groups[mapping.group]) groups[mapping.group] = {};
+        if (!groups[mapping.group][mapping.sub])
+          groups[mapping.group][mapping.sub] = [];
+        groups[mapping.group][mapping.sub].push(s);
+      }
+
+      // Sort groups by GROUP_ORDER
+      const ordered = {};
+      for (const g of GROUP_ORDER) {
+        if (groups[g]) {
+          ordered[g] = {};
+          for (const sub of Object.keys(groups[g]).sort()) {
+            ordered[g][sub] = groups[g][sub];
+          }
         }
       }
-    }
 
-    // Flat list for windowed rendering
-    const flat = matches;
-    return {
-      grouped: ordered,
-      flatFiltered: flat,
-      totalMatches: matches.length,
-      availableCategories,
-    };
-  }, [normalized, debouncedQuery, activeFilter, activeCategory]);
+      // Flat list for windowed rendering
+      const flat = matches;
+      return {
+        grouped: ordered,
+        flatFiltered: flat,
+        totalMatches: matches.length,
+        availableCategories,
+      };
+    }, [normalized, debouncedQuery, activeFilter, activeCategory]);
 
   // Reset visible count on filter/query/category change
   useEffect(() => {
@@ -303,6 +311,20 @@ export default function SkillSelector({ selected = [], onChange }) {
       return next;
     });
   }
+
+  // ── Anchor viewport to search input on open/close to prevent jumps ───
+  useEffect(() => {
+    // Use requestAnimationFrame to wait for DOM to settle after tags show/hide
+    const raf = requestAnimationFrame(() => {
+      if (inputRef.current) {
+        inputRef.current.scrollIntoView({
+          block: "nearest",
+          behavior: "instant",
+        });
+      }
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [open]);
 
   // ── Click outside → close ────────────────────────────────────────────
   useEffect(() => {
@@ -376,16 +398,26 @@ export default function SkillSelector({ selected = [], onChange }) {
   // ── Build windowed flat list ─────────────────────────────────────────
   const windowedItems = useMemo(() => {
     // If searching or using a non-default filter/category, show flat list (windowed)
-    if (debouncedQuery.trim() || activeFilter !== 0 || activeCategory !== "All") {
+    if (
+      debouncedQuery.trim() ||
+      activeFilter !== 0 ||
+      activeCategory !== "All"
+    ) {
       return flatFiltered.slice(0, visibleCount);
     }
     return null; // signal to use grouped view
-  }, [debouncedQuery, activeFilter, activeCategory, flatFiltered, visibleCount]);
+  }, [
+    debouncedQuery,
+    activeFilter,
+    activeCategory,
+    flatFiltered,
+    visibleCount,
+  ]);
 
   return (
     <div className="relative" ref={containerRef}>
-      {/* ── Selected Skills (tags) ──────────────────────────────────────── */}
-      {selectedIds.length > 0 && (
+      {/* ── Selected Skills (tags) — hidden while dropdown is open to prevent layout shift ── */}
+      {selectedIds.length > 0 && !open && (
         <div className="mb-3">
           <div className="flex justify-between items-center mb-2">
             <span className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
@@ -453,6 +485,7 @@ export default function SkillSelector({ selected = [], onChange }) {
           </svg>
         </div>
         <input
+          ref={inputRef}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -524,6 +557,26 @@ export default function SkillSelector({ selected = [], onChange }) {
                      rounded-xl shadow-xl overflow-hidden
                      animate-in fade-in slide-in-from-top-2 duration-200"
         >
+          {/* Inline selected count when dropdown is open */}
+          {selectedIds.length > 0 && (
+            <div className="flex items-center justify-between px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+              <span className="text-xs font-bold text-blue-700">
+                ✓ {selectedIds.length} skill
+                {selectedIds.length !== 1 ? "s" : ""} selected
+              </span>
+              <button
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  if (typeof onChange === "function") onChange([]);
+                }}
+                className="text-[11px] font-semibold text-red-500 hover:text-red-700 bg-white hover:bg-red-50 px-2 py-0.5 rounded-md transition-colors border border-red-200"
+              >
+                Clear All
+              </button>
+            </div>
+          )}
+
           {/* Quick filters */}
           <div className="flex items-center gap-1 px-3 py-2 bg-gray-50 border-b border-gray-100 overflow-x-auto scrollbar-hide">
             {QUICK_FILTERS.map((f, i) => (
@@ -587,23 +640,26 @@ export default function SkillSelector({ selected = [], onChange }) {
           )}
 
           {/* Action Header / Select All (when filtered) */}
-          {(activeFilter !== 0 || activeCategory !== "All" || debouncedQuery.trim() !== "") && totalMatches > 0 && (
-            <div className="flex items-center justify-between px-4 py-2 bg-[#6366f1] text-white shadow-inner">
-               <div className="text-xs font-semibold">
-                 {totalMatches} matching skills
-               </div>
-               <button
-                 type="button"
-                 onMouseDown={(e) => {
-                   e.preventDefault();
-                   selectAllInSub(flatFiltered);
-                 }}
-                 className="text-[#6366f1] bg-white hover:bg-gray-100 text-xs font-bold px-3 py-1 rounded-md transition-colors shadow-sm"
-               >
-                 Select All
-               </button>
-            </div>
-          )}
+          {(activeFilter !== 0 ||
+            activeCategory !== "All" ||
+            debouncedQuery.trim() !== "") &&
+            totalMatches > 0 && (
+              <div className="flex items-center justify-between px-4 py-2 bg-[#6366f1] text-white shadow-inner">
+                <div className="text-xs font-semibold">
+                  {totalMatches} matching skills
+                </div>
+                <button
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    selectAllInSub(flatFiltered);
+                  }}
+                  className="text-[#6366f1] bg-white hover:bg-gray-100 text-xs font-bold px-3 py-1 rounded-md transition-colors shadow-sm"
+                >
+                  Select All
+                </button>
+              </div>
+            )}
 
           {/* Scrollable list */}
           <div
@@ -727,10 +783,12 @@ export default function SkillSelector({ selected = [], onChange }) {
               <div className="flex flex-col">
                 <p className="text-xs text-gray-500 font-medium">
                   {totalMatches.toLocaleString()} skills
-                  {debouncedQuery.trim() || activeCategory !== "All" ? " matching filters" : " available"}
+                  {debouncedQuery.trim() || activeCategory !== "All"
+                    ? " matching filters"
+                    : " available"}
                 </p>
               </div>
-              
+
               {selectedIds.length > 0 && (
                 <button
                   type="button"

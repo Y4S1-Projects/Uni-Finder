@@ -1,0 +1,686 @@
+{
+  "tier_totals": {
+    "core_required": 25986,
+    "supporting": 20238,
+    "optional": 167940,
+    "generic_soft": 40388,
+    "domain_signal": 45584
+  },
+  "problem_jobs_count": 4415,
+  "problem_by_domain": {
+    "MOBILE_ENGINEERING": 56,
+    "FULLSTACK_ENGINEERING": 3044,
+    "AI_ML": 149,
+    "DATA_ENGINEERING": 573,
+    "DEVOPS_SRE": 413,
+    "SECURITY": 45,
+    "UI_UX_DESIGN": 35,
+    "QA_TESTING": 20,
+    "CLOUD_ENGINEERING": 80
+  },
+  "enrichment_details": [
+    {
+      "domain": "FRONTEND_ENGINEERING",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    },
+    {
+      "domain": "BACKEND_ENGINEERING",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    },
+    {
+      "domain": "FULLSTACK_ENGINEERING",
+      "job_count": "7422",
+      "core_skill_coverage": {
+        "javascript": {
+          "sid": "SK002",
+          "col": "skill_sk002",
+          "count": 3844,
+          "pct": 51.8
+        },
+        "typescript": {
+          "sid": "SK312",
+          "col": "skill_sk312",
+          "count": 1521,
+          "pct": 20.5
+        },
+        "python": {
+          "sid": "SK004",
+          "col": "skill_sk004",
+          "count": 1017,
+          "pct": 13.7
+        },
+        "react": {
+          "sid": "SK351",
+          "col": "skill_sk351",
+          "count": 1567,
+          "pct": 21.1
+        },
+        "angular": {
+          "sid": "SK353",
+          "col": "skill_sk353",
+          "count": 1369,
+          "pct": 18.4
+        },
+        "vue": {
+          "sid": "SK352",
+          "col": "skill_sk352",
+          "count": 346,
+          "pct": 4.7
+        },
+        "node.js": {
+          "sid": "SK076",
+          "col": "skill_sk076",
+          "count": 326,
+          "pct": 4.4
+        },
+        "express": {
+          "sid": "SK381",
+          "col": "skill_sk381",
+          "count": 151,
+          "pct": 2.0
+        },
+        "django": {
+          "sid": "SK110",
+          "col": "skill_sk110",
+          "count": 212,
+          "pct": 2.9
+        },
+        "next.js": {
+          "sid": "SK354",
+          "col": "skill_sk354",
+          "count": 29,
+          "pct": 0.4
+        }
+      }
+    },
+    {
+      "domain": "AI_ML",
+      "job_count": "446",
+      "core_skill_coverage": {
+        "python": {
+          "sid": "SK004",
+          "col": "skill_sk004",
+          "count": 251,
+          "pct": 56.3
+        },
+        "machine learning": {
+          "sid": "SK031",
+          "col": "skill_sk031",
+          "count": 271,
+          "pct": 60.8
+        },
+        "tensorflow": {
+          "sid": "SK531",
+          "col": "skill_sk531",
+          "count": 90,
+          "pct": 20.2
+        },
+        "pytorch": {
+          "sid": "SK532",
+          "col": "skill_sk532",
+          "count": 53,
+          "pct": 11.9
+        },
+        "scikit-learn": {
+          "sid": "SK534",
+          "col": "skill_sk534",
+          "count": 39,
+          "pct": 8.7
+        },
+        "keras": {
+          "sid": "SK533",
+          "col": "skill_sk533",
+          "count": 48,
+          "pct": 10.8
+        },
+        "nlp": {
+          "sid": "SK194",
+          "col": "skill_sk194",
+          "count": 34,
+          "pct": 7.6
+        },
+        "pandas": {
+          "sid": "SK542",
+          "col": "skill_sk542",
+          "count": 26,
+          "pct": 5.8
+        },
+        "numpy": {
+          "sid": "SK543",
+          "col": "skill_sk543",
+          "count": 27,
+          "pct": 6.1
+        },
+        "hugging face": {
+          "sid": "SK535",
+          "col": "skill_sk535",
+          "count": 4,
+          "pct": 0.9
+        },
+        "langchain": {
+          "sid": "SK554",
+          "col": "skill_sk554",
+          "count": 0,
+          "pct": 0.0
+        },
+        "llamaindex": {
+          "sid": "SK555",
+          "col": "skill_sk555",
+          "count": 0,
+          "pct": 0.0
+        },
+        "opencv": {
+          "sid": "SK621",
+          "col": "skill_sk621",
+          "count": 30,
+          "pct": 6.7
+        }
+      }
+    },
+    {
+      "domain": "DATA_SCIENCE",
+      "job_count": "34",
+      "core_skill_coverage": {
+        "python": {
+          "sid": "SK004",
+          "col": "skill_sk004",
+          "count": 33,
+          "pct": 97.1
+        },
+        "r": {
+          "sid": "SK311",
+          "col": "skill_sk311",
+          "count": 0,
+          "pct": 0.0
+        },
+        "sql": {
+          "sid": "SK003",
+          "col": "skill_sk003",
+          "count": 17,
+          "pct": 50.0
+        },
+        "pandas": {
+          "sid": "SK542",
+          "col": "skill_sk542",
+          "count": 6,
+          "pct": 17.6
+        },
+        "numpy": {
+          "sid": "SK543",
+          "col": "skill_sk543",
+          "count": 8,
+          "pct": 23.5
+        },
+        "scikit-learn": {
+          "sid": "SK534",
+          "col": "skill_sk534",
+          "count": 13,
+          "pct": 38.2
+        },
+        "machine learning": {
+          "sid": "SK031",
+          "col": "skill_sk031",
+          "count": 34,
+          "pct": 100.0
+        },
+        "data visualization": {
+          "sid": "SK273",
+          "col": "skill_sk273",
+          "count": 7,
+          "pct": 20.6
+        },
+        "tableau": {
+          "sid": "SK217",
+          "col": "skill_sk217",
+          "count": 7,
+          "pct": 20.6
+        },
+        "power bi": {
+          "sid": "SK611",
+          "col": "skill_sk611",
+          "count": 3,
+          "pct": 8.8
+        }
+      }
+    },
+    {
+      "domain": "DATA_ENGINEERING",
+      "job_count": "2276",
+      "core_skill_coverage": {
+        "sql": {
+          "sid": "SK003",
+          "col": "skill_sk003",
+          "count": 1585,
+          "pct": 69.6
+        },
+        "python": {
+          "sid": "SK004",
+          "col": "skill_sk004",
+          "count": 947,
+          "pct": 41.6
+        },
+        "apache spark": {
+          "sid": "SK591",
+          "col": "skill_sk591",
+          "count": 470,
+          "pct": 20.7
+        },
+        "hadoop": {
+          "sid": "SK060",
+          "col": "skill_sk060",
+          "count": 439,
+          "pct": 19.3
+        },
+        "kafka": {
+          "sid": "SK592",
+          "col": "skill_sk592",
+          "count": 196,
+          "pct": 8.6
+        },
+        "airflow": {
+          "sid": "SK593",
+          "col": "skill_sk593",
+          "count": 97,
+          "pct": 4.3
+        },
+        "postgresql": {
+          "sid": "SK077",
+          "col": "skill_sk077",
+          "count": 111,
+          "pct": 4.9
+        },
+        "data modeling": {
+          "sid": "SK756",
+          "col": "skill_sk756",
+          "count": 123,
+          "pct": 5.4
+        },
+        "etl": {
+          "sid": "SK192",
+          "col": "skill_sk192",
+          "count": 551,
+          "pct": 24.2
+        },
+        "data warehousing": {
+          "sid": "SK129",
+          "col": "skill_sk129",
+          "count": 145,
+          "pct": 6.4
+        },
+        "data pipeline": {
+          "sid": "SK609",
+          "col": "skill_sk609",
+          "count": 173,
+          "pct": 7.6
+        }
+      }
+    },
+    {
+      "domain": "DEVOPS_SRE",
+      "job_count": "1443",
+      "core_skill_coverage": {
+        "docker": {
+          "sid": "SK029",
+          "col": "skill_sk029",
+          "count": 571,
+          "pct": 39.6
+        },
+        "kubernetes": {
+          "sid": "SK646",
+          "col": "skill_sk646",
+          "count": 494,
+          "pct": 34.2
+        },
+        "terraform": {
+          "sid": "SK670",
+          "col": "skill_sk670",
+          "count": 330,
+          "pct": 22.9
+        },
+        "ansible": {
+          "sid": "SK671",
+          "col": "skill_sk671",
+          "count": 451,
+          "pct": 31.3
+        },
+        "jenkins": {
+          "sid": "SK655",
+          "col": "skill_sk655",
+          "count": 608,
+          "pct": 42.1
+        },
+        "linux": {
+          "sid": "SK020",
+          "col": "skill_sk020",
+          "count": 572,
+          "pct": 39.6
+        },
+        "aws": {
+          "sid": "SK181",
+          "col": "skill_sk181",
+          "count": 637,
+          "pct": 44.1
+        },
+        "azure": {
+          "sid": "SK174",
+          "col": "skill_sk174",
+          "count": 47,
+          "pct": 3.3
+        },
+        "nginx": {
+          "sid": "SK702",
+          "col": "skill_sk702",
+          "count": 80,
+          "pct": 5.5
+        },
+        "prometheus": {
+          "sid": "SK680",
+          "col": "skill_sk680",
+          "count": 93,
+          "pct": 6.4
+        },
+        "grafana": {
+          "sid": "SK681",
+          "col": "skill_sk681",
+          "count": 85,
+          "pct": 5.9
+        }
+      }
+    },
+    {
+      "domain": "CLOUD_ENGINEERING",
+      "job_count": "281",
+      "core_skill_coverage": {
+        "aws": {
+          "sid": "SK181",
+          "col": "skill_sk181",
+          "count": 198,
+          "pct": 70.5
+        },
+        "azure": {
+          "sid": "SK174",
+          "col": "skill_sk174",
+          "count": 37,
+          "pct": 13.2
+        },
+        "terraform": {
+          "sid": "SK670",
+          "col": "skill_sk670",
+          "count": 15,
+          "pct": 5.3
+        },
+        "kubernetes": {
+          "sid": "SK646",
+          "col": "skill_sk646",
+          "count": 22,
+          "pct": 7.8
+        },
+        "docker": {
+          "sid": "SK029",
+          "col": "skill_sk029",
+          "count": 43,
+          "pct": 15.3
+        },
+        "cloud security": {
+          "sid": "SK775",
+          "col": "skill_sk775",
+          "count": 3,
+          "pct": 1.1
+        },
+        "infrastructure as code": {
+          "sid": "SK708",
+          "col": "skill_sk708",
+          "count": 6,
+          "pct": 2.1
+        }
+      }
+    },
+    {
+      "domain": "SECURITY",
+      "job_count": "186",
+      "core_skill_coverage": {
+        "security": {
+          "sid": "SK016",
+          "col": "skill_sk016",
+          "count": 137,
+          "pct": 73.7
+        },
+        "penetration testing": {
+          "sid": "SK763",
+          "col": "skill_sk763",
+          "count": 10,
+          "pct": 5.4
+        },
+        "siem": {
+          "sid": "SK765",
+          "col": "skill_sk765",
+          "count": 10,
+          "pct": 5.4
+        },
+        "network security": {
+          "sid": "SK774",
+          "col": "skill_sk774",
+          "count": 71,
+          "pct": 38.2
+        },
+        "vulnerability assessment": {
+          "sid": "SK764",
+          "col": "skill_sk764",
+          "count": 7,
+          "pct": 3.8
+        },
+        "incident response": {
+          "sid": "SK771",
+          "col": "skill_sk771",
+          "count": 9,
+          "pct": 4.8
+        },
+        "firewall": {
+          "sid": "SK165",
+          "col": "skill_sk165",
+          "count": 30,
+          "pct": 16.1
+        },
+        "security+": {
+          "sid": "SK1059",
+          "col": "skill_sk1059",
+          "count": 0,
+          "pct": 0.0
+        },
+        "cissp": {
+          "sid": "SK1056",
+          "col": "skill_sk1056",
+          "count": 3,
+          "pct": 1.6
+        },
+        "ceh": {
+          "sid": "SK1057",
+          "col": "skill_sk1057",
+          "count": 2,
+          "pct": 1.1
+        }
+      }
+    },
+    {
+      "domain": "MOBILE_ENGINEERING",
+      "job_count": "2487",
+      "core_skill_coverage": {
+        "android": {
+          "sid": "SK265",
+          "col": "skill_sk265",
+          "count": 1737,
+          "pct": 69.8
+        },
+        "ios": {
+          "sid": "SK055",
+          "col": "skill_sk055",
+          "count": 1131,
+          "pct": 45.5
+        },
+        "swift": {
+          "sid": "SK078",
+          "col": "skill_sk078",
+          "count": 613,
+          "pct": 24.6
+        },
+        "kotlin": {
+          "sid": "SK303",
+          "col": "skill_sk303",
+          "count": 459,
+          "pct": 18.5
+        },
+        "react native": {
+          "sid": "SK798",
+          "col": "skill_sk798",
+          "count": 181,
+          "pct": 7.3
+        },
+        "flutter": {
+          "sid": "SK799",
+          "col": "skill_sk799",
+          "count": 183,
+          "pct": 7.4
+        },
+        "dart": {
+          "sid": "SK304",
+          "col": "skill_sk304",
+          "count": 39,
+          "pct": 1.6
+        },
+        "swiftui": {
+          "sid": "SK800",
+          "col": "skill_sk800",
+          "count": 32,
+          "pct": 1.3
+        },
+        "mobile development": {
+          "sid": "SK142",
+          "col": "skill_sk142",
+          "count": 446,
+          "pct": 17.9
+        }
+      }
+    },
+    {
+      "domain": "UI_UX_DESIGN",
+      "job_count": "35",
+      "core_skill_coverage": {}
+    },
+    {
+      "domain": "QA_TESTING",
+      "job_count": "166",
+      "core_skill_coverage": {
+        "testing": {
+          "sid": "SK135",
+          "col": "skill_sk135",
+          "count": 146,
+          "pct": 88.0
+        },
+        "selenium": {
+          "sid": "SK427",
+          "col": "skill_sk427",
+          "count": 42,
+          "pct": 25.3
+        },
+        "cypress": {
+          "sid": "SK424",
+          "col": "skill_sk424",
+          "count": 4,
+          "pct": 2.4
+        },
+        "jest": {
+          "sid": "SK428",
+          "col": "skill_sk428",
+          "count": 4,
+          "pct": 2.4
+        },
+        "junit": {
+          "sid": "SK072",
+          "col": "skill_sk072",
+          "count": 2,
+          "pct": 1.2
+        }
+      }
+    },
+    {
+      "domain": "GAME_DEVELOPMENT",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    },
+    {
+      "domain": "BLOCKCHAIN_WEB3",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    },
+    {
+      "domain": "EMBEDDED_SYSTEMS",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    },
+    {
+      "domain": "PRODUCT_MANAGEMENT",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    },
+    {
+      "domain": "BUSINESS_ANALYSIS",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    },
+    {
+      "domain": "PROJECT_MANAGEMENT",
+      "job_count": "454",
+      "core_skill_coverage": {
+        "project management": {
+          "sid": "SK111",
+          "col": "skill_sk111",
+          "count": 287,
+          "pct": 63.2
+        },
+        "pmp": {
+          "sid": "SK216",
+          "col": "skill_sk216",
+          "count": 93,
+          "pct": 20.5
+        },
+        "prince2": {
+          "sid": "SK1090",
+          "col": "skill_sk1090",
+          "count": 14,
+          "pct": 3.1
+        },
+        "agile": {
+          "sid": "SK161",
+          "col": "skill_sk161",
+          "count": 157,
+          "pct": 34.6
+        },
+        "risk management": {
+          "sid": "SK977",
+          "col": "skill_sk977",
+          "count": 74,
+          "pct": 16.3
+        },
+        "budget management": {
+          "sid": "SK927",
+          "col": "skill_sk927",
+          "count": 9,
+          "pct": 2.0
+        },
+        "stakeholder management": {
+          "sid": "SK880",
+          "col": "skill_sk880",
+          "count": 454,
+          "pct": 100.0
+        }
+      }
+    },
+    {
+      "domain": "TECHNICAL_WRITING",
+      "job_count": 0,
+      "action": "NO_JOBS_IN_DOMAIN"
+    }
+  ]
+}

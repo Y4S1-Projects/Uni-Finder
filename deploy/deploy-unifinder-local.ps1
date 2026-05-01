@@ -1,5 +1,7 @@
 param(
-    [switch]$ValidateOnly
+    [switch]$ValidateOnly,
+    [string]$ImageTag = "latest",
+    [switch]$DisableDigestPinning
 )
 
 $ErrorActionPreference = "Stop"
@@ -10,12 +12,21 @@ $EnvironmentResourceId = "/subscriptions/54b722b3-0027-43ff-b8b1-08ef553e0c67/re
 $AcrName = "unifinderacr2026main01"
 
 $Images = @{
-    backend     = "$AcrName.azurecr.io/unifinder-backend:latest"
-    degree      = "$AcrName.azurecr.io/unifinder-degree-service:latest"
-    budget      = "$AcrName.azurecr.io/unifinder-budget-service:latest"
-    career      = "$AcrName.azurecr.io/unifinder-career-service:latest"
-    scholarship = "$AcrName.azurecr.io/unifinder-scholarship-service:latest"
-    frontend    = "$AcrName.azurecr.io/unifinder-frontend:latest"
+    backend     = "$AcrName.azurecr.io/unifinder-backend:$ImageTag"
+    degree      = "$AcrName.azurecr.io/unifinder-degree-service:$ImageTag"
+    budget      = "$AcrName.azurecr.io/unifinder-budget-service:$ImageTag"
+    career      = "$AcrName.azurecr.io/unifinder-career-service:$ImageTag"
+    scholarship = "$AcrName.azurecr.io/unifinder-scholarship-service:$ImageTag"
+    frontend    = "$AcrName.azurecr.io/unifinder-frontend:$ImageTag"
+}
+
+$ImageRepos = @{
+    backend     = "unifinder-backend"
+    degree      = "unifinder-degree-service"
+    budget      = "unifinder-budget-service"
+    career      = "unifinder-career-service"
+    scholarship = "unifinder-scholarship-service"
+    frontend    = "unifinder-frontend"
 }
 
 Write-Host "Verifying Azure context..."
@@ -56,6 +67,40 @@ if ($ValidateOnly) {
     Write-Host "Validation passed. All required images exist."
     exit 0
 }
+
+function Resolve-ImageReference {
+    param(
+        [string]$Repository,
+        [string]$Tag
+    )
+
+    if ($DisableDigestPinning) {
+        return "$AcrServer/${Repository}:$Tag"
+    }
+
+    try {
+        $digest = az acr repository show-tags --name $AcrName --repository $Repository --detail --orderby time_desc --query "[?name=='$Tag'] | [0].digest" -o tsv
+        if ($digest) {
+            return "$AcrServer/$Repository@$digest"
+        }
+    }
+    catch {
+        Write-Warning "Could not resolve digest for $Repository`:$Tag. Falling back to tag."
+    }
+
+    return "$AcrServer/${Repository}:$Tag"
+}
+
+Write-Host "Resolving image references (digest pinning: $([string](-not $DisableDigestPinning))) ..."
+$imageKeys = @($Images.Keys)
+foreach ($key in $imageKeys) {
+    $repo = $ImageRepos[$key]
+    $resolved = Resolve-ImageReference -Repository $repo -Tag $ImageTag
+    $Images[$key] = $resolved
+    Write-Host " - $key => $resolved"
+}
+
+$deployStamp = [DateTime]::UtcNow.ToString("yyyyMMddHHmmss")
 
 function Publish-ContainerApp {
     param(
@@ -116,27 +161,34 @@ Publish-ContainerApp -Name "unifinder-backend" -Image $Images.backend -Port 5000
     "PORT=5000",
     "MONGO=$mongo",
     "JWT_SECRET=$jwt",
-    "CORS_ORIGINS=*"
+    "CORS_ORIGINS=*",
+    "DEPLOYMENT_VERSION=$deployStamp"
 )
 
 Publish-ContainerApp -Name "unifinder-degree-service" -Image $Images.degree -Port 5001 -Ingress "external" -Cpu "0.5" -Memory "1Gi" -EnvVars @(
-    "PORT=5001"
+    "PORT=5001",
+    "DEPLOYMENT_VERSION=$deployStamp"
 )
 
 Publish-ContainerApp -Name "unifinder-budget-service" -Image $Images.budget -Port 5002 -Ingress "external" -Cpu "0.5" -Memory "1Gi" -EnvVars @(
-    "PORT=5002"
+    "PORT=5002",
+    "DEPLOYMENT_VERSION=$deployStamp"
 )
 
 Publish-ContainerApp -Name "unifinder-career-service" -Image $Images.career -Port 5004 -Ingress "external" -Cpu "0.5" -Memory "1Gi" -EnvVars @(
     "PORT=5004",
-    "CORS_ORIGINS=*"
+    "CORS_ORIGINS=*",
+    "DEPLOYMENT_VERSION=$deployStamp"
 )
 
 Publish-ContainerApp -Name "unifinder-scholarship-service" -Image $Images.scholarship -Port 5005 -Ingress "external" -Cpu "0.5" -Memory "1Gi" -EnvVars @(
-    "PORT=5005"
+    "PORT=5005",
+    "DEPLOYMENT_VERSION=$deployStamp"
 )
 
-Publish-ContainerApp -Name "unifinder-frontend" -Image $Images.frontend -Port 80 -Ingress "external" -Cpu "0.25" -Memory "0.5Gi" -EnvVars @()
+Publish-ContainerApp -Name "unifinder-frontend" -Image $Images.frontend -Port 80 -Ingress "external" -Cpu "0.25" -Memory "0.5Gi" -EnvVars @(
+    "DEPLOYMENT_VERSION=$deployStamp"
+)
 
 $frontendFqdn = az containerapp show --name unifinder-frontend --resource-group $ResourceGroup --query properties.configuration.ingress.fqdn -o tsv
 $frontendUrl = "https://$frontendFqdn"
@@ -151,5 +203,7 @@ Write-Host "Deployment complete. Service URLs:"
 $apps = @("unifinder-frontend", "unifinder-backend", "unifinder-degree-service", "unifinder-budget-service", "unifinder-career-service", "unifinder-scholarship-service")
 foreach ($app in $apps) {
     $fqdn = az containerapp show --name $app --resource-group $ResourceGroup --query properties.configuration.ingress.fqdn -o tsv
+    $image = az containerapp show --name $app --resource-group $ResourceGroup --query "properties.template.containers[0].image" -o tsv
     Write-Host "$app => https://$fqdn"
+    Write-Host "    image: $image"
 }
