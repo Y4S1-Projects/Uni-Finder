@@ -526,6 +526,21 @@ class MLBudgetPredictor:
         utilities        = current_expenses.get('utilities', 0)
         healthcare       = current_expenses.get('healthcare', 0)
         district_avg_rent = self.avg_district_rent if self.avg_district_rent else 10000
+        has_work_commute = student_data.get('has_work_commute', False)
+
+        # Determine if student attends a state university (eligible for CTB student concession)
+        # CTB student concession is ONLY available to UGC-recognized state university students
+        _uni_lower = student_data.get('university', '').lower()
+        STATE_UNI_KEYWORDS = (
+            'university of colombo', 'university of peradeniya', 'university of moratuwa',
+            'university of kelaniya', 'university of sri jayewardenepura',
+            'university of jaffna', 'university of ruhuna', 'eastern university',
+            'south eastern university', 'wayamba university', 'rajarata university',
+            'sabaragamuwa university', 'uva wellassa', 'visual and performing arts',
+            'open university of sri lanka', 'open university',
+            'kotelawala', 'kdu', 'general sir john',
+        )
+        is_state_uni = any(k in _uni_lower for k in STATE_UNI_KEYWORDS)
         
         # ── 1. FOOD ────────────────────────────────────────────────
         if food_type in ('Food Delivery', 'Mostly Canteen/Restaurants'):
@@ -593,18 +608,27 @@ class MLBudgetPredictor:
                 'payback_period': '2 months'
             })
         elif transport_method in ('Tuk-Tuk', 'Ride-share'):
+            if is_state_uni:
+                tuk_action_steps = [
+                    'Apply for student bus pass at your university registrar (50% CTB concession for state uni students)',
+                    'Map your bus route on Google Maps – usually faster than PickMe during rush hour',
+                    'Leave 10 min earlier to match bus schedules',
+                    'Keep PickMe/Uber for late evenings or heavy-rain emergencies only',
+                ]
+            else:
+                tuk_action_steps = [
+                    'Identify CTB or private bus routes serving your campus on Google Maps or moovit',
+                    'Ask senior students in your batch which bus routes they use — real-world info is most reliable',
+                    'Leave 10 min earlier to match bus schedules',
+                    'Keep tuk-tuk/ride-share for late evenings or heavy-rain emergencies only',
+                ]
             alternatives.append({
                 'category': 'Transport',
                 'current_choice': f'{transport_method} – LKR {current_transport:,.0f}/month',
-                'optimal_choice': 'CTB / Private Bus daily + student pass discount',
-                'reasoning': 'Public transport costs LKR 60-150/trip vs Tuk-Tuk LKR 130-400/trip. Switching saves 55-70% on daily commuting.',
+                'optimal_choice': 'Switch to CTB / Private Bus for daily commute',
+                'reasoning': 'Public bus costs LKR 60-150/trip vs Tuk-Tuk LKR 130-400/trip. Switching to the bus for daily campus commutes saves 55-70% without giving up convenience on off-days.',
                 'estimated_savings': round(current_transport * 0.60, 2),
-                'action_steps': [
-                    'Apply for student bus pass at university registrar (50% CTB discount)',
-                    'Map your bus route on Google Maps – usually faster than PickMe during rush hour',
-                    'Leave 10 min earlier to match bus schedules',
-                    'Keep PickMe/Uber for late evenings or heavy-rain emergencies only'
-                ],
+                'action_steps': tuk_action_steps,
                 'priority': 'High'
             })
         elif transport_method == 'Personal Vehicle' and current_transport > 6000:
@@ -623,18 +647,44 @@ class MLBudgetPredictor:
                 'priority': 'Medium'
             })
         elif transport_method == 'Bus' and current_transport > 3500:
+            if is_state_uni:
+                bus_optimal = 'Apply for CTB student concession pass (50% daily fare reduction)'
+                bus_reasoning = (
+                    'The CTB student concession scheme cuts your daily fare by up to 50% — it is '
+                    'available exclusively to students enrolled at UGC-recognized state universities. '
+                    'Applying is a one-time free process that saves money every single commute day.'
+                )
+                bus_steps = [
+                    'Obtain a student status confirmation letter from your university registrar',
+                    'Visit the nearest CTB depot with the letter + NIC to apply for the concession pass',
+                    'Travel mid-week (Tue/Wed) — less crowded and occasionally cheaper on private buses',
+                    'Coordinate with classmates for shared tuk-tuk on rainy days to split cost',
+                ]
+            else:
+                bus_optimal = 'Reduce travel frequency and optimize travel timing to minimize costs'
+                bus_reasoning = (
+                    'Student concession passes are more commonly available to state university students. '
+                    'For private campus students, cost savings can be achieved by reducing unnecessary trips '
+                    'and planning travel efficiently. Traveling during less crowded hours '
+                    '(e.g., before 7:30 am or after 6 pm) can improve comfort and consistency.'
+                )
+                bus_steps = [
+                    'Share transport with trusted batch-mates who live nearby — split costs fairly, especially during rainy days',
+
+                    'Batch errands: combine grocery shopping and campus visits on the same trip',
+                    'Travel early (e.g., before 7:30 am) if it fits your timetable and is safe — this helps avoid crowding and delays',
+
+                    'Check if your campus runs a shuttle service; many private institutes do offer one',
+                    'Use Google Maps to check if a train route is available to your campus — trains are often cheaper per km where accessible',
+
+                ]
             alternatives.append({
                 'category': 'Transport',
                 'current_choice': f'Bus – LKR {current_transport:,.0f}/month',
-                'optimal_choice': 'Monthly student bus pass + reduce home visit frequency',
-                'reasoning': 'A monthly CTB student pass can save 25-30% on daily fares. Reducing home visits from bi-weekly to monthly cuts trip costs by half.',
+                'optimal_choice': bus_optimal,
+                'reasoning': bus_reasoning,
                 'estimated_savings': round(current_transport * 0.22, 2),
-                'action_steps': [
-                    'Apply for monthly CTB student pass at your university registrar',
-                    'Consolidate home visits: once a month saves 1-3 round trips at LKR 200-1,000 each',
-                    'Travel mid-week (Tuesday/Wednesday) – less crowded, occasionally cheaper private buses',
-                    'Coordinate with friends for shared tuk-tuk on rainy days to split cost'
-                ],
+                'action_steps': bus_steps,
                 'priority': 'Medium'
             })
         
@@ -723,10 +773,10 @@ class MLBudgetPredictor:
                 'reasoning': 'Entertainment above 8-10% of income puts financial pressure on essentials. There are many free/low-cost activities in Sri Lanka.',
                 'estimated_savings': round(entertainment - target_ent, 2),
                 'action_steps': [
-                    'Use student ID for 50% discount at Savoy/Liberty cinemas',
+                    'Use your student ID for cinema discounts (availability may vary by location and timing),',
                     'Explore free campus cultural events, sports, and clubs',
                     'Visit free public beaches, parks, and libraries for leisure',
-                    'Cancel unused streaming subscriptions (keep 1 max)',
+                    'Cancel unused subscriptions and limit to one or two essential services',
                     'Set a weekly cash budget (LKR 600-800) and stick to it'
                 ],
                 'priority': 'Medium'
@@ -753,22 +803,51 @@ class MLBudgetPredictor:
         # ── 8. INCOME BOOST (always shown if savings rate is low) ─
         savings_rate_now = round((current_savings / monthly_income * 100), 1) if monthly_income > 0 else 0
         if savings_rate_now < 15:
-            alternatives.append({
-                'category': 'Income Enhancement',
-                'current_choice': f'Single income source – LKR {monthly_income:,.0f}/month ({savings_rate_now}% saved)',
-                'optimal_choice': 'Add LKR 5,000-15,000/month from part-time / freelance',
-                'reasoning': 'When expenses are already lean, boosting income is as powerful as cutting costs. Many Sri Lankan students earn from remote freelancing.',
-                'estimated_savings': 0,
-                'income_boost': 8000,
-                'action_steps': [
-                    'Offer tutoring to juniors (LKR 1,500-3,000/student/month)',
-                    'Freelance on Fiverr/Upwork (data entry, design, coding)',
-                    'Check scholarship portals: mahapola.gov.lk, ugc.ac.lk',
-                    'Apply for on-campus part-time jobs (library, IT lab assistant)',
-                    'Check if your university offers merit bursaries'
-                ],
-                'priority': 'Medium'
-            })
+            if has_work_commute:
+                # User already has a part-time job — don't suggest one; suggest maximising it instead
+                alternatives.append({
+                    'category': 'Income Enhancement',
+                    'current_choice': f'Primary income + part-time job – LKR {monthly_income:,.0f}/month total ({savings_rate_now}% saved)',
+                    'optimal_choice': 'Increase earning potential through skill upgrades & educational bursaries',
+                    'reasoning': (
+                        'You are already working part-time, which is great. '
+                        'The next step is to increase the value of what you earn: '
+                        'upskilling or qualifying for scholarships/bursaries directly increases '
+                        'monthly net income without taking on more work hours.'
+                    ),
+                    'estimated_savings': 0,
+                    'income_boost': 5000,
+                    'action_steps': [
+                        'Apply for Mahapola scholarship (state uni) or your institution\'s merit bursary — visit the registrar',
+                        'Check the UGC website (ugc.ac.lk) for bursary schemes if you are enrolled in a state university',
+                        'Offer tutoring in your strongest subject to juniors (LKR 1,500-3,000/student/month)',
+                        'Upskill on Coursera/Udemy with a free certificate course — boosts freelance earning rate',
+                        'Track all part-time income and expenses in a simple notebook or Google Sheet',
+                    ],
+                    'priority': 'Medium'
+                })
+            else:
+                # User does not have a part-time job yet
+                alternatives.append({
+                    'category': 'Income Enhancement',
+                    'current_choice': f'Single income source – LKR {monthly_income:,.0f}/month ({savings_rate_now}% saved)',
+                    'optimal_choice': 'Add a manageable income stream that fits your timetable',
+                    'reasoning': (
+                        'When expenses are already lean, a small secondary income is the most powerful lever. '
+                        'Even LKR 3,000-5,000/month from flexible work significantly improves your savings rate '
+                        'without needing to cut further.'
+                    ),
+                    'estimated_savings': 0,
+                    'income_boost': 6000,
+                    'action_steps': [
+                        'Offer tutoring to juniors in your strongest subject (LKR 1,500-3,000/student/month)',
+                        'Apply for on-campus student assistant roles (e.g., library, IT lab, research assistant) — availability may be limited and competitive',
+                        'Try micro-freelancing on Fiverr — data entry, logo design, or translation tasks (no experience needed to start)',
+                        'Apply for Mahapola scholarship or your institution\'s merit/need bursary via the registrar',
+                        'Check the UGC website (ugc.ac.lk) for bursary schemes if you are enrolled in a state university',
+                    ],
+                    'priority': 'Medium'
+                })
         
         strategy['optimal_alternatives'] = alternatives
         
