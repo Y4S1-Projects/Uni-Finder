@@ -5,7 +5,7 @@ import { DomainBadge } from "./DomainBadge";
 import {
   careerBaseButton,
   careerGradientButton,
-  careerMutedButton,
+  careerNeutralButton,
   careerDangerOutlineButton,
 } from "./careerClassNames";
 
@@ -89,7 +89,7 @@ export default function ProfileCard({
           disabled={disabled}
           className={twMerge(
             careerBaseButton,
-            careerMutedButton,
+            careerNeutralButton,
             "flex items-center justify-center gap-2 text-xs font-semibold py-2 rounded-xl px-2 border-blue-200/80 text-blue-700 hover:bg-blue-50 hover:text-blue-800",
           )}
         >

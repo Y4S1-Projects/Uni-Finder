@@ -9,6 +9,8 @@ import {
   CareerButton,
   ProfileSectionCard,
   NativeSelectField,
+  CareerToast,
+  DeleteProfileConfirmModal,
 } from "../components/career";
 import {
   useCareerRecommendations,
@@ -95,6 +97,7 @@ export default function CareerPath() {
   const [loadingProfiles, setLoadingProfiles] = useState(false);
   const [profileError, setProfileError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [nameTouched, setNameTouched] = useState(false);
   const [touched, setTouched] = useState(createUntouchedFields);
 
@@ -158,6 +161,12 @@ export default function CareerPath() {
   useEffect(() => {
     console.log("FORM STATE:", formData);
   }, [formData]);
+
+  useEffect(() => {
+    if (!actionMessage) return undefined;
+    const id = window.setTimeout(() => setActionMessage(null), 4500);
+    return () => window.clearTimeout(id);
+  }, [actionMessage]);
 
   const experienceLevel = buildField(
     formData,
@@ -273,7 +282,7 @@ export default function CareerPath() {
       setProfiles(nextProfiles);
       hasLoadedProfile.current = false;
       setActiveProfile(created);
-      setActionMessage({ type: "success", text: "Profile created." });
+      setActionMessage({ type: "success", text: "Profile created successfully." });
     } catch (err) {
       setActionMessage({
         type: "error",
@@ -323,7 +332,7 @@ export default function CareerPath() {
       setProfiles(nextProfiles);
       hasLoadedProfile.current = false;
       setActiveProfile(updated);
-      setActionMessage({ type: "success", text: "Profile updated." });
+      setActionMessage({ type: "success", text: "Profile saved successfully." });
     } catch (err) {
       setActionMessage({
         type: "error",
@@ -332,9 +341,18 @@ export default function CareerPath() {
     }
   };
 
-  const handleDeleteProfile = async () => {
+  const handleDeleteClick = () => {
     if (!activeProfile) return;
-    if (!window.confirm("Delete this profile?")) return;
+    setDeleteConfirmOpen(true);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteConfirmOpen(false);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!activeProfile) return;
+    setDeleteConfirmOpen(false);
 
     try {
       await deleteProfile(activeProfile.profileId);
@@ -344,7 +362,10 @@ export default function CareerPath() {
       setProfiles(nextProfiles);
       setActiveProfile(nextProfiles[0] || null);
       hasLoadedProfile.current = false;
-      setActionMessage({ type: "success", text: "Profile deleted." });
+      setActionMessage({
+        type: "success",
+        text: "Profile deleted successfully.",
+      });
     } catch (err) {
       setActionMessage({
         type: "error",
@@ -427,8 +448,8 @@ export default function CareerPath() {
               </ul>
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-              <div>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="min-w-0">
                 <h2 className="text-lg font-semibold text-gray-800">
                   Career Profile
                 </h2>
@@ -436,12 +457,12 @@ export default function CareerPath() {
                   Create and manage your personalized career setups
                 </p>
               </div>
-              <span className="text-xs font-semibold text-purple-700 bg-purple-100 px-3 py-1.5 rounded-full self-start shrink-0">
+              <span className="text-xs font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full shrink-0 self-start sm:self-auto">
                 {profiles.length}/{MAX_PROFILES} profiles
               </span>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex flex-col w-full">
                 <label className="text-sm font-semibold text-gray-700 mb-2">
                   Active Profile
@@ -464,9 +485,11 @@ export default function CareerPath() {
                     </option>
                   ))}
                 </NativeSelectField>
-                {profileError && (
-                  <p className="text-xs text-red-500 mt-2">{profileError}</p>
-                )}
+                <div className="mt-1 min-h-[1.25rem]">
+                  {profileError ? (
+                    <p className="text-xs text-red-500">{profileError}</p>
+                  ) : null}
+                </div>
               </div>
 
               <div className="flex flex-col w-full">
@@ -480,7 +503,7 @@ export default function CareerPath() {
                   onChange={handleChange}
                   onBlur={() => setNameTouched(true)}
                   placeholder="e.g., Backend Builder"
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/90 text-gray-800 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-200/80"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/90 text-gray-800 text-sm font-medium transition-all duration-200 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-200/80"
                 />
                 <p className="text-red-500 text-sm min-h-[1.25rem] mt-1">
                   {nameTouched && !formData.name.trim()
@@ -488,51 +511,39 @@ export default function CareerPath() {
                     : ""}
                 </p>
               </div>
-
-              <div className="flex flex-wrap gap-3 items-center md:justify-end pb-0 md:pb-[1.25rem]">
-                <CareerButton
-                  variant="primary"
-                  type="button"
-                  onClick={handleCreateProfile}
-                  disabled={
-                    !isProfileFormComplete || profiles.length >= MAX_PROFILES
-                  }
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 font-semibold"
-                >
-                  <FaPlus /> Create Profile
-                </CareerButton>
-                <CareerButton
-                  variant="muted"
-                  type="button"
-                  onClick={handleSaveProfile}
-                  disabled={!isProfileSelected}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 font-semibold"
-                >
-                  <FaSave /> Save
-                </CareerButton>
-                <CareerButton
-                  variant="danger"
-                  type="button"
-                  onClick={handleDeleteProfile}
-                  disabled={!isProfileSelected}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 font-semibold"
-                >
-                  <FaTrash /> Delete
-                </CareerButton>
-              </div>
             </div>
 
-            {actionMessage && (
-              <p
-                className={`text-sm font-semibold ${
-                  actionMessage.type === "error"
-                    ? "text-red-600"
-                    : "text-green-600"
-                }`}
+            <div className="flex flex-wrap gap-3 justify-end pt-1 border-t border-gray-100/80">
+              <CareerButton
+                variant="primary"
+                type="button"
+                onClick={handleCreateProfile}
+                disabled={
+                  !isProfileFormComplete || profiles.length >= MAX_PROFILES
+                }
+                className="inline-flex items-center justify-center gap-2 font-semibold"
               >
-                {actionMessage.text}
-              </p>
-            )}
+                <FaPlus /> Create Profile
+              </CareerButton>
+              <CareerButton
+                variant="muted"
+                type="button"
+                onClick={handleSaveProfile}
+                disabled={!isProfileSelected}
+                className="inline-flex items-center justify-center gap-2 font-semibold"
+              >
+                <FaSave /> Save
+              </CareerButton>
+              <CareerButton
+                variant="danger"
+                type="button"
+                onClick={handleDeleteClick}
+                disabled={!isProfileSelected}
+                className="inline-flex items-center justify-center gap-2 font-semibold"
+              >
+                <FaTrash /> Delete
+              </CareerButton>
+            </div>
           </ProfileSectionCard>
 
           <CareerProfileForm
@@ -560,6 +571,18 @@ export default function CareerPath() {
           )}
         </div>
       </div>
+
+      <CareerToast
+        visible={!!actionMessage}
+        type={actionMessage?.type}
+        message={actionMessage?.text || ""}
+      />
+      <DeleteProfileConfirmModal
+        isOpen={deleteConfirmOpen}
+        profileName={activeProfile?.name}
+        onCancel={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+      />
 
       <CareerDetailModal
         isOpen={!!selectedJob}

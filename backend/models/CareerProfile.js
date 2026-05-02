@@ -14,7 +14,7 @@ const careerProfileSchema = new mongoose.Schema({
         }
     },
     experience_level: { type: String, enum: ["0", "0-1", "1-3", "3-5", "5+"] },
-    education_level: { type: String, enum: ["al", "diploma", "bachelors", "masters"] },
+    education_level: { type: String, enum: ["al", "diploma", "hnd", "bachelors", "masters"] },
     current_status: { type: String, enum: ["student", "graduate", "working"] },
     career_goal: { type: String },
     preferred_domain: { type: String },

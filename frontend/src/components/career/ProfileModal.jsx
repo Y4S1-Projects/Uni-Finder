@@ -126,16 +126,18 @@ export default function ProfileModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 py-8">
-      <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+      <button
+        type="button"
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-all duration-200"
         onClick={onClose}
+        aria-label="Close modal"
       />
-      <div className="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="relative p-6 md:p-8 bg-white rounded-3xl shadow-2xl border border-purple-100">
+      <div className="relative z-[1] max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-modal-enter">
+        <div className="relative p-6 md:p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full bg-white/90 border border-gray-100 shadow-sm hover:shadow-md transition focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+            className="absolute top-4 right-4 p-2 rounded-full bg-white/90 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/30 active:scale-[0.98]"
             aria-label="Close"
           >
             <FaTimes />
@@ -171,7 +173,7 @@ export default function ProfileModal({
                 }}
                 onBlur={() => setNameTouched(true)}
                 placeholder="e.g., Frontend Explorer"
-                className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-700 bg-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-200/80 transition"
+                className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-700 bg-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-200/80 transition-all duration-200"
               />
               {nameError && (
                 <p className="mt-2 text-sm text-red-500">{nameError}</p>

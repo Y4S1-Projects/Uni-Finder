@@ -14,7 +14,7 @@ export const formStyles = {
   input:
     "w-full h-9 sm:h-10 md:h-11 rounded-md font-normal text-[10px] sm:text-base text-gray-700 bg-white placeholder:text-gray-400 placeholder:text-opacity-80 focus:outline-none px-3 sm:px-4 py-2 sm:py-3 border-2 border-gray-200 focus:border-purple-400 focus:ring-4 focus:ring-purple-100 transition-all duration-200",
   dropDown:
-    "relative w-full flex items-center min-w-0 text-left pl-3 sm:pl-4 pr-10 py-2 sm:py-3 bg-white text-gray-700 font-normal text-sm sm:text-base rounded-xl placeholder-gray-400 placeholder-opacity-80 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/40 focus:border-purple-300 transition-all duration-200",
+    "relative w-full flex items-center min-w-0 text-left pl-3 sm:pl-4 pr-10 py-2 sm:py-3 bg-white text-gray-700 font-normal text-sm sm:text-base rounded-xl placeholder-gray-400 placeholder-opacity-80 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-300 transition-all duration-200",
   dropDownOptions:
     "w-full flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3 bg-white text-gray-700 font-normal text-sm sm:text-base placeholder-gray-400 placeholder-opacity-80 my-[1px]",
 };

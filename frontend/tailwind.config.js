@@ -11,10 +11,20 @@ module.exports = {
 				fadeIn: "fadeIn 0.6s ease-out forwards",
 				slideUp: "slideUp 0.7s ease-out forwards",
 				"fade-in-up": "fadeInUp 0.6s ease-out forwards",
+				"slide-in-up": "slideInUpToast 0.35s ease-out forwards",
+				"modal-enter": "modalEnter 0.2s ease-out forwards",
 				"reveal-line": "revealLine 0.8s ease-out forwards",
 				pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
 			},
 			keyframes: {
+				slideInUpToast: {
+					"0%": { opacity: "0", transform: "translateY(16px)" },
+					"100%": { opacity: "1", transform: "translateY(0)" },
+				},
+				modalEnter: {
+					"0%": { opacity: "0", transform: "scale(0.95)" },
+					"100%": { opacity: "1", transform: "scale(1)" },
+				},
 				shimmer: {
 					"0%": { backgroundPosition: "-200% 0" },
 					"100%": { backgroundPosition: "200% 0" },

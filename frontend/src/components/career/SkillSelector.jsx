@@ -5,9 +5,13 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import { twMerge } from "tailwind-merge";
 import skillsList from "../../data/skills.json";
-import { careerBaseButton, careerSecondaryButton } from "./careerClassNames";
+import {
+  mergeCareerButton,
+  careerBaseButton,
+  careerMutedButton,
+  careerSecondaryDestructiveButton,
+} from "./careerClassNames";
 
 // ── Category display configuration ────────────────────────────────────────────
 const CATEGORY_MAP = {
@@ -108,8 +112,9 @@ const QUICK_FILTERS = [
 ];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
-const WINDOW_SIZE = 80; // render at most N items at a time in the dropdown
+const WINDOW_SIZE = 80;
 const DEBOUNCE_MS = 200;
+const MAX_VISIBLE_TAGS = 100;
 
 function fuzzyMatch(text, query) {
   if (!query) return true;
@@ -144,6 +149,7 @@ export default function SkillSelector({
     () => new Set(GROUP_ORDER),
   );
   const [visibleCount, setVisibleCount] = useState(WINDOW_SIZE);
+  const [showAllSkills, setShowAllSkills] = useState(false);
   const containerRef = useRef(null);
   const listRef = useRef(null);
   const inputRef = useRef(null);
@@ -184,6 +190,21 @@ export default function SkillSelector({
     () => new Set(selectedIds.map((s) => s.toLowerCase())),
     [selectedIds],
   );
+
+  const visibleSelectedIds = useMemo(() => {
+    if (showAllSkills || selectedIds.length <= MAX_VISIBLE_TAGS) {
+      return selectedIds;
+    }
+    return selectedIds.slice(0, MAX_VISIBLE_TAGS);
+  }, [selectedIds, showAllSkills]);
+
+  const hiddenTagCount = selectedIds.length - MAX_VISIBLE_TAGS;
+
+  useEffect(() => {
+    if (selectedIds.length <= MAX_VISIBLE_TAGS) {
+      setShowAllSkills(false);
+    }
+  }, [selectedIds.length]);
 
   // Reset active category on top-level filter change
   useEffect(() => {
@@ -357,16 +378,15 @@ export default function SkillSelector({
             e.preventDefault();
             toggle(s.id);
           }}
-          className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer
-                     border-b border-gray-50 last:border-b-0
-                     transition-all duration-100
+          className={`flex justify-between items-center gap-3 px-4 py-2 cursor-pointer
+                     transition-all duration-200 ease-in-out
                      ${
                        isSelected
-                         ? "bg-blue-50 text-blue-700"
+                         ? "bg-blue-50/90 text-blue-700"
                          : "hover:bg-gray-50 text-gray-700"
                      }`}
         >
-          {/* Checkbox */}
+          <div className="flex items-center gap-3 min-w-0 flex-1">
           <div
             className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0
                        transition-colors duration-100
@@ -391,7 +411,8 @@ export default function SkillSelector({
             )}
           </div>
           <span className="text-sm font-medium truncate">{s.label}</span>
-          <span className="ml-auto text-[10px] text-gray-400 uppercase tracking-wide flex-shrink-0">
+          </div>
+          <span className="text-[10px] text-gray-400 uppercase tracking-wide flex-shrink-0">
             {s.category.replace("_", " ")}
           </span>
         </div>
@@ -434,17 +455,17 @@ export default function SkillSelector({
                 e.preventDefault();
                 if (typeof onChange === "function") onChange([]);
               }}
-              className={twMerge(
+              className={mergeCareerButton(
                 careerBaseButton,
-                careerSecondaryButton,
-                "text-[11px] font-semibold px-3 py-1.5 rounded-lg",
+                careerSecondaryDestructiveButton,
+                "text-[11px] px-3 py-1 rounded-lg font-semibold hover:scale-[1.02]",
               )}
             >
               Clear All
             </button>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {selectedIds.map((id, idx) => (
+          <div className="flex flex-wrap gap-2 items-center">
+            {visibleSelectedIds.map((id, idx) => (
               <div
                 key={id || `sel-${idx}`}
                 className="group flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50
@@ -467,12 +488,30 @@ export default function SkillSelector({
                   className="w-4 h-4 flex items-center justify-center rounded-full
                              bg-transparent text-blue-500 hover:bg-red-100 hover:text-red-500
                              transition-colors duration-150 text-[10px] font-bold
-                             border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+                             border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/30"
                 >
                   ✕
                 </button>
               </div>
             ))}
+            {!showAllSkills && hiddenTagCount > 0 && (
+              <button
+                type="button"
+                onClick={() => setShowAllSkills(true)}
+                className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline transition-all duration-200 ease-in-out px-1 py-0.5 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+              >
+                +{hiddenTagCount} more
+              </button>
+            )}
+            {showAllSkills && selectedIds.length > MAX_VISIBLE_TAGS && (
+              <button
+                type="button"
+                onClick={() => setShowAllSkills(false)}
+                className="text-sm text-gray-500 hover:text-gray-700 hover:underline transition-all duration-200 ease-in-out px-1 py-0.5 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+              >
+                Show less
+              </button>
+            )}
           </div>
         </div>
       )}
@@ -506,7 +545,7 @@ export default function SkillSelector({
           className="w-full pl-10 pr-20 py-3
                      border border-gray-200 rounded-xl
                      bg-white/90 text-gray-700 placeholder-gray-400
-                     focus:border-purple-300 focus:ring-2 focus:ring-purple-500/40
+                     focus:border-purple-300 focus:ring-2 focus:ring-purple-500/30
                      hover:border-gray-300
                      transition-all duration-200 outline-none
                      text-sm font-medium"
@@ -519,7 +558,7 @@ export default function SkillSelector({
                 e.preventDefault();
                 setQuery("");
               }}
-              className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-1 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+              className="text-gray-400 hover:text-gray-600 transition-all duration-200 bg-transparent p-1 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/30 hover:scale-105 active:scale-[0.95]"
               title="Clear search"
             >
               <svg
@@ -540,7 +579,7 @@ export default function SkillSelector({
           <button
             type="button"
             onClick={() => setOpen(!open)}
-            className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-1 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+            className="text-gray-400 hover:text-gray-600 transition-all duration-200 bg-transparent p-1 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/30 hover:scale-105 active:scale-[0.95]"
             title={open ? "Close dropdown" : "Open dropdown"}
           >
             <svg
@@ -563,14 +602,20 @@ export default function SkillSelector({
       {/* ── Dropdown ────────────────────────────────────────────────────── */}
       {open && (
         <div
-          className="absolute z-50 w-full mt-2 bg-white border border-gray-100
-                     rounded-xl shadow-xl overflow-hidden
-                     animate-in fade-in slide-in-from-top-2 duration-200"
+          className="absolute z-50 w-full mt-2 bg-white/95 backdrop-blur-xl border border-gray-200
+                     rounded-2xl shadow-xl overflow-hidden animate-fadeIn transition-all duration-200 ease-in-out"
         >
-          {/* Inline selected count when dropdown is open */}
+          <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-2.5 flex justify-between items-center gap-3">
+            <span className="text-sm font-semibold tracking-tight">
+              Browse skills
+            </span>
+            <span className="text-xs font-medium text-white/90 tabular-nums">
+              {totalMatches.toLocaleString()} available
+            </span>
+          </div>
           {selectedIds.length > 0 && (
-            <div className="flex items-center justify-between px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
-              <span className="text-xs font-bold text-blue-700">
+            <div className="flex items-center justify-between px-4 py-2 bg-gray-50/90 border-b border-gray-100">
+              <span className="text-xs font-bold text-gray-700">
                 ✓ {selectedIds.length} skill
                 {selectedIds.length !== 1 ? "s" : ""} selected
               </span>
@@ -580,10 +625,10 @@ export default function SkillSelector({
                   e.preventDefault();
                   if (typeof onChange === "function") onChange([]);
                 }}
-                className={twMerge(
+                className={mergeCareerButton(
                   careerBaseButton,
-                  careerSecondaryButton,
-                  "text-[11px] font-semibold px-3 py-1 rounded-lg",
+                  careerSecondaryDestructiveButton,
+                  "text-[11px] px-3 py-1 rounded-lg font-semibold",
                 )}
               >
                 Clear All
@@ -602,8 +647,9 @@ export default function SkillSelector({
                   setActiveFilter(i);
                 }}
                 className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap
-                           transition-colors duration-150 border border-transparent
-                           focus:outline-none focus:ring-2 focus:ring-purple-500/40
+                           transition-all duration-200 border border-transparent
+                           focus:outline-none focus:ring-2 focus:ring-purple-500/30
+                           hover:scale-[1.02] active:scale-[0.98]
                            ${
                              activeFilter === i
                                ? "bg-[#9333ea] text-white shadow-sm"
@@ -624,8 +670,9 @@ export default function SkillSelector({
                   e.preventDefault();
                   setActiveCategory("All");
                 }}
-                className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-colors
-                           border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40
+                className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-all duration-200
+                           border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/30
+                           hover:scale-[1.02] active:scale-[0.98]
                            ${
                              activeCategory === "All"
                                ? "bg-[#0d6efd] text-white shadow-sm"
@@ -642,8 +689,9 @@ export default function SkillSelector({
                     e.preventDefault();
                     setActiveCategory(cat);
                   }}
-                  className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-colors
-                             border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40
+                  className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-all duration-200
+                             border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/30
+                             hover:scale-[1.02] active:scale-[0.98]
                              ${
                                activeCategory === cat
                                  ? "bg-[#0d6efd] text-white shadow-sm"
@@ -661,7 +709,7 @@ export default function SkillSelector({
             activeCategory !== "All" ||
             debouncedQuery.trim() !== "") &&
             totalMatches > 0 && (
-              <div className="flex items-center justify-between px-4 py-2 bg-[#6366f1] text-white shadow-inner">
+              <div className="flex items-center justify-between px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-inner">
                 <div className="text-xs font-semibold">
                   {totalMatches} matching skills
                 </div>
@@ -671,7 +719,11 @@ export default function SkillSelector({
                     e.preventDefault();
                     selectAllInSub(flatFiltered);
                   }}
-                  className="text-[#6366f1] bg-white hover:bg-gray-100 text-xs font-bold px-3 py-1 rounded-lg transition-colors shadow-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+                  className={mergeCareerButton(
+                    careerBaseButton,
+                    careerMutedButton,
+                    "text-xs px-3 py-1.5 rounded-lg font-bold shadow-sm hover:scale-[1.02]",
+                  )}
                 >
                   Select All
                 </button>
@@ -688,7 +740,9 @@ export default function SkillSelector({
               windowedItems ? (
                 /* ── Flat windowed list (search / filter active) ─── */
                 <>
-                  {windowedItems.map(renderSkillRow)}
+                  <div className="divide-y divide-gray-100">
+                    {windowedItems.map(renderSkillRow)}
+                  </div>
                   {visibleCount < totalMatches && (
                     <div className="px-4 py-3 text-center text-xs text-gray-400">
                       Showing {visibleCount} of {totalMatches} — scroll for more
@@ -697,17 +751,19 @@ export default function SkillSelector({
                 </>
               ) : (
                 /* ── Grouped / categorised view (no search) ─────── */
-                Object.entries(grouped).map(([group, subs]) => (
+                Object.entries(grouped).map(([group, subs], groupIndex) => (
                   <div key={group}>
-                    {/* Group header */}
+                    {groupIndex > 0 && (
+                      <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4" />
+                    )}
                     <div
                       onMouseDown={(e) => {
                         e.preventDefault();
                         toggleGroup(group);
                       }}
-                      className="flex items-center justify-between px-4 py-2 bg-gray-50
+                      className="flex items-center justify-between px-4 py-2.5 bg-gray-50/95
                                  border-b border-gray-100 cursor-pointer
-                                 hover:bg-gray-100 transition-colors sticky top-0 z-10"
+                                 hover:bg-gray-100 transition-all duration-200 ease-in-out sticky top-0 z-10"
                     >
                       <div className="flex items-center gap-2">
                         <span>{GROUP_ICONS[group] || "📂"}</span>
@@ -741,28 +797,38 @@ export default function SkillSelector({
                     </div>
 
                     {expandedGroups.has(group) &&
-                      Object.entries(subs).map(([sub, skills]) => (
-                        <div key={sub}>
-                          {/* Sub-category header */}
-                          <div className="flex items-center justify-between px-6 py-1.5 bg-white border-b border-gray-50">
-                            <span className="text-[11px] font-semibold text-gray-500">
+                      Object.entries(subs).map(([sub, skills], subIndex, subEntries) => (
+                        <div key={sub} className="mb-4 last:mb-0">
+                          <div className="flex items-start sm:items-center justify-between gap-2 px-4 pt-3 pb-2">
+                            <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide px-1">
                               {sub}
-                              <span className="ml-1 text-gray-400">
+                              <span className="ml-1.5 font-normal normal-case text-gray-400">
                                 ({skills.length})
                               </span>
-                            </span>
+                            </div>
                             <button
                               type="button"
                               onMouseDown={(e) => {
                                 e.preventDefault();
                                 selectAllInSub(skills);
                               }}
-                              className="px-3 py-1 text-[10px] font-bold text-white rounded-md bg-gradient-to-r from-purple-600 to-blue-600 hover:shadow-md transition-all uppercase tracking-wider select-none shadow-sm"
+                              className={mergeCareerButton(
+                                careerBaseButton,
+                                careerMutedButton,
+                                "text-[10px] px-2.5 py-1 rounded-lg font-bold shrink-0 uppercase tracking-wide",
+                              )}
                             >
                               Select All
                             </button>
                           </div>
-                          {skills.slice(0, visibleCount).map(renderSkillRow)}
+                          <div className="space-y-0 mx-2 rounded-xl border border-gray-100/90 overflow-hidden divide-y divide-gray-100 bg-white/80">
+                            {skills
+                              .slice(0, visibleCount)
+                              .map(renderSkillRow)}
+                          </div>
+                          {subIndex < subEntries.length - 1 && (
+                            <div className="h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent my-4 mx-1" />
+                          )}
                         </div>
                       ))}
                   </div>
@@ -813,7 +879,11 @@ export default function SkillSelector({
                     e.preventDefault();
                     if (typeof onChange === "function") onChange([]);
                   }}
-                  className="px-3 py-1.5 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 hover:text-red-700 rounded-lg transition-colors shadow-sm flex items-center gap-1 whitespace-nowrap"
+                  className={mergeCareerButton(
+                    careerBaseButton,
+                    careerSecondaryDestructiveButton,
+                    "text-xs px-3 py-1.5 rounded-lg font-bold",
+                  )}
                 >
                   Clear all
                 </button>

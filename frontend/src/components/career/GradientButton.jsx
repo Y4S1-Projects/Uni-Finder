@@ -15,11 +15,10 @@ export default function GradientButton({
       onClick={onClick}
       disabled={disabled}
       className={twMerge(
-        "relative overflow-hidden font-semibold",
+        "relative overflow-hidden font-semibold py-2.5",
         careerBaseButton,
         careerGradientButton,
-        "hover:-translate-y-0.5 active:translate-y-0 py-2.5",
-        disabled ? "opacity-60 cursor-not-allowed hover:translate-y-0" : "",
+        disabled ? "opacity-60 cursor-not-allowed hover:scale-100" : "",
         className,
       )}
     >

@@ -104,7 +104,7 @@ export function CareerRecommendationCard({
           </div>
           <button
             onClick={viewCareerLadder}
-            className="text-white text-xs font-bold px-4 py-2 rounded-xl border border-transparent transition-all shadow-md hover:shadow-lg hover:scale-[1.02] bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+            className="text-white text-xs font-bold px-4 py-2 rounded-xl border border-transparent transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
           >
             View Path
           </button>
@@ -178,7 +178,7 @@ export function CareerRecommendationCard({
       <div>
         <button
           onClick={() => onViewDetails(recommendation)}
-          className="text-white text-xs font-bold px-5 py-2.5 rounded-xl border border-transparent transition-all shadow-md hover:shadow-lg hover:scale-[1.02] flex items-center gap-2 inline-flex bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40"
+          className="text-white text-xs font-bold px-5 py-2.5 rounded-xl border border-transparent transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 inline-flex bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
         >
           <FaEye className="text-sm" /> View Details & AI Explanation
         </button>

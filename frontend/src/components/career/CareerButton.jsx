@@ -3,15 +3,15 @@ import { twMerge } from "tailwind-merge";
 import {
   careerBaseButton,
   careerGradientButton,
-  careerSecondaryButton,
-  careerMutedButton,
+  careerSecondaryDestructiveButton,
+  careerNeutralButton,
   careerDangerOutlineButton,
 } from "./careerClassNames";
 
 const VARIANT_CLASS = {
   primary: careerGradientButton,
-  secondary: careerSecondaryButton,
-  muted: careerMutedButton,
+  secondary: careerSecondaryDestructiveButton,
+  muted: careerNeutralButton,
   danger: careerDangerOutlineButton,
 };
 

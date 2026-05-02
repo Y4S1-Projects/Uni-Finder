@@ -26,7 +26,7 @@ export default function CareerProfilesPanel({
             Save up to 3 career identities
           </p>
         </div>
-        <span className="text-xs font-semibold text-purple-700 bg-purple-100 px-2 py-1 rounded-full">
+        <span className="text-xs font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">
           {profiles.length}/3
         </span>
       </div>

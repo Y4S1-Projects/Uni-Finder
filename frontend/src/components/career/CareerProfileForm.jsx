@@ -28,6 +28,7 @@ const STATUS_OPTIONS = [
 const EDUCATION_OPTIONS = [
   { id: "al", name: "A/L" },
   { id: "diploma", name: "Diploma" },
+  { id: "hnd", name: "HND" },
   { id: "bachelors", name: "Bachelor's Degree" },
   { id: "masters", name: "Master's Degree" },
 ];

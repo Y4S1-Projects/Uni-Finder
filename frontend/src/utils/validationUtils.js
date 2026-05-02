@@ -68,7 +68,7 @@ export const validatePreferredDomain = (value) => {
 
 // Validate education level
 export const validateEducationLevel = (value) => {
-  const validOptions = ["al", "diploma", "bachelors", "masters"];
+  const validOptions = ["al", "diploma", "hnd", "bachelors", "masters"];
   if (!value) return errorMessages.EDUCATION_REQUIRED;
   if (!validOptions.includes(value)) return errorMessages.INVALID_OPTION;
   return "";
