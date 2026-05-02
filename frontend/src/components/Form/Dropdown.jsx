@@ -240,8 +240,8 @@ const Dropdown = ({
 	);
 
 	const getBorderClasses = () => {
-		if (isOpen) return "border border-purple-400";
-		return "border-0";
+		if (isOpen) return "border-purple-400 ring-2 ring-purple-500/30";
+		return "";
 	};
 
 	const baseClasses = twMerge(formStyles.dropDown, getBorderClasses());
@@ -356,10 +356,10 @@ const Dropdown = ({
 					aria-haspopup='listbox'
 					role='combobox'>
 					{multiple ?
-						<div className='flex-1 text-left'>{renderSelectedTags()}</div>
+						<div className='flex-1 min-w-0 text-left pr-1'>{renderSelectedTags()}</div>
 					:	<span
 							className={twMerge(
-								"block truncate text-[10px] sm:text-base text-left",
+								"block flex-1 min-w-0 truncate text-[10px] sm:text-base text-left pr-1",
 								selectedOption ? "text-gray-700 font-medium" : "text-gray-400",
 								isSearchMode && searchTerm ? "text-gray-700" : "",
 							)}
@@ -369,7 +369,7 @@ const Dropdown = ({
 						</span>
 					}
 
-					<div className='flex items-center flex-shrink-0 ml-2'>
+					<div className='pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center text-gray-500'>
 						{isOpen ?
 							<svg
 								width='21'
@@ -383,7 +383,7 @@ const Dropdown = ({
 										fillRule='evenodd'
 										clipRule='evenodd'
 										d='M11.289 1.843L5.63198 7.5L7.04598 8.914L11.996 3.964L16.946 8.914L18.36 7.5L12.703 1.843C12.5155 1.65553 12.2611 1.55022 11.996 1.55022C11.7308 1.55022 11.4765 1.65553 11.289 1.843Z'
-										fill='#686868'
+										fill='currentColor'
 									/>
 								</g>
 								<defs>
@@ -404,7 +404,7 @@ const Dropdown = ({
 										fillRule='evenodd'
 										clipRule='evenodd'
 										d='M11.7889 10.1569L6.13186 4.49994L7.54586 3.08594L12.4959 8.03594L17.4459 3.08594L18.8599 4.49994L13.2029 10.1569C13.0153 10.3444 12.761 10.4497 12.4959 10.4497C12.2307 10.4497 11.9764 10.3444 11.7889 10.1569Z'
-										fill='#686868'
+										fill='currentColor'
 									/>
 								</g>
 								<defs>
@@ -419,7 +419,7 @@ const Dropdown = ({
 
 				{isOpen && (
 					<div
-						className={twMerge("absolute mt-1 w-full z-10 bg-white rounded-md shadow-lg", dropdownClassName)}
+						className={twMerge("absolute mt-1 w-full z-50 bg-white rounded-xl shadow-xl border border-gray-100", dropdownClassName)}
 						id={listboxId}
 						role='listbox'>
 						<div className={twMerge("max-h-48 sm:max-h-60 overflow-y-auto", filterClassName)}>

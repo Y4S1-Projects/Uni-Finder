@@ -1,454 +1,435 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import SkillSelector from "./SkillSelector";
 import Dropdown from "../Form/Dropdown";
-import { FaChartLine, FaSearch, FaTrophy, FaUser, FaGraduationCap, FaBriefcase, FaRocket } from "react-icons/fa";
+import {
+  FaChartLine,
+  FaSearch,
+  FaTrophy,
+  FaUser,
+  FaGraduationCap,
+  FaBriefcase,
+  FaRocket,
+} from "react-icons/fa";
 
 const EXPERIENCE_OPTIONS = [
-	{ value: "student", label: "Student / No experience" },
-	{ value: "0-1", label: "0–1 years" },
-	{ value: "1-3", label: "1–3 years" },
-	{ value: "3-5", label: "3–5 years" },
-	{ value: "5+", label: "5+ years" },
+  { value: "0", label: "Student / No experience" },
+  { value: "0-1", label: "0–1 years" },
+  { value: "1-3", label: "1–3 years" },
+  { value: "3-5", label: "3–5 years" },
+  { value: "5+", label: "5+ years" },
 ];
 
 const STATUS_OPTIONS = [
-	{ value: "student", label: "Student" },
-	{ value: "graduate", label: "Graduate" },
-	{ value: "working", label: "Working Professional" },
+  { value: "student", label: "Student" },
+  { value: "graduate", label: "Graduate" },
+  { value: "working", label: "Working Professional" },
 ];
 
 const EDUCATION_OPTIONS = [
-	{ id: "al", name: "A/L" },
-	{ id: "diploma", name: "Diploma" },
-	{ id: "hnd", name: "HND" },
-	{ id: "bachelors", name: "Bachelor's Degree" },
-	{ id: "masters", name: "Master's Degree" },
+  { id: "al", name: "A/L" },
+  { id: "diploma", name: "Diploma" },
+  { id: "bachelors", name: "Bachelor's Degree" },
+  { id: "masters", name: "Master's Degree" },
 ];
 
 const CAREER_GOAL_OPTIONS = [
-	{ id: "first_job", name: "Get first job" },
-	{ id: "switch_career", name: "Switch career" },
-	{ id: "get_promoted", name: "Get promoted" },
+  { id: "first_job", name: "Get first job" },
+  { id: "switch_career", name: "Switch career" },
+  { id: "get_promoted", name: "Get promoted" },
 ];
 
 const DOMAIN_OPTIONS = [
-	{ id: "", name: "No Preference - Let AI Decide (Recommended)" },
-	{ id: "software_engineering", name: "Software Engineering" },
-	{ id: "frontend_engineering", name: "Frontend Engineering" },
-	{ id: "backend_engineering", name: "Backend Engineering" },
-	{ id: "fullstack_engineering", name: "Full-Stack Engineering" },
-	{ id: "data_engineering", name: "Data Engineering" },
-	{ id: "data_science", name: "Data Science" },
-	{ id: "ai_ml", name: "AI / Machine Learning" },
-	{ id: "devops", name: "DevOps / SRE" },
-	{ id: "cloud_engineering", name: "Cloud Engineering" },
-	{ id: "security", name: "Security / Cybersecurity" },
-	{ id: "qa", name: "QA / Testing" },
-	{ id: "mobile_engineering", name: "Mobile Development" },
-	{ id: "ui_ux", name: "UI/UX Design" },
-	{ id: "product_management", name: "Product Management" },
-	{ id: "business_analysis", name: "Business Analysis" },
-	{ id: "project_management", name: "Project Management" },
-	{ id: "technical_writing", name: "Technical Writing" },
-	{ id: "blockchain_web3", name: "Blockchain / Web3" },
-	{ id: "game_development", name: "Game Development" },
-	{ id: "embedded_systems", name: "Embedded Systems" },
+  { id: "", name: "No Preference - Let AI Decide (Recommended)" },
+  { id: "software_engineering", name: "Software Engineering" },
+  { id: "frontend_engineering", name: "Frontend Engineering" },
+  { id: "backend_engineering", name: "Backend Engineering" },
+  { id: "fullstack_engineering", name: "Full-Stack Engineering" },
+  { id: "data_engineering", name: "Data Engineering" },
+  { id: "data_science", name: "Data Science" },
+  { id: "ai_ml", name: "AI / Machine Learning" },
+  { id: "devops", name: "DevOps / SRE" },
+  { id: "cloud_engineering", name: "Cloud Engineering" },
+  { id: "security", name: "Security / Cybersecurity" },
+  { id: "qa", name: "QA / Testing" },
+  { id: "mobile_engineering", name: "Mobile Development" },
+  { id: "ui_ux", name: "UI/UX Design" },
+  { id: "product_management", name: "Product Management" },
+  { id: "business_analysis", name: "Business Analysis" },
+  { id: "project_management", name: "Project Management" },
+  { id: "technical_writing", name: "Technical Writing" },
+  { id: "blockchain_web3", name: "Blockchain / Web3" },
+  { id: "game_development", name: "Game Development" },
+  { id: "embedded_systems", name: "Embedded Systems" },
 ];
 
 export default function CareerProfileForm({
-	selectedSkills,
-	onSkillsChange,
-	onSubmit,
-	loading,
-	experienceLevel,
-	currentStatus,
-	preferredDomain,
-	educationLevel,
-	careerGoal,
+  values,
+  handleChange,
+  selectedSkills,
+  onSkillsChange,
+  onSubmit,
+  loading,
+  experienceLevel,
+  currentStatus,
+  preferredDomain,
+  educationLevel,
+  careerGoal,
+  title,
+  subtitle,
+  submitLabel,
+  loadingLabel,
 }) {
-	// Check if all required fields are filled
-	const isFormValid =
-		experienceLevel.value &&
-		currentStatus.value &&
-		educationLevel.value &&
-		careerGoal.value &&
-		selectedSkills.length >= 5;
+  const formTitle = title || "Career Profile Assessment";
+  const formSubtitle =
+    subtitle ||
+    "Complete your profile to get personalized career recommendations";
+  const submitText = submitLabel || "Find My Best Career Matches";
+  const submitLoadingText = loadingLabel || "Analyzing Your Profile...";
+  const formValues = useMemo(
+    () =>
+      values || {
+        skills: selectedSkills || [],
+        experience_level: experienceLevel?.value || "",
+        current_status: currentStatus?.value || "",
+        preferred_domain: preferredDomain?.value || "",
+        education_level: educationLevel?.value || "",
+        career_goal: careerGoal?.value || "",
+      },
+    [
+      values,
+      selectedSkills,
+      experienceLevel?.value,
+      currentStatus?.value,
+      preferredDomain?.value,
+      educationLevel?.value,
+      careerGoal?.value,
+    ],
+  );
+  const setFieldValue = (name, value) => {
+    if (typeof handleChange === "function") {
+      handleChange({ target: { name, value } });
+      return;
+    }
 
-	const handleCareerGoalSelect = (selected) => {
-		careerGoal.setValue(selected?.id || "");
-	};
+    const fieldMap = {
+      experience_level: experienceLevel,
+      current_status: currentStatus,
+      preferred_domain: preferredDomain,
+      education_level: educationLevel,
+      career_goal: careerGoal,
+    };
 
-	const handleStatusSelect = (selected) => {
-		currentStatus.setValue(selected?.value || "");
-	};
+    if (name === "skills" && typeof onSkillsChange === "function") {
+      onSkillsChange(value);
+      return;
+    }
 
-	const handleDomainSelect = (selected) => {
-		preferredDomain.setValue(selected?.id || "");
-	};
+    fieldMap[name]?.setValue?.(value);
+  };
+  const selectedSkillValues = formValues.skills || [];
 
-	// Get selected option object for dropdowns
-	const selectedCareerGoal = CAREER_GOAL_OPTIONS.find((opt) => opt.id === careerGoal.value);
-	const selectedStatus = STATUS_OPTIONS.find((opt) => opt.value === currentStatus.value);
-	const selectedDomain = DOMAIN_OPTIONS.find((opt) => opt.id === preferredDomain.value);
+  useEffect(() => {
+    console.log("FORM STATE:", formValues);
+  }, [formValues]);
 
-	return (
-		<div className='relative'>
-			{/* Gradient Background Container */}
-			<div
-				className='absolute inset-0 rounded-3xl blur-xl opacity-70 -z-10'
-				style={{
-					background: "linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)",
-				}}
-			/>
+  // Check if all required fields are filled
+  const isFormValid =
+    formValues.experience_level &&
+    formValues.current_status &&
+    formValues.education_level &&
+    formValues.career_goal &&
+    selectedSkillValues.length >= 5;
 
-			<form
-				onSubmit={onSubmit}
-				className='relative p-8 transition-all duration-500 border shadow-2xl md:p-10 bg-white/95 backdrop-blur-sm rounded-3xl border-purple-200/50 hover:shadow-purple-300/50'>
-				{/* Form Header with Gradient */}
-				<div
-					className='pb-6 mb-8 border-b-2'
-					style={{
-						borderImage: "linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1",
-					}}>
-					<h2
-						className='text-2xl font-bold text-transparent md:text-3xl bg-clip-text'
-						style={{
-							backgroundImage: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-						}}>
-						Career Profile Assessment
-					</h2>
-					<p className='mt-2 text-sm text-gray-600 md:text-base'>
-						Complete your profile to get personalized career recommendations
-					</p>
-				</div>
+  const handleCareerGoalSelect = (selected) => {
+    setFieldValue("career_goal", selected?.id || "");
+  };
 
-				{/* Profile Basics Row: Experience Level & Highest Education */}
-				<div className='grid grid-cols-1 gap-8 mb-8 md:grid-cols-2'>
-					{/* Experience Level - Button Group */}
-					<div
-						className='p-6 transition-all duration-300 border rounded-2xl hover:shadow-lg'
-						style={{
-							background: "linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)",
-							borderColor: "rgba(102, 126, 234, 0.3)",
-						}}>
-						<div className='flex items-center gap-3 mb-4 text-lg font-bold text-gray-800'>
-							<div
-								className='p-2 rounded-lg shadow-md'
-								style={{
-									background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-								}}>
-								<FaBriefcase className='text-xl text-white' />
-							</div>
-							<span>Experience Level</span>
-							<span className='text-red-500'>*</span>
-						</div>
-						<div className='flex flex-col h-full gap-3'>
-							{EXPERIENCE_OPTIONS.map((option) => (
-								<button
-									key={option.value}
-									type='button'
-									onClick={() => experienceLevel.setValue(option.value)}
-									onBlur={experienceLevel.handleInputBlur}
-									className='px-5 py-3 font-semibold transition-all duration-300 border-2 shadow-sm rounded-xl focus:outline-none hover:shadow-md'
-									style={
-										experienceLevel.value === option.value ?
-											{
-												background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-												color: "white",
-												borderColor: "transparent",
-												transform: "scale(1.02)",
-												boxShadow: "0 10px 15px -3px rgba(102, 126, 234, 0.3)",
-											}
-										:	{
-												background: "white",
-												color: "#374151",
-												borderColor: "#e5e7eb",
-											}
-									}>
-									{option.label}
-								</button>
-							))}
-						</div>
-						{experienceLevel.hasError && (
-							<p className='flex items-center gap-1 mt-3 text-sm text-red-500'>
-								<span className='text-red-500'>⚠</span>
-								{experienceLevel.errorMessage}
-							</p>
-						)}
-					</div>
+  const handleStatusSelect = (selected) => {
+    setFieldValue("current_status", selected?.value || "");
+  };
 
-					{/* Highest Education - Button Group */}
-					<div
-						className='p-6 transition-all duration-300 border rounded-2xl hover:shadow-lg'
-						style={{
-							background: "linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)",
-							borderColor: "rgba(102, 126, 234, 0.3)",
-						}}>
-						<div className='flex items-center gap-3 mb-4 text-lg font-bold text-gray-800'>
-							<div
-								className='p-2 rounded-lg shadow-md'
-								style={{
-									background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-								}}>
-								<FaGraduationCap className='text-xl text-white' />
-							</div>
-							<span>Highest Education</span>
-							<span className='text-red-500'>*</span>
-						</div>
-						<div className='flex flex-col h-full gap-3'>
-							{EDUCATION_OPTIONS.map((option) => (
-								<button
-									key={option.id}
-									type='button'
-									onClick={() => educationLevel.setValue(option.id)}
-									onBlur={educationLevel.handleInputBlur}
-									className='px-5 py-3 font-semibold transition-all duration-300 border-2 shadow-sm rounded-xl focus:outline-none hover:shadow-md'
-									style={
-										educationLevel.value === option.id ?
-											{
-												background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-												color: "white",
-												borderColor: "transparent",
-												transform: "scale(1.02)",
-												boxShadow: "0 10px 15px -3px rgba(102, 126, 234, 0.3)",
-											}
-										:	{
-												background: "white",
-												color: "#374151",
-												borderColor: "#e5e7eb",
-											}
-									}>
-									{option.name}
-								</button>
-							))}
-						</div>
-						{educationLevel.hasError && (
-							<p className='flex items-center gap-1 mt-3 text-sm text-red-500'>
-								<span className='text-red-500'>⚠</span>
-								{educationLevel.errorMessage}
-							</p>
-						)}
-					</div>
-				</div>
+  const handleDomainSelect = (selected) => {
+    setFieldValue("preferred_domain", selected?.id || "");
+  };
 
-				{/* Status & Goals Row */}
-				<div className='grid grid-cols-1 gap-8 mb-8 md:grid-cols-2'>
-					{/* Current Status - Dropdown */}
-					<div
-						className='p-6 transition-all duration-300 border rounded-2xl hover:shadow-lg'
-						style={{
-							background: "linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)",
-							borderColor: "rgba(102, 126, 234, 0.3)",
-						}}>
-						<Dropdown
-							label='Current Status'
-							labelClassName='flex items-center gap-3 text-gray-800 text-lg font-bold mb-4'
-							isRequired={true}
-							placeholder='Select current status'
-							options={STATUS_OPTIONS}
-							defaultOption={selectedStatus}
-							displayKey='label'
-							idKey='value'
-							onSelect={handleStatusSelect}
-							onBlur={currentStatus.handleInputBlur}
-							error={currentStatus.hasError ? currentStatus.errorMessage : null}
-							buttonClassName='bg-white text-gray-700 border-2 border-gray-200 hover:border-purple-400 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 focus:border-purple-500 focus:shadow-lg transition-all duration-300'
-							dropdownClassName='bg-white border-2 border-purple-200 shadow-2xl'
-							optionClassName='text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50'
-							prefixIcon={
-								<div
-									className='p-2 rounded-lg shadow-md'
-									style={{
-										background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-									}}>
-									<FaUser className='text-lg text-white' />
-								</div>
-							}
-						/>
-					</div>
+  // Get selected option object for dropdowns
+  const selectedCareerGoal = CAREER_GOAL_OPTIONS.find(
+    (opt) => opt.id === formValues.career_goal,
+  );
+  const selectedStatus = STATUS_OPTIONS.find(
+    (opt) => opt.value === formValues.current_status,
+  );
+  const selectedDomain = DOMAIN_OPTIONS.find(
+    (opt) => opt.id === formValues.preferred_domain,
+  );
 
-					{/* Career Goal - Dropdown */}
-					<div
-						className='p-6 transition-all duration-300 border rounded-2xl hover:shadow-lg'
-						style={{
-							background: "linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)",
-							borderColor: "rgba(102, 126, 234, 0.3)",
-						}}>
-						<Dropdown
-							label='Career Goal'
-							labelClassName='flex items-center gap-3 text-gray-800 text-lg font-bold mb-4'
-							isRequired={true}
-							placeholder='What is your goal?'
-							options={CAREER_GOAL_OPTIONS}
-							defaultOption={selectedCareerGoal}
-							displayKey='name'
-							idKey='id'
-							onSelect={handleCareerGoalSelect}
-							onBlur={careerGoal.handleInputBlur}
-							error={careerGoal.hasError ? careerGoal.errorMessage : null}
-							buttonClassName='bg-white text-gray-700 border-2 border-gray-200 hover:border-purple-400 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 focus:border-purple-500 focus:shadow-lg transition-all duration-300'
-							dropdownClassName='bg-white border-2 border-purple-200 shadow-2xl'
-							optionClassName='text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50'
-							prefixIcon={
-								<div
-									className='p-2 rounded-lg shadow-md'
-									style={{
-										background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-									}}>
-									<FaRocket className='text-lg text-white' />
-								</div>
-							}
-						/>
-					</div>
+  return (
+    <div className="relative z-10">
+      <div className="absolute inset-0 rounded-3xl blur-xl opacity-70 -z-10 bg-gradient-to-br from-purple-100/60 via-white to-blue-100/60" />
 
-					{/* Preferred Domain - Dropdown (Optional) */}
-					<div
-						className='p-6 transition-all duration-300 border md:col-span-2 rounded-2xl hover:shadow-lg'
-						style={{
-							background: "linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)",
-							borderColor: "rgba(102, 126, 234, 0.3)",
-						}}>
-						<Dropdown
-							label={
-								<div className='flex items-center gap-2'>
-									<span>Preferred Domain</span>
-									<span
-										className='px-2 py-1 text-xs font-semibold rounded-full'
-										style={{
-											background: "linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)",
-											color: "#667eea",
-										}}>
-										Optional
-									</span>
-								</div>
-							}
-							labelClassName='flex items-center gap-3 text-gray-800 text-lg font-bold mb-4'
-							placeholder='No Preference - Let AI Decide'
-							options={DOMAIN_OPTIONS}
-							defaultOption={selectedDomain}
-							displayKey='name'
-							idKey='id'
-							onSelect={handleDomainSelect}
-							onBlur={preferredDomain.handleInputBlur}
-							buttonClassName='bg-white text-gray-700 border-2 border-gray-200 hover:border-blue-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 focus:border-blue-500 focus:shadow-lg transition-all duration-300'
-							dropdownClassName='bg-white border-2 border-blue-200 shadow-2xl max-h-60 overflow-y-auto'
-							optionClassName='text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50'
-							prefixIcon={
-								<div
-									className='p-2 rounded-lg shadow-md'
-									style={{
-										background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-									}}>
-									<FaChartLine className='text-lg text-white' />
-								</div>
-							}
-						/>
+      <form
+        onSubmit={onSubmit}
+        className="relative p-6 md:p-10 transition-all duration-500 border shadow-lg bg-white/90 backdrop-blur-xl rounded-2xl border-gray-100 hover:shadow-xl space-y-6"
+      >
+        <div className="pb-6 border-b border-gray-100 flex flex-wrap items-center gap-4 justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-transparent md:text-3xl bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+              {formTitle}
+            </h2>
+            <p className="mt-2 text-sm text-gray-600 md:text-base">
+              {formSubtitle}
+            </p>
+          </div>
+        </div>
 
-						{/* Help text and info banner */}
-						<p className='mt-3 text-sm leading-relaxed text-gray-600'>
-							Choose "No Preference" for unbiased AI recommendations based purely on your skills. Or select a specific
-							domain if you know your career direction.
-						</p>
+        <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
+            <div className="flex items-center gap-3 mb-4 text-lg font-bold text-gray-800">
+              <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                <FaBriefcase className="text-xl text-white" />
+              </div>
+              <span>Experience Level</span>
+              <span className="text-red-500">*</span>
+            </div>
+            <div className="flex flex-col h-full gap-3">
+              {EXPERIENCE_OPTIONS.map((option, index) => (
+                <button
+                  key={`${option.value}-${index}`}
+                  type="button"
+                  name="experience_level"
+                  value={option.value}
+                  onClick={() =>
+                    setFieldValue("experience_level", option.value)
+                  }
+                  onBlur={experienceLevel.handleInputBlur}
+                  className={`px-5 py-3 font-semibold transition-all duration-300 border border-transparent shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/40 hover:shadow-md ${
+                    formValues.experience_level === option.value
+                      ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md scale-[1.01]"
+                      : "bg-white/90 text-gray-700 border-gray-200 hover:border-purple-200"
+                  }`}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </div>
+            <p className="flex items-center gap-1 mt-3 text-sm text-red-500 h-4">
+              {experienceLevel.hasError ? (
+                <>
+                  <span className="text-red-500">⚠</span>
+                  {experienceLevel.errorMessage}
+                </>
+              ) : (
+                ""
+              )}
+            </p>
+          </div>
 
-						{/* Info banner when No Preference is selected */}
-						{!preferredDomain.value && (
-							<div
-								className='flex items-center gap-3 p-4 mt-4 border rounded-lg'
-								style={{
-									background: "linear-gradient(135deg, rgba(239, 246, 255, 0.9) 0%, rgba(224, 242, 254, 0.9) 100%)",
-									borderColor: "#bfdbfe",
-								}}>
-								<div className='flex-shrink-0 p-2 bg-blue-100 rounded-full'>
-									<FaChartLine className='text-lg text-blue-600' />
-								</div>
-								<p className='m-0 text-sm text-blue-800'>
-									AI will analyze your skills and recommend the best-fit careers across all domains.
-								</p>
-							</div>
-						)}
-					</div>
-				</div>
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
+            <div className="flex items-center gap-3 mb-4 text-lg font-bold text-gray-800">
+              <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                <FaGraduationCap className="text-xl text-white" />
+              </div>
+              <span>Highest Education</span>
+              <span className="text-red-500">*</span>
+            </div>
+            <div className="flex flex-col h-full gap-3">
+              {EDUCATION_OPTIONS.map((option) => (
+                <button
+                  key={option.id}
+                  type="button"
+                  name="education_level"
+                  value={option.id}
+                  onClick={() => setFieldValue("education_level", option.id)}
+                  onBlur={educationLevel.handleInputBlur}
+                  className={`px-5 py-3 font-semibold transition-all duration-300 border border-transparent shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/40 hover:shadow-md ${
+                    formValues.education_level === option.id
+                      ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md scale-[1.01]"
+                      : "bg-white/90 text-gray-700 border-gray-200 hover:border-purple-200"
+                  }`}
+                >
+                  {option.name}
+                </button>
+              ))}
+            </div>
+            <p className="flex items-center gap-1 mt-3 text-sm text-red-500 h-4">
+              {educationLevel.hasError ? (
+                <>
+                  <span className="text-red-500">⚠</span>
+                  {educationLevel.errorMessage}
+                </>
+              ) : (
+                ""
+              )}
+            </p>
+          </div>
+        </div>
 
-				{/* Skills Selection - Full Width */}
-				<div
-					className='w-full p-8 mb-8 transition-all duration-300 border rounded-2xl hover:shadow-lg'
-					style={{
-						background: "linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)",
-						borderColor: "rgba(102, 126, 234, 0.3)",
-					}}>
-					<div className='block w-full'>
-						<div className='flex items-center gap-3 mb-4 text-xl font-bold text-gray-800'>
-							<div
-								className='p-3 rounded-lg shadow-md'
-								style={{
-									background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-								}}>
-								<FaTrophy className='text-2xl text-white' />
-							</div>
-							<div className='flex flex-wrap items-center gap-2'>
-								<span>Your Skills</span>
-								<span className='text-red-500'>*</span>
-								<span
-									className='px-3 py-1 text-sm font-semibold rounded-full'
-									style={{
-										background: "linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)",
-										color: "#667eea",
-									}}>
-									Select at least 5 skills
-								</span>
-							</div>
-						</div>
-						<div className='w-full'>
-							<SkillSelector selected={selectedSkills} onChange={onSkillsChange} />
-						</div>
-						{selectedSkills.length > 0 && selectedSkills.length < 5 && (
-							<p className='flex items-center gap-2 p-3 mt-3 text-sm text-red-500 border border-red-200 rounded-lg bg-red-50'>
-								<span className='text-lg text-red-500'>⚠</span>
-								<span>
-									Please select at least 5 skills (currently selected:{" "}
-									<span className='font-bold'>{selectedSkills.length}</span>)
-								</span>
-							</p>
-						)}
-					</div>
-				</div>
+        <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-30">
+            <Dropdown
+              name="current_status"
+              label="Current Status"
+              labelClassName="flex items-center gap-3 text-gray-800 text-lg font-bold mb-4"
+              isRequired={true}
+              placeholder="Select current status"
+              options={STATUS_OPTIONS}
+              defaultOption={selectedStatus}
+              displayKey="label"
+              idKey="value"
+              onSelect={handleStatusSelect}
+              onBlur={currentStatus.handleInputBlur}
+              error={currentStatus.hasError ? currentStatus.errorMessage : null}
+              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
+              dropdownClassName="z-[100]"
+              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
+              prefixIcon={
+                <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                  <FaUser className="text-lg text-white" />
+                </div>
+              }
+            />
+          </div>
 
-				{/* Submit Button */}
-				<div className='mt-2'>
-					<button
-						type='submit'
-						disabled={loading || !isFormValid}
-						className='w-full px-8 py-5 text-white rounded-2xl text-lg font-bold transition-all duration-500 flex items-center justify-center gap-3 shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]'
-						style={
-							!isFormValid ?
-								{
-									background: "#9ca3af",
-									cursor: "not-allowed",
-									opacity: 0.7,
-								}
-							:	{
-									background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-									boxShadow: "0 10px 40px rgba(102, 126, 234, 0.3)",
-								}
-						}>
-						{loading ?
-							<>
-								<FaSearch className='text-2xl animate-spin' />
-								<span>Analyzing Your Profile...</span>
-							</>
-						:	<>
-								<FaTrophy className='text-2xl' />
-								<span>Find My Best Career Matches</span>
-							</>
-						}
-					</button>
-					{!isFormValid && !loading && (
-						<p className='p-3 mt-4 text-sm text-center text-gray-600 border border-gray-200 rounded-lg bg-gradient-to-r from-gray-50 to-blue-50'>
-							💡 Please fill all required fields and select at least 5 skills to continue
-						</p>
-					)}
-				</div>
-			</form>
-		</div>
-	);
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-30">
+            <Dropdown
+              name="career_goal"
+              label="Career Goal"
+              labelClassName="flex items-center gap-3 text-gray-800 text-lg font-bold mb-4"
+              isRequired={true}
+              placeholder="What is your goal?"
+              options={CAREER_GOAL_OPTIONS}
+              defaultOption={selectedCareerGoal}
+              displayKey="name"
+              idKey="id"
+              onSelect={handleCareerGoalSelect}
+              onBlur={careerGoal.handleInputBlur}
+              error={careerGoal.hasError ? careerGoal.errorMessage : null}
+              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
+              dropdownClassName="z-[100]"
+              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
+              prefixIcon={
+                <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                  <FaRocket className="text-lg text-white" />
+                </div>
+              }
+            />
+          </div>
+
+          <div className="p-6 transition-all duration-300 border md:col-span-2 rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-30">
+            <Dropdown
+              name="preferred_domain"
+              label={
+                <div className="flex items-center gap-2">
+                  <span>Preferred Domain</span>
+                  <span className="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-700">
+                    Optional
+                  </span>
+                </div>
+              }
+              labelClassName="flex items-center gap-3 text-gray-800 text-lg font-bold mb-4"
+              placeholder="No Preference - Let AI Decide"
+              options={DOMAIN_OPTIONS}
+              defaultOption={selectedDomain}
+              displayKey="name"
+              idKey="id"
+              onSelect={handleDomainSelect}
+              onBlur={preferredDomain.handleInputBlur}
+              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50/50"
+              dropdownClassName="z-[100] max-h-60 overflow-y-auto"
+              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50"
+              prefixIcon={
+                <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                  <FaChartLine className="text-lg text-white" />
+                </div>
+              }
+            />
+
+            <p className="mt-3 text-sm leading-relaxed text-gray-600">
+              Choose "No Preference" for unbiased AI recommendations based
+              purely on your skills. Or select a specific domain if you know
+              your career direction.
+            </p>
+
+            {!formValues.preferred_domain && (
+              <div className="flex items-center gap-3 p-4 mt-4 border border-blue-200 rounded-lg bg-blue-50">
+                <div className="flex-shrink-0 p-2 bg-blue-100 rounded-full">
+                  <FaChartLine className="text-lg text-blue-600" />
+                </div>
+                <p className="m-0 text-sm text-blue-800">
+                  AI will analyze your skills and recommend the best-fit careers
+                  across all domains.
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="relative z-20 w-full p-6 md:p-8 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
+          <div className="block w-full">
+            <div className="flex items-center gap-3 mb-4 text-xl font-bold text-gray-800">
+              <div className="p-3 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                <FaTrophy className="text-2xl text-white" />
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span>Your Skills</span>
+                <span className="text-red-500">*</span>
+                <span className="px-3 py-1 text-sm font-semibold rounded-full bg-purple-100 text-purple-700">
+                  Select at least 5 skills
+                </span>
+              </div>
+            </div>
+            <div className="w-full relative z-10">
+              <SkillSelector
+                selectedSkills={selectedSkillValues}
+                onChange={(skills) => setFieldValue("skills", skills)}
+              />
+            </div>
+            {selectedSkillValues.length > 0 &&
+              selectedSkillValues.length < 5 && (
+                <p className="flex items-center gap-2 p-3 mt-3 text-sm text-red-500 border border-red-200 rounded-lg bg-red-50">
+                  <span className="text-lg text-red-500">⚠</span>
+                  <span>
+                    Please select at least 5 skills (currently selected:{" "}
+                    <span className="font-bold">
+                      {selectedSkillValues.length}
+                    </span>
+                    )
+                  </span>
+                </p>
+              )}
+          </div>
+        </div>
+
+        <div>
+          <button
+            type="submit"
+            disabled={loading || !isFormValid}
+            className={`w-full px-8 py-5 text-white rounded-2xl border border-transparent text-lg font-bold transition-all duration-300 flex items-center justify-center gap-3 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500/40 ${
+              !isFormValid || loading
+                ? "bg-gray-400 cursor-not-allowed opacity-70 hover:scale-100"
+                : "bg-gradient-to-r from-purple-600 to-blue-600 hover:scale-[1.01] active:scale-[0.99]"
+            }`}
+          >
+            {loading ? (
+              <>
+                <FaSearch className="text-2xl animate-spin" />
+                <span>{submitLoadingText}</span>
+              </>
+            ) : (
+              <>
+                <FaTrophy className="text-2xl" />
+                <span>{submitText}</span>
+              </>
+            )}
+          </button>
+          {!isFormValid && !loading && (
+            <p className="p-3 mt-4 text-sm text-center text-gray-600 border border-gray-100 rounded-xl bg-gradient-to-r from-gray-50/80 to-blue-50/50">
+              💡 Please fill all required fields and select at least 5 skills to
+              continue
+            </p>
+          )}
+        </div>
+      </form>
+    </div>
+  );
 }

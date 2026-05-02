@@ -5,7 +5,9 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import { twMerge } from "tailwind-merge";
 import skillsList from "../../data/skills.json";
+import { careerBaseButton, careerSecondaryButton } from "./careerClassNames";
 
 // ── Category display configuration ────────────────────────────────────────────
 const CATEGORY_MAP = {
@@ -130,7 +132,10 @@ function useDebounce(value, delay) {
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
-export default function SkillSelector({ selected = [], onChange }) {
+export default function SkillSelector({
+  selectedSkills = [],
+  onChange,
+}) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState(0); // index into QUICK_FILTERS
@@ -166,14 +171,14 @@ export default function SkillSelector({ selected = [], onChange }) {
 
   // ── Selected IDs ──────────────────────────────────────────────────────
   const selectedIds = useMemo(() => {
-    return (selected || [])
+    return (selectedSkills || [])
       .map((s) => {
         if (s == null) return "";
         if (typeof s === "string" || typeof s === "number") return String(s);
         return String(s.id ?? s.skill_id ?? s.skillId ?? "");
       })
       .filter(Boolean);
-  }, [selected]);
+  }, [selectedSkills]);
 
   const selectedSetLower = useMemo(
     () => new Set(selectedIds.map((s) => s.toLowerCase())),
@@ -415,7 +420,7 @@ export default function SkillSelector({ selected = [], onChange }) {
   ]);
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className="relative z-20" ref={containerRef}>
       {/* ── Selected Skills (tags) — hidden while dropdown is open to prevent layout shift ── */}
       {selectedIds.length > 0 && !open && (
         <div className="mb-3">
@@ -429,7 +434,11 @@ export default function SkillSelector({ selected = [], onChange }) {
                 e.preventDefault();
                 if (typeof onChange === "function") onChange([]);
               }}
-              className="text-[11px] font-semibold text-red-500 hover:text-red-700 transition-colors flex items-center gap-1 bg-red-50 hover:bg-red-100 px-2 py-1 rounded-md"
+              className={twMerge(
+                careerBaseButton,
+                careerSecondaryButton,
+                "text-[11px] font-semibold px-3 py-1.5 rounded-lg",
+              )}
             >
               Clear All
             </button>
@@ -456,8 +465,9 @@ export default function SkillSelector({ selected = [], onChange }) {
                   title={`Remove ${labelFor(id)}`}
                   aria-label={`Remove ${labelFor(id)}`}
                   className="w-4 h-4 flex items-center justify-center rounded-full
-                             bg-blue-100 text-blue-500 hover:bg-red-100 hover:text-red-500
-                             transition-colors duration-150 text-[10px] font-bold"
+                             bg-transparent text-blue-500 hover:bg-red-100 hover:text-red-500
+                             transition-colors duration-150 text-[10px] font-bold
+                             border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
                 >
                   ✕
                 </button>
@@ -494,9 +504,9 @@ export default function SkillSelector({ selected = [], onChange }) {
           onFocus={() => setOpen(true)}
           placeholder="Search 1,147 skills (e.g. Python, React, AWS…)"
           className="w-full pl-10 pr-20 py-3
-                     border-2 border-gray-200 rounded-xl
-                     bg-white text-gray-700 placeholder-gray-400
-                     focus:border-blue-400 focus:ring-4 focus:ring-blue-100
+                     border border-gray-200 rounded-xl
+                     bg-white/90 text-gray-700 placeholder-gray-400
+                     focus:border-purple-300 focus:ring-2 focus:ring-purple-500/40
                      hover:border-gray-300
                      transition-all duration-200 outline-none
                      text-sm font-medium"
@@ -509,7 +519,7 @@ export default function SkillSelector({ selected = [], onChange }) {
                 e.preventDefault();
                 setQuery("");
               }}
-              className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-0"
+              className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-1 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
               title="Clear search"
             >
               <svg
@@ -530,7 +540,7 @@ export default function SkillSelector({ selected = [], onChange }) {
           <button
             type="button"
             onClick={() => setOpen(!open)}
-            className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-0"
+            className="text-gray-400 hover:text-gray-600 transition-colors bg-transparent p-1 rounded-lg border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
             title={open ? "Close dropdown" : "Open dropdown"}
           >
             <svg
@@ -553,7 +563,7 @@ export default function SkillSelector({ selected = [], onChange }) {
       {/* ── Dropdown ────────────────────────────────────────────────────── */}
       {open && (
         <div
-          className="absolute z-50 w-full mt-2 bg-white border border-gray-200
+          className="absolute z-50 w-full mt-2 bg-white border border-gray-100
                      rounded-xl shadow-xl overflow-hidden
                      animate-in fade-in slide-in-from-top-2 duration-200"
         >
@@ -570,7 +580,11 @@ export default function SkillSelector({ selected = [], onChange }) {
                   e.preventDefault();
                   if (typeof onChange === "function") onChange([]);
                 }}
-                className="text-[11px] font-semibold text-red-500 hover:text-red-700 bg-white hover:bg-red-50 px-2 py-0.5 rounded-md transition-colors border border-red-200"
+                className={twMerge(
+                  careerBaseButton,
+                  careerSecondaryButton,
+                  "text-[11px] font-semibold px-3 py-1 rounded-lg",
+                )}
               >
                 Clear All
               </button>
@@ -588,11 +602,12 @@ export default function SkillSelector({ selected = [], onChange }) {
                   setActiveFilter(i);
                 }}
                 className={`px-4 py-1.5 rounded-full text-sm font-bold whitespace-nowrap
-                           transition-colors duration-150
+                           transition-colors duration-150 border border-transparent
+                           focus:outline-none focus:ring-2 focus:ring-purple-500/40
                            ${
                              activeFilter === i
-                               ? "bg-[#9333ea] text-white border border-[#9333ea] shadow-sm"
-                               : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 shadow-sm"
+                               ? "bg-[#9333ea] text-white shadow-sm"
+                               : "bg-white/90 text-gray-600 hover:bg-gray-50 border-gray-200 shadow-sm"
                            }`}
               >
                 {f.label}
@@ -610,10 +625,11 @@ export default function SkillSelector({ selected = [], onChange }) {
                   setActiveCategory("All");
                 }}
                 className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-colors
+                           border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40
                            ${
                              activeCategory === "All"
-                               ? "bg-[#0d6efd] text-white border border-[#0d6efd] shadow-sm"
-                               : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 shadow-sm"
+                               ? "bg-[#0d6efd] text-white shadow-sm"
+                               : "bg-white/90 text-gray-600 hover:bg-gray-50 border-gray-200 shadow-sm"
                            }`}
               >
                 All Categories
@@ -627,10 +643,11 @@ export default function SkillSelector({ selected = [], onChange }) {
                     setActiveCategory(cat);
                   }}
                   className={`px-3 py-1.5 rounded-md text-[13px] font-bold whitespace-nowrap transition-colors
+                             border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40
                              ${
                                activeCategory === cat
-                                 ? "bg-[#0d6efd] text-white border border-[#0d6efd] shadow-sm"
-                                 : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50 shadow-sm"
+                                 ? "bg-[#0d6efd] text-white shadow-sm"
+                                 : "bg-white/90 text-gray-600 border-gray-200 hover:bg-gray-50 shadow-sm"
                              }`}
                 >
                   {cat}
@@ -654,7 +671,7 @@ export default function SkillSelector({ selected = [], onChange }) {
                     e.preventDefault();
                     selectAllInSub(flatFiltered);
                   }}
-                  className="text-[#6366f1] bg-white hover:bg-gray-100 text-xs font-bold px-3 py-1 rounded-md transition-colors shadow-sm"
+                  className="text-[#6366f1] bg-white hover:bg-gray-100 text-xs font-bold px-3 py-1 rounded-lg transition-colors shadow-sm border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/40"
                 >
                   Select All
                 </button>

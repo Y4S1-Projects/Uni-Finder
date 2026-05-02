@@ -22,7 +22,7 @@ export const errorMessages = {
 
 // Validate experience level
 export const validateExperienceLevel = (value) => {
-  const validOptions = ["student", "0-1", "1-3", "3-5", "5+"];
+  const validOptions = ["0", "0-1", "1-3", "3-5", "5+"];
   if (!value) return errorMessages.EXPERIENCE_REQUIRED;
   if (!validOptions.includes(value)) return errorMessages.INVALID_OPTION;
   return "";
@@ -68,7 +68,7 @@ export const validatePreferredDomain = (value) => {
 
 // Validate education level
 export const validateEducationLevel = (value) => {
-  const validOptions = ["al", "diploma", "hnd", "bachelors", "masters"];
+  const validOptions = ["al", "diploma", "bachelors", "masters"];
   if (!value) return errorMessages.EDUCATION_REQUIRED;
   if (!validOptions.includes(value)) return errorMessages.INVALID_OPTION;
   return "";

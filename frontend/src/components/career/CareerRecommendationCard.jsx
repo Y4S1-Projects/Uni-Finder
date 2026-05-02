@@ -1,10 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaStar, FaEye, FaCheckCircle, FaBookOpen, FaRocket } from "react-icons/fa";
+import {
+  FaStar,
+  FaEye,
+  FaCheckCircle,
+  FaBookOpen,
+  FaRocket,
+} from "react-icons/fa";
 
-export function CareerRecommendationCard({ recommendation, rank, isBestMatch = false, onViewDetails, userSkills }) {
-	const navigate = useNavigate();
-	const { role_id, role_title, domain, match_score, next_role, next_role_title, skill_gap } = recommendation;
+export function CareerRecommendationCard({
+  recommendation,
+  rank,
+  isBestMatch = false,
+  onViewDetails,
+  userSkills,
+}) {
+  const navigate = useNavigate();
+  const {
+    role_id,
+    role_title,
+    domain,
+    match_score,
+    next_role,
+    next_role_title,
+    skill_gap,
+  } = recommendation;
 
   const viewCareerLadder = () => {
     navigate("/career-ladder", {
@@ -24,17 +44,20 @@ export function CareerRecommendationCard({ recommendation, rank, isBestMatch = f
   const matchPercent =
     match_score !== undefined ? (match_score * 100).toFixed(0) : 0;
 
-	return (
-		<div
-			className={`p-6 mb-6 rounded-2xl relative transition-all duration-300 shadow-sm border ${
-				isBestMatch ? "bg-gradient-to-br from-[#f8f9ff] to-[#f3f5ff] border-[#e2e8f0]" : "bg-[#f8fbff] border-[#eaf2ff]" // matching the light blue bg tone
-			}`}>
-			{/* Best Match Badge */}
-			{isBestMatch && (
-				<div className='absolute -top-3 right-6 bg-[#b68bf5] text-white px-4 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 uppercase tracking-wide'>
-					<FaStar className='text-[10px]' /> BEST MATCH
-				</div>
-			)}
+  return (
+    <div
+      className={`p-6 mb-6 rounded-2xl relative transition-all duration-300 shadow-sm border ${
+        isBestMatch
+          ? "bg-gradient-to-br from-[#f8f9ff] to-[#f3f5ff] border-[#e2e8f0]"
+          : "bg-[#f8fbff] border-[#eaf2ff]" // matching the light blue bg tone
+      }`}
+    >
+      {/* Best Match Badge */}
+      {isBestMatch && (
+        <div className="absolute -top-3 right-6 bg-[#b68bf5] text-white px-4 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 uppercase tracking-wide">
+          <FaStar className="text-[10px]" /> BEST MATCH
+        </div>
+      )}
 
       {/* Header: Title, Domain, Scores */}
       <div className="flex justify-between items-start mb-4">
@@ -60,11 +83,12 @@ export function CareerRecommendationCard({ recommendation, rank, isBestMatch = f
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full bg-[#e2e8f0] rounded-full h-1.5 mb-6 overflow-hidden">
-        <div
-          className="bg-[#3b82f6] h-1.5 rounded-full"
-          style={{ width: `${matchPercent}%` }}
-        ></div>
+      <div className="w-full mb-6">
+        <progress
+          className="w-full h-1.5 rounded-full overflow-hidden accent-blue-500"
+          value={matchPercent}
+          max="100"
+        />
       </div>
 
       {/* Next Step Box */}
@@ -80,10 +104,7 @@ export function CareerRecommendationCard({ recommendation, rank, isBestMatch = f
           </div>
           <button
             onClick={viewCareerLadder}
-            className="text-white text-xs font-bold px-4 py-2 rounded-lg transition-all shadow-sm hover:shadow-md hover:scale-[1.02]"
-            style={{
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            }}
+            className="text-white text-xs font-bold px-4 py-2 rounded-xl border border-transparent transition-all shadow-md hover:shadow-lg hover:scale-[1.02] bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40"
           >
             View Path
           </button>
@@ -157,10 +178,7 @@ export function CareerRecommendationCard({ recommendation, rank, isBestMatch = f
       <div>
         <button
           onClick={() => onViewDetails(recommendation)}
-          className="text-white text-xs font-bold px-5 py-2.5 rounded-lg transition-all shadow-md hover:shadow-lg hover:scale-[1.02] flex items-center gap-2 inline-flex"
-          style={{
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          }}
+          className="text-white text-xs font-bold px-5 py-2.5 rounded-xl border border-transparent transition-all shadow-md hover:shadow-lg hover:scale-[1.02] flex items-center gap-2 inline-flex bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/40"
         >
           <FaEye className="text-sm" /> View Details & AI Explanation
         </button>
