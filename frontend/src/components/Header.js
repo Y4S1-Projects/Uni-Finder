@@ -43,6 +43,7 @@ const Header = () => {
 	const isScholarshipAdmin = currentUser && ["scholarshipadmin", "scholarshipadmin2"].includes(currentUser.username);
 	const isOnAdminPage = location.pathname === "/scholarship-matcher/admin-datasets";
 	const showAdminAuth = isScholarshipAdmin && isOnAdminPage;
+	const isLoggedIn = !!currentUser && !isScholarshipAdmin;
 	const API_BASE = process.env.REACT_APP_BACKEND_URL;
 
 	const handleLogout = async () => {
@@ -125,6 +126,31 @@ const Header = () => {
 									Logout
 								</button>
 							</>
+						: isLoggedIn ?
+							<>
+								<div className='flex items-center gap-2.5'>
+									<div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold select-none ${
+										isTransparent ? "bg-white/20 text-white border border-white/40" : "bg-indigo-100 text-indigo-700 border border-indigo-200"
+									}`}>
+										{currentUser.username?.charAt(0).toUpperCase()}
+									</div>
+									<span className={`text-sm font-semibold max-w-[120px] truncate ${
+										isTransparent ? "text-white" : "text-slate-700"
+									}`}>
+										{currentUser.username}
+									</span>
+								</div>
+								<button
+									type='button'
+									onClick={handleLogout}
+									className={`px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg ${
+										isTransparent ?
+											"text-white border border-white/30 hover:bg-white/10"
+										:	"text-indigo-600 border border-indigo-200 bg-indigo-50 hover:bg-indigo-100"
+									}`}>
+									Logout
+								</button>
+							</>
 						:	<>
 								<Link
 									to='/signInNew'
@@ -159,6 +185,22 @@ const Header = () => {
 								className='px-3 py-1.5 text-xs font-semibold rounded-lg text-indigo-600 bg-indigo-50 border border-indigo-200'>
 								Logout
 							</button>
+						: isLoggedIn ?
+							<div className='flex items-center gap-2'>
+								<div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold select-none ${
+									isTransparent ? "bg-white/20 text-white border border-white/40" : "bg-indigo-100 text-indigo-700 border border-indigo-200"
+								}`}>
+									{currentUser.username?.charAt(0).toUpperCase()}
+								</div>
+								<button
+									type='button'
+									onClick={handleLogout}
+									className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+										isTransparent ? "text-white border border-white/30" : "text-indigo-600 border border-indigo-200 bg-indigo-50"
+									}`}>
+									Logout
+								</button>
+							</div>
 						:	<Link
 								to='/signInNew'
 								className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
@@ -202,7 +244,7 @@ const Header = () => {
 								{link.label}
 							</Link>
 						))}
-						{!showAdminAuth && (
+						{!showAdminAuth && !isLoggedIn && (
 							<Link
 								to='/signUp'
 								className='block w-full px-4 py-2.5 mt-3 text-sm font-semibold text-center text-white rounded-lg bg-indigo-600 hover:bg-indigo-700 transition-all'>

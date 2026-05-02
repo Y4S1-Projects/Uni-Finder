@@ -440,8 +440,9 @@ const BudgetOptimizerNew = () => {
             status: 'active'
           };
 
-          // Save to MongoDB via Node.js API (port 3000) - Same as SignUp
-          const saveResponse = await fetch('http://localhost:3000/api/budget/save', {
+          // Save to MongoDB via Node.js API - Same as SignUp
+          const nodeApiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5010';
+          const saveResponse = await fetch(`${nodeApiUrl}/api/budget/save`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
