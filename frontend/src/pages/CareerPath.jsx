@@ -9,6 +9,8 @@ import {
   CareerButton,
   ProfileSectionCard,
   NativeSelectField,
+  CareerToast,
+  DeleteProfileConfirmModal,
 } from "../components/career";
 import {
   useCareerRecommendations,
@@ -95,6 +97,7 @@ export default function CareerPath() {
   const [loadingProfiles, setLoadingProfiles] = useState(false);
   const [profileError, setProfileError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [nameTouched, setNameTouched] = useState(false);
   const [touched, setTouched] = useState(createUntouchedFields);
 
@@ -164,6 +167,10 @@ export default function CareerPath() {
     const id = window.setTimeout(() => setActionMessage(null), 4500);
     return () => window.clearTimeout(id);
   }, [actionMessage]);
+
+  const showToast = (message, type) => {
+    setActionMessage({ text: message, type });
+  };
 
   const experienceLevel = buildField(
     formData,
@@ -247,7 +254,7 @@ export default function CareerPath() {
     console.log("Submitting:", formData);
 
     if (!formData.name.trim()) {
-      setActionMessage({ type: "error", text: "Profile name is required." });
+      showToast("Profile name is required.", "error");
       return;
     }
 
@@ -258,18 +265,12 @@ export default function CareerPath() {
       validateCareerGoal(formData.career_goal) ||
       (formData.skills || []).length < 5
     ) {
-      setActionMessage({
-        type: "error",
-        text: "Please complete required fields before saving.",
-      });
+      showToast("Please complete required fields before saving.", "error");
       return;
     }
 
     if (profiles.length >= MAX_PROFILES) {
-      setActionMessage({
-        type: "error",
-        text: "Maximum 3 profiles allowed per user.",
-      });
+      showToast("Maximum 3 profiles allowed per user.", "error");
       return;
     }
 
@@ -279,18 +280,15 @@ export default function CareerPath() {
       setProfiles(nextProfiles);
       hasLoadedProfile.current = false;
       setActiveProfile(created);
-      setActionMessage({ type: "success", text: "Profile created successfully." });
+      showToast("Profile created successfully.", "success");
     } catch (err) {
-      setActionMessage({
-        type: "error",
-        text: err.message || "Failed to create profile.",
-      });
+      showToast(err.message || "Failed to create profile.", "error");
     }
   };
 
   const handleSaveProfile = async () => {
     if (!activeProfile) {
-      setActionMessage({ type: "error", text: "Select a profile to save." });
+      showToast("Select a profile to save.", "error");
       return;
     }
 
@@ -300,7 +298,7 @@ export default function CareerPath() {
     console.log("Submitting:", formData);
 
     if (!formData.name.trim()) {
-      setActionMessage({ type: "error", text: "Profile name is required." });
+      showToast("Profile name is required.", "error");
       return;
     }
 
@@ -311,10 +309,7 @@ export default function CareerPath() {
       validateCareerGoal(formData.career_goal) ||
       (formData.skills || []).length < 5
     ) {
-      setActionMessage({
-        type: "error",
-        text: "Please complete required fields before saving.",
-      });
+      showToast("Please complete required fields before saving.", "error");
       return;
     }
 
@@ -329,18 +324,15 @@ export default function CareerPath() {
       setProfiles(nextProfiles);
       hasLoadedProfile.current = false;
       setActiveProfile(updated);
-      setActionMessage({ type: "success", text: "Profile saved successfully." });
+      showToast("Profile saved successfully.", "success");
     } catch (err) {
-      setActionMessage({
-        type: "error",
-        text: err.message || "Failed to update profile.",
-      });
+      showToast(err.message || "Failed to update profile.", "error");
     }
   };
 
   const handleDeleteClick = () => {
     if (!activeProfile) return;
-    handleDeleteConfirm();
+    setDeleteConfirmOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
@@ -354,15 +346,11 @@ export default function CareerPath() {
       setProfiles(nextProfiles);
       setActiveProfile(nextProfiles[0] || null);
       hasLoadedProfile.current = false;
-      setActionMessage({
-        type: "success",
-        text: "Profile deleted successfully.",
-      });
+      setDeleteConfirmOpen(false);
+      showToast("Profile deleted successfully.", "success");
     } catch (err) {
-      setActionMessage({
-        type: "error",
-        text: err.message || "Failed to delete profile.",
-      });
+      setDeleteConfirmOpen(false);
+      showToast(err.message || "Failed to delete profile.", "error");
     }
   };
 
@@ -413,20 +401,25 @@ export default function CareerPath() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f8f7ff] via-white to-[#edf2ff]">
       <div className="max-w-6xl mx-auto px-6 py-10 mt-20">
-        <div className="flex flex-col gap-6">
-          <div>
-            <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent flex items-center gap-2">
-              <FaChartLine /> Career Path Recommender
-            </h2>
-            <p className="text-gray-700 mt-2 text-lg">
-              Save reusable profiles and get personalized AI-powered
-              recommendations.
+        <div className="flex flex-col gap-8">
+          {/* Section 1: Hero Header */}
+          <section className="text-center py-10 sm:py-16 motion-safe:animate-fadeInUp" style={{ animationDuration: "0.6s" }}>
+            <div className="inline-flex items-center justify-center gap-2 px-3 py-1 mb-6 rounded-full bg-indigo-50 text-indigo-700 text-sm font-semibold tracking-wide border border-indigo-100">
+              <FaChartLine /> AI-Powered Career Discovery
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-gray-900 mb-6 leading-tight">
+              Discover Your Perfect
+              <br className="hidden sm:block" />
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-blue-500"> Career Path</span>
+            </h1>
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto text-lg sm:text-xl font-medium">
+              Tell us about your skills and goals, and our intelligent system will map out exactly where you can go.
             </p>
-          </div>
+          </section>
 
           <ProfileSectionCard>
-            <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-100 p-4 rounded-xl text-sm text-gray-700">
-              <p className="font-medium text-purple-700 mb-1">How this works</p>
+            <div className="bg-indigo-50 border border-indigo-100 p-4 rounded-xl text-sm text-gray-700">
+              <p className="font-medium text-indigo-700 mb-1">How this works</p>
               <ul className="list-disc list-inside space-y-1">
                 <li>
                   A profile stores your skills and preferences so you can switch
@@ -442,14 +435,14 @@ export default function CareerPath() {
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0">
-                <h2 className="text-lg font-semibold text-gray-800">
+                <h2 className="text-lg font-semibold text-gray-900">
                   Career Profile
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">
                   Create and manage your personalized career setups
                 </p>
               </div>
-              <span className="text-xs font-semibold text-purple-600 bg-purple-100 px-3 py-1 rounded-full shrink-0 self-start sm:self-auto">
+              <span className="text-xs font-semibold text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full shrink-0 self-start sm:self-auto">
                 {profiles.length}/{MAX_PROFILES} profiles
               </span>
             </div>
@@ -495,7 +488,7 @@ export default function CareerPath() {
                   onChange={handleChange}
                   onBlur={() => setNameTouched(true)}
                   placeholder="e.g., Backend Builder"
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/90 text-gray-800 text-sm font-medium transition-all duration-200 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-200/80"
+                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/90 text-gray-900 text-sm font-medium transition-all duration-200 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-200"
                 />
                 <p className="text-red-500 text-sm min-h-[1.25rem] mt-1">
                   {nameTouched && !formData.name.trim()
@@ -564,8 +557,19 @@ export default function CareerPath() {
         </div>
       </div>
 
-
-
+      <CareerToast
+        visible={!!actionMessage}
+        type={actionMessage?.type}
+        message={actionMessage?.text || ""}
+      />
+      
+      <DeleteProfileConfirmModal
+        isOpen={deleteConfirmOpen}
+        profileName={activeProfile?.name}
+        onCancel={() => setDeleteConfirmOpen(false)}
+        onConfirm={handleDeleteConfirm}
+      />
+      
       <CareerDetailModal
         isOpen={!!selectedJob}
         onClose={closeDetail}

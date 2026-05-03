@@ -21,9 +21,9 @@ export default function DeleteProfileConfirmModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="delete-profile-title"
-        className="relative z-[1] bg-white rounded-2xl p-6 shadow-xl w-full max-w-[320px] space-y-4 border border-gray-100 animate-modal-enter"
+        className="relative z-[1] bg-white rounded-2xl p-6 shadow-xl w-full max-w-[320px] space-y-4 border border-gray-200 animate-modal-enter"
       >
-        <h3 id="delete-profile-title" className="text-lg font-semibold text-gray-800">
+        <h3 id="delete-profile-title" className="text-lg font-semibold text-gray-900">
           Delete Profile?
         </h3>
         <p className="text-sm text-gray-500">

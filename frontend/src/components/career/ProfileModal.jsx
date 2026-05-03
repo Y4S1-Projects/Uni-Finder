@@ -145,11 +145,11 @@ export default function ProfileModal({
         aria-label="Close modal"
       />
       <div className="relative z-[1] max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-modal-enter">
-        <div className="relative p-6 md:p-8 bg-white rounded-2xl shadow-xl border border-gray-100">
+        <div className="relative p-6 md:p-8 bg-white rounded-2xl shadow-xl border border-gray-200">
           <button
             type="button"
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 rounded-full bg-white/90 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-purple-500/30 active:scale-[0.98]"
+            className="absolute top-4 right-4 p-2 rounded-full bg-white/90 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 active:scale-[0.98]"
             aria-label="Close"
           >
             <FaTimes />
@@ -157,11 +157,11 @@ export default function ProfileModal({
 
           <div className="mb-6">
             <div className="flex items-center gap-3">
-              <span className="p-2 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 text-white shadow-md">
+              <span className="p-2 rounded-xl bg-indigo-600 text-white shadow-md">
                 <FaUserAstronaut />
               </span>
               <div>
-                <h3 className="text-2xl font-bold text-gray-800">
+                <h3 className="text-2xl font-bold text-gray-900">
                   {isEdit ? "Edit Career Profile" : "Create New Career Profile"}
                 </h3>
                 <p className="text-gray-600">
@@ -185,7 +185,7 @@ export default function ProfileModal({
                 }}
                 onBlur={() => setNameTouched(true)}
                 placeholder="e.g., Frontend Explorer"
-                className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-700 bg-white/90 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-200/80 transition-all duration-200"
+                className="mt-2 w-full rounded-xl border border-gray-200 px-4 py-3 text-gray-700 bg-white/90 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-200 transition-all duration-200"
               />
               {nameError && (
                 <p className="mt-2 text-sm text-red-500">{nameError}</p>
