@@ -64,7 +64,7 @@ ml_predictor = MLBudgetPredictor(model_dir=DATA_DIR)
 # AI API cache (simple in-memory cache with 1-hour TTL)
 openai_cache = {}
 CACHE_TTL_SECONDS = 3600  # 1 hour
-PROMPT_VERSION = "v4-min-savings-buffer"  # bump this whenever the prompt changes
+PROMPT_VERSION = "v6-state-vs-private-uni-ctb-parttime-aware"  # bump this whenever the prompt changes
 
 # Load OpenAI API key
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
@@ -148,7 +148,7 @@ def call_openai_with_retry(api_key, prompt, max_retries=2):
                     {"role": "user", "content": prompt},
                 ],
                 temperature=0.7,
-                max_tokens=1024,
+                max_tokens=1600
             )
 
             content = response.choices[0].message.content
@@ -360,22 +360,23 @@ def complete_budget_analysis():
         monthly_income_total = base_income + home_money  # effective total income
 
         student_data = {
-            "monthly_income": monthly_income_total,
-            "year_of_study": data.get("year_of_study", "Second Year"),
-            "field_of_study": data.get("field_of_study", "IT"),
-            "district": data.get("district", "Colombo"),
-            "accommodation_type": data.get("accommodation_type", "Rented Room"),
-            "rent": data.get("rent", 8000),
-            "food_budget": food_budget["monthly_total"],
-            "transport_budget": transport_budget["monthly_total"],
-            "transport_method": data.get("transport_method", "Bus"),
-            "food_type": data.get("food_type", "Mixed"),
-            "university": data.get("university", "SLIIT"),
-            "meals_per_day": data.get("meals_per_day", "3 meals"),
-            "home_visit_frequency": data.get("home_visit_frequency", "Monthly"),
-            "cooking_percentage": data.get("cooking_percentage", 60),
-            "diet_type": data.get("diet_type", "Vegetarian"),
-            "distance_uni_accommodation": data.get("distance_uni_accommodation", 5),
+            'monthly_income': monthly_income_total,
+            'year_of_study': data.get('year_of_study', 'Second Year'),
+            'field_of_study': data.get('field_of_study', 'IT'),
+            'district': data.get('district', 'Colombo'),
+            'accommodation_type': data.get('accommodation_type', 'Rented Room'),
+            'rent': data.get('rent', 8000),
+            'food_budget': food_budget['monthly_total'],
+            'transport_budget': transport_budget['monthly_total'],
+            'transport_method': data.get('transport_method', 'Bus'),
+            'food_type': data.get('food_type', 'Mixed'),
+            'university': data.get('university', 'SLIIT'),
+            'meals_per_day': data.get('meals_per_day', '3 meals'),
+            'home_visit_frequency': data.get('home_visit_frequency', 'Monthly'),
+            'cooking_percentage': data.get('cooking_percentage', 60),
+            'diet_type': data.get('diet_type', 'Vegetarian'),
+            'distance_uni_accommodation': data.get('distance_uni_accommodation', 5),
+            'has_work_commute': data.get('has_work_commute', False),
         }
 
         # Step 4: Get ML predictions and risk assessment
@@ -763,19 +764,21 @@ def get_ai_strategy():
         )
         gap = max(current_exp - target_exp, 0)
 
-        # ── Enforce minimum savings buffer ─────────────────────────
-        MIN_SAVINGS_BUFFER = 7500  # LKR — target must be at least 7,500 below income
-        # The hard ceiling for expenses: income minus the minimum buffer
-        income_ceiling = max(income - MIN_SAVINGS_BUFFER, 0)
+        # ── Dynamic savings buffer based on the student's income ──────
+        # 10% of income (minimum LKR 2,000) keeps targets realistic
+        # across all income levels — no more fixed 7,500 for every student.
+        MIN_SAVINGS_BUFFER = max(round(income * 0.10), 2000)
+        # Hard ceiling: expenses must stay at or below this so savings exist
+        income_ceiling    = max(income - MIN_SAVINGS_BUFFER, 0)
 
-        # Determine if student is over budget or needs the savings buffer enforced
-        over_budget = total_exp > income_ceiling
-        deficit = max(total_exp - income_ceiling, 0)
-        # raw optimised target, but must always leave MIN_SAVINGS_BUFFER as savings
-        raw_target = min(income_ceiling, target_exp)
-        real_target = min(raw_target, income_ceiling)  # hard cap
-        real_gap = max(total_exp - real_target, 0)  # how much to cut
-        min_saving = income - real_target  # guaranteed saving
+        # Determine if student is over budget
+        over_budget   = total_exp > income_ceiling
+        deficit       = max(total_exp - income_ceiling, 0)
+        # Primary driver: ML-predicted target_exp; only cap at income_ceiling as safety net
+        raw_target    = min(target_exp, income_ceiling)
+        real_target   = raw_target
+        real_gap      = max(total_exp - real_target, 0)   # how much to cut
+        min_saving    = income - real_target              # guaranteed saving
 
         # Build optimised-category estimates for FINAL_BUDGET guidance
         cat_optimised = {}
@@ -794,17 +797,16 @@ def get_ai_strategy():
             final_budget_lines.append(f"  • {k.replace('_',' ').title()}: LKR {v:,.0f}")
 
         constraint_note = (
-            f"⚠️  CRITICAL: Student is OVER the safe-spend ceiling by LKR {deficit:,.0f}/month. "
+            f"⚠️  CRITICAL: Student is OVER the safe-spend ceiling by LKR {deficit:,.0f}. "
             f"Steps MUST reduce total expenses to ≤ LKR {income_ceiling:,.0f} "
-            f"so at least LKR {MIN_SAVINGS_BUFFER:,.0f} is saved each month."
-            if over_budget
-            else f"Student is within income. Still, steps MUST optimise expenses to ≤ LKR {real_target:,.0f}/month "
-            f"guaranteeing at least LKR {min_saving:,.0f} monthly savings "
-            f"(LKR {MIN_SAVINGS_BUFFER:,.0f} minimum buffer enforced)."
+            f"so there is at least a LKR {MIN_SAVINGS_BUFFER:,.0f} buffer (10% of income)."
+            if over_budget else
+            f"Student is within income. Steps MUST optimise expenses to ≤ LKR {real_target:,.0f} "
+            f"(ML-personalised target), leaving a LKR {min_saving:,.0f} buffer."
         )
 
-        prompt = f"""You are an expert financial coach for Sri Lankan university students.
-A student used our AI Budget Optimizer. Generate a precise numbered step-by-step plan showing EXACTLY how to bring ALL monthly expenses WITHIN their income limit.
+        prompt = f"""You are an expert financial coach for Sri Lankan university students. You understand the real-life constraints students face: limited bargaining power with landlords, cultural importance of visiting family, dependence on public transport, and a modest income.
+A student used our AI Budget Optimizer. Generate a precise numbered step-by-step plan showing EXACTLY how to bring ALL monthly expenses WITHIN their income limit. Use between 5 and 10 steps depending on what is realistically needed.
 
 ─── STUDENT ────────────────────────────────────────────────
 University: {university} | Year: {year} | Field: {field}
@@ -813,11 +815,11 @@ Food: {food_type} | Transport: {transport}
 
 ─── INCOME vs EXPENSE CONSTRAINT ───────────────────────────
 Monthly Income         : LKR {income:,.0f}
-Safe-Spend Ceiling     : LKR {income_ceiling:,.0f}  ← expenses MUST be ≤ this (income − LKR {MIN_SAVINGS_BUFFER:,.0f} buffer)
-Minimum Monthly Saving : LKR {MIN_SAVINGS_BUFFER:,.0f}  ← this gap must ALWAYS remain between expenses and income
+Safe-Spend Ceiling     : LKR {income_ceiling:,.0f}  ← expenses MUST be ≤ this (keeps LKR {MIN_SAVINGS_BUFFER:,.0f} as savings)
+Minimum Monthly Saving : LKR {MIN_SAVINGS_BUFFER:,.0f}  ← 10 % of this student's income
 Current Expenses       : LKR {current_exp:,.0f}
 Gap to Close           : LKR {real_gap:,.0f}
-Optimised Target       : LKR {real_target:,.0f}/month  (saves LKR {min_saving:,.0f})
+Optimised Target       : LKR {real_target:,.0f}  (buffer LKR {min_saving:,.0f})
 Target Savings Rate    : {target_rate}%
 
 {constraint_note}
@@ -829,7 +831,7 @@ Target Savings Rate    : {target_rate}%
 {chr(10).join(final_budget_lines)}
   ─────────────────────────────────────────────────────
   TOTAL after optimising : LKR {real_target:,.0f}
-  Monthly Savings        : LKR {min_saving:,.0f}  ✅  (≥ LKR {MIN_SAVINGS_BUFFER:,.0f} buffer achieved)
+  Monthly Savings        : LKR {min_saving:,.0f}  ✅  (10% savings target achieved)
 
 ─── AI-IDENTIFIED ALTERNATIVES ─────────────────────────────
 {chr(10).join(alt_lines) if alt_lines else '  • No critical alternatives flagged'}
@@ -837,35 +839,52 @@ Target Savings Rate    : {target_rate}%
 ─── OUTPUT FORMAT ───────────────────────────────────────────
 Use EXACTLY this structure. NO extra text outside this format.
 
-GAP_SUMMARY: By reducing expenses by LKR {real_gap:,.0f}/month you will always have at least LKR {MIN_SAVINGS_BUFFER:,.0f} left over — here is how to do it in [X] steps.
+GAP_SUMMARY: By reducing expenses by LKR {real_gap:,.0f} your new total will be LKR {real_target:,.0f} — leaving a LKR {min_saving:,.0f} buffer — here is how to do it in [X] steps.
 
 STEP 1: [Short action title — keep it practical, Sri Lanka specific]
 CATEGORY: [Food / Transport / Accommodation / Internet / Utilities / Study / Entertainment / Income]
-SAVE: LKR [amount]/month
+SAVE: LKR [amount]
 HOW: [One practical sentence — use Sri Lanka context: CTB buses, Keells/Cargills, student ID, BOC/NSB]
 TIMEFRAME: [This week / Week 2 / Week 3 / Month 2 / Month 3]
+LINKS: [Use 1-3 markdown links like [Keells Super](https://www.keellssuper.com/) | [Cargills Online](https://cargillsonline.com/) when relevant, otherwise write None]
 
 STEP 2: [title]
 CATEGORY: [...]
-SAVE: LKR [amount]/month
+SAVE: LKR [amount]
 HOW: [...]
 TIMEFRAME: [...]
+LINKS: [...]
 
-[Add STEP 3 to STEP 5 in the same format. SAVE amounts across all steps must total LKR {real_gap:,.0f}.]
+[Continue with the same format for as many steps as needed. Use a minimum of 5 steps and a maximum of 10 steps. SAVE amounts across all steps must total LKR {real_gap:,.0f}.]
 
 FINAL_BUDGET: After applying all steps — Food: LKR [X] | Transport: LKR [X] | Accommodation: LKR [X] | Other: LKR [X] | TOTAL: LKR [X] | SAVINGS: LKR [X] | FITS WITHIN INCOME: YES
 
 QUICK_WIN: [One thing doable TODAY for free that immediately saves money]
 
-MOTIVATION: [One encouraging sentence — mention income LKR {income:,.0f}, new total LKR {real_target:,.0f}, and that LKR {min_saving:,.0f} will be saved every month]
+MOTIVATION: [One encouraging sentence — mention income LKR {income:,.0f}, new total LKR {real_target:,.0f}, and that this leaves a LKR {min_saving:,.0f} buffer]
+
+─── ETHICAL & REALISTIC GUIDELINES (MUST FOLLOW) ───────────
+Accommodation — ALLOWED: Search for a cheaper or shared boarding house, move to a boarding house slightly farther from campus, join the university hostel waiting list, check student WhatsApp/Facebook groups for available boarding rooms.
+Accommodation — FORBIDDEN: Do NOT suggest negotiating rent with a landlord (students have no bargaining power in Sri Lanka), do NOT suggest the student move home permanently.
+Transport — CTB CONCESSION RULE: The CTB student concession pass (50% fare reduction) is ONLY available to students enrolled at UGC-recognized state universities (University of Colombo, Moratuwa, Peradeniya, Kelaniya, Sri Jayewardenepura, Jaffna, Ruhuna, Eastern, Wayamba, Rajarata, Sabaragamuwa, Open University, KDU, etc.). If the student attends a private higher educational institute (SLIIT, NSBM, APIIT, CINEC, ICBT, IIT, NIBM, etc.) do NOT mention the CTB concession pass AT ALL.
+Transport — ALLOWED (all students): Switch from tuk-tuk/ride-share to CTB or private bus, use the institution shuttle bus if available, walk or cycle for short distances (≤ 3 km), batch errands to reduce trip count, share tuk-tuk with classmates on rainy days.
+Transport — ALLOWED (state university students only): Mention CTB student concession pass applied at the nearest CTB depot with a registrar letter + NIC.
+Transport — FORBIDDEN: Do NOT suggest limiting or reducing home visits — visiting family is culturally important and non-negotiable. Do NOT quote a specific LKR price for a bus pass as though it is the monthly cost; instead describe the concession benefit in percentage terms.
+Income — PART-TIME JOB RULE: If the student already has a part-time job (has_work_commute is true in the data), do NOT suggest "getting a part-time job" — they already have one. Instead suggest increasing earning value through tutoring, scholarships, bursaries, or skill upgrades.
+Food — ALLOWED: Increase home cooking, buy groceries at Sunday pola markets, batch-cook with housemates, use university canteen for at least one meal, buy staples (rice, dhal) in bulk.
+Food — FORBIDDEN: Do NOT suggest skipping meals or reducing daily meal count.
+General — Do NOT suggest selling personal belongings unless absolutely no other option. Do NOT frame any advice as cutting necessities. Each step must be immediately actionable by a student within their existing constraints.
 
 ─── STRICT RULES ────────────────────────────────────────────
 1. TOTAL in FINAL_BUDGET must be ≤ LKR {income_ceiling:,.0f} — this is non-negotiable
-2. SAVINGS in FINAL_BUDGET must be ≥ LKR {MIN_SAVINGS_BUFFER:,.0f} — there must always be a visible gap between expenses and income
+2. SAVINGS in FINAL_BUDGET must be ≥ LKR {min_saving:,.0f} — there must always be a visible gap between expenses and income
 3. SAVE amounts across all steps must sum to LKR {real_gap:,.0f}
 4. Use "you/your" throughout, keep tone encouraging yet realistic
 5. Reference Sri Lanka specifics in every HOW field
-6. Output ONLY the structured format above — NOTHING outside these fields"""
+6. Output ONLY the structured format above — NOTHING outside these fields
+7. Every HOW sentence must be a realistic action a Sri Lankan university student can do TODAY — no negotiating, no eliminating necessities
+8. Use 5 to 10 steps, not always 5; choose the exact number based on the student's real gap and constraints
+9. Add a LINKS line for every step; use official or trusted Sri Lankan links when a store, service, bank, or transport provider is mentioned, otherwise write None"""
 
         # ── Call OpenAI API ────────────────────────────────────────
         success, content, error_msg = call_openai_with_retry(OPENAI_API_KEY, prompt)
@@ -952,14 +971,10 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "5002"))
     print("\n" + "=" * 60)
     print("🎯 AI-Powered Student Budget Optimizer API")
-    print("=" * 60)
-    print(f"📍 Server: http://127.0.0.1:{port}")
-    print(f"📍 Health: http://127.0.0.1:{port}/health")
-    if cors_origins == "*":
-        cors_label = "all origins"
-    else:
-        cors_label = ", ".join(cors_origins)
-    print(f"📍 CORS: {cors_label}")
-    print("=" * 60 + "\n")
-
-    app.run(debug=True, port=port, host="0.0.0.0")
+    print("="*60)
+    print("📍 Server: http://127.0.0.1:5002")
+    print("📍 Health: http://127.0.0.1:5002/health")
+    print("📍 CORS: Enabled for all origins")
+    print("="*60 + "\n")
+    
+    app.run(debug=True, port=5002, host='0.0.0.0')

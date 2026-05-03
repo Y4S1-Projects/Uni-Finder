@@ -13,6 +13,7 @@
 		"bootstrap": "^5.3.8",
 		"core-js": "^3.47.0",
 		"flowbite-react": "^0.12.15",
+		"framer-motion": "^12.38.0",
 		"react": "^19.2.3",
 		"react-bootstrap": "^2.10.10",
 		"react-dom": "^19.2.3",

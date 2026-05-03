@@ -27,18 +27,7 @@ export function NextRoleBadge({
           {showLadderButton && onViewPath && (
             <button
               onClick={onViewPath}
-              className="px-4 py-2 text-white rounded-lg text-sm font-semibold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
-              style={{
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background =
-                  "linear-gradient(135deg, #5568d3 0%, #65408b 100%)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background =
-                  "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
-              }}
+              className="px-4 py-2 text-white rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap bg-gradient-to-r from-purple-600 to-blue-600 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-purple-500/30 border border-transparent"
             >
               View Career Path
             </button>
@@ -61,18 +50,7 @@ export function NextRoleBadge({
       {showLadderButton && onViewPath && (
         <button
           onClick={onViewPath}
-          className="px-3 py-1.5 text-white rounded-lg text-xs font-semibold transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap hover:scale-105"
-          style={{
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background =
-              "linear-gradient(135deg, #5568d3 0%, #65408b 100%)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background =
-              "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
-          }}
+          className="px-3 py-1.5 text-white rounded-lg text-xs font-semibold transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap bg-gradient-to-r from-purple-600 to-blue-600 hover:scale-[1.05] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-purple-500/30 border border-transparent"
         >
           View Path
         </button>

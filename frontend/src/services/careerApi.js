@@ -14,7 +14,7 @@ if (!CAREER_API) {
  * @param {string[]} skillIds - Array of skill IDs
  * @param {number} topN - Number of recommendations to return
  * @param {Object} careerContext - User profile context for personalized recommendations
- * @param {string} careerContext.experience_level - e.g., "student", "0-1", "1-3", "3-5", "5+"
+ * @param {string} careerContext.experience_level - e.g., "0", "0-1", "1-3", "3-5", "5+"
  * @param {string} careerContext.current_status - e.g., "student", "graduate", "working"
  * @param {string} careerContext.preferred_domain - e.g., "backend_engineering", "ai_ml"
  * @param {string} careerContext.education_level - e.g., "bachelors", "masters"
