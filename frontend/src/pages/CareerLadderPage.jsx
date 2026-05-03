@@ -73,7 +73,7 @@ export default function CareerLadderPage() {
 				console.error("Error loading all progressions:", error);
 			}
 		},
-		[recommendations, userSkills],
+		[recommendations, userSkills, availableDomains],
 	);
 
 	useEffect(() => {

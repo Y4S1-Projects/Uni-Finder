@@ -9,8 +9,6 @@ import {
   CareerButton,
   ProfileSectionCard,
   NativeSelectField,
-  CareerToast,
-  DeleteProfileConfirmModal,
 } from "../components/career";
 import {
   useCareerRecommendations,
@@ -97,7 +95,6 @@ export default function CareerPath() {
   const [loadingProfiles, setLoadingProfiles] = useState(false);
   const [profileError, setProfileError] = useState(null);
   const [actionMessage, setActionMessage] = useState(null);
-  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [nameTouched, setNameTouched] = useState(false);
   const [touched, setTouched] = useState(createUntouchedFields);
 
@@ -343,16 +340,11 @@ export default function CareerPath() {
 
   const handleDeleteClick = () => {
     if (!activeProfile) return;
-    setDeleteConfirmOpen(true);
-  };
-
-  const handleDeleteCancel = () => {
-    setDeleteConfirmOpen(false);
+    handleDeleteConfirm();
   };
 
   const handleDeleteConfirm = async () => {
     if (!activeProfile) return;
-    setDeleteConfirmOpen(false);
 
     try {
       await deleteProfile(activeProfile.profileId);
@@ -572,17 +564,7 @@ export default function CareerPath() {
         </div>
       </div>
 
-      <CareerToast
-        visible={!!actionMessage}
-        type={actionMessage?.type}
-        message={actionMessage?.text || ""}
-      />
-      <DeleteProfileConfirmModal
-        isOpen={deleteConfirmOpen}
-        profileName={activeProfile?.name}
-        onCancel={handleDeleteCancel}
-        onConfirm={handleDeleteConfirm}
-      />
+
 
       <CareerDetailModal
         isOpen={!!selectedJob}

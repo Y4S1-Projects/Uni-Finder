@@ -110,7 +110,7 @@ export function ProgressBar({ score, height = "h-2" }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
   const targetPercent = Number((score * 100).toFixed(0));
-  const { value } = useCountUp(targetPercent, 1000, isVisible, 0);
+  useCountUp(targetPercent, 1000, isVisible, 0);
   const bgColorClass = getScoreBgColor(score);
 
   useEffect(() => {

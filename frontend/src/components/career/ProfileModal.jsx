@@ -72,20 +72,32 @@ export default function ProfileModal({
     validateCareerGoal,
   );
 
+  const { setValue: setExperienceValue } = experienceLevel;
+  const { setValue: setStatusValue } = currentStatus;
+  const { setValue: setDomainValue } = preferredDomain;
+  const { setValue: setEducationValue } = educationLevel;
+  const { setValue: setGoalValue } = careerGoal;
+
   React.useEffect(() => {
     if (!isOpen) return;
     const profile = initialProfile || EMPTY_PROFILE;
     setName(profile.name || "");
     setNameTouched(false);
     setSelectedSkills(normalizeSkills(profile.skills));
-    experienceLevel.setValue(
-      mapExperienceFromProfile(profile.experience_level),
-    );
-    currentStatus.setValue(profile.current_status || "");
-    preferredDomain.setValue(profile.preferred_domain || "");
-    educationLevel.setValue(profile.education_level || "");
-    careerGoal.setValue(profile.career_goal || "");
-  }, [isOpen, initialProfile]);
+    setExperienceValue(mapExperienceFromProfile(profile.experience_level));
+    setStatusValue(profile.current_status || "");
+    setDomainValue(profile.preferred_domain || "");
+    setEducationValue(profile.education_level || "");
+    setGoalValue(profile.career_goal || "");
+  }, [
+    isOpen,
+    initialProfile,
+    setExperienceValue,
+    setStatusValue,
+    setDomainValue,
+    setEducationValue,
+    setGoalValue,
+  ]);
 
   if (!isOpen) return null;
 
