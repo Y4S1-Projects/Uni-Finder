@@ -29,6 +29,20 @@ export function useCareerRecommendations() {
           topN,
           careerContext,
         );
+        // DEBUG: log recommendation response for validation
+        console.log("[useCareerRecommendations] Context sent:", careerContext);
+        console.log("[useCareerRecommendations] Response mode:", data?.mode);
+        console.log("[useCareerRecommendations] Profile used:", data?.profile_used);
+        (data?.recommendations || []).forEach((rec, i) => {
+          console.log(
+            `[useCareerRecommendations] #${i + 1} ${rec.role_id}`,
+            `match=${rec.match_score}`,
+            `readiness(weighted)=${rec.readiness_score}`,
+            `readiness(legacy)=${rec.skill_gap?.readiness_score}`,
+            `domain=${rec.domain}`,
+            `seniority=${rec.seniority}`,
+          );
+        });
         setRecommendations(data);
         return data;
       } catch (err) {
@@ -84,7 +98,8 @@ export function useCareerDetail() {
           missingSkills: extractSkillIds(
             recommendation.skill_gap?.missing_skills,
           ),
-          readinessScore: recommendation.skill_gap?.readiness_score || 0,
+          // Prefer weighted readiness from scoring engine, fall back to legacy
+          readinessScore: recommendation.readiness_score ?? recommendation.skill_gap?.readiness_score ?? 0,
           nextRole: recommendation.next_role,
           nextRoleTitle: recommendation.next_role_title,
           // Phase D structured fields from recommendation payload
@@ -126,7 +141,7 @@ export function useCareerDetail() {
           missing_skills: normalizeSkills(
             recommendation.skill_gap?.missing_skills,
           ),
-          readiness_score: recommendation.skill_gap?.readiness_score || 0,
+          readiness_score: recommendation.readiness_score ?? recommendation.skill_gap?.readiness_score ?? 0,
           explanation: null,
         };
         setJobDetail(fallbackDetail);

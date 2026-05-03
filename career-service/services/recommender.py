@@ -179,6 +179,29 @@ def recommend_careers_for_user(
     # ── pick top N ──
     top_roles = scored_roles[:top_n]
 
+    # ── DEBUG: log profile and top-N scores ──
+    print(f"\n[recommender] ═══ RECOMMENDATION DEBUG ═══")
+    print(f"[recommender] Profile: exp={experience_level}, status={current_status}, "
+          f"edu={education_level}, goal={career_goal}, domain={preferred_domain}")
+    print(f"[recommender] Skills: {len(user_skills_upper)} selected, mode={mode}, "
+          f"entry_level={is_entry}")
+    for rank, rd in enumerate(top_roles):
+        bd = rd["score_breakdown"]
+        print(f"[recommender] #{rank+1} {rd['role_id']:25s} "
+              f"match={bd.final_match_score:.3f} "
+              f"ready={bd.readiness_score:.3f} "
+              f"skill={bd.skill_match_score:.3f} "
+              f"core={bd.core_skill_coverage_score:.3f} "
+              f"domain={bd.domain_preference_score:.3f} "
+              f"exp={bd.experience_fit_score:.3f} "
+              f"sen={bd.seniority_fit_score:.3f} "
+              f"edu={bd.education_fit_score:.3f} "
+              f"goal={bd.career_goal_fit_score:.3f} "
+              f"conf={bd.confidence_score:.3f} "
+              f"pen={bd.penalty_total:+.3f} "
+              f"boost={bd.boost_total:+.3f}")
+    print(f"[recommender] ═══════════════════════════\n")
+
     # ── select best match ──
     best_idx = select_best_match(top_roles)
 

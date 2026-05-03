@@ -41,10 +41,13 @@ export function CareerRecommendationCard({
     });
   };
 
+  // Use weighted readiness from scoring engine (top-level), fall back to legacy skill_gap
   const readinessPercent =
-    skill_gap && skill_gap.readiness_score !== undefined
-      ? parseInt((skill_gap.readiness_score * 100).toFixed(0), 10)
-      : 0;
+    recommendation.readiness_score !== undefined
+      ? parseInt((recommendation.readiness_score * 100).toFixed(0), 10)
+      : skill_gap && skill_gap.readiness_score !== undefined
+        ? parseInt((skill_gap.readiness_score * 100).toFixed(0), 10)
+        : 0;
 
   const matchPercent =
     match_score !== undefined ? parseInt((match_score * 100).toFixed(0), 10) : 0;
