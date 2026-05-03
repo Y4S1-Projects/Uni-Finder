@@ -166,7 +166,7 @@ export default function CareerProfileForm({
 
   return (
     <div className="relative z-10">
-      <div className="absolute inset-0 rounded-3xl blur-xl opacity-70 -z-10 bg-gradient-to-br from-purple-100/60 via-white to-blue-100/60" />
+      <div className="absolute inset-0 rounded-3xl blur-xl opacity-70 -z-10 bg-gradient-to-br from-indigo-50/60 via-white to-indigo-50/60" />
 
       <form
         onSubmit={onSubmit}
@@ -174,7 +174,7 @@ export default function CareerProfileForm({
       >
         <div className="pb-6 border-b border-gray-100 flex flex-wrap items-center gap-4 justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-transparent md:text-3xl bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+            <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">
               {formTitle}
             </h2>
             <p className="mt-2 text-sm text-gray-600 md:text-base">
@@ -184,9 +184,9 @@ export default function CareerProfileForm({
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
-          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
-            <div className="flex items-center gap-3 mb-4 text-lg font-bold text-gray-800">
-              <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-white border-gray-200">
+            <div className="flex items-center gap-3 mb-4 text-lg font-bold text-gray-900">
+              <div className="p-2 rounded-lg shadow-md bg-indigo-600">
                 <FaBriefcase className="text-xl text-white" />
               </div>
               <span>Experience Level</span>
@@ -203,10 +203,10 @@ export default function CareerProfileForm({
                     setFieldValue("experience_level", option.value)
                   }
                   onBlur={experienceLevel.handleInputBlur}
-                  className={`px-5 py-3 font-semibold transition-all duration-300 border border-transparent shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/40 hover:shadow-md ${
+                  className={`px-5 py-3 font-semibold transition-all duration-300 border border-transparent shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 hover:shadow-md ${
                     formValues.experience_level === option.value
-                      ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md scale-[1.01]"
-                      : "bg-white/90 text-gray-700 border-gray-200 hover:border-purple-200"
+                      ? "bg-indigo-600 text-white shadow-md scale-[1.01]"
+                      : "bg-white/90 text-gray-700 border-gray-200 hover:border-indigo-200"
                   }`}
                 >
                   {option.label}
@@ -225,9 +225,9 @@ export default function CareerProfileForm({
             </p>
           </div>
 
-          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
-            <div className="flex items-center gap-3 mb-4 text-lg font-bold text-gray-800">
-              <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-white border-gray-200">
+            <div className="flex items-center gap-3 mb-4 text-lg font-bold text-gray-900">
+              <div className="p-2 rounded-lg shadow-md bg-indigo-600">
                 <FaGraduationCap className="text-xl text-white" />
               </div>
               <span>Highest Education</span>
@@ -242,10 +242,10 @@ export default function CareerProfileForm({
                   value={option.id}
                   onClick={() => setFieldValue("education_level", option.id)}
                   onBlur={educationLevel.handleInputBlur}
-                  className={`px-5 py-3 font-semibold transition-all duration-300 border border-transparent shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500/40 hover:shadow-md ${
+                  className={`px-5 py-3 font-semibold transition-all duration-300 border border-transparent shadow-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/40 hover:shadow-md ${
                     formValues.education_level === option.id
-                      ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-md scale-[1.01]"
-                      : "bg-white/90 text-gray-700 border-gray-200 hover:border-purple-200"
+                      ? "bg-indigo-600 text-white shadow-md scale-[1.01]"
+                      : "bg-white/90 text-gray-700 border-gray-200 hover:border-indigo-200"
                   }`}
                 >
                   {option.name}
@@ -266,7 +266,7 @@ export default function CareerProfileForm({
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
-          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-50">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-white border-gray-200 relative z-50">
             <Dropdown
               name="current_status"
               label="Current Status"
@@ -280,18 +280,18 @@ export default function CareerProfileForm({
               onSelect={handleStatusSelect}
               onBlur={currentStatus.handleInputBlur}
               error={currentStatus.hasError ? currentStatus.errorMessage : null}
-              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
+              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50/50"
               dropdownClassName="z-[120] absolute"
-              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
+              optionClassName="text-gray-700 hover:bg-indigo-50"
               prefixIcon={
-                <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                <div className="p-2 rounded-lg shadow-md bg-indigo-600">
                   <FaUser className="text-lg text-white" />
                 </div>
               }
             />
           </div>
 
-          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-50">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-white border-gray-200 relative z-50">
             <Dropdown
               name="career_goal"
               label="Career Goal"
@@ -305,24 +305,24 @@ export default function CareerProfileForm({
               onSelect={handleCareerGoalSelect}
               onBlur={careerGoal.handleInputBlur}
               error={careerGoal.hasError ? careerGoal.errorMessage : null}
-              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
+              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50/50"
               dropdownClassName="z-[120] absolute"
-              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
+              optionClassName="text-gray-700 hover:bg-indigo-50"
               prefixIcon={
-                <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                <div className="p-2 rounded-lg shadow-md bg-indigo-600">
                   <FaRocket className="text-lg text-white" />
                 </div>
               }
             />
           </div>
 
-          <div className="p-6 transition-all duration-300 border md:col-span-2 rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-40">
+          <div className="p-6 transition-all duration-300 border md:col-span-2 rounded-2xl shadow-md hover:shadow-lg bg-white border-gray-200 relative z-40">
             <Dropdown
               name="preferred_domain"
               label={
                 <div className="flex items-center gap-2">
                   <span>Preferred Domain</span>
-                  <span className="px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-700">
+                  <span className="px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-700">
                     Optional
                   </span>
                 </div>
@@ -335,11 +335,11 @@ export default function CareerProfileForm({
               idKey="id"
               onSelect={handleDomainSelect}
               onBlur={preferredDomain.handleInputBlur}
-              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-pink-50/60 transition-all duration-200 ease-in-out"
+              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-indigo-300 hover:bg-indigo-50/60 transition-all duration-200 ease-in-out"
               dropdownClassName="z-[120] absolute max-h-60 overflow-y-auto"
-              optionClassName="text-gray-700 transition-all duration-200 ease-in-out hover:bg-[rgba(236,72,153,0.1)]"
+              optionClassName="text-gray-700 transition-all duration-200 ease-in-out hover:bg-indigo-50"
               prefixIcon={
-                <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+                <div className="p-2 rounded-lg shadow-md bg-indigo-600">
                   <FaChartLine className="text-lg text-white" />
                 </div>
               }
@@ -365,16 +365,16 @@ export default function CareerProfileForm({
           </div>
         </div>
 
-        <div className="relative z-30 w-full p-6 md:p-8 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
+        <div className="relative z-30 w-full p-6 md:p-8 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-white border-gray-200">
           <div className="block w-full">
             <div className="flex items-center gap-3 mb-4 text-xl font-bold text-gray-800">
-              <div className="p-3 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
+              <div className="p-3 rounded-lg shadow-md bg-indigo-600">
                 <FaTrophy className="text-2xl text-white" />
               </div>
               <div className="flex flex-wrap items-center gap-2">
                 <span>Your Skills</span>
                 <span className="text-red-500">*</span>
-                <span className="px-3 py-1 text-sm font-semibold rounded-full bg-purple-100 text-purple-700">
+                <span className="px-3 py-1 text-sm font-semibold rounded-full bg-indigo-100 text-indigo-700">
                   Select at least 5 skills
                 </span>
               </div>
@@ -408,7 +408,7 @@ export default function CareerProfileForm({
             className={`w-full px-8 py-5 text-white rounded-2xl border border-transparent text-lg font-bold transition-all duration-300 flex items-center justify-center gap-3 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-500/40 ${
               !isFormValid || loading
                 ? "bg-gray-400 cursor-not-allowed opacity-70 hover:scale-100"
-                : "bg-gradient-to-r from-purple-600 to-blue-600 hover:scale-[1.01] active:scale-[0.99]"
+                : "bg-indigo-600 hover:bg-indigo-700 hover:scale-[1.01] active:scale-[0.99]"
             }`}
           >
             {loading ? (

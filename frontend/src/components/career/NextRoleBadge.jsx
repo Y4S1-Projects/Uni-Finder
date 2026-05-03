@@ -16,18 +16,18 @@ export function NextRoleBadge({
 
   if (variant === "full") {
     return (
-      <div className="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 p-5 rounded-xl border-2 border-purple-200 shadow-md hover:shadow-lg transition-all duration-300">
-        <div className="font-semibold text-purple-700 mb-2 flex items-center gap-2">
+      <div className="bg-gradient-to-br from-indigo-50 via-white to-blue-50 p-5 rounded-xl border-2 border-indigo-100 shadow-md hover:shadow-lg transition-all duration-300">
+        <div className="font-semibold text-indigo-700 mb-2 flex items-center gap-2">
           <FaRocket className="text-lg" /> Next Career Step
         </div>
         <div className="flex items-center justify-between gap-4">
-          <div className="text-xl font-bold bg-gradient-to-r from-purple-700 to-blue-700 bg-clip-text text-transparent">
+          <div className="text-xl font-bold text-indigo-900 tracking-tight">
             {nextRoleTitle || nextRole}
           </div>
           {showLadderButton && onViewPath && (
             <button
               onClick={onViewPath}
-              className="px-4 py-2 text-white rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap bg-gradient-to-r from-purple-600 to-blue-600 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-purple-500/30 border border-transparent"
+              className="px-4 py-2 text-white rounded-lg text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap bg-indigo-600 hover:bg-indigo-700 hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-indigo-500/30 border border-transparent"
             >
               View Career Path
             </button>
@@ -38,19 +38,19 @@ export function NextRoleBadge({
   }
 
   return (
-    <div className="bg-gradient-to-r from-purple-50 to-blue-50 px-4 py-2.5 rounded-lg border border-purple-200 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4">
+    <div className="bg-white px-4 py-2.5 rounded-lg border border-indigo-100 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-between gap-4">
       <div>
-        <span className="text-purple-700 font-semibold flex items-center gap-1.5">
+        <span className="text-indigo-700 font-semibold flex items-center gap-1.5">
           <FaRocket /> Next Step:
         </span>{" "}
-        <span className="text-purple-900 font-medium">
+        <span className="text-indigo-900 font-medium">
           {nextRoleTitle || nextRole}
         </span>
       </div>
       {showLadderButton && onViewPath && (
         <button
           onClick={onViewPath}
-          className="px-3 py-1.5 text-white rounded-lg text-xs font-semibold transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap bg-gradient-to-r from-purple-600 to-blue-600 hover:scale-[1.05] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-purple-500/30 border border-transparent"
+          className="px-3 py-1.5 text-white rounded-lg text-xs font-semibold transition-all duration-200 shadow-md hover:shadow-lg whitespace-nowrap bg-indigo-600 hover:bg-indigo-700 hover:scale-[1.05] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-indigo-500/30 border border-transparent"
         >
           View Path
         </button>

@@ -12,14 +12,14 @@ const MotionSpan = motion?.span || "span";
 const SKILL_STYLES = {
   matched: {
     tagClass:
-      "bg-gradient-to-r from-purple-100 to-blue-100 text-purple-900 border border-purple-300 shadow-sm hover:shadow-md transition-all duration-200",
+      "bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm hover:shadow-md transition-all duration-200",
     label: "Skills You Have",
-    labelClass: "text-purple-700 font-semibold flex items-center gap-1.5",
+    labelClass: "text-indigo-700 font-semibold flex items-center gap-1.5",
     icon: FaCheckCircle,
   },
   missing: {
     tagClass:
-      "bg-gray-100 text-gray-700 border border-gray-300 shadow-sm hover:shadow-md transition-all duration-200",
+      "bg-gray-50 text-gray-600 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200",
     label: "Skills to Learn",
     labelClass: "text-gray-700 font-semibold flex items-center gap-1.5",
     icon: FaBookOpen,

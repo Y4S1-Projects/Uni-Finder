@@ -33,13 +33,13 @@ export default function ProfileCard({
     <div
       className={`p-4 rounded-2xl border transition-all duration-300 shadow-sm hover:shadow-md ${
         isActive
-          ? "border-purple-300 bg-white"
-          : "border-purple-100 bg-white/80"
-      } ${disabled ? "opacity-60" : ""} backdrop-blur`}
+          ? "border-indigo-400 bg-white"
+          : "border-gray-200 bg-white"
+      } ${disabled ? "opacity-60" : ""}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h4 className="text-lg font-semibold text-gray-800">
+          <h4 className="text-lg font-semibold text-gray-900">
             {profile?.name || "Untitled Profile"}
           </h4>
           <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -51,7 +51,7 @@ export default function ProfileCard({
               </span>
             )}
             {profile?.current_status && (
-              <span className="text-xs text-gray-600 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
+              <span className="text-xs text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-100">
                 {formatStatus(profile.current_status)}
               </span>
             )}
@@ -61,7 +61,7 @@ export default function ProfileCard({
           </p>
         </div>
         {isActive && (
-          <span className="text-[11px] font-semibold text-purple-700 bg-purple-100 px-2 py-1 rounded-full">
+          <span className="text-[11px] font-semibold text-indigo-700 bg-indigo-100 px-2 py-1 rounded-full">
             Active
           </span>
         )}
@@ -77,7 +77,7 @@ export default function ProfileCard({
             "flex items-center justify-center gap-2 text-xs font-semibold py-2 rounded-xl px-2",
             isActive
               ? careerGradientButton
-              : "bg-white/90 text-purple-700 border-gray-200 hover:bg-purple-50 hover:border-purple-200",
+              : "bg-white text-indigo-700 border border-gray-200 hover:bg-indigo-50 hover:border-indigo-200",
           )}
         >
           <FaUserCheck className="text-xs" />

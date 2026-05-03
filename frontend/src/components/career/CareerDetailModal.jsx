@@ -35,12 +35,12 @@ export function CareerDetailModal({ isOpen, onClose, jobDetail, isLoading, onVie
 			onClick={onClose}
 		>
 			<div
-				className={`absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 ${
+				className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300 ${
 					isMounted ? "opacity-100" : "opacity-0"
 				}`}
 			/>
 			<div
-				className={`bg-gradient-to-br from-white via-blue-50 to-indigo-50 rounded-3xl max-w-2xl w-full mx-4 p-8 relative shadow-2xl border-2 border-blue-100 max-h-[85vh] overflow-auto transform transition-all duration-300 ease-out ${
+				className={`bg-white rounded-2xl max-w-2xl w-full mx-4 p-8 relative shadow-xl border border-gray-200 max-h-[85vh] overflow-auto transform transition-all duration-300 ease-out ${
 					isMounted ? "opacity-100 scale-100" : "opacity-0 scale-95"
 				}`}
 				onClick={(e) => e.stopPropagation()}
@@ -65,10 +65,9 @@ function CloseButton({ onClick }) {
 		<button
 			type='button'
 			onClick={onClick}
-			className='absolute z-50 flex items-center justify-center w-12 h-12 transition-all duration-200 bg-white/95 rounded-full shadow-md top-4 right-4 hover:scale-110 hover:shadow-lg group border-none outline-none ring-0 focus:outline-none focus:ring-2 focus:ring-purple-500/30'
-			style={{ boxShadow: "0 8px 24px rgba(99, 102, 241, 0.16)" }}
+			className='absolute z-50 flex items-center justify-center w-12 h-12 transition-all duration-200 bg-white rounded-full shadow-sm top-4 right-4 hover:scale-110 hover:shadow-md group border border-gray-200 outline-none ring-0 focus:outline-none focus:ring-2 focus:ring-indigo-500/30'
 			aria-label='Close modal'>
-			<IoClose className='text-3xl text-purple-600 transition-all duration-200 group-hover:text-purple-800 group-hover:rotate-90' />
+			<IoClose className='text-3xl text-gray-500 transition-all duration-200 group-hover:text-gray-700 group-hover:rotate-90' />
 		</button>
 	);
 }
@@ -84,7 +83,7 @@ function CareerDetailContent({ jobDetail, onViewPath, userProfile }) {
 		<>
 			{/* Header */}
 			<div className='mb-6 animate-slide-in-left'>
-				<h2 className='mb-3 text-3xl font-bold text-transparent bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 bg-clip-text'>
+				<h2 className='mb-3 text-3xl font-bold text-gray-900'>
 					{jobDetail.role_title || jobDetail.role_id}
 				</h2>
 
@@ -107,7 +106,7 @@ function CareerDetailContent({ jobDetail, onViewPath, userProfile }) {
 
 					{/* Ladder position badge */}
 					{jobDetail.ladder_position != null && jobDetail.ladder_length != null && (
-						<span className='text-xs px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 font-medium border border-purple-200 shadow-sm'>
+						<span className='text-xs px-2.5 py-1 rounded-full bg-indigo-100 text-indigo-700 font-medium border border-indigo-200 shadow-sm'>
 							Ladder: {jobDetail.ladder_position}/{jobDetail.ladder_length}
 						</span>
 					)}
@@ -234,7 +233,7 @@ function CareerDetailContent({ jobDetail, onViewPath, userProfile }) {
 			{/* Fallback: flat matched/missing if Phase D clusters are empty */}
 			{coreSkills.length === 0 && supportSkills.length === 0 && jobDetail.matched_skills?.length > 0 && (
 				<AnimatedSection className='mb-6' delay={250}>
-					<h3 className='flex items-center gap-2 mb-3 text-base font-semibold text-purple-700'>
+					<h3 className='flex items-center gap-2 mb-3 text-base font-semibold text-indigo-700'>
 						<FaCheckCircle className='text-lg' /> Skills You Already Have ({jobDetail.matched_skills.length})
 					</h3>
 					<SkillTagList

@@ -120,18 +120,24 @@ class UserVectorizer:
         skill_ids = user_profile.get("user_skill_ids", [])
         skill_vector = self.encode_skills(skill_ids)
 
-        # 2. Experience level (6 dims)
-        exp = user_profile.get("experience_level", "")
+        # 2. Experience level (6 dims) — normalize frontend "0" to "student"
+        exp_raw = (user_profile.get("experience_level") or "").strip()
+        exp = self._map_frontend_experience(exp_raw)
         exp_vector = self.encode_categorical(exp, self.experience_values, "exp")
 
         # 3. Education level (7 dims)
         edu = user_profile.get("education_level", "")
         edu_vector = self.encode_categorical(edu, self.education_values, "edu")
 
-        # 4. Domain (7 dims) - map frontend values to internal domain names
+        # 4. Domain — map frontend values to canonical v3 vocabulary labels
         domain_raw = (user_profile.get("preferred_domain") or "").strip()
         domain = self._map_frontend_domain(domain_raw)
         domain_vector = self.encode_categorical(domain, self.domain_values, "domain")
+
+        if domain_raw and not domain:
+            print(f"[UserVectorizer] WARNING: domain '{domain_raw}' not recognized, encoding as zero vector")
+        elif domain and domain not in self.domain_values:
+            print(f"[UserVectorizer] WARNING: mapped domain '{domain}' not in vocabulary {self.domain_values}")
 
         # 5. Current status (4 dims) - map frontend values
         status_raw = (user_profile.get("current_status") or "").strip()
@@ -152,41 +158,92 @@ class UserVectorizer:
             jobtype_vector,
         ])
 
+        print(f"[UserVectorizer] Encoded: exp={exp}, edu={edu}, domain={domain}, "
+              f"status={status}, jobtype={jobtype}, skills={len(skill_ids)}")
+
         return user_vector
 
-    def _map_frontend_domain(self, domain_raw: str) -> str:
-        """Map frontend domain values to internal domain names."""
+    def _map_frontend_experience(self, exp_raw: str) -> str:
+        """Map frontend experience values to v3 vocabulary labels."""
         mapping = {
-            "software_engineering": "SOFTWARE_ENGINEERING",
-            "frontend_engineering": "FRONTEND_ENGINEERING",
-            "backend_engineering": "BACKEND_ENGINEERING",
-            "fullstack_engineering": "FULLSTACK_ENGINEERING",
-            "data_engineering": "DATA_ENGINEERING",
-            "data_science": "DATA_SCIENCE",
-            "data": "DATA",
-            "ai_ml": "AI_ML",
-            "devops": "DEVOPS",
-            "cloud_engineering": "CLOUD_ENGINEERING",
-            "security": "SECURITY",
-            "qa": "QA",
-            "mobile_engineering": "MOBILE",
-            "mobile": "MOBILE",
-            "ui_ux": "UI_UX",
-            "product_management": "PRODUCT_MANAGEMENT",
-            "business_analysis": "BUSINESS_ANALYSIS",
-            "project_management": "PROJECT_MANAGEMENT",
-            "technical_writing": "TECHNICAL_WRITING",
-            "blockchain_web3": "BLOCKCHAIN_WEB3",
-            "game_development": "GAME_DEVELOPMENT",
-            "embedded_systems": "EMBEDDED_SYSTEMS",
+            # Frontend sends "0" for "Student / No experience"
+            "0":       "student",
+            "student": "student",
+            "0-1":     "0-1",
+            "1-3":     "1-3",
+            "3-5":     "3-5",
+            "5+":      "5+",
         }
-        return mapping.get(domain_raw.lower(), "") if domain_raw else ""
+        return mapping.get(exp_raw.lower(), "") if exp_raw else ""
+
+    def _map_frontend_domain(self, domain_raw: str) -> str:
+        """
+        Map frontend domain values to the loaded feature vocabulary labels.
+        
+        The active vocabulary (enhanced_feature_columns.json) has 7 domains:
+        SOFTWARE_ENGINEERING, DATA, AI_ML, DEVOPS, QA, MOBILE, UI_UX
+        
+        All 20 frontend domain options must map into one of these 7 buckets.
+        If a mapped value is not in self.domain_values, it will produce a
+        zero vector — this method validates against the loaded vocabulary.
+        """
+        # Map all frontend values to the 7 available domain buckets
+        mapping = {
+            # Software family → SOFTWARE_ENGINEERING
+            "software_engineering":  "SOFTWARE_ENGINEERING",
+            "frontend_engineering":  "SOFTWARE_ENGINEERING",
+            "backend_engineering":   "SOFTWARE_ENGINEERING",
+            "fullstack_engineering": "SOFTWARE_ENGINEERING",
+            # Data family → DATA
+            "data_engineering":      "DATA",
+            "data_science":          "DATA",
+            "data":                  "DATA",
+            # AI/ML
+            "ai_ml":                 "AI_ML",
+            # DevOps family → DEVOPS
+            "devops":                "DEVOPS",
+            "devops_sre":            "DEVOPS",
+            "cloud_engineering":     "DEVOPS",
+            # Security → DEVOPS (closest bucket)
+            "security":              "DEVOPS",
+            # QA family → QA
+            "qa":                    "QA",
+            "qa_testing":            "QA",
+            # Mobile → MOBILE
+            "mobile_engineering":    "MOBILE",
+            "mobile":                "MOBILE",
+            # UI/UX → UI_UX
+            "ui_ux":                 "UI_UX",
+            "ui_ux_design":          "UI_UX",
+            # Management / Writing → SOFTWARE_ENGINEERING (closest available)
+            "product_management":    "SOFTWARE_ENGINEERING",
+            "business_analysis":     "SOFTWARE_ENGINEERING",
+            "project_management":    "SOFTWARE_ENGINEERING",
+            "technical_writing":     "SOFTWARE_ENGINEERING",
+            # Emerging → closest bucket
+            "blockchain_web3":       "SOFTWARE_ENGINEERING",
+            "game_development":      "SOFTWARE_ENGINEERING",
+            "embedded_systems":      "SOFTWARE_ENGINEERING",
+        }
+        
+        if not domain_raw:
+            return ""
+        
+        mapped = mapping.get(domain_raw.lower(), "")
+        
+        # Validate against loaded vocabulary
+        if mapped and mapped not in self.domain_values:
+            print(f"[UserVectorizer] WARNING: mapped domain '{mapped}' not in loaded "
+                  f"vocabulary {self.domain_values}, will produce zero vector")
+            return ""
+        
+        return mapped
 
     def _map_frontend_status(self, status_raw: str) -> str:
-        """Map frontend status values to internal status names."""
+        """Map frontend status values to v3 vocabulary labels."""
         mapping = {
-            "student": "student",
+            "student":  "student",
             "graduate": "graduate",
-            "working": "working",
+            "working":  "working",
         }
         return mapping.get(status_raw.lower(), "") if status_raw else ""

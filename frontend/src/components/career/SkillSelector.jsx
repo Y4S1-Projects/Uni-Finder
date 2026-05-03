@@ -114,7 +114,7 @@ const QUICK_FILTERS = [
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const WINDOW_SIZE = 80;
 const DEBOUNCE_MS = 200;
-const MAX_VISIBLE_TAGS = 100;
+const MAX_VISIBLE_TAGS = 30;
 
 function fuzzyMatch(text, query) {
   if (!query) return true;
@@ -324,6 +324,25 @@ export default function SkillSelector({
     }
   }
 
+  const handleClearAllSkills = useCallback(() => {
+    if (typeof onChange === "function") onChange([]);
+  }, [onChange]);
+
+  const handleClearCategorySkills = useCallback((category) => {
+    if (typeof onChange !== "function") return;
+    if (category === "All") {
+      onChange([]);
+      return;
+    }
+    const newSelection = selectedIds.filter((id) => {
+      const skill = normalized.find((s) => s.id === id);
+      if (!skill) return true;
+      const mapping = CATEGORY_MAP[skill.category] || { sub: "Other" };
+      return mapping.sub !== category;
+    });
+    onChange(newSelection);
+  }, [onChange, selectedIds, normalized]);
+
   function labelFor(id) {
     if (!id && id !== 0) return "";
     return idToLabel.get(String(id).toLowerCase()) || String(id);
@@ -382,8 +401,8 @@ export default function SkillSelector({
                      transition-all duration-200 ease-in-out
                      ${
                        isSelected
-                         ? "bg-blue-50/90 text-blue-700"
-                         : "hover:bg-gray-50 text-gray-700"
+                         ? "bg-indigo-50 text-indigo-700"
+                         : "hover:bg-gray-100 text-gray-600"
                      }`}
         >
           <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -392,8 +411,8 @@ export default function SkillSelector({
                        transition-colors duration-100
                        ${
                          isSelected
-                           ? "bg-blue-500 border-blue-500"
-                           : "border-gray-300 hover:border-blue-400"
+                           ? "bg-indigo-600 border-indigo-600"
+                           : "border-gray-300 hover:border-indigo-400"
                        }`}
           >
             {isSelected && (
@@ -453,7 +472,7 @@ export default function SkillSelector({
               type="button"
               onClick={(e) => {
                 e.preventDefault();
-                if (typeof onChange === "function") onChange([]);
+                handleClearAllSkills();
               }}
               className={mergeCareerButton(
                 careerBaseButton,
@@ -468,12 +487,12 @@ export default function SkillSelector({
             {visibleSelectedIds.map((id, idx) => (
               <div
                 key={id || `sel-${idx}`}
-                className="group flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50
-                           border border-blue-200 px-2.5 py-1 rounded-full
-                           shadow-sm hover:shadow-md hover:border-blue-300
+                className="group flex items-center gap-1.5 bg-indigo-50
+                           border border-indigo-200 px-2.5 py-1 rounded-full
+                           shadow-sm hover:shadow-md hover:border-indigo-300
                            transition-all duration-200"
               >
-                <span className="text-xs font-medium text-blue-700 max-w-[140px] truncate">
+                <span className="text-xs font-medium text-indigo-700 max-w-[140px] truncate">
                   {labelFor(id)}
                 </span>
                 <button
@@ -486,9 +505,9 @@ export default function SkillSelector({
                   title={`Remove ${labelFor(id)}`}
                   aria-label={`Remove ${labelFor(id)}`}
                   className="w-4 h-4 flex items-center justify-center rounded-full
-                             bg-transparent text-blue-500 hover:bg-red-100 hover:text-red-500
+                             bg-transparent text-indigo-500 hover:bg-red-50 hover:text-red-500
                              transition-colors duration-150 text-[10px] font-bold
-                             border border-transparent focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+                             border border-transparent focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
                 >
                   ✕
                 </button>
@@ -498,7 +517,7 @@ export default function SkillSelector({
               <button
                 type="button"
                 onClick={() => setShowAllSkills(true)}
-                className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline transition-all duration-200 ease-in-out px-1 py-0.5 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+                className="text-sm font-medium text-indigo-600 hover:text-indigo-800 hover:underline transition-all duration-200 ease-in-out px-1 py-0.5 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
               >
                 +{hiddenTagCount} more
               </button>
@@ -507,7 +526,7 @@ export default function SkillSelector({
               <button
                 type="button"
                 onClick={() => setShowAllSkills(false)}
-                className="text-sm text-gray-500 hover:text-gray-700 hover:underline transition-all duration-200 ease-in-out px-1 py-0.5 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+                className="text-sm text-gray-500 hover:text-gray-700 hover:underline transition-all duration-200 ease-in-out px-1 py-0.5 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
               >
                 Show less
               </button>
@@ -877,7 +896,7 @@ export default function SkillSelector({
                   type="button"
                   onMouseDown={(e) => {
                     e.preventDefault();
-                    if (typeof onChange === "function") onChange([]);
+                    handleClearCategorySkills(activeCategory);
                   }}
                   className={mergeCareerButton(
                     careerBaseButton,
