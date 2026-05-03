@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+    <rect width="600" height="300" fill="#ffffff" rx="10"/>
+    <text x="300" y="30" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333333">LLM Token Cost Distribution (10,000 Users)</text>
+    
+    <!-- Legend -->
+    <rect x="50" y="80" width="20" height="20" fill="#4CAF50" rx="4"/>
+    <text x="80" y="95" font-family="Arial" font-size="14" fill="#333333">Input Tokens (7M) - $0.525 (37%)</text>
+    
+    <rect x="50" y="120" width="20" height="20" fill="#2196F3" rx="4"/>
+    <text x="80" y="135" font-family="Arial" font-size="14" fill="#333333">Output Tokens (3M) - $0.900 (63%)</text>
+    
+    <rect x="50" y="160" width="20" height="20" fill="#9C27B0" rx="4"/>
+    <text x="80" y="175" font-family="Arial" font-size="14" fill="#333333">Total Cost - $1.425</text>
+    
+    <!-- Pie Chart (radius 100, center 450, 150) -->
+    <!-- 37% angle = 133.2 degrees. 63% angle = 226.8 degrees. -->
+    <!-- Path 1 (37%): from top (450,50) to (523, 218) -->
+    <!-- M 450 150 L 450 50 A 100 100 0 0 1 523 218 Z -->
+    <path d="M 450 150 L 450 50 A 100 100 0 0 1 522.6 218.4 Z" fill="#4CAF50"/>
+    
+    <!-- Path 2 (63%): -->
+    <!-- M 450 150 L 522.6 218.4 A 100 100 0 1 1 450 50 Z -->
+    <path d="M 450 150 L 522.6 218.4 A 100 100 0 1 1 450 50 Z" fill="#2196F3"/>
+    
+    <!-- Labels on Pie -->
+    <text x="500" y="120" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">37%</text>
+    <text x="400" y="180" font-family="Arial" font-size="14" font-weight="bold" fill="#ffffff">63%</text>
+    
+    <!-- Circle hole to make it a donut chart -->
+    <circle cx="450" cy="150" r="50" fill="#ffffff"/>
+    <text x="450" y="155" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333333">$1.43</text>
+</svg>

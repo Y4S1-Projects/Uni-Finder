@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300">
+    <rect width="600" height="300" fill="#ffffff" rx="10"/>
+    <text x="300" y="40" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333333">Hybrid Scoring Composition (Sample Match)</text>
+    
+    <!-- Stacked Bar for Score Components -->
+    <text x="150" y="120" font-family="Arial" font-size="14" text-anchor="end" fill="#333333">Course A (0.85):</text>
+    <rect x="160" y="100" width="280" height="30" fill="#8b5cf6" rx="2"/> <!-- Semantic (0.7 * 0.9 = 0.63) -> 280px -->
+    <rect x="440" y="100" width="80" height="30" fill="#10b981" rx="2"/> <!-- TFIDF/Keyword (0.3 * 0.6 = 0.18) -> 80px -->
+    <rect x="520" y="100" width="20" height="30" fill="#f59e0b" rx="2"/> <!-- Bonus (0.04) -> 20px -->
+    
+    <text x="150" y="170" font-family="Arial" font-size="14" text-anchor="end" fill="#333333">Course B (0.62):</text>
+    <rect x="160" y="150" width="200" height="30" fill="#8b5cf6" rx="2"/> <!-- Semantic (0.45) -> 200px -->
+    <rect x="360" y="150" width="60" height="30" fill="#10b981" rx="2"/> <!-- TFIDF/Keyword (0.15) -> 60px -->
+    <rect x="420" y="150" width="5" height="30" fill="#f59e0b" rx="2"/> <!-- Bonus (0.02) -> 5px -->
+
+    <!-- Legend -->
+    <rect x="150" y="230" width="15" height="15" fill="#8b5cf6" rx="2"/>
+    <text x="175" y="242" font-family="Arial" font-size="12" fill="#333333">Dense Semantic (70%)</text>
+    
+    <rect x="310" y="230" width="15" height="15" fill="#10b981" rx="2"/>
+    <text x="335" y="242" font-family="Arial" font-size="12" fill="#333333">Lexical TF-IDF (30%)</text>
+    
+    <rect x="460" y="230" width="15" height="15" fill="#f59e0b" rx="2"/>
+    <text x="485" y="242" font-family="Arial" font-size="12" fill="#333333">Jaccard Bonus</text>
+</svg>
