@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, useInView } from "framer-motion";
+import { useCountUp } from "../../hooks/useCountUp";
 import {
   FaStar,
   FaEye,
@@ -7,6 +9,9 @@ import {
   FaBookOpen,
   FaRocket,
 } from "react-icons/fa";
+
+const MotionDiv = motion?.div || "div";
+const MotionSpan = motion?.span || "span";
 
 export function CareerRecommendationCard({
   recommendation,
@@ -38,23 +43,56 @@ export function CareerRecommendationCard({
 
   const readinessPercent =
     skill_gap && skill_gap.readiness_score !== undefined
-      ? (skill_gap.readiness_score * 100).toFixed(0)
+      ? parseInt((skill_gap.readiness_score * 100).toFixed(0), 10)
       : 0;
 
   const matchPercent =
-    match_score !== undefined ? (match_score * 100).toFixed(0) : 0;
+    match_score !== undefined ? parseInt((match_score * 100).toFixed(0), 10) : 0;
+
+  const cardRef = useRef(null);
+  const isInView = useInView(cardRef, { once: true, amount: 0.2 });
+
+  const { value: animatedMatch } = useCountUp(matchPercent, 1000, isInView);
+  const { value: animatedReadiness } = useCountUp(readinessPercent, 1000, isInView);
+
+  const staggerContainer = {
+    whileInView: {
+      transition: { staggerChildren: 0.05 }
+    }
+  };
+
+  const staggerChild = {
+    initial: { opacity: 0, y: 10 },
+    whileInView: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] } }
+  };
 
   return (
-    <div
-      className={`p-6 mb-6 rounded-2xl relative transition-all duration-300 shadow-sm border ${
+    <MotionDiv
+      ref={cardRef}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      className={`p-6 mb-6 rounded-2xl relative transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-[3px] hover:shadow-md hover:scale-[1.01] shadow-sm border ${
         isBestMatch
           ? "bg-gradient-to-br from-[#f8f9ff] to-[#f3f5ff] border-[#e2e8f0]"
-          : "bg-[#f8fbff] border-[#eaf2ff]" // matching the light blue bg tone
+          : "bg-[#f8fbff] border-[#eaf2ff]" 
       }`}
     >
+      <style>
+        {`
+          @keyframes softPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+          }
+          .animate-softPulse {
+            animation: softPulse 2s ease-in-out infinite;
+          }
+        `}
+      </style>
       {/* Best Match Badge */}
       {isBestMatch && (
-        <div className="absolute -top-3 right-6 bg-[#b68bf5] text-white px-4 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 uppercase tracking-wide">
+        <div className="absolute -top-3 right-6 bg-[#b68bf5] text-white px-4 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 uppercase tracking-wide animate-softPulse">
           <FaStar className="text-[10px]" /> BEST MATCH
         </div>
       )}
@@ -74,7 +112,7 @@ export function CareerRecommendationCard({
 
         <div className="text-right shrink-0">
           <div className="text-2xl font-bold text-[#4338ca]">
-            {matchPercent}%
+            {animatedMatch}%
           </div>
           <div className="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">
             Match Score
@@ -83,11 +121,13 @@ export function CareerRecommendationCard({
       </div>
 
       {/* Progress Bar */}
-      <div className="w-full mb-6">
-        <progress
-          className="w-full h-1.5 rounded-full overflow-hidden accent-blue-500"
-          value={matchPercent}
-          max="100"
+      <div className="w-full mb-6 bg-gray-200 rounded-full h-1.5 overflow-hidden">
+        <MotionDiv
+          className="h-full bg-blue-500 rounded-full"
+          initial={{ width: 0 }}
+          whileInView={{ width: `${matchPercent}%` }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: "easeOut" }}
         />
       </div>
 
@@ -119,7 +159,7 @@ export function CareerRecommendationCard({
             Readiness
           </div>
           <div className="text-xl font-bold text-[#6b21a8]">
-            {readinessPercent}%
+            {animatedReadiness}%
           </div>
         </div>
 
@@ -131,21 +171,28 @@ export function CareerRecommendationCard({
               Skills You Have ({skill_gap?.matched_skills?.length || 0})
             </span>
           </div>
-          <div className="flex flex-wrap gap-1.5">
+          <MotionDiv 
+            className="flex flex-wrap gap-1.5"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="whileInView"
+            viewport={{ once: true }}
+          >
             {skill_gap?.matched_skills?.slice(0, 5).map((s) => (
-              <span
+              <MotionSpan
+                variants={staggerChild}
                 key={s.id || s}
                 className="text-[11px] font-medium bg-[#f3e8ff] border border-[#e9d5ff] text-[#7e22ce] px-2.5 py-1 rounded-full whitespace-nowrap"
               >
                 {s.name || s.id || s}
-              </span>
+              </MotionSpan>
             ))}
             {skill_gap?.matched_skills?.length > 5 && (
-              <span className="text-[11px] font-medium text-[#7e22ce] px-1 py-1 rounded-full whitespace-nowrap">
+              <MotionSpan variants={staggerChild} className="text-[11px] font-medium text-[#7e22ce] px-1 py-1 rounded-full whitespace-nowrap self-center">
                 +{skill_gap.matched_skills.length - 5} more
-              </span>
+              </MotionSpan>
             )}
-          </div>
+          </MotionDiv>
         </div>
 
         {/* Skills to Learn */}
@@ -156,21 +203,28 @@ export function CareerRecommendationCard({
               Skills to Learn ({skill_gap?.missing_skills?.length || 0})
             </span>
           </div>
-          <div className="flex flex-wrap gap-1.5">
+          <MotionDiv 
+            className="flex flex-wrap gap-1.5"
+            variants={staggerContainer}
+            initial="initial"
+            whileInView="whileInView"
+            viewport={{ once: true }}
+          >
             {skill_gap?.missing_skills?.slice(0, 5).map((s) => (
-              <span
+              <MotionSpan
+                variants={staggerChild}
                 key={s.id || s}
                 className="text-[11px] font-medium border border-gray-200 text-gray-600 px-2.5 py-1 rounded-full bg-white whitespace-nowrap"
               >
                 {s.name || s.id || s}
-              </span>
+              </MotionSpan>
             ))}
             {skill_gap?.missing_skills?.length > 5 && (
-              <span className="text-[11px] font-medium text-gray-500 px-1 py-1 rounded-full whitespace-nowrap">
+              <MotionSpan variants={staggerChild} className="text-[11px] font-medium text-gray-500 px-1 py-1 rounded-full whitespace-nowrap self-center">
                 +{skill_gap.missing_skills.length - 5} more
-              </span>
+              </MotionSpan>
             )}
-          </div>
+          </MotionDiv>
         </div>
       </div>
 
@@ -183,6 +237,6 @@ export function CareerRecommendationCard({
           <FaEye className="text-sm" /> View Details & AI Explanation
         </button>
       </div>
-    </div>
+    </MotionDiv>
   );
 }

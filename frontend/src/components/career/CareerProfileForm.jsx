@@ -266,7 +266,7 @@ export default function CareerProfileForm({
         </div>
 
         <div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-2">
-          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-30">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-50">
             <Dropdown
               name="current_status"
               label="Current Status"
@@ -281,7 +281,7 @@ export default function CareerProfileForm({
               onBlur={currentStatus.handleInputBlur}
               error={currentStatus.hasError ? currentStatus.errorMessage : null}
               buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
-              dropdownClassName="z-[100]"
+              dropdownClassName="z-[120] absolute"
               optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
               prefixIcon={
                 <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
@@ -291,7 +291,7 @@ export default function CareerProfileForm({
             />
           </div>
 
-          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-30">
+          <div className="p-6 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-50">
             <Dropdown
               name="career_goal"
               label="Career Goal"
@@ -306,7 +306,7 @@ export default function CareerProfileForm({
               onBlur={careerGoal.handleInputBlur}
               error={careerGoal.hasError ? careerGoal.errorMessage : null}
               buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-purple-300 hover:bg-purple-50/50"
-              dropdownClassName="z-[100]"
+              dropdownClassName="z-[120] absolute"
               optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50"
               prefixIcon={
                 <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
@@ -316,7 +316,7 @@ export default function CareerProfileForm({
             />
           </div>
 
-          <div className="p-6 transition-all duration-300 border md:col-span-2 rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-30">
+          <div className="p-6 transition-all duration-300 border md:col-span-2 rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100 relative z-40">
             <Dropdown
               name="preferred_domain"
               label={
@@ -335,9 +335,9 @@ export default function CareerProfileForm({
               idKey="id"
               onSelect={handleDomainSelect}
               onBlur={preferredDomain.handleInputBlur}
-              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-blue-300 hover:bg-blue-50/50"
-              dropdownClassName="z-[100] max-h-60 overflow-y-auto"
-              optionClassName="text-gray-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50"
+              buttonClassName="bg-white/90 text-gray-700 border-gray-200 hover:border-pink-300 hover:bg-pink-50/60 transition-all duration-200 ease-in-out"
+              dropdownClassName="z-[120] absolute max-h-60 overflow-y-auto"
+              optionClassName="text-gray-700 transition-all duration-200 ease-in-out hover:bg-[rgba(236,72,153,0.1)]"
               prefixIcon={
                 <div className="p-2 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">
                   <FaChartLine className="text-lg text-white" />
@@ -365,7 +365,7 @@ export default function CareerProfileForm({
           </div>
         </div>
 
-        <div className="relative z-20 w-full p-6 md:p-8 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
+        <div className="relative z-30 w-full p-6 md:p-8 transition-all duration-300 border rounded-2xl shadow-md hover:shadow-lg bg-gradient-to-br from-purple-50/80 via-white to-blue-50/80 border-gray-100">
           <div className="block w-full">
             <div className="flex items-center gap-3 mb-4 text-xl font-bold text-gray-800">
               <div className="p-3 rounded-lg shadow-md bg-gradient-to-r from-purple-600 to-blue-600">

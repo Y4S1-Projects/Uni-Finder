@@ -14,6 +14,7 @@ module.exports = {
 				"slide-in-up": "slideInUpToast 0.35s ease-out forwards",
 				"modal-enter": "modalEnter 0.2s ease-out forwards",
 				"reveal-line": "revealLine 0.8s ease-out forwards",
+				blink: "blink 1s step-end infinite",
 				pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
 			},
 			keyframes: {
@@ -44,6 +45,10 @@ module.exports = {
 				revealLine: {
 					"0%": { width: "0%" },
 					"100%": { width: "100%" },
+				},
+				blink: {
+					"0%, 49%": { opacity: "1" },
+					"50%, 100%": { opacity: "0" },
 				},
 			},
 		},

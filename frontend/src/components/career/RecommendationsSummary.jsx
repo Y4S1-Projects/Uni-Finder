@@ -3,6 +3,7 @@
  * Displays summary of the analysis
  */
 import React from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaLightbulb, FaFilter, FaGlobe } from "react-icons/fa";
 
 export function RecommendationsSummary({
@@ -11,8 +12,31 @@ export function RecommendationsSummary({
   domainFilterApplied,
   preferredDomain,
 }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg mb-6 border-l-4 border-purple-500">
+    <div
+      ref={sectionRef}
+      className={`bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-lg mb-6 border-l-4 border-purple-500 transition-all duration-500 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`}
+    >
       <p className="m-0 text-gray-700 mb-2">
         Analyzed <strong className="text-purple-700">{skillsCount}</strong>{" "}
         skills across <strong className="text-purple-700">{rolesCount}</strong>{" "}
@@ -49,8 +73,31 @@ export function RecommendationsSummary({
 }
 
 export function HowItWorks() {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    if (!sectionRef.current) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-lg mt-6 border border-purple-200">
+    <div
+      ref={sectionRef}
+      className={`bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-lg mt-6 border border-purple-200 transition-all duration-500 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`}
+    >
       <h3 className="text-purple-700 font-semibold mb-4 flex items-center gap-2">
         <FaLightbulb /> How This Works
       </h3>
