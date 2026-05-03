@@ -54,10 +54,12 @@ export default function MatcherFlowPage({
     setIsLoading(true);
     setError('');
     try {
-      const matches = await requestMatches(profile, {
+      const matchesPromise = requestMatches(profile, {
         topN: 10,
         matchType,
       });
+      const minDelayPromise = new Promise(resolve => setTimeout(resolve, 3000));
+      const [matches] = await Promise.all([matchesPromise, minDelayPromise]);
       setResults(matches);
     } catch (err) {
       setResults([]);

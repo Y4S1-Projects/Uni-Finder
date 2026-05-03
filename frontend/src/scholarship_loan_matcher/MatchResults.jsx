@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 const toDisplayScore = (rawScore) => {
   if (typeof rawScore !== 'number' || Number.isNaN(rawScore)) return null;
   // Lift scores into a friendlier 40–100% range for display purposes only.
@@ -11,8 +13,26 @@ export default function MatchResults({
   error,
   emptyMessage = 'Fill the form to see personalized matches.',
 }) {
+  const [loadingText, setLoadingText] = useState('Processing...');
+
+  useEffect(() => {
+    let timeout;
+    if (isLoading) {
+      setLoadingText('Processing...');
+      timeout = setTimeout(() => {
+        setLoadingText('Loading Recommendations...');
+      }, 1500);
+    }
+    return () => clearTimeout(timeout);
+  }, [isLoading]);
+
   if (isLoading) {
-    return <div className="matcher-results__state">Loading recommendations…</div>;
+    return (
+      <div className="matcher-results__state matcher-results__state--loading">
+        <div className="matcher-results__spinner"></div>
+        <span>{loadingText}</span>
+      </div>
+    );
   }
 
   if (error) {

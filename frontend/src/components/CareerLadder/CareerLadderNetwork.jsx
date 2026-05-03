@@ -175,14 +175,17 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 				selectable: false,
 			});
 
-			const mainSequence = eligible_levels || [];
+			const mainSequence = (eligible_levels || []).map(level => ({
+				...level,
+				role_title: level.role_title || "Unknown Role"
+			}));
 
 			// Connect Domain Header to the first node
 			if (mainSequence.length > 0) {
 				newEdges.push({
-					id: `edge-${domain}-to-${mainSequence[0].level}`,
+					id: `edge-${domain}-to-${mainSequence[0].role_id}`,
 					source: domainNodeId,
-					target: `node-${domain}-${mainSequence[0].level}`,
+					target: `node-${domain}-${mainSequence[0].level}-${mainSequence[0].role_id}`,
 					type: "smoothstep",
 					animated: true,
 					style: { stroke: "#8b5cf6", strokeWidth: 3, strokeDasharray: "5,5" },
@@ -194,7 +197,7 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 				const isCurrent = level.is_current;
 				const isLocked = level.readiness_score < 0.2 && !isCurrent;
 
-				const nodeId = `node-${domain}-${level.level}`;
+				const nodeId = `node-${domain}-${level.level}-${level.role_id}`;
 				newNodes.push({
 					id: nodeId,
 					type: "customRole",
@@ -232,10 +235,10 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 				});
 
 				if (index > 0) {
-					const prevLevel = mainSequence[index - 1].level;
+					const prevNodeId = `node-${domain}-${mainSequence[index - 1].level}-${mainSequence[index - 1].role_id}`;
 					newEdges.push({
-						id: `edge-${domain}-${prevLevel}-${level.level}`,
-						source: `node-${domain}-${prevLevel}`,
+						id: `edge-${domain}-${mainSequence[index - 1].role_id}-${level.role_id}`,
+						source: prevNodeId,
 						target: nodeId,
 						type: "smoothstep",
 						animated: true,
@@ -250,7 +253,7 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 
 			if (alternate_paths && alternate_paths.length > 0) {
 				alternate_paths.forEach((branch, bIndex) => {
-					const fromNode = newNodes.find((n) => n.id === `node-${domain}-${branch.from_level}`);
+					const fromNode = newNodes.find((n) => n.id.startsWith(`node-${domain}-${branch.from_level}-`));
 					if (fromNode) {
 						const bId = `node-alt-${domain}-${branch.role_id}`;
 						newNodes.push({

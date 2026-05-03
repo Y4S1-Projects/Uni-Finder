@@ -15,6 +15,7 @@ export default function CareerLadderPage() {
 	const [availableDomains, setAvailableDomains] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [allProgressionsData, setAllProgressionsData] = useState(null);
+	const hasFetched = React.useRef(false);
 
 	// Load data immediately on mount
 	const loadDomains = useCallback(async () => {
@@ -62,16 +63,23 @@ export default function CareerLadderPage() {
 						show_all_levels: true, // Show ALL levels in network/ecosystem view
 					}),
 				);
+				
+				console.log("Fetching career ladder progression...");
 				const results = await Promise.all(promises);
+				console.log("Response:", results);
+				
 				setAllProgressionsData(results);
 			} catch (error) {
 				console.error("Error loading all progressions:", error);
 			}
 		},
-		[availableDomains, recommendations, userSkills],
+		[recommendations, userSkills, availableDomains],
 	);
 
 	useEffect(() => {
+		if (hasFetched.current) return;
+		hasFetched.current = true;
+		
 		window.scrollTo(0, 0);
 		const init = async () => {
 			setLoading(true);
@@ -82,7 +90,7 @@ export default function CareerLadderPage() {
 			setLoading(false);
 		};
 		init();
-	}, [userSkills, viewMode, loadDomains, loadAllProgressions]);
+	}, [loadDomains, loadAllProgressions, viewMode]);
 
 	const loadComparisonData = async (domains) => {
 		setLoading(true);
@@ -99,15 +107,19 @@ export default function CareerLadderPage() {
 		}
 	};
 
-	const handleViewModeChange = (mode) => {
+	const handleViewModeChange = async (mode) => {
 		setViewMode(mode);
 
 		if (mode === "comparison" && !comparisonData) {
 			// Load comparison for top 3 domains
 			const topDomains = availableDomains.slice(0, 3).map((d) => d.domain_id);
-			loadComparisonData(topDomains);
+			setLoading(true);
+			await loadComparisonData(topDomains);
+			setLoading(false);
 		} else if (mode === "network" && !allProgressionsData) {
-			loadAllProgressions();
+			setLoading(true);
+			await loadAllProgressions(availableDomains);
+			setLoading(false);
 		}
 	};
 
