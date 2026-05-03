@@ -337,6 +337,17 @@ class InterestRecommendationService:
 
         # Stream-specific requirements
         if stream_name in ["Physical Science", "Biological Science"]:
+            if (
+                not math_grade
+                or not science_grade
+                or math_grade == "N/A"
+                or science_grade == "N/A"
+            ):
+                return {
+                    "text": "Maths & Science highly beneficial",
+                    "status": "unknown",
+                }
+
             math_score = grade_scores.get(math_grade, 0)
             science_score = grade_scores.get(science_grade, 0)
 
@@ -357,6 +368,12 @@ class InterestRecommendationService:
                 }
 
         elif stream_name == "Commerce":
+            if not math_grade or math_grade == "N/A":
+                return {
+                    "text": "Strong Maths skills beneficial",
+                    "status": "unknown",
+                }
+
             math_score = grade_scores.get(math_grade, 0)
             if math_score >= 3:
                 return {
@@ -375,6 +392,17 @@ class InterestRecommendationService:
                 }
 
         elif stream_name in ["Engineering Technology", "Biosystems Technology"]:
+            if (
+                not math_grade
+                or not science_grade
+                or math_grade == "N/A"
+                or science_grade == "N/A"
+            ):
+                return {
+                    "text": "STEM subjects highly beneficial",
+                    "status": "unknown",
+                }
+
             math_score = grade_scores.get(math_grade, 0)
             science_score = grade_scores.get(science_grade, 0)
 
@@ -390,6 +418,12 @@ class InterestRecommendationService:
                 }
 
         else:  # Arts or other streams
+            if not english_grade or english_grade == "N/A":
+                return {
+                    "text": "English proficiency beneficial",
+                    "status": "unknown",
+                }
+
             english_score = grade_scores.get(english_grade, 0)
             if english_score >= 3:
                 return {
@@ -424,40 +458,101 @@ class InterestRecommendationService:
         # Build summary of pathways
         pathway_summary = []
         for p in pathways[:3]:  # Top 3 streams
+            degrees = ", ".join(
+                [d["course_name"] for d in p.get("potential_degrees", [])[:3]]
+            )
+            careers = ", ".join(p.get("target_careers", [])[:3])
             pathway_summary.append(
-                f"{p['stream_name']} ({p['match_score']:.0f}% match, {p['ol_readiness']})"
+                f"- Stream: {p['stream_name']} (Match: {p['match_score']:.0f}%, O/L Readiness: {p['ol_readiness']})\n"
+                f"  Possible Degrees: {degrees}\n"
+                f"  Target Careers: {careers}"
             )
 
-        prompt = f"""You are an educational counselor advising a Sri Lankan O/L student about their A/L stream and career choices.
+        prompt = f"""You are an objective, analytical Sri Lankan educational counselor providing a detailed, highly personal, and realistic A/L stream recommendation.
 
-Student's Goal: {student_input}
+Student's Stated Goal/Interest: "{student_input}"
 
-Recommended Pathways (in order of match):
-{chr(10).join('- ' + s for s in pathway_summary)}
+Top Recommended Pathways (Based on AI matching):
+{chr(10).join(pathway_summary)}
 
-O/L Performance Summary:
+Student's O/L Performance:
 {self._format_ol_marks(ol_marks)}
 
-Provide encouraging, actionable advice in 3-4 sentences that:
-1. Identifies their BEST stream (the "golden path")
-2. Acknowledges their O/L strengths
-3. Points out any subject gaps they need to address
-4. Motivates them with career outcomes
+Provide a deeply analytical, highly detailed, and personalized explanation (using HTML formatting like <p> and <strong>). Do NOT use generic flattery or filler text. Your response must be logically justified.
 
-Be specific, warm, and empowering. Speak directly to the student."""
+Address the following points directly:
+1. Analytical Stream Justification: Objectively explain exactly WHY the top recommended A/L stream matches their stated goal. Do not just say "it matches"; explain the logical connection between the stream's subjects and their goal.
+2. Career & Degree Pathways: Specifically mention the degrees and target careers they can achieve through this stream (use the exact data provided above).
+3. Realistic O/L Marks Analysis: 
+   - If they provided marks: Detail exactly how their specific grades support the chosen stream. If a mark is weak, give realistic, grounded advice on why that subject is critical for the stream and how they must bridge the gap.
+   - If they did NOT provide marks (or left them empty): Explicitly state that while no marks were provided, strongly emphasize WHICH specific O/L subjects are absolutely critical for their top stream and why they must ensure a strong foundation in them.
+
+Be strictly realistic, analytical, and highly specific to the student's exact inputs. Speak directly to the student."""
 
         try:
             import google.generativeai as genai
             from app.core.config import settings
 
             genai.configure(api_key=settings.GOOGLE_GEMINI_API_KEY)
-            model = genai.GenerativeModel("gemini-2.5-flash")
+            model = genai.GenerativeModel("gemini-2.0-flash-lite")
             response = model.generate_content(prompt)
             return response.text.strip()
         except Exception as e:
             # Fallback advice
             best_stream = pathways[0]["stream_name"] if pathways else "your top choice"
-            return f"Your interests strongly align with {best_stream}. Focus on building your foundation in key subjects during your A/Levels, and you'll be well-prepared for your chosen career path!"
+            top_careers = (
+                ", ".join(pathways[0].get("target_careers", [])[:3])
+                if pathways and pathways[0].get("target_careers")
+                else "exciting career paths"
+            )
+            top_degrees = (
+                ", ".join(
+                    [
+                        d["course_name"]
+                        for d in pathways[0].get("potential_degrees", [])[:2]
+                    ]
+                )
+                if pathways and pathways[0].get("potential_degrees")
+                else "advanced university programs"
+            )
+
+            fallback = f'<p>Based on your specific interest in <strong>"{student_input}"</strong>, the <strong>{best_stream}</strong> stream is the most logical A/L pathway for you. This stream provides the exact academic foundation required to pursue degrees like <strong>{top_degrees}</strong>, directly paving the way for careers such as <strong>{top_careers}</strong>.</p>'
+
+            has_marks = False
+            core_marks = {}
+            if ol_marks and ol_marks.get("core"):
+                for k, v in ol_marks["core"].items():
+                    if (
+                        v
+                        and v != "N/A"
+                        and k
+                        not in ["bucket_1_grade", "bucket_2_grade", "bucket_3_grade"]
+                    ):
+                        has_marks = True
+                        core_marks[k] = v
+
+            if has_marks:
+                fallback += "<p><strong>O/L Performance Analysis:</strong><br/>"
+                strong_subjects = []
+                weak_subjects = []
+                grade_scores = {"A": 4, "B": 3, "C": 2, "S": 1, "W": 0}
+
+                for subj, grade in core_marks.items():
+                    if grade_scores.get(grade, 0) >= 3:
+                        strong_subjects.append(f"{subj.title()} ('{grade}')")
+                    else:
+                        weak_subjects.append(f"{subj.title()} ('{grade}')")
+
+                if strong_subjects:
+                    fallback += f"Your strong grades in <strong>{', '.join(strong_subjects)}</strong> are a major advantage. These subjects demonstrate the analytical and foundational skills critical for excelling in the {best_stream} stream. "
+
+                if weak_subjects:
+                    fallback += f"However, your performance in <strong>{', '.join(weak_subjects)}</strong> indicates a gap. The {best_stream} stream is highly demanding, so you must proactively bridge this gap through extra practice and focused revision to ensure you don't struggle at the A/L level."
+                fallback += "</p>"
+            else:
+                fallback += f"<p><strong>O/L Foundation Required:</strong><br/>Since you did not provide specific O/L marks, please be aware that the <strong>{best_stream}</strong> stream is rigorous. It is absolutely critical that you have a strong foundation in core subjects related to this stream (such as Mathematics and Science). If you feel weak in these foundational areas, you must focus heavily on them now to succeed at the A/L level.</p>"
+
+            return fallback
 
     def _format_ol_marks(self, ol_marks: Optional[Dict]) -> str:
         """Format O/L marks for display in prompt."""

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350">
+    <rect width="600" height="350" fill="#ffffff" rx="10"/>
+    <text x="300" y="40" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#333333">Average Z-Score Cutoffs by Degree (Colombo District)</text>
+    
+    <!-- Y Axis -->
+    <line x1="80" y1="280" x2="80" y2="80" stroke="#cccccc" stroke-width="2"/>
+    <text x="70" y="285" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">0.0</text>
+    <text x="70" y="235" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">1.0</text>
+    <text x="70" y="185" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">1.5</text>
+    <text x="70" y="135" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">2.0</text>
+    <text x="70" y="85" font-family="Arial" font-size="12" text-anchor="end" fill="#666666">2.5</text>
+    
+    <!-- Grid Lines -->
+    <line x1="80" y1="230" x2="550" y2="230" stroke="#eeeeee" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="80" y1="180" x2="550" y2="180" stroke="#eeeeee" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="80" y1="130" x2="550" y2="130" stroke="#eeeeee" stroke-width="1" stroke-dasharray="4"/>
+    <line x1="80" y1="80" x2="550" y2="80" stroke="#eeeeee" stroke-width="1" stroke-dasharray="4"/>
+
+    <!-- X Axis -->
+    <line x1="80" y1="280" x2="550" y2="280" stroke="#cccccc" stroke-width="2"/>
+    
+    <!-- Bar 1: Medicine (2.35) -> height = 2.35 * 100 = 235, y = 280 - 235 = 45 -->
+    <!-- Wait, y axis: 0.0 is 280. 1.0 is 180? No, 280-230 = 50px per 0.5. So 100px per 1.0. -->
+    <!-- Medicine 2.35 -> 235px height. y = 280 - 235 = 45. -->
+    <rect x="120" y="45" width="50" height="235" fill="#e53e3e" rx="4"/>
+    <text x="145" y="35" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#e53e3e">2.35</text>
+    <text x="145" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Medicine</text>
+    
+    <!-- Bar 2: Engineering (2.10) -> 210px height. y = 280 - 210 = 70 -->
+    <rect x="220" y="70" width="50" height="210" fill="#dd6b20" rx="4"/>
+    <text x="245" y="60" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#dd6b20">2.10</text>
+    <text x="245" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Engineering</text>
+
+    <!-- Bar 3: Computer Sci (1.85) -> 185px height. y = 280 - 185 = 95 -->
+    <rect x="320" y="95" width="50" height="185" fill="#3182ce" rx="4"/>
+    <text x="345" y="85" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#3182ce">1.85</text>
+    <text x="345" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Comp. Sci</text>
+
+    <!-- Bar 4: Physical Sci (1.45) -> 145px height. y = 280 - 145 = 135 -->
+    <rect x="420" y="135" width="50" height="145" fill="#38b2ac" rx="4"/>
+    <text x="445" y="125" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#319795">1.45</text>
+    <text x="445" y="300" font-family="Arial" font-size="12" text-anchor="middle" fill="#333333">Physical Sci</text>
+</svg>

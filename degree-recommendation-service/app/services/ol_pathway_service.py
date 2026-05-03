@@ -221,7 +221,6 @@ class OLPathwayService:
             ideal_grade = ideal_scores.get(subject)
 
             if student_grade == "N/A":
-                # Only mark as critical if there's an actual minimum requirement
                 if required_grade:
                     analysis.append(
                         SubjectAnalysis(
@@ -229,22 +228,21 @@ class OLPathwayService:
                             student_grade="N/A",
                             required_grade=required_grade,
                             ideal_grade=ideal_grade,
-                            meets_requirement=False,
-                            status="critical",
-                            feedback=f"Missing {subject} mark. This subject is required for {stream} stream (minimum: {required_grade}).",
+                            meets_requirement=True,
+                            status="adequate",
+                            feedback=f"A minimum of {required_grade} in {subject} is typically required for {stream}.",
                         )
                     )
                 else:
-                    # No specific requirement, so missing is less critical
                     analysis.append(
                         SubjectAnalysis(
                             subject=subject,
                             student_grade="N/A",
                             required_grade=required_grade,
                             ideal_grade=ideal_grade,
-                            meets_requirement=True,  # No hard requirement
-                            status="needs_improvement",
-                            feedback=f"{subject} is recommended for {stream} stream. Consider strengthening this area.",
+                            meets_requirement=True,
+                            status="adequate",
+                            feedback=f"A strong foundation in {subject} is highly beneficial for {stream}.",
                         )
                     )
                 continue
@@ -358,9 +356,13 @@ class OLPathwayService:
             s.subject
             for s in subject_analysis
             if s.status in ["needs_improvement", "critical"]
+            and s.student_grade != "N/A"
         ]
         strong_subjects = [
             s.subject for s in subject_analysis if s.status == "excellent"
+        ]
+        beneficial_subjects = [
+            s.subject for s in subject_analysis if s.student_grade == "N/A"
         ]
 
         prompt = f"""You are a caring Sri Lankan career counselor speaking to an O/L student.
@@ -375,6 +377,7 @@ These degrees require the A/L {recommended_stream} stream.
 O/L Subject Analysis:
 - Strong subjects: {', '.join(strong_subjects) if strong_subjects else 'None identified'}
 - Subjects needing improvement: {', '.join(weak_subjects) if weak_subjects else 'None'}
+- Beneficial subjects (no marks provided): {', '.join(beneficial_subjects) if beneficial_subjects else 'None'}
 - Overall readiness: {overall_readiness}
 
 Target careers: {', '.join(job_roles)}
@@ -383,7 +386,8 @@ Write a warm, encouraging 4-5 sentence explanation that:
 1. Affirms their career choice matches well with {recommended_stream}
 2. Highlights their strengths
 3. Honestly addresses any weak subjects (if any) with actionable advice
-4. Motivates them about the career opportunities ahead
+4. If they didn't provide marks for beneficial subjects, mention that having a strong foundation in them is highly beneficial.
+5. Motivates them about the career opportunities ahead
 
 Then provide 3-4 specific action items they should take to prepare for A/L {recommended_stream}.
 
@@ -432,6 +436,7 @@ ACTION_PLAN:
                 target_degrees,
                 weak_subjects,
                 strong_subjects,
+                beneficial_subjects,
                 overall_readiness,
             )
 
@@ -442,6 +447,7 @@ ACTION_PLAN:
         degrees: List[TargetDegree],
         weak_subjects: List[str],
         strong_subjects: List[str],
+        beneficial_subjects: List[str],
         readiness: str,
     ) -> Tuple[str, List[str]]:
         """Fallback explanation when Gemini API is unavailable."""
@@ -457,6 +463,9 @@ ACTION_PLAN:
 
         if weak_subjects:
             explanation += f"Focus on strengthening {', '.join(weak_subjects)} to ensure you're fully prepared for A/L {stream}. "
+
+        if beneficial_subjects:
+            explanation += f"Having a strong foundation in {', '.join(beneficial_subjects)} is highly beneficial for this stream. "
 
         if readiness == "excellent":
             explanation += "You're in an excellent position to excel in this stream!"

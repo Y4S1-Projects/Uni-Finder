@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ReactDOM from "react-dom";
 import AIExplanationBox from "./AIExplanationBox";
 import {
 	CheckIcon,
@@ -12,21 +13,65 @@ import {
 	BookIcon,
 	FlaskIcon,
 	ChevronDownIcon,
+	SparkleIcon,
 } from "../ui/DegreeIcons";
 
-// ── Score ring ────────────────────────────────────────────────────────────────
-function ScoreRing({ score }) {
+// ── AI Match Indicator ────────────────────────────────────────────────────────
+function MatchIndicator({ score }) {
 	const pct = Math.round(score ?? 0);
-	const color =
-		pct >= 75 ? "text-emerald-600"
-		: pct >= 50 ? "text-blue-600"
-		: "text-slate-400";
+	const [show, setShow] = useState(false);
+	const [pos, setPos] = useState({ top: 0, left: 0 });
+
+	const handleEnter = (e) => {
+		const rect = e.currentTarget.getBoundingClientRect();
+		setPos({
+			top: rect.bottom + window.scrollY + 10,
+			left: Math.min(rect.left + window.scrollX - 160, window.innerWidth - 240 - 8),
+		});
+		setShow(true);
+	};
+
+	let Icon, color, text;
+	if (pct >= 80) {
+		Icon = StarIcon;
+		color = "text-amber-500";
+		text = "Excellent AI Match";
+	} else if (pct >= 60) {
+		Icon = SparkleIcon;
+		color = "text-blue-500";
+		text = "Strong AI Match";
+	} else {
+		Icon = CheckIcon;
+		color = "text-slate-400";
+		text = "Relevant AI Match";
+	}
+
+	const tooltip =
+		show ?
+			<div
+				style={{ position: "absolute", top: pos.top, left: pos.left, zIndex: 99999 }}
+				className='w-56 p-3 text-xs font-normal text-left border shadow-2xl pointer-events-none bg-slate-800 text-slate-100 rounded-xl border-slate-600'>
+				<div className='flex items-center gap-2 mb-1.5'>
+					<Icon className={`w-4 h-4 ${color}`} />
+					<p className='m-0 font-bold text-white'>{text}</p>
+				</div>
+				<p className='m-0 leading-relaxed text-slate-300'>
+					This degree aligns with your entered career goals and personal interests based on our AI semantic analysis.
+				</p>
+				<div className='absolute right-6 -top-1.5 w-3 h-3 bg-slate-800 rotate-45 border-l border-t border-slate-600' />
+			</div>
+		:	null;
+
 	return (
-		<div
-			className={`flex-shrink-0 flex flex-col items-center justify-center w-14 h-14 rounded-full border-4 border-current ${color} bg-white shadow-sm`}>
-			<span className='text-base font-extrabold leading-none'>{pct}</span>
-			<span className='text-[9px] font-bold leading-none opacity-70'>%</span>
-		</div>
+		<>
+			<div
+				onMouseEnter={handleEnter}
+				onMouseLeave={() => setShow(false)}
+				className={`flex-shrink-0 flex items-center justify-center w-12 h-12 rounded-full bg-white/95 shadow-md cursor-help hover:scale-110 transition-transform duration-200 border-2 border-white/50`}>
+				<Icon className={`w-6 h-6 ${color}`} />
+			</div>
+			{ReactDOM.createPortal(tooltip, document.body)}
+		</>
 	);
 }
 
@@ -90,7 +135,7 @@ export default function CourseCard({ course, isEligible = true, isAspirationnal 
 						<h3 className='text-lg font-extrabold leading-snug text-white'>{courseName}</h3>
 					</div>
 					<div className='flex flex-col items-end flex-shrink-0 gap-2'>
-						{score !== null && <ScoreRing score={score} />}
+						{score !== null && <MatchIndicator score={score} />}
 					</div>
 				</div>
 				<div className='relative z-10 -mt-2'>{statusBadge}</div>

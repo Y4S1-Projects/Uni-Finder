@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { fetchAllDegreeCourses, fetchOLCareerTree } from "../../api/degreeRecommendationApi";
 import olSubjectsConfig from "../../config/ol_subjects_config.json";
+import LoadingState, { OL_STAGES } from "../../components/degree/LoadingState";
 
 const ArrowRightIcon = () => (
 	<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='2' viewBox='0 0 24 24'>
@@ -168,200 +169,203 @@ export default function OLExplorerFlow() {
 			{/* Main Content */}
 			<div className='relative z-20 max-w-6xl px-6 mx-auto -mt-20'>
 				<div className='p-8 bg-white border shadow-2xl sm:p-12 border-slate-200/60 rounded-3xl'>
-					<div className='mb-10'>
-						<h2 className='flex items-center gap-3 mb-3 text-3xl font-extrabold text-slate-900'>
-							What are you passionate about?
-						</h2>
-						<p className='text-lg text-slate-500'>
-							Share your interests, dreams, and hobbies. We'll suggest degrees and paths that match your profile.
-						</p>
-					</div>
+					{loading ?
+						<LoadingState theme='emerald' stages={OL_STAGES} title='Generating Career Map' />
+					:	<>
+							<div className='mb-10'>
+								<h2 className='flex items-center gap-3 mb-3 text-3xl font-extrabold text-slate-900'>
+									What are you passionate about?
+								</h2>
+								<p className='text-lg text-slate-500'>
+									Share your interests, dreams, and hobbies. We'll suggest degrees and paths that match your profile.
+								</p>
+							</div>
 
-					{/* Main Textarea */}
-					<div className='mb-8'>
-						<label className='block mb-2 text-sm font-semibold text-slate-700'>
-							Your Career Goals & Interests <span className='text-red-500'>*</span>
-						</label>
-						<textarea
-							placeholder={CAREER_INTEREST_PROMPTS[Math.floor(Math.random() * CAREER_INTEREST_PROMPTS.length)]}
-							value={interests}
-							onChange={(e) => setInterests(e.target.value)}
-							className='w-full px-4 py-4 text-base transition-colors border shadow-inner resize-none bg-slate-50 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'
-							rows='3'
-						/>
-						<div className='flex items-center justify-between mt-2 text-sm'>
-							<p className={interests.length >= 10 ? "text-emerald-600 font-medium" : "text-slate-400"}>
-								{interests.length} / 10 characters minimum
-							</p>
-						</div>
-					</div>
-
-					{/* Optional O/L Marks */}
-					<div className='mb-8'>
-						<p className='mb-2 text-sm font-medium text-slate-500'>Want more accurate predictions? (Optional)</p>
-						<details className='mb-2 overflow-hidden transition-all border group border-slate-200 rounded-2xl bg-slate-50 hover:border-emerald-200'>
-							<summary className='flex items-center gap-3 px-5 py-4 font-semibold cursor-pointer select-none text-slate-700 hover:text-slate-900'>
-								<div className='flex items-center justify-center w-8 rounded-lg bg-emerald-100 text-emerald-600'>
-									<BookIcon />
+							{/* Main Textarea */}
+							<div className='mb-8'>
+								<label className='block mb-2 text-sm font-semibold text-slate-700'>
+									Your Career Goals & Interests <span className='text-red-500'>*</span>
+								</label>
+								<textarea
+									placeholder={CAREER_INTEREST_PROMPTS[Math.floor(Math.random() * CAREER_INTEREST_PROMPTS.length)]}
+									value={interests}
+									onChange={(e) => setInterests(e.target.value)}
+									className='w-full px-4 py-4 text-base transition-colors border shadow-inner resize-none bg-slate-50 border-slate-200 rounded-xl focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'
+									rows='3'
+								/>
+								<div className='flex items-center justify-between mt-2 text-sm'>
+									<p className={interests.length >= 10 ? "text-emerald-600 font-medium" : "text-slate-400"}>
+										{interests.length} / 10 characters minimum
+									</p>
 								</div>
-								Add Your O/L Marks
-								<span className='ml-auto text-sm font-normal text-emerald-600 group-open:hidden'>Expand</span>
-								<span className='hidden ml-auto text-sm font-normal text-slate-500 group-open:block'>Collapse</span>
-							</summary>
+							</div>
 
-							<div className='p-6 pt-0 border-t border-slate-200'>
-								{/* Core Subjects */}
-								<div className='mt-6 mb-8'>
-									<h3 className='mb-4 text-sm font-semibold tracking-wide uppercase text-slate-500'>
-										Compulsory Subjects
-									</h3>
-									<div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
-										{olSubjectsConfig.core_subjects.map((subject) => (
-											<div key={subject.id}>
-												<label className='block mb-1.5 text-xs font-semibold text-slate-700'>
-													{subject.name}
-													{subject.critical && <span className='ml-1 text-red-500'>*</span>}
-												</label>
+							{/* Optional O/L Marks */}
+							<div className='mb-8'>
+								<p className='mb-2 text-sm font-medium text-slate-500'>Want more accurate predictions? (Optional)</p>
+								<details className='mb-2 overflow-hidden transition-all border group border-slate-200 rounded-2xl bg-slate-50 hover:border-emerald-200'>
+									<summary className='flex items-center gap-3 px-3 py-4 font-semibold cursor-pointer select-none text-slate-700 hover:text-slate-900'>
+										<div className='flex items-center justify-center w-8 rounded-lg bg-emerald-100 text-emerald-600'>
+											<BookIcon />
+										</div>
+										Add Your O/L Marks
+										<span className='ml-auto text-sm font-normal text-emerald-600 group-open:hidden'>Expand</span>
+										<span className='hidden ml-auto text-sm font-normal text-slate-500 group-open:block'>Collapse</span>
+									</summary>
+
+									<div className='p-6 pt-0 border-t border-slate-200'>
+										{/* Core Subjects */}
+										<div className='mt-6 mb-8'>
+											<h3 className='mb-4 text-sm font-semibold tracking-wide uppercase text-slate-500'>
+												Compulsory Subjects
+											</h3>
+											<div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3'>
+												{olSubjectsConfig.core_subjects.map((subject) => (
+													<div key={subject.id}>
+														<label className='block mb-1.5 text-xs font-semibold text-slate-700'>
+															{subject.name}
+															{subject.critical && <span className='ml-1 text-red-500'>*</span>}
+														</label>
+														<select
+															value={olMarks.core[subject.id] || ""}
+															onChange={(e) =>
+																setOlMarks({
+																	...olMarks,
+																	core: { ...olMarks.core, [subject.id]: e.target.value },
+																})
+															}
+															className='w-full px-3 py-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
+															<option value=''>Select Grade</option>
+															{olSubjectsConfig.grading_scale.map((grade) => (
+																<option key={grade} value={grade}>
+																	{grade} ({olSubjectsConfig.grade_descriptions[grade]})
+																</option>
+															))}
+														</select>
+													</div>
+												))}
+											</div>
+										</div>
+
+										<div className='w-full h-px mb-6 bg-slate-200'></div>
+
+										{/* Basket Subjects */}
+										<div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
+											{/* Bucket 1 */}
+											<div>
+												<h3 className='mb-1 text-sm font-semibold text-slate-700'>{olSubjectsConfig.bucket_1.name}</h3>
+												<p className='mb-3 text-xs text-slate-500 line-clamp-1'>{olSubjectsConfig.bucket_1.category}</p>
 												<select
-													value={olMarks.core[subject.id] || ""}
-													onChange={(e) =>
-														setOlMarks({
-															...olMarks,
-															core: { ...olMarks.core, [subject.id]: e.target.value },
-														})
-													}
+													value={olMarks.bucket_1 || ""}
+													onChange={(e) => setOlMarks({ ...olMarks, bucket_1: e.target.value })}
 													className='w-full px-3 py-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
-													<option value=''>Select Grade</option>
-													{olSubjectsConfig.grading_scale.map((grade) => (
-														<option key={grade} value={grade}>
-															{grade} ({olSubjectsConfig.grade_descriptions[grade]})
+													<option value=''>Select subject...</option>
+													{olSubjectsConfig.bucket_1.subjects.map((subject) => (
+														<option key={subject.id} value={subject.id}>
+															{subject.name}
 														</option>
 													))}
 												</select>
+												{olMarks.bucket_1 && (
+													<select
+														value={olMarks.core.bucket_1_grade || ""}
+														onChange={(e) =>
+															setOlMarks({
+																...olMarks,
+																core: { ...olMarks.core, bucket_1_grade: e.target.value },
+															})
+														}
+														className='w-full px-3 py-2 mt-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
+														<option value=''>Grade</option>
+														{olSubjectsConfig.grading_scale.map((grade) => (
+															<option key={grade} value={grade}>
+																{grade}
+															</option>
+														))}
+													</select>
+												)}
 											</div>
-										))}
-									</div>
-								</div>
 
-								<div className='w-full h-px mb-6 bg-slate-200'></div>
+											{/* Bucket 2 */}
+											<div>
+												<h3 className='mb-1 text-sm font-semibold text-slate-700'>{olSubjectsConfig.bucket_2.name}</h3>
+												<p className='mb-3 text-xs text-slate-500 line-clamp-1'>{olSubjectsConfig.bucket_2.category}</p>
+												<select
+													value={olMarks.bucket_2 || ""}
+													onChange={(e) => setOlMarks({ ...olMarks, bucket_2: e.target.value })}
+													className='w-full px-3 py-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
+													<option value=''>Select subject...</option>
+													{olSubjectsConfig.bucket_2.subjects.map((subject) => (
+														<option key={subject.id} value={subject.id}>
+															{subject.name}
+														</option>
+													))}
+												</select>
+												{olMarks.bucket_2 && (
+													<select
+														value={olMarks.core.bucket_2_grade || ""}
+														onChange={(e) =>
+															setOlMarks({
+																...olMarks,
+																core: { ...olMarks.core, bucket_2_grade: e.target.value },
+															})
+														}
+														className='w-full px-3 py-2 mt-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
+														<option value=''>Grade</option>
+														{olSubjectsConfig.grading_scale.map((grade) => (
+															<option key={grade} value={grade}>
+																{grade}
+															</option>
+														))}
+													</select>
+												)}
+											</div>
 
-								{/* Basket Subjects */}
-								<div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
-									{/* Bucket 1 */}
-									<div>
-										<h3 className='mb-1 text-sm font-semibold text-slate-700'>{olSubjectsConfig.bucket_1.name}</h3>
-										<p className='mb-3 text-xs text-slate-500 line-clamp-1'>{olSubjectsConfig.bucket_1.category}</p>
-										<select
-											value={olMarks.bucket_1 || ""}
-											onChange={(e) => setOlMarks({ ...olMarks, bucket_1: e.target.value })}
-											className='w-full px-3 py-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
-											<option value=''>Select subject...</option>
-											{olSubjectsConfig.bucket_1.subjects.map((subject) => (
-												<option key={subject.id} value={subject.id}>
-													{subject.name}
-												</option>
-											))}
-										</select>
-										{olMarks.bucket_1 && (
-											<select
-												value={olMarks.core.bucket_1_grade || ""}
-												onChange={(e) =>
-													setOlMarks({
-														...olMarks,
-														core: { ...olMarks.core, bucket_1_grade: e.target.value },
-													})
-												}
-												className='w-full px-3 py-2 mt-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
-												<option value=''>Grade</option>
-												{olSubjectsConfig.grading_scale.map((grade) => (
-													<option key={grade} value={grade}>
-														{grade}
-													</option>
-												))}
-											</select>
-										)}
+											{/* Bucket 3 */}
+											<div>
+												<h3 className='mb-1 text-sm font-semibold text-slate-700'>{olSubjectsConfig.bucket_3.name}</h3>
+												<p className='mb-3 text-xs text-slate-500 line-clamp-1'>{olSubjectsConfig.bucket_3.category}</p>
+												<select
+													value={olMarks.bucket_3 || ""}
+													onChange={(e) => setOlMarks({ ...olMarks, bucket_3: e.target.value })}
+													className='w-full px-3 py-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
+													<option value=''>Select subject...</option>
+													{olSubjectsConfig.bucket_3.subjects.map((subject) => (
+														<option key={subject.id} value={subject.id}>
+															{subject.name}
+														</option>
+													))}
+												</select>
+												{olMarks.bucket_3 && (
+													<select
+														value={olMarks.core.bucket_3_grade || ""}
+														onChange={(e) =>
+															setOlMarks({
+																...olMarks,
+																core: { ...olMarks.core, bucket_3_grade: e.target.value },
+															})
+														}
+														className='w-full px-3 py-2 mt-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
+														<option value=''>Grade</option>
+														{olSubjectsConfig.grading_scale.map((grade) => (
+															<option key={grade} value={grade}>
+																{grade}
+															</option>
+														))}
+													</select>
+												)}
+											</div>
+										</div>
 									</div>
-
-									{/* Bucket 2 */}
-									<div>
-										<h3 className='mb-1 text-sm font-semibold text-slate-700'>{olSubjectsConfig.bucket_2.name}</h3>
-										<p className='mb-3 text-xs text-slate-500 line-clamp-1'>{olSubjectsConfig.bucket_2.category}</p>
-										<select
-											value={olMarks.bucket_2 || ""}
-											onChange={(e) => setOlMarks({ ...olMarks, bucket_2: e.target.value })}
-											className='w-full px-3 py-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
-											<option value=''>Select subject...</option>
-											{olSubjectsConfig.bucket_2.subjects.map((subject) => (
-												<option key={subject.id} value={subject.id}>
-													{subject.name}
-												</option>
-											))}
-										</select>
-										{olMarks.bucket_2 && (
-											<select
-												value={olMarks.core.bucket_2_grade || ""}
-												onChange={(e) =>
-													setOlMarks({
-														...olMarks,
-														core: { ...olMarks.core, bucket_2_grade: e.target.value },
-													})
-												}
-												className='w-full px-3 py-2 mt-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
-												<option value=''>Grade</option>
-												{olSubjectsConfig.grading_scale.map((grade) => (
-													<option key={grade} value={grade}>
-														{grade}
-													</option>
-												))}
-											</select>
-										)}
-									</div>
-
-									{/* Bucket 3 */}
-									<div>
-										<h3 className='mb-1 text-sm font-semibold text-slate-700'>{olSubjectsConfig.bucket_3.name}</h3>
-										<p className='mb-3 text-xs text-slate-500 line-clamp-1'>{olSubjectsConfig.bucket_3.category}</p>
-										<select
-											value={olMarks.bucket_3 || ""}
-											onChange={(e) => setOlMarks({ ...olMarks, bucket_3: e.target.value })}
-											className='w-full px-3 py-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
-											<option value=''>Select subject...</option>
-											{olSubjectsConfig.bucket_3.subjects.map((subject) => (
-												<option key={subject.id} value={subject.id}>
-													{subject.name}
-												</option>
-											))}
-										</select>
-										{olMarks.bucket_3 && (
-											<select
-												value={olMarks.core.bucket_3_grade || ""}
-												onChange={(e) =>
-													setOlMarks({
-														...olMarks,
-														core: { ...olMarks.core, bucket_3_grade: e.target.value },
-													})
-												}
-												className='w-full px-3 py-2 mt-2 text-sm bg-white border rounded-lg border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none'>
-												<option value=''>Grade</option>
-												{olSubjectsConfig.grading_scale.map((grade) => (
-													<option key={grade} value={grade}>
-														{grade}
-													</option>
-												))}
-											</select>
-										)}
-									</div>
-								</div>
+								</details>
 							</div>
-						</details>
-					</div>
 
-					{/* Primary Action Button placed right after required fields */}
-					<div className='flex justify-end mb-2 border-b border-slate-100'>
-						<button
-							onClick={handleSubmit}
-							disabled={!isFormValid || loading}
-							className={`
+							{/* Primary Action Button placed right after required fields */}
+							<div className='flex justify-end mb-2 border-b border-slate-100'>
+								<button
+									onClick={handleSubmit}
+									disabled={!isFormValid || loading}
+									className={`
 									inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-semibold transition-all duration-300
 									${
 										isFormValid && !loading ?
@@ -369,27 +373,28 @@ export default function OLExplorerFlow() {
 										:	"bg-slate-100 text-slate-400 cursor-not-allowed"
 									}
 								`}>
-							{loading ?
-								<>
-									<SpinnerIcon /> Analyzing Pathway...
-								</>
-							:	<>
-									Generate My Career Map <ArrowRightIcon />
-								</>
-							}
-						</button>
-					</div>
-
-					{/* Error */}
-					{error && (
-						<div className='flex gap-3 p-4 mt-6 text-red-700 border rounded-xl bg-red-50 border-red-200/60'>
-							<AlertIcon />
-							<div>
-								<p className='font-semibold'>Error</p>
-								<p className='text-sm'>{error}</p>
+									{loading ?
+										<>
+											<SpinnerIcon /> Analyzing Pathway...
+										</>
+									:	<>
+											Generate My Career Map <ArrowRightIcon />
+										</>
+									}
+								</button>
 							</div>
-						</div>
-					)}
+
+							{error && (
+								<div className='flex gap-3 p-4 mt-6 text-red-700 border rounded-xl bg-red-50 border-red-200/60'>
+									<AlertIcon />
+									<div>
+										<p className='font-semibold'>Error</p>
+										<p className='text-sm'>{error}</p>
+									</div>
+								</div>
+							)}
+						</>
+					}
 				</div>
 			</div>
 		</div>
