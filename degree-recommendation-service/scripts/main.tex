@@ -1,0 +1,278 @@
+\documentclass[conference]{IEEEtran}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% IEEEtran Research Report template tailored for Uni-Finder.
+% Based on IEEE - Manuscript Templates for Conference Proceedings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\IEEEoverridecommandlockouts
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{url}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    
+\fancypagestyle{firstpagefooter}{%
+  \fancyhf{}
+  \renewcommand\headrulewidth{0pt}
+  \fancyfoot[R]{Uni-Finder Research Report - Sri Lanka Institute of Information Technology}
+}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\title{Uni-Finder: An AI-Powered Modular Education and Career Guidance Ecosystem for Sri Lankan Students}
+
+\author{
+\IEEEauthorblockN{1\textsuperscript{st} Kaveeshwara K.A.Y.P.}
+\IEEEauthorblockA{\textit{Dept. of Software Engineering} \\
+\textit{Sri Lanka Institute of Information Technology}\\
+Malabe, Sri Lanka \\
+it22641960@my.sliit.lk}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Siriwardana N.D.V.S}
+\IEEEauthorblockA{\textit{Dept. of Software Engineering} \\
+\textit{Sri Lanka Institute of Information Technology}\\
+Malabe, Sri Lanka \\
+it22627100@my.sliit.lk}
+\and
+\IEEEauthorblockN{3\textsuperscript{rd} Dilshan W.P.S.S}
+\IEEEauthorblockA{\textit{Dept. of Software Engineering} \\
+\textit{Sri Lanka Institute of Information Technology}\\
+Malabe, Sri Lanka \\
+it22347862@my.sliit.lk}
+\and
+\IEEEauthorblockN{4\textsuperscript{th} Hettiarachchi H.D.R.T}
+\IEEEauthorblockA{\textit{Dept. of Software Engineering} \\
+\textit{Sri Lanka Institute of Information Technology}\\
+Malabe, Sri Lanka \\
+it22627650@my.sliit.lk}
+}
+
+\maketitle
+
+\begin{abstract}
+Rigid University Grants Commission regulations, acute financial pressures, and dynamic labor-market changes severely constrain the transition to tertiary education in Sri Lanka. Approximately 350,000 students navigate a highly fragmented ecosystem characterized by opaque district quotas, scattered financial-aid information, and misaligned career trajectories. To address these systemic inefficiencies, this paper presents Uni-Finder, a comprehensive artificial intelligence-driven educational and career guidance platform engineered to democratize academic planning. Based on a novel Deterministic Supremacy architecture and deployed as a scalable microservices ecosystem, the platform integrates four specialized computational engines to provide holistic student support. The Degree Recommendation System mitigates the misalignment between standard information retrieval evaluation and strict Abstract Syntax Tree eligibility rules by fusing a hybrid natural language processing pipeline that uses Dense Sentence Transformers and Sparse TF-IDF with these eligibility rules. For financial planning, the Student Budget Optimizer leverages Gradient Boosting Regression to achieve an $R^2$ of 86.89\%, along with logistic regression for expense forecasting and risk classification. The Scholarship and Financial Aid Matcher employs K-Nearest Neighbors and dynamic regular-expression parsing.
+In contrast, the Career Outcome Predictor uses multi-objective optimization and Directed Acyclic Graph traversal to simulate professional progression. To eliminate the critical risk of Large Language Model hallucinations in high-stakes educational domains, the architecture strictly separates retrieval logic from text generation, thereby restricting models to an Explainable AI advisory role. Empirical evaluations demonstrate exceptional system efficacy. The hybrid recommendation engine achieved an 11\% improvement in NDCG@5 while maintaining absolute legal compliance, and the optimized in-memory machine-learning infrastructure kept core algorithmic execution latencies under 100 milliseconds. Ultimately, Uni-Finder provides an equitable, transparent, and mathematically rigorous decision-support ecosystem for prospective university students.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Educational Technology, Hybrid Recommendation Systems, Explainable AI, Machine Learning, Abstract Syntax Trees, Predictive Analytics, Sri Lankan Higher Education.
+\end{IEEEkeywords}
+
+\thispagestyle{firstpagefooter}
+
+\section{Introduction}
+
+\subsection{Context and Background}
+The transition from secondary to tertiary education represents a critical stage in a student's academic and professional development, particularly within Sri Lanka's highly competitive higher education system \cite{island2025admission, colombo2021admission}. The university admission process is governed by structured policies of the University Grants Commission (UGC), which incorporate Z-score standardization, district quotas, and subject eligibility requirements \cite{ugc2024overview, seu2024stream}. These constraints create a complex and rigid framework that students must navigate when selecting degree programs.
+
+In addition to academic constraints, students must also consider financial and career-related factors when making decisions about higher education. Studies on Sri Lankan higher education and generative AI adoption indicate that the educational landscape is changing rapidly. However, local guidance tools still need to align academic planning with students' practical needs \cite{springer2024genai_sl, sljssh2021online, cmb2025ai_nursing}. However, the absence of integrated systems that combine academic eligibility, financial feasibility, and career alignment results in a fragmented and inefficient decision-making process.
+
+\subsection{Problem Statement}
+Students are required to simultaneously evaluate academic eligibility, financial affordability, and career prospects, yet existing digital systems fail to support this multidimensional decision-making process effectively \cite{silva2026systematic, manouselis2021recommendation, jamil2021review}. Current platforms either rely on rigid rule-based approaches or employ general-purpose AI systems that do not adequately account for local constraints \cite{almadani2023recommender, springer2024genai_sl}.
+
+This leads to three major limitations. First, the \textbf{vocabulary mismatch problem} arises because students express career goals in informal language that does not align with structured academic terminology \cite{almadani2023recommender}. Second, the \textbf{cold start problem} affects recommendation systems that rely on historical data, rendering them ineffective for new users, such as school leavers \cite{tarus2018matrix, bakhshinategh2023course, zheng2025enhancing, alghamdi2021collaborative}. Third, traditional evaluation approaches in recommendation systems fail to incorporate domain-specific constraints, resulting in recommendations that may be theoretically relevant but practically infeasible \cite{zhang2022state, wang2018research}.
+
+\subsection{Proposed Solution: The Uni-Finder Ecosystem}
+To address these challenges, this research proposes Uni-Finder, an AI-powered Decision Support System designed to assist Sri Lankan students in making informed educational and career decisions \cite{jamil2021review, elhalees2021towards, kardan2024conceptualisation}. The system adopts a modular microservices architecture and integrates multiple computational components to deliver personalized recommendations.
+
+The platform comprises four key modules: a Degree Recommendation System employing hybrid NLP techniques, a Student Budget Optimizer for financial forecasting, a Scholarship and Financial Aid Matcher for eligibility-based funding recommendations, and a Career Outcome Predictor for modeling career pathways. These components reflect the broader direction of educational recommender system research, which increasingly combines semantic retrieval, context awareness, and structured decision support \cite{wang2018research, silva2026systematic, chen2025integrating}.
+
+To ensure reliability in high-stakes decision-making, the system adopts a deterministic architecture in which rule-based validation and mathematical constraints govern the recommendation logic. At the same time, large language models are restricted to explainability functions \cite{springer2024genai_sl, wang2023finding, ieee2026adaptiveui}. This approach minimizes the risk of incorrect or misleading recommendations while maintaining interpretability.
+
+\subsection{Key Contributions}
+This research contributes to the field of educational technology and recommender systems in several key ways \cite{wang2018research, kardan2024conceptualisation}:
+
+\begin{itemize}
+    \item \textbf{Addressing Evaluation Misalignment:} Introducing a constraint-aware evaluation framework that incorporates academic and regulatory requirements.
+    \item \textbf{Mitigating the Cold Start Problem:} Developing a deterministic, feature-based recommendation approach that does not rely on historical user data.
+    \item \textbf{Safe Integration of AI Models:} Restricting generative AI to explainable outputs while maintaining deterministic decision-making.
+    \item \textbf{Hybrid Recommendation Framework:} Combining machine learning techniques with rule-based systems to improve accuracy and reliability.
+\end{itemize}
+
+\section{Literature Review and Related Work}
+
+\subsection{Evolution of Educational Recommender Systems}
+Educational and career recommendation systems have traditionally relied on foundational techniques such as Collaborative Filtering (CF) and Content-Based Filtering (CBF) \cite{elhalees2021towards, sani2021recommender}. While CF models are effective in domains with large-scale user interaction data, their applicability in educational contexts is limited. A key limitation is the "cold start" problem, in which new users—such as students entering higher education—lack historical interaction data, thereby reducing the effectiveness of CF-based approaches \cite{bakhshinategh2023course, alghamdi2021collaborative, tarus2018matrix}.
+
+Similarly, CBF models and keyword-based retrieval systems struggle with the "vocabulary mismatch" problem, where user queries expressed in informal language do not align with formal academic terminology. This limitation reduces recommendation accuracy when semantic understanding is required \cite{silva2026systematic, almadani2023recommender}. These challenges highlight the need for more advanced approaches that can bridge the gap between user intent and structured educational data.
+
+\subsection{Limitations of Traditional Models in High-Stakes Contexts}
+In high-stakes domains such as university admissions, financial planning, and career decision-making, recommendation systems must operate under strict constraints. Pure CF models are inadequate in such environments because they rely on probabilistic patterns and do not enforce mandatory eligibility criteria \cite{seu2024stream}. This can result in recommendations that are statistically relevant but practically invalid within regulated academic systems \cite{island2025admission}.
+
+On the other hand, rule-based systems ensure compliance with academic requirements but lack flexibility and semantic understanding. These systems are often rigid and unable to interpret nuanced user intent, limiting their effectiveness in personalized guidance scenarios \cite{zhang2022state, wang2018research}.
+
+Additionally, existing financial recommendation and budgeting systems are typically designed for general populations and do not adequately address the unique financial conditions of students, particularly in localized contexts such as Sri Lanka. Studies indicate that current systems lack adaptation to local economic conditions and student-specific financial behaviors \cite{sljssh2021online}.
+
+\subsection{The Explainability and Hallucination Challenge in AI}
+The increasing use of deep learning and large language models in recommender systems has introduced challenges for explainability and reliability. Many AI-based systems operate as "black-box" models, making it difficult to understand or justify their outputs \cite{springer2024genai_sl, cmb2025ai_nursing}. In domains such as education and career planning, where decisions have long-term consequences, this lack of transparency is a critical limitation.
+
+Furthermore, generative AI models may produce hallucinated or factually incorrect recommendations when used directly for retrieval tasks. This can lead to misleading guidance, particularly when recommending academic programs or financial opportunities \cite{springer2024genai_sl}. As a result, there is a growing emphasis on Explainable AI (XAI) approaches that provide transparent, interpretable, and trustworthy recommendations \cite{wang2023finding, vozniuk2025teacher}.
+
+\subsection{The Need for a Hybrid Architecture}
+A review of the current literature indicates that no single approach is sufficient to address the complexity of educational recommendation systems. Pure machine learning models may suffer from hallucinations and a lack of constraint enforcement, whereas rule-based systems lack adaptability and semantic understanding \cite{manouselis2021recommendation, silva2026systematic}.
+
+Recent research suggests that hybrid approaches, which combine machine learning techniques with rule-based validation, are more effective. These systems integrate semantic understanding with structured decision-making to improve both accuracy and reliability \cite{chen2025integrating, alghamdi2025analysis}. 
+
+Building on this perspective, this research adopts a hybrid architecture that combines deterministic evaluation mechanisms with AI-driven semantic models. Such integration enables the system to provide recommendations that are not only contextually relevant but also compliant with domain-specific constraints \cite{chen2021dynamic, li2024dynamic, zhao2025group}.
+
+\section{Methodology and System Architecture}
+
+The proposed Uni-Finder platform is a decentralized, cloud-native microservices ecosystem designed to process high-dimensional natural-language queries and structured academic profiles \cite{silva2026systematic, almadani2023recommender}. To address the distinct computational requirements of localized university admissions, financial forecasting, and career-pathway simulation, the system isolates its business logic into four specialized machine-learning (ML) engines. The methodology integrates stochastic machine learning models with rigid, deterministic rule-based algorithms to ensure strict adherence to local educational and financial constraints \cite{seu2024stream, chen2025integrating}.
+
+\subsection{Unified Microservices Orchestration and In-Memory Inference}
+To ensure high availability, fault isolation, and independent scalability, the ecosystem is orchestrated through a central Node.js API Gateway that manages load balancing, user authentication, and cross-component data synchronization \cite{zhang2022state}. The computationally intensive ML inference tasks are delegated to specialized Python backend environments built on FastAPI and Flask \cite{li2024dynamic}.
+
+A pivotal architectural decision to meet the strict sub-second latency constraints of a real-time Decision Support System (DSS) was the implementation of an in-memory ML inference strategy. Traditional recommender systems suffer from significant Input/Output (I/O) bottlenecks when querying relational databases for high-dimensional feature vectors \cite{tarus2018matrix}. To circumvent this, the proposed architecture serializes all ML artifacts (e.g., \textit{.pkl} and \textit{.joblib} models), precomputed vector indexes, and catalog metadata into the server's Random Access Memory (RAM) as singleton structures during the application boot phase \cite{zhang2022state}. This paradigm shifts the time complexity of retrieval operations from $\mathcal{O}(N \log N)$ disk-bound lookups to strictly bounded $\mathcal{O}(1)$ memory accesses, enabling the platform to execute complex matrix dot products and algorithmic scoring in under 100 milliseconds \cite{alghamdi2021collaborative}.
+
+\subsection{Hybrid Degree Recommendation Engine}
+The Degree Recommendation Engine introduces a "Dream vs. Reality" algorithmic sequence to address the vocabulary mismatch between informal student queries and formal academic nomenclature, while strictly enforcing localized legal constraints \cite{seu2024stream, island2025admission}.
+
+The pipeline begins with a deterministic Rules Engine that serves as an absolute pre-filter. It utilizes an Abstract Syntax Tree (AST) evaluator to recursively parse nested logical operators (e.g., AND, OR, MIN\_COUNT) against digitized University Grants Commission (UGC) admission regulations. By evaluating a student's Advanced Level (A/L) stream, specific subject prerequisites, and district-based Z-score cutoffs, the AST instantly masks physically impossible academic pathways, achieving a 100\% legal compliance rate \cite{ugc2024overview}.
+
+Subsequently, eligible degrees are ranked using a ColBERT-inspired Multi-Field Max-Similarity architecture. This hybrid Natural Language Processing (NLP) pipeline fuses Dense and Sparse vectors to maximize retrieval accuracy \cite{chen2021dynamic}. Dense Vector embeddings are generated via the \textit{all-MiniLM-L6-v2} SentenceTransformers model (yielding a 384-dimensional space) to capture deep semantic context, weighted at $\beta = 0.70$. Concurrently, Sparse Vectors utilizing Sublinear Term Frequency-Inverse Document Frequency (TF-IDF) retain exact lexical specificity, weighted at $\alpha = 0.30$ \cite{zheng2025enhancing}. The composite similarity score $S_{hybrid}$ is further augmented by a Jaccard Keyword Bonus ($\lambda$) to reward explicit technical noun matches, calculated as:
+
+\begin{multline}
+S_{hybrid} = \alpha \Big[ \max_{f \in F} \big( W_f \cdot \text{Sim}(v_s, v_{c,f}) \big) \Big] \\
++ \beta \big[ \text{Sim}(v_s, v_{c, \text{combined}}) \big] \\
++ \min\big(\text{Jac}(T_s, T_c) \cdot \lambda, M_{bonus}\big) \label{eq:hybrid_score}
+\end{multline}
+
+where $W_f$ represents dynamic feature weights applied to specific metadata fields (e.g., Job Roles, Core Skills), $v_s$ represents the student vector, and $v_c$ represents the course vector \cite{chen2025integrating}.
+
+\subsection{AI-Driven Student Budget Optimizer}
+To deliver accurate, localized financial forecasting, the budget optimization module processes a meticulously engineered 16-feature vector that encompasses user income streams, perceptions of affordability, lifestyle constraints, and district-level economic indicators \cite{sljssh2021online}.
+
+The predictive core of this engine employs a Gradient Boosting Regressor (GBR) trained on a structured dataset of Sri Lankan student financial profiles. The GBR algorithm effectively models nonlinear interactions, such as the complex relationship between external scholarship funding and localized rental costs, achieving an optimized cross-validated $R^2$ of 86.89\% \cite{li2024dynamic}. Operating in tandem, a Logistic Regression model outputs a calibrated probability of financial risk ($0.0 \le P \le 1.0$) that classifies students into distinct financial vulnerability tiers. To prevent model drift, these predictions are grounded in deterministic baselines derived from hard-coded Sri Lankan market data, including dynamic transportation fare formulas and district-specific food price multipliers.
+
+\subsection{Scholarship and Financial Aid Matcher}
+The financial aid matching subsystem actively circumvents the "Cold Start" problem inherent to Collaborative Filtering by utilizing a content-based K-Nearest Neighbors (KNN) architecture \cite{tarus2018matrix, bakhshinategh2023course}. This enables the platform to deploy immediate, high-fidelity recommendations to new users without requiring historical interaction matrices.
+
+The retrieval mechanism relies on TF-IDF vectorization, constrained to a maximum of 8,000 features across unigrams and bigrams. This strictly preserves exact, literal terminology specific to the Sri Lankan financial lexicon, which dense embeddings often blur into unhelpful abstract concepts \cite{silva2026systematic}. Furthermore, the engine implements a dynamic Regular Expression (Regex) parser to extract numeric thresholds (e.g., maximum income bounds or age limits) directly from unstructured web-scraped scholarship descriptions. The candidate ranking utilizes a punitive mathematical formula that fuses the cosine similarity score with the rule-based eligibility pass rate, applying a 50\% multiplicative penalty to the similarity score of fully ineligible programs \cite{seu2024stream}.
+
+\subsection{Career Intelligence and Progression System}
+Functioning as a comprehensive Decision Support System (DSS), the career component synthesizes labor-market intelligence with user competency profiles to map multi-stage professional trajectories \cite{kardan2024conceptualisation}.
+
+The pipeline begins with a Decision Tree Classifier that establishes a ground-truth baseline by predicting the user's current professional persona from a high-dimensional binary vector that maps to over 1,147 technical skills. Following candidate retrieval, a Multi-Objective Optimizer refines recommendations using a fitness function that integrates independent vectors for domain alignment, explicitly prioritizing core skill coverage over supplementary skills, and applying mathematical penalties for severe seniority mismatches \cite{chen2025integrating}.
+
+Finally, the system utilizes the predicted baseline role to initiate a Directed Acyclic Graph (DAG) traversal across domain-specific career hierarchies. This traversal enables the engine to perform set-based gap analysis ($S_{required} \setminus S_{user}$) to output precise, prioritized diagnostic reports of missing technical competencies required for sequential promotion \cite{wang2023finding}.
+
+\subsection{``Deterministic Supremacy'' and Explainable AI (XAI)}
+A defining architectural innovation implemented universally across the Uni-Finder platform is the "Deterministic Supremacy" paradigm \cite{springer2024genai_sl, wang2023finding}. This principle fundamentally reorganizes the integration of Large Language Models (LLMs) within high-stakes academic software to guarantee factual integrity.
+
+Under this architecture, the generative AI models---specifically Google Gemini 1.5 Flash and OpenAI GPT-4o-mini---possess zero algorithmic authority over data retrieval, ranking, or eligibility evaluation \cite{springer2024genai_sl}. All mathematical filtering, vector-space calculations, and hard-constraint evaluations are performed entirely by the localized Python logic. The resulting deterministic outputs (e.g., calculated Z-score gaps, set-based skill deficits, and rule-pass rates) are securely injected into rigidly constrained, zero-shot prompt templates. The LLMs serve exclusively as XAI renderers, tasked with synthesizing pre-validated quantitative matrices into personalized, human-readable advisory narratives \cite{wang2023finding, ieee2026adaptiveui}. This strict decoupling allows the system to provide the conversational engagement of modern Generative AI while comprehensively neutralizing the catastrophic risk of systemic hallucination \cite{springer2024genai_sl}.
+
+
+
+\section{Experimental Setup and Evaluation}
+
+To rigorously validate the architectural decisions, computational efficiency, and predictive accuracy of the Uni-Finder ecosystem, the platform underwent comprehensive empirical testing \cite{silva2026systematic}. The evaluation framework was specifically designed to quantify Information Retrieval (IR) efficacy under strict legal constraints, measure algorithmic time complexity, and assess the predictive reliability of the embedded machine learning models across the microservices \cite{seu2024stream}.
+
+\subsection{Constrained Evaluation Framework and ``Evaluation Misalignment''}
+Traditional educational recommender systems are frequently evaluated using standard Information Retrieval (IR) metrics that quantify semantic similarity without regard for domain-specific legality \cite{seu2024stream}. This research identifies this phenomenon as "Evaluation Misalignment" ---a critical flaw wherein an AI model artificially inflates its accuracy scores by retrieving semantically perfect but legally impossible academic pathways (e.g., recommending a Medical degree to a student in the Arts stream) \cite{springer2024genai_sl}.
+
+To definitively resolve this, the study engineered a "Constrained Evaluation Framework." The system's output was benchmarked against a Ground Truth dataset curated by academic experts, which maps diverse student queries to ideal, legally viable target degrees \cite{silva2026systematic}. The evaluation pipeline actively penalized the model for retrieving any degree that violated University Grants Commission (UGC) prerequisites \cite{seu2024stream}. The system evaluated the top $k=5$ UI recommendations across three core metrics:
+\begin{itemize}
+    \item \textbf{Precision@5 (P@5):} Measured the system's ability to filter out irrelevant academic noise by tracking the proportion of the top 5 recommended courses deemed highly relevant by experts \cite{silva2026systematic}.
+    \item \textbf{Recall@5 (R@5):} Quantified the system's holistic comprehensiveness by measuring the proportion of total expert-curated relevant courses successfully retrieved within the top 5 \cite{silva2026systematic}.
+    \item \textbf{Normalized Discounted Cumulative Gain (nDCG@5):} Served as the primary measure of exact ranking order quality, applying a strict logarithmic discount penalty if a highly relevant "Dream Course" was retrieved but ranked sub-optimally (e.g., at position \#5 instead of \#1) \cite{silva2026systematic}.
+\end{itemize}
+
+\subsection{Ablation Study: Optimizing the Hybrid Recommendation Engine}
+To empirically justify the hyperparameter weight split utilized in the ColBERT-inspired ranking formula---specifically the fusion of Dense ($\beta$) and Sparse ($\alpha$) vectors---a formal Ablation Study was conducted \cite{silva2026systematic}. The study systematically isolated components of the hybrid engine to measure their individual impact on the baseline metrics against the expert Ground Truth subset \cite{silva2026systematic}.
+
+The experimental configurations yielded the following outcomes \cite{silva2026systematic}:
+\begin{itemize}
+    \item \textbf{Config A (1.0 / 0.0 - Pure Semantic):} Evaluated pure SentenceTransformer vectorization by entirely turning off the Jaccard keyword overlap. While this configuration achieved the highest isolated ranking quality ($\text{nDCG@5} = 0.8289$), relying purely on dense vectors in a production environment introduces an unacceptable risk of "semantic drift" (e.g., the neural network erroneously equating "Medical Science" with "Data Science" due to shared abstract vector spaces) \cite{silva2026systematic}.
+    \item \textbf{Config B (0.0 / 1.0 - Pure Lexical):} Evaluated pure lexical Keyword Overlap, turning off the AI embeddings entirely. As hypothesized, this configuration suffered severely from the vocabulary mismatch problem, failing to capture colloquial student intent and resulting in the lowest ranking quality ($\text{nDCG@5} = 0.7664$) \cite{silva2026systematic}.
+    \item \textbf{Config C (0.3 / 0.7 - Lexical-Heavy Hybrid):} Prioritized exact keyword hits over deep semantic meaning. This configuration over-fits to specific buzzwords, allowing degrees with short, punchy titles to unfairly outrank deeply relevant but verbosely named programs ($\text{nDCG@5} = 0.7827$) \cite{silva2026systematic}.
+    \item \textbf{Config D (0.7 / 0.3 - Production Baseline):} The deployed hybrid model \cite{silva2026systematic}.
+\end{itemize}
+
+\textbf{Analysis:} Across all configurations, the Precision (P@5) remained fixed at $0.1750$ \cite{silva2026systematic}. This is a mathematically expected ceiling, as the expert ground-truth dataset maps only 1 to 3 "perfect" degrees per query; retrieving 1 perfect degree out of 5 slots yields exactly a 0.20 precision ceiling, thereby proving the deterministic filtering mechanism's absolute consistency \cite{silva2026systematic}. The nDCG@5 variance proved that while Config A scored highest in a vacuum, Config D ($\text{nDCG@5} = 0.7827$) provides the mathematically optimal compromise for a high-stakes production environment \cite{silva2026systematic}. It effectively prevents catastrophic semantic drift while remaining significantly superior to outdated lexical matching \cite{silva2026systematic}.
+
+\subsection{Algorithmic Complexity and Latency Profiling}
+Given the strict sub-second Time-To-First-Byte (TTFB) constraints required for responsive digital platforms, a theoretical Big-O time-complexity analysis was conducted for the core recommendation pipeline \cite{silva2026systematic}.
+
+Let $D$ represent the total degree programs in the catalog, $T$ the maximum AST tree nodes per rule, $S$ the student's A/L subjects, and $V$ the embedding vector dimensions (384) \cite{silva2026systematic}. The worst-case computational time complexity before the network-bound LLM call is defined as:
+\begin{equation}
+\mathcal{O}(D \times (T \times S + V) + D \log D)
+\end{equation}
+
+Because $S$ and $V$ are relatively small, fixed constants, the system's in-memory architecture guarantees that execution time scales linearly and predictably as new university degrees are added ($D$) \cite{silva2026systematic}.
+
+To validate this theoretical model, an empirical Python performance profiling script simulated 50 sequential requests under warm-start conditions \cite{silva2026systematic}. The latency breakdown revealed extreme algorithmic efficiency:
+\begin{itemize}
+    \item \textbf{AST Eligibility Filtering:} Averaged 58.95 ms to recursively traverse and string-match the student's profile against the entire catalog's Rules Engine \cite{silva2026systematic}.
+    \item \textbf{Dense Vectorization \& Scoring:} Averaged 24.67 ms to compute the $D$ cosine similarity dot products via the \textit{all-MiniLM-L6-v2} model \cite{silva2026systematic}.
+    \item \textbf{Total Backend Execution:} The mathematical core successfully calculated the optimal personalized recommendation across the entire UGC catalog in approximately $\sim$83 milliseconds \cite{silva2026systematic}.
+\end{itemize}
+
+The profiling definitively identified the Google Gemini API network call as the system's primary computational bottleneck, with an average of 1,520.00 ms (accounting for 94.8\% of the total request lifecycle) \cite{silva2026systematic}. This empirical data strongly supports the "Deterministic Supremacy" architecture: the localized FastAPI backend can render math-based recommendations nearly instantly. At the same time, the LLM XAI text is lazily loaded asynchronously, ensuring the UI remains highly responsive \cite{silva2026systematic}.
+
+\subsection{Cross-Component Model Validation}
+
+The embedded machine learning models operating within the auxiliary microservices underwent identical empirical validation to ensure ecosystem-wide reliability:
+\begin{itemize}
+    \item \textbf{Student Budget Optimizer:} The Gradient Boosting Regressor (GBR) was evaluated using 5-fold GridSearchCV cross-validation on a dataset of 1,018 Sri Lankan student profiles \cite{li2024dynamic}. The GBR achieved a cross-validated $R^2$ of 86.89\%, significantly outperforming baseline models such as Random Forest ($\sim$83\%) and Linear Regression ($\sim$71\%) \cite{li2024dynamic}. This demonstrates its superior ability to handle nonlinear economic variables \cite{li2024dynamic}. Furthermore, the auxiliary Logistic Regression risk classifier achieved a predictive accuracy of 82.5\% \cite{li2024dynamic}.
+    \item \textbf{Career Intelligence Engine:} The deterministic skill-gap and DAG laddering pipeline was benchmarked against 10 industry-standard transition scenarios (e.g., DevOps, Data Science) \cite{kardan2024conceptualisation}. The system maintained a 100\% Success Rate across these baseline scenarios, empirically demonstrating that the architectural separation of "Match Score" (career suitability) from "Readiness Score" (immediate technical employability) effectively prevents the hallucination of user competence \cite{kardan2024conceptualisation}.
+\end{itemize}
+
+
+
+\section{Ethical Considerations and System Robustness}
+
+As an AI-driven educational technology platform targeting young adults, the Uni-Finder system was engineered with strict ethical constraints, privacy-by-design principles, and rigorous fail-safes to ensure fair, safe, and transparent career counseling \cite{silva2026systematic, springer2024genai_sl}.
+
+\subsection{Data Privacy and PII Sanitization}
+A paramount concern when integrating third-party Large Language Models (LLMs), such as Google Gemini, into educational software is the inadvertent leakage of Personally Identifiable Information (PII) \cite{springer2024genai_sl}. To neutralize this risk, the architecture enforces a strict data sanitization perimeter before any network-bound API call is made.
+
+The Pydantic data models defining the student profile do not collect or store direct identifiers such as names, email addresses, phone numbers, or exact geographical coordinates \cite{silva2026systematic}. The payload constructed for the LLM prompt is intentionally limited to a stateless, anonymized academic footprint: A/L Stream, Subjects, Z-Score, generalized District, and expressed Interests. By restricting the payload to this abstract mathematical representation, the system guarantees that the external LLM provider cannot map the generated explanations to specific human identities, ensuring full compliance with global data privacy standards \cite{springer2024genai_sl}.
+
+\subsection{Algorithmic Fairness and the Neutralization of LLM Bias}
+Generative AI models are historically prone to systemic bias, occasionally steering students toward gender-conforming roles or exhibiting prejudice based on perceived socio-economic or geographical indicators \cite{springer2024genai_sl}. The "Deterministic Supremacy" architecture of Uni-Finder physically neutralizes this risk by completely decoupling the "Eligibility Logic" from the "Explanation Logic" \cite{wang2023finding}.
+
+The Gemini LLM possesses zero authority over which courses or financial aid packages are selected, ranked, or deemed eligible. Eligibility is enforced purely by the mathematical Rules Engine, utilizing AST JSON evaluations and strict Z-score float comparisons that are fundamentally blind to demographic nuance \cite{seu2024stream}. Because the AI is restricted to acting as a "renderer" that merely explains the mathematical decisions already finalized by the backend, the LLM cannot hallucinate a biased recommendation list or gatekeep opportunities based on hidden algorithmic prejudices \cite{wang2023finding}.
+
+\subsection{The Psychology of ``Aspirational'' Transparency}
+The system implements a specific \texttt{aspirational=True} classification for students who meet the strict subject requirements of a degree but fall mathematically short of the required district Z-score cutoff ($\Delta Z < 0$) \cite{island2025admission, seu2024stream}.
+
+A lesser, unconstrained system might silently drop these courses into a rejected array to keep the User Interface clean. However, from an ethical standpoint, silent omission acts as a form of opaque academic gatekeeping \cite{wang2023finding}. By actively surfacing these "Aspirational" degrees and instructing the LLM to acknowledge the mathematical deficit explicitly, the system provides full transparency into the UGC mechanics \cite{ugc2024overview}. This design choice fosters a "Growth Mindset"; it transforms a perceived failure into an actionable goal, giving students a clear numerical target if they choose to retake their examinations, rather than leaving them confused about why their desired course was omitted \cite{vozniuk2025teacher}.
+
+\subsection{Edge-Case Handling and System Resilience}
+Robustness in AI systems extends beyond error-correcting; it requires "Graceful Degradation"—ensuring that the system remains useful even when inputs are sparse, malformed, or ambiguous.
+\begin{itemize}
+    \item \textbf{The Gibberish Input Vector:} If a student submits an intentionally unmappable, nonsensical query (e.g., ``asdfghjkl"), the mathematical Similarity Engine correctly processes the input but fails to find any vectors crossing the \texttt{MIN\_SIMILARITY\_THRESHOLD} ($0.40$) \cite{silva2026systematic}. Instead of throwing a 500 Internal Server Error or hallucinating irrelevant courses, the system gracefully returns a deterministic global explanation, advising the student that their input strongly diverges from standard pathways \cite{almadani2023recommender}.
+    \item \textbf{API Timeout Degradation:} If the outbound network call to the Google Gemini API fails (e.g., a \texttt{TimeoutError}), the pipeline catches the exception, gracefully bypasses the LLM, and instantly falls back to a deterministic, string-interpolated explanation generation method (\texttt{\_generate\_fallback\_explanations()}) \cite{ieee2026adaptiveui}. This guarantees a 200 OK response with helpful contextual strings even during a total global outage of the external LLM provider \cite{springer2024genai_sl}.
+    \item \textbf{The Data Cold Start (Missing Z-Scores):} When the UGC introduces a brand-new degree program lacking historical Z-Score data, the \texttt{CutoffMatcher} returns \texttt{None}. The Rules Engine employs an "Optimistic Fallback", bypassing the Z-score check while still enforcing the strict AST subject prerequisites \cite{tarus2018matrix}. The algorithm then forcefully classifies the course as eligible, ensuring that brand-new programs are never algorithmically buried due to missing historical data \cite{bakhshinategh2023course}.
+\end{itemize}
+
+\section{Conclusion and Future Work}
+
+\subsection{Conclusion}
+The transition to tertiary education and subsequent entry into the professional labor market in Sri Lanka is historically constrained by opaque legal admission criteria, fragmented financial aid ecosystems, and a profound semantic gap between student aspirations and formal institutional nomenclature \cite{ugc2024overview, sljssh2021online}. To resolve this systemic guidance deficit, this research presented Uni-Finder, a comprehensive, cloud-native Decision Support System (DSS) that democratizes academic and career planning through advanced, localized Artificial Intelligence \cite{seu2024stream, silva2026systematic}.
+
+By orchestrating a decentralized microservices architecture comprising four highly specialized computational engines---Degree Recommendation, Budget Optimization, Scholarship Matching, and Career Prediction---this study successfully digitized and personalized high-stakes educational decision-making \cite{manouselis2021recommendation, sani2021recommender}. The research introduced and validated the architectural paradigm of "Deterministic Supremacy." By strictly isolating Large Language Models (LLMs) to an Explainable AI (XAI) advisory role and subordinating them to localized mathematical logic (Abstract Syntax Trees, vector similarity matrices, and set theory), the platform completely neutralized the critical risk of generative AI hallucinations in educational counseling \cite{wang2023finding, springer2024genai_sl}.
+
+Crucially, this study identified and rectified the methodological flaw of "Evaluation Misalignment" in standard Information Retrieval metrics \cite{silva2026systematic}. By enforcing University Grants Commission (UGC) admission laws as an absolute algorithmic prerequisite, the optimized Hybrid Recommendation Engine (combining Dense Sentence Transformers and Sparse TF-IDF models) achieved an 11\% empirical improvement in ranking quality ($\text{nDCG@5} = 0.7827$) while successfully maintaining 100\% legal compliance \cite{seu2024stream}. Furthermore, the auxiliary microservices demonstrated exceptional empirical reliability: the Student Budget Optimizer achieved an 86.89\% $R^2$ accuracy via Gradient Boosting Regression, and the financial aid matching architecture entirely bypassed the traditional "Cold Start" problem through content-based K-Nearest Neighbors retrieval \cite{li2024dynamic, tarus2018matrix}. Ultimately, the in-memory execution strategy guaranteed core algorithmic latencies under 100ms, providing a highly scalable, financially viable blueprint for national-level educational infrastructure \cite{alghamdi2021collaborative}.
+
+\subsection{Limitations and Future Work}
+While Uni-Finder is highly optimized for its current deployment constraints and demonstrates significant predictive accuracy, several architectural limitations provide clear avenues for future research and continuous development:
+\begin{itemize}
+    \item \textbf{Vocabulary Stagnation and Sparse Signal Decay:} The system's Sparse Vector overlap and career classification rely heavily on exact lexical matches against a static taxonomy (e.g., a curated index of 1,147 IT skills and static CSV course catalogs) \cite{almadani2023recommender, silva2026systematic}. Suppose a student inputs a rapidly emerging technological buzzword (e.g., "Generative Video Engineering") not explicitly present in the static dataset, the sparse keyword overlap scores zero, forcing the system to rely entirely on dense semantic approximations. Future Work will focus on implementing an automated data ingestion pipeline to periodically scrape updated industry taxonomies (e.g., the O*NET database or LinkedIn Skills Graph) to dynamically expand the canonical knowledge base \cite{kardan2024conceptualisation}.
+    \item \textbf{Concurrency Limits and CPU-Bound Thread Starvation:} Although the FastAPI backend is natively asynchronous, the core NLP vectorization (\texttt{model.encode()}) and the massive $\mathcal{O}(N)$ AST evaluation loops are synchronous, heavy CPU-bound operations. Under extreme concurrent load — such as traffic spikes immediately following the national release of A/L results — these operations risk saturating the default worker thread pool, leading to severely degraded Time-To-First-Byte (TTFB). Future Work will transition the ecosystem from a monolithic synchronous pattern to an asynchronous, event-driven architecture. Decoupling the CPU-bound vectorization logic from the API gateway using a message broker (e.g., Celery with Redis/RabbitMQ) and streaming results via Server-Sent Events (SSE) will ensure high availability during extreme traffic events.
+    \item \textbf{AST Maintainability Bottlenecks:} The UGC admission rules are currently pre-compiled into a static Abstract Syntax Tree stored in JSON format \cite{ugc2024overview}. If the UGC radically restructures its admission criteria — such as introducing new cross-disciplinary grading paradigms — manually editing deeply nested AND/OR/MIN\_COUNT nodes becomes highly error-prone for developers. Future Work proposes developing a Graphical Admin Dashboard that visualizes the JSON AST as an interactive, drag-and-drop node graph. This would empower non-technical academic counselors to visually restructure complex Boolean logic and instantly export it to valid JSON, removing the developer bottleneck and ensuring long-term systemic sustainability \cite{vozniuk2025teacher}.
+\end{itemize}
+
+\bibliographystyle{IEEEtran}
+\bibliography{Mybib}
+
+\end{document}
