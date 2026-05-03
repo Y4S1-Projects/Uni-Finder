@@ -4,2285 +4,2209 @@ import { useSelector } from "react-redux";
 import "./BudgetOptimizerNew.css";
 
 const BudgetOptimizerNew = () => {
-  // Get current user from Redux store
-  const { currentUser } = useSelector((state) => state.user);
-
-  // Multi-step form state
-  const [currentStep, setCurrentStep] = useState(2);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [analysisResult, setAnalysisResult] = useState(null);
-
-  // Gemini AI Enhanced Strategy state
-  const [geminiInsight, setGeminiInsight] = useState(null);
-  const [aiStrategyMeta, setAiStrategyMeta] = useState(null); // AI-computed budget numbers
-  const [aiFinalBudgetNums, setAiFinalBudgetNums] = useState(null); // parsed numbers from FINAL_BUDGET: line
-  const [showTransformation, setShowTransformation] = useState(false); // revealed by button
-  const [displayedText, setDisplayedText] = useState(''); // For streaming effect
-  const [isStreaming, setIsStreaming] = useState(false);
-  const [geminiLoading, setGeminiLoading] = useState(false);
-  const [geminiError, setGeminiError] = useState(null);
-  const [aiProvider, setAiProvider] = useState(null); // Track which AI was used
-  const aiSectionRef = useRef(null); // Target for scroll-to-AI button
-
-  // Distance warning modal state
-  const [distanceWarning, setDistanceWarning] = useState({ show: false, pendingValue: '' });
-
-  // Form data state
-  const [formData, setFormData] = useState({
-    // Account Information
-    email: currentUser?.email || '',
-    password: '',
-    full_name: currentUser?.username || '',
-    phone: '',
-    university: 'SLIIT',
-
-    // Academic Profile
-    year_of_study: 'Second Year',
-    field_of_study: 'IT',
-    district: 'Colombo',
-
-    // Financial Basics
-    monthly_income: 30000,
-    home_money: 0,           // Money received from family/home
-    accommodation_type: 'Rented Room',
-    rent: 10000,
-
-    // Food Preferences
-    food_type: 'Mixed',
-    meals_per_day: '3 meals',
-    diet_type: 'Non-Vegetarian',
-    cooking_frequency: 'Most days',
-    cooking_percentage: 60,
-
-    // Transport Details
-    distance_uni_accommodation: 5,
-    distance_home_uni: 80,
-    transport_method: 'Bus',                   // Accommodation → University (daily commute)
-    transport_method_home_accommodation: 'Bus', // Home → Accommodation (home visits)
-    days_per_week: '5 days',
-    home_visit_frequency: 'Monthly',
-    transport_method_home: 'Bus',              // legacy — kept for backward compat
-
-    // Work Commute (optional)
-    has_work_commute: false,
-    distance_work: 10,                        // km from accommodation to work
-    work_transport_method: 'Bus',
-    work_days_per_week: '5 days',
-
-    // Additional Expenses
-    internet: 1500,
-    study_materials: 2000,
-    entertainment: 2000,
-    utilities: 1000,
-    healthcare: 1000,
-    other: 500
-  });
-
-  const backendUrl = 'http://127.0.0.1:5002';
-
-  const districts = [
-    'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya',
-    'Galle', 'Matara', 'Hambantota', 'Jaffna', 'Kurunegala', 'Anuradhapura',
-    'Ratnapura', 'Batticaloa', 'Trincomalee', 'Badulla'
-  ];
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: ['monthly_income', 'home_money', 'rent', 'distance_uni_accommodation', 'distance_home_uni',
-        'cooking_percentage', 'internet', 'study_materials', 'entertainment',
-        'utilities', 'healthcare', 'other'].includes(name)
-        ? (value === '' ? '' : (parseInt(value) || 0))
-        : value
-    }));
-  };
-
-  const parseStepLinks = (rawLinks) => {
-    if (!rawLinks || /^none$/i.test(rawLinks.trim())) return [];
-
-    const links = [];
-    const markdownRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
-    let match;
-
-    while ((match = markdownRegex.exec(rawLinks)) !== null) {
-      links.push({ label: match[1].trim(), url: match[2].trim() });
-    }
-
-    if (links.length === 0) {
-      const urlRegex = /(https?:\/\/[^\s|,]+)/g;
-      const urls = rawLinks.match(urlRegex) || [];
-      urls.forEach((url, index) => {
-        links.push({ label: `Resource ${index + 1}`, url: url.trim() });
-      });
-    }
-
-    return links.filter((link, index, arr) =>
-      link.url && arr.findIndex((item) => item.url === link.url) === index
-    );
-  };
-
-  const slugifyLocation = (value) => {
-    if (!value) return '';
-    return value
-      .toLowerCase()
-      .replace(/university of /g, '')
-      .replace(/[^a-z0-9\s-]/g, '')
-      .trim()
-      .replace(/\s+/g, '-');
-  };
-
-  const buildIkmanAccommodationLinks = () => {
-    const districtSlug = slugifyLocation(formData.district || 'colombo') || 'colombo';
-    const districtName = formData.district || 'Colombo';
-    const campusKeywords = [
-      formData.district,
-      'boarding room',
-      'annex',
-      'rent',
-    ].filter(Boolean).join(' ');
-
-    return [
-      {
-        label: `ikman rooms in ${districtName}`,
-        url: `https://ikman.lk/en/ads/i/${districtSlug}/room-annex-rentals/other`,
-      },
-      {
-        label: `Search boarding in ${districtName}`,
-        url: `https://www.google.com/search?q=${encodeURIComponent(`site:ikman.lk ${campusKeywords}`)}`,
-      },
-    ];
-  };
-
-  const getFallbackStepLinks = (step) => {
-    const content = `${step.title} ${step.how}`.toLowerCase();
-    const fallbackLinks = [];
-
-    const isAccommodationStep =
-      step.category?.toLowerCase().includes('accommodation') ||
-      content.includes('rent') ||
-      content.includes('room') ||
-      content.includes('boarding') ||
-      content.includes('annex') ||
-      content.includes('hostel');
-
-    if (content.includes('cargills')) {
-      fallbackLinks.push({ label: 'Cargills Online', url: 'https://cargillsonline.com/' });
-    }
-    if (content.includes('keells')) {
-      fallbackLinks.push({ label: 'Keells Super', url: 'https://www.keellssuper.com/' });
-    }
-    if (isAccommodationStep) {
-      fallbackLinks.push(...buildIkmanAccommodationLinks());
-    }
-
-    return fallbackLinks.filter((link, index, arr) =>
-      link.url && arr.findIndex((item) => item.url === link.url) === index
-    );
-  };
-
-  const sanitizeAiMoneyText = (value) => {
-    if (!value) return value;
-    return value
-      .replace(/\/month\b/gi, '')
-      .replace(/\bper month\b/gi, '')
-      .replace(/\bmonthly savings?\b/gi, 'buffer')
-      .replace(/\bsaving\s+LKR/gi, 'buffer LKR')
-      .replace(/\s{2,}/g, ' ')
-      .trim();
-  };
-
-  // ── Gemini AI Enhanced Strategy ─────────────────────────────
-  const fetchGeminiInsight = async (result, isRetry = false) => {
-    setGeminiLoading(true);
-    setGeminiError(null);
-    if (!isRetry) {
-      setGeminiInsight(null);
-      setShowTransformation(false); // hide card when starting a fresh AI call
-      setAiFinalBudgetNums(null);
-    }
-    try {
-      const payload = {
-        financial_summary: result.financial_summary,
-        expense_breakdown: result.expense_breakdown,
-        risk_assessment: result.risk_assessment,
-        optimal_strategy: result.optimal_strategy,
-        student_profile: {
-          university: formData.university,
-          year_of_study: formData.year_of_study,
-          field_of_study: formData.field_of_study,
-          district: formData.district,
-          accommodation_type: formData.accommodation_type,
-          food_type: formData.food_type,
-          transport_method: formData.transport_method
-        }
-      };
-      const resp = await fetch(`${backendUrl}/api/budget/gemini-strategy`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await resp.json();
-
-      if (resp.ok && data.success) {
-        const content = data.ai_strategy || data.gemini_strategy;
-        setGeminiInsight(content); // Store full text
-        setDisplayedText(''); // Reset displayed text
-        setIsStreaming(true); // Start streaming animation
-        setAiProvider(data.ai_provider || data.model_used || 'AI');
-        // Store the exact constraint numbers the AI strategy was built around
-        if (data.prompt_data) setAiStrategyMeta(data.prompt_data);
-        if (data.cached) {
-          console.log(`✅ Using cached ${data.ai_provider} response`);
-        }
-      } else {
-        // Use user-friendly message if available
-        const errorMessage = data.user_message || data.error || 'Gemini AI temporarily unavailable';
-        setGeminiError({
-          message: errorMessage,
-          canRetry: data.retry_suggested || resp.status === 429,
-          technical: data.technical_details,
-          isRateLimit: resp.status === 429
-        });
-      }
-    } catch (e) {
-      setGeminiError({
-        message: 'Could not reach Gemini service. Please check your connection.',
-        canRetry: true,
-        technical: e.message,
-        isRateLimit: false
-      });
-    } finally {
-      setGeminiLoading(false);
-    }
-  };
-
-  const handleDistanceHomeChange = (e) => {
-    const val = e.target.value;
-    const num = parseInt(val) || 0;
-    if (num > 800) {
-      setDistanceWarning({ show: true, pendingValue: val === '' ? '' : num });
-    } else {
-      setFormData(prev => ({ ...prev, distance_home_uni: val === '' ? '' : num }));
-    }
-  };
-
-  const confirmDistanceWarning = () => {
-    setFormData(prev => ({ ...prev, distance_home_uni: distanceWarning.pendingValue }));
-    setDistanceWarning({ show: false, pendingValue: '' });
-  };
-
-  const cancelDistanceWarning = () => {
-    setDistanceWarning({ show: false, pendingValue: '' });
-  };
-
-  const nextStep = () => {
-    setCurrentStep(prev => Math.min(prev + 1, 7));
-  };
-
-  const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 2));
-  };
-
-  const scrollToAISection = () => {
-    if (aiSectionRef.current) {
-      aiSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  // ── Parse FINAL_BUDGET numbers from AI response ─────────────
-  useEffect(() => {
-    if (!geminiInsight) { setAiFinalBudgetNums(null); return; }
-    const match = geminiInsight.match(/FINAL_BUDGET\s*:\s*(.+)/i);
-    if (!match) return;
-    const parseNum = (str) => {
-      if (!str) return null;
-      const n = parseFloat(str.replace(/[^0-9.]/g, ''));
-      return isNaN(n) ? null : n;
-    };
-    const items = match[1].split('|').map(s => {
-      const [label, ...rest] = s.split(':');
-      return { label: label.trim(), value: rest.join(':').trim() };
-    }).filter(x => x.label && x.value);
-    const totalItem   = items.find(x => x.label.toUpperCase() === 'TOTAL');
-    const savingsItem = items.find(x => x.label.toUpperCase() === 'SAVINGS');
-    const catItems    = items.filter(x =>
-      !['TOTAL','SAVINGS'].includes(x.label.toUpperCase()) &&
-      !x.label.toUpperCase().includes('FITS')
-    );
-    setAiFinalBudgetNums({
-      total:      parseNum(totalItem?.value),
-      savings:    parseNum(savingsItem?.value),
-      categories: catItems.map(c => ({ label: c.label, value: parseNum(c.value), raw: c.value })),
-    });
-  }, [geminiInsight]);
-
-  // ── Streaming Text Effect (like ChatGPT) ─────────────────────
-  useEffect(() => {
-    if (!isStreaming || !geminiInsight) return;
-
-    let currentIndex = 0;
-    const fullText = geminiInsight;
-    const charsPerFrame = 3; // Characters to add per interval (adjust speed)
-
-    const streamInterval = setInterval(() => {
-      if (currentIndex >= fullText.length) {
-        setIsStreaming(false);
-        clearInterval(streamInterval);
-        return;
-      }
-
-      currentIndex += charsPerFrame;
-      setDisplayedText(fullText.substring(0, Math.min(currentIndex, fullText.length)));
-    }, 30); // 30ms interval for smooth streaming
-
-    return () => clearInterval(streamInterval);
-  }, [isStreaming, geminiInsight]);
-
-  const submitAnalysis = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Include user information if logged in
-      const requestData = {
-        ...formData,
-        userId: currentUser?._id || null,
-        username: currentUser?.username || formData.full_name,
-        email: currentUser?.email || formData.email
-      };
-
-      // Step 1: Get ML analysis from Flask
-      const response = await fetch(`${backendUrl}/api/budget/complete-analysis`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestData)
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        setAnalysisResult(result);
-        // Don't automatically fetch AI insights - user must click button
-
-        // Step 2: Save to MongoDB directly via Node.js API (like SignUp does)
-        try {
-          const budgetSaveData = {
-            // User info
-            userId: currentUser?._id || null,
-            username: currentUser?.username || formData.full_name,
-            email: currentUser?.email || formData.email,
-
-            // Personal Information
-            monthly_income: formData.monthly_income,
-            year_of_study: formData.year_of_study,
-            field_of_study: formData.field_of_study,
-            university: formData.university,
-            district: formData.district,
-            accommodation_type: formData.accommodation_type,
-
-            // Budget Inputs
-            rent: formData.rent,
-            internet: formData.internet,
-            study_materials: formData.study_materials,
-            entertainment: formData.entertainment,
-            utilities: formData.utilities,
-            healthcare: formData.healthcare,
-            other: formData.other,
-
-            // Food Details
-            food_type: formData.food_type,
-            meals_per_day: formData.meals_per_day,
-            diet_type: formData.diet_type,
-            cooking_frequency: formData.cooking_frequency,
-            cooking_percentage: formData.cooking_percentage,
-
-            // Transport Details
-            distance_uni_accommodation: formData.distance_uni_accommodation,
-            distance_home_uni: formData.distance_home_uni,
-            transport_method: formData.transport_method,
-            transport_method_home_accommodation: formData.transport_method_home_accommodation,
-            transport_method_home: formData.transport_method_home_accommodation, // compat alias
-            days_per_week: formData.days_per_week,
-            home_visit_frequency: formData.home_visit_frequency,
-            // Work commute
-            has_work_commute: formData.has_work_commute,
-            distance_work: formData.distance_work,
-            work_transport_method: formData.work_transport_method,
-            work_days_per_week: formData.work_days_per_week,
-
-            // Calculated Budgets from Flask response
-            food_budget: result.calculated_budgets?.food || {},
-            transport_budget: result.calculated_budgets?.transport || {},
-
-            // ML Prediction Results
-            predicted_budget: result.ml_prediction?.predicted_budget || 0,
-            ml_confidence: (result.ml_prediction?.confidence || 0) * 100,
-            risk_level: result.risk_assessment?.risk_level || 'Medium Risk',
-            risk_probability: (result.risk_assessment?.risk_probability || 0) * 100,
-
-            // Financial Summary
-            total_expenses: result.financial_summary?.total_expenses || 0,
-            calculated_savings: result.financial_summary?.monthly_savings || 0,
-            savings_rate: result.financial_summary?.savings_rate || 0,
-
-            // Recommendations
-            recommendations: result.recommendation?.key_recommendations || [],
-            actionable_steps: result.recommendation?.action_steps || [],
-
-            // Expense Breakdown
-            expense_breakdown: result.expense_breakdown || {},
-
-            // Metadata
-            analysis_date: new Date().toISOString(),
-            status: 'active'
-          };
-
-          // Save to MongoDB via Node.js API - Same as SignUp
-          const nodeApiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5010';
-          const saveResponse = await fetch(`${nodeApiUrl}/api/budget/save`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(budgetSaveData)
-          });
-
-          if (saveResponse.ok) {
-            const saveResult = await saveResponse.json();
-            console.log('✅ Budget prediction saved to MongoDB:', saveResult.predictionId);
-          } else {
-            console.warn('⚠️ Failed to save to MongoDB, but showing results anyway');
-          }
-        } catch (saveError) {
-          console.warn('⚠️ MongoDB save error:', saveError.message);
-          // Continue anyway - user still gets analysis results
-        }
-
-        setCurrentStep(7); // Move to results step
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Failed to analyze budget');
-      }
-    } catch (error) {
-      setError('Network error. Please check if the backend server is running on port 5002.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const renderStepIndicator = () => {
-    const steps = [
-      'Academic', 'Financial', 'Food', 'Transport', 'Additional', 'Results'
-    ];
-
-    return (
-      <div className="step-indicator mb-4">
-        <ProgressBar now={((currentStep - 2) / 5) * 100} className="mb-3" />
-        <div className="d-flex justify-content-between">
-          {steps.map((step, index) => {
-            const stepNum = index + 2;      // actual step state value
-            const displayNum = index + 1;   // visible 1-6 label
-            const isCompleted = currentStep > stepNum;
-            const isActive = currentStep === stepNum;
-            const isClickable = isCompleted;
-            return (
-              <div
-                key={index}
-                className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isClickable ? 'clickable' : ''}`}
-                onClick={() => isClickable && setCurrentStep(stepNum)}
-                title={isClickable ? `Go back to Step ${displayNum}: ${step}` : undefined}
-              >
-                <div className="step-number">
-                  {isCompleted ? (
-                    <span className="step-done">
-                      <span className="step-check">✓</span>
-                      <span className="step-num-badge">{displayNum}</span>
-                    </span>
-                  ) : (
-                    displayNum
-                  )}
-                </div>
-                <div className="step-label">
-                  <span className="step-num-text">Step {displayNum}</span>
-                  <span className="step-name-text">{step}</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
-
-  const renderStep2 = () => (
-    <Card className="shadow-lg border-0">
-      <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">🎓 Step 1: Academic Profile</h4>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Year of Study *</strong></Form.Label>
-            <Form.Select name="year_of_study" value={formData.year_of_study} onChange={handleInputChange}>
-              <option value="First Year">First Year</option>
-              <option value="Second Year">Second Year</option>
-              <option value="Third Year">Third Year</option>
-              <option value="Fourth Year">Fourth Year</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Field of Study *</strong></Form.Label>
-            <Form.Select name="field_of_study" value={formData.field_of_study} onChange={handleInputChange}>
-              <option value="Engineering">Engineering</option>
-              <option value="IT">IT/Computer Science</option>
-              <option value="Business">Business</option>
-              <option value="Medicine">Medicine</option>
-              <option value="Arts">Arts</option>
-              <option value="Science">Science</option>
-              <option value="Other">Other</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Current District *</strong></Form.Label>
-            <Form.Select name="district" value={formData.district} onChange={handleInputChange}>
-              {districts.map(dist => (
-                <option key={dist} value={dist}>{dist}</option>
-              ))}
-            </Form.Select>
-          </Form.Group>
-        </Form>
-      </Card.Body>
-    </Card>
-  );
-
-  const renderStep3 = () => (
-    <Card className="shadow-lg border-0">
-      <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">💰 Step 2: Financial Basics</h4>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Monthly Income (LKR) *</strong></Form.Label>
-            <Form.Control
-              type="number"
-              name="monthly_income"
-              value={formData.monthly_income}
-              onChange={handleInputChange}
-              onFocus={e => e.target.select()}
-              required
-            />
-            <Form.Text className="text-muted">
-              Total money you receive monthly (allowance, scholarship, part-time job)
-            </Form.Text>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>💌 Money Received from Home / Family (LKR)</strong></Form.Label>
-            <Form.Control
-              type="number"
-              name="home_money"
-              value={formData.home_money}
-              onChange={handleInputChange}
-              onFocus={e => e.target.select()}
-              placeholder="0"
-            />
-            <Form.Text className="text-muted">
-              Enter the monthly amount your family sends you (leave 0 if none).
-              This will be added to your effective income.
-            </Form.Text>
-            {formData.home_money > 0 && (
-              <div className="alert alert-info mt-2 py-1 px-3 mb-0" style={{ fontSize: '0.85rem' }}>
-                💡 Effective total income: <strong>LKR {(Number(formData.monthly_income) + Number(formData.home_money)).toLocaleString()}</strong>/month
-              </div>
-            )}
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Accommodation Type *</strong></Form.Label>
-            <Form.Select name="accommodation_type" value={formData.accommodation_type} onChange={handleInputChange}>
-              <option value="University Hostel">University Hostel</option>
-              <option value="Rented Room">Rented Room/Apartment</option>
-              <option value="Living with Family">Living with Family (No rent)</option>
-              <option value="Boarding">Boarding House</option>
-              <option value="Other">Other</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Monthly Rent (LKR) *</strong></Form.Label>
-            <Form.Control
-              type="number"
-              name="rent"
-              value={formData.rent}
-              onChange={handleInputChange}
-              onFocus={e => e.target.select()}
-              required
-            />
-            <Form.Text className="text-muted">
-              Enter 0 if living with family or accommodation is free
-            </Form.Text>
-          </Form.Group>
-        </Form>
-      </Card.Body>
-    </Card>
-  );
-
-  const renderStep4 = () => (
-    <Card className="shadow-lg border-0">
-      <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">🍽️ Step 3: Food Preferences</h4>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form>
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Food Type Preference *</strong></Form.Label>
-            <Form.Select name="food_type" value={formData.food_type} onChange={handleInputChange}>
-              <option value="Home Cooked">Home Cooked (I cook myself)</option>
-              <option value="Mixed">Mixed (Cook + Order/Eat out sometimes)</option>
-              <option value="Food Delivery">Food Delivery (Uber Eats, PickMe Food)</option>
-              <option value="Mostly Canteen/Restaurants">Mostly Canteen/Restaurants</option>
-              <option value="Full Meal Plan">Full Meal Plan (Hostel/Boarding included)</option>
-            </Form.Select>
-          </Form.Group>
-
-          {formData.food_type === 'Mixed' && (
-            <Form.Group className="mb-3">
-              <Form.Label><strong>Cooking vs Ordering Split</strong></Form.Label>
-              <div className="d-flex align-items-center gap-3">
-                <span>Cook: {formData.cooking_percentage}%</span>
-                <Form.Range
-                  name="cooking_percentage"
-                  value={formData.cooking_percentage}
-                  onChange={handleInputChange}
-                  min="0"
-                  max="100"
-                />
-                <span>Order: {100 - formData.cooking_percentage}%</span>
-              </div>
-            </Form.Group>
-          )}
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Meals Per Day *</strong></Form.Label>
-            <Form.Select name="meals_per_day" value={formData.meals_per_day} onChange={handleInputChange}>
-              <option value="2 meals">2 meals</option>
-              <option value="3 meals">3 meals</option>
-              <option value="3 meals + snacks">3 meals + snacks</option>
-            </Form.Select>
-          </Form.Group>
-
-          <Form.Group className="mb-3">
-            <Form.Label><strong>Diet Type *</strong></Form.Label>
-            <Form.Select name="diet_type" value={formData.diet_type} onChange={handleInputChange}>
-              <option value="Vegetarian">Vegetarian</option>
-              <option value="Non-Vegetarian">Non-Vegetarian</option>
-              <option value="Vegan">Vegan</option>
-            </Form.Select>
-          </Form.Group>
-
-          {(formData.food_type === 'Home Cooked' || formData.food_type === 'Mixed') && (
-            <Form.Group className="mb-3">
-              <Form.Label><strong>How often do you cook?</strong></Form.Label>
-              <Form.Select name="cooking_frequency" value={formData.cooking_frequency} onChange={handleInputChange}>
-                <option value="Every day">Every day</option>
-                <option value="Most days">Most days</option>
-                <option value="Sometimes">Sometimes</option>
-                <option value="Rarely">Rarely</option>
-                <option value="Never">Never</option>
-              </Form.Select>
-            </Form.Group>
-          )}
-        </Form>
-      </Card.Body>
-    </Card>
-  );
-
-  const renderStep5 = () => (
-    <Card className="shadow-lg border-0">
-      <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">🚌 Step 4: Transport Details</h4>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Distance: University to Accommodation (km)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="distance_uni_accommodation"
-                  value={formData.distance_uni_accommodation}
-                  onChange={handleInputChange}
-                  onFocus={e => e.target.select()}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Distance: Home to University (km)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="distance_home_uni"
-                  value={formData.distance_home_uni}
-                  onChange={handleDistanceHomeChange}
-                  onFocus={e => e.target.select()}
-                  isInvalid={Number(formData.distance_home_uni) > 800}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          {/* ── Route 1: Accommodation → University ── */}
-          <div className="p-3 mb-3 rounded" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
-            <div className="mb-2" style={{ fontWeight: 700, color: '#1e40af', fontSize: '0.92rem' }}>
-              🏫 Route 1: Accommodation → University (Daily Commute)
-            </div>
-            <Form.Group className="mb-0">
-              <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport method you use every day</Form.Label>
-              <Form.Select name="transport_method" value={formData.transport_method} onChange={handleInputChange}>
-                <option value="Walking">🚶 Walking</option>
-                <option value="Bicycle">🚲 Bicycle</option>
-                <option value="Bus">🚌 Bus (CTB / Private)</option>
-                <option value="Train">🚆 Train</option>
-                <option value="Tuk-Tuk">🛺 Tuk-Tuk / Three-Wheeler</option>
-                <option value="Ride-share">🚗 Ride-share (Uber / PickMe)</option>
-                <option value="Personal Vehicle">🏍️ Personal Vehicle (Motorbike/Car)</option>
-                <option value="University Transport">🎓 University Transport (Shuttle)</option>
-                <option value="Mixed">🔀 Mixed (Bus + Tuk-Tuk)</option>
-              </Form.Select>
-            </Form.Group>
-          </div>
-
-          {/* ── Route 2: Home → Accommodation ── */}
-          <div className="p-3 mb-3 rounded" style={{ background: '#f0fff4', border: '1px solid #9ae6b4' }}>
-            <div className="mb-2" style={{ fontWeight: 700, color: '#276749', fontSize: '0.92rem' }}>
-              🏡 Route 2: Home → Accommodation (Home Visits)
-            </div>
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-0">
-                  <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>How often do you visit home?</Form.Label>
-                  <Form.Select name="home_visit_frequency" value={formData.home_visit_frequency} onChange={handleInputChange}>
-                    <option value="Daily">Daily (Commuter)</option>
-                    <option value="Weekly">Weekly</option>
-                    <option value="Bi-weekly">Bi-weekly (Every 2 weeks)</option>
-                    <option value="Monthly">Monthly</option>
-                    <option value="Once per semester">Once per semester</option>
-                    <option value="Rarely/Never">Rarely / Never</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-0">
-                  <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport method for this route</Form.Label>
-                  <Form.Select name="transport_method_home_accommodation" value={formData.transport_method_home_accommodation} onChange={handleInputChange}>
-                    <option value="Bus">🚌 Bus (CTB / Private / Express)</option>
-                    <option value="Train">🚆 Train</option>
-                    <option value="Personal Vehicle">🏍️ Personal Vehicle</option>
-                    <option value="Ride-share">🚗 Ride-share (Uber / PickMe)</option>
-                    <option value="Tuk-Tuk">🛺 Tuk-Tuk</option>
-                    <option value="Mixed">🔀 Mixed</option>
-                  </Form.Select>
-                </Form.Group>
-              </Col>
-            </Row>
-          </div>
-
-          {/* ── Route 3: Work Commute (optional) ── */}
-          <div className="p-3 mb-3 rounded" style={{ background: '#fefce8', border: '1px solid #fde68a' }}>
-            <div className="d-flex align-items-center justify-content-between mb-2">
-              <div style={{ fontWeight: 700, color: '#92400e', fontSize: '0.92rem' }}>
-                💼 Route 3: Accommodation → Work (Part-Time / Weekday Job)
-              </div>
-              <Form.Check
-                type="switch"
-                id="has_work_commute"
-                label={<span style={{ fontSize: '0.82rem', color: '#92400e' }}>I have a work commute</span>}
-                checked={formData.has_work_commute}
-                onChange={e => setFormData(prev => ({ ...prev, has_work_commute: e.target.checked }))}
-              />
-            </div>
-            {formData.has_work_commute && (
-              <Row className="g-2 mt-1">
-                <Col md={4}>
-                  <Form.Group>
-                    <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Distance to Work (km)</Form.Label>
-                    <Form.Control
-                      type="number"
-                      name="distance_work"
-                      value={formData.distance_work}
-                      onChange={handleInputChange}
-                      onFocus={e => e.target.select()}
-                      min={0}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
-                  <Form.Group>
-                    <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport to Work</Form.Label>
-                    <Form.Select name="work_transport_method" value={formData.work_transport_method} onChange={handleInputChange}>
-                      <option value="Walking">🚶 Walking</option>
-                      <option value="Bicycle">🚲 Bicycle</option>
-                      <option value="Bus">🚌 Bus (CTB / Private)</option>
-                      <option value="Train">🚆 Train</option>
-                      <option value="Tuk-Tuk">🛵 Tuk-Tuk / Three-Wheeler</option>
-                      <option value="Ride-share">🚗 Ride-share (Uber / PickMe)</option>
-                      <option value="Personal Vehicle">🏍️ Personal Vehicle</option>
-                      <option value="Mixed">🔀 Mixed</option>
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-                <Col md={4}>
-                  <Form.Group>
-                    <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Work Days per Week</Form.Label>
-                    <Form.Select name="work_days_per_week" value={formData.work_days_per_week} onChange={handleInputChange}>
-                      <option value="1 day">1 day</option>
-                      <option value="2 days">2 days</option>
-                      <option value="3 days">3 days</option>
-                      <option value="4 days">4 days</option>
-                      <option value="5 days">5 days</option>
-                      <option value="6 days">6 days</option>
-                    </Form.Select>
-                  </Form.Group>
-                </Col>
-              </Row>
-            )}
-          </div>
-
-          {/* Days per week at uni */}
-          {(() => {
-            const workDays = formData.has_work_commute
-              ? parseInt(formData.work_days_per_week) || 0
-              : 0;
-            const maxUniDays = 7 - workDays;
-            const currentUniDays = parseInt(formData.days_per_week) || 5;
-            const isOverLimit = currentUniDays > maxUniDays;
-
-            // Auto-correct if current value exceeds the new max
-            if (isOverLimit && maxUniDays > 0) {
-              setFormData(prev => ({ ...prev, days_per_week: `${maxUniDays} ${maxUniDays === 1 ? 'day' : 'days'}` }));
-            }
-
-            const allOptions = [
-              { v: 1, l: '1 day' }, { v: 2, l: '2 days' }, { v: 3, l: '3 days' },
-              { v: 4, l: '4 days' }, { v: 5, l: '5 days' }, { v: 6, l: '6 days' },
-              { v: 7, l: '7 days' },
-            ];
-
-            return (
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Days per Week at University</strong></Form.Label>
-                <Form.Select
-                  name="days_per_week"
-                  value={formData.days_per_week}
-                  onChange={handleInputChange}
-                  isInvalid={isOverLimit}
-                  style={isOverLimit ? { borderColor: '#dc3545' } : {}}
-                >
-                  {allOptions
-                    .filter(o => o.v <= maxUniDays)
-                    .map(o => (
-                      <option key={o.v} value={o.l}>{o.l}</option>
-                    ))
-                  }
-                </Form.Select>
-                {formData.has_work_commute && workDays > 0 && (
-                  <div style={{
-                    fontSize: '0.78rem', marginTop: 5, padding: '5px 10px', borderRadius: 6,
-                    background: isOverLimit ? '#fef2f2' : '#fffbeb',
-                    border: `1px solid ${isOverLimit ? '#fca5a5' : '#fde68a'}`,
-                    color: isOverLimit ? '#b91c1c' : '#92400e'
-                  }}>
-                    {isOverLimit
-                      ? `⚠️ Cannot select more than ${maxUniDays} university ${maxUniDays === 1 ? 'day' : 'days'} — your work commute already uses ${workDays} ${workDays === 1 ? 'day' : 'days'}/week.`
-                      : `ℹ️ Work commute uses ${workDays} ${workDays === 1 ? 'day' : 'days'}/week — max ${maxUniDays} ${maxUniDays === 1 ? 'day' : 'days'} available for university.`
-                    }
-                  </div>
-                )}
-              </Form.Group>
-            );
-          })()}
-        </Form>
-      </Card.Body>
-    </Card>
-  );
-
-  const renderStep6 = () => (
-    <Card className="shadow-lg border-0">
-      <Card.Header className="bg-gradient-primary text-white">
-        <h4 className="mb-0">📊 Step 5: Additional Expenses (Optional)</h4>
-      </Card.Header>
-      <Card.Body className="p-4">
-        <Form>
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Internet & Mobile (LKR/month)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="internet"
-                  value={formData.internet}
-                  onChange={handleInputChange}
-                  onFocus={e => e.target.select()}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Study Materials (LKR/month)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="study_materials"
-                  value={formData.study_materials}
-                  onChange={handleInputChange}
-                  onFocus={e => e.target.select()}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Entertainment & Social (LKR/month)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="entertainment"
-                  value={formData.entertainment}
-                  onChange={handleInputChange}
-                  onFocus={e => e.target.select()}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Utilities (LKR/month)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="utilities"
-                  value={formData.utilities}
-                  onChange={handleInputChange}
-                  onFocus={e => e.target.select()}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Healthcare (LKR/month)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="healthcare"
-                  value={formData.healthcare}
-                  onChange={handleInputChange}
-                  onFocus={e => e.target.select()}
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-3">
-                <Form.Label><strong>Other Expenses (LKR/month)</strong></Form.Label>
-                <Form.Control
-                  type="number"
-                  name="other"
-                  value={formData.other}
-                  onChange={handleInputChange}
-                  onFocus={e => e.target.select()}
-                />
-              </Form.Group>
-            </Col>
-          </Row>
-        </Form>
-      </Card.Body>
-    </Card>
-  );
-
-  const renderStep7 = () => {
-    if (!analysisResult) {
-      return (
-        <Card className="shadow-lg border-0">
-          <Card.Body className="p-5 text-center">
-            <h4>Ready to analyze your budget!</h4>
-            <p>Click "Analyze Budget" to get your personalized financial insights.</p>
-          </Card.Body>
-        </Card>
-      );
-    }
-
-    const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment } = analysisResult;
-
-    return (
-      <div>
-        {/* Financial Summary */}
-        <Card className="shadow-lg border-0 mb-4">
-          <Card.Header className="bg-gradient-success text-white">
-            <h4 className="mb-0">💰 Financial Summary</h4>
-          </Card.Header>
-          <Card.Body className="p-4">
-            <Row>
-              <Col md={3} className="text-center mb-3">
-                <div className="summary-box">
-                  <div className="summary-label">Monthly Income</div>
-                  <div className="summary-value text-primary">
-                    LKR {financial_summary.monthly_income.toLocaleString()}
-                  </div>
-                  {financial_summary.home_money > 0 && (
-                    <div style={{ fontSize: '0.72rem', color: '#777', marginTop: 2 }}>
-                      Base: LKR {(financial_summary.base_income || 0).toLocaleString()} +
-                      Family: LKR {financial_summary.home_money.toLocaleString()}
-                    </div>
-                  )}
-                </div>
-              </Col>
-              <Col md={3} className="text-center mb-3">
-                <div className="summary-box">
-                  <div className="summary-label">Total Expenses</div>
-                  <div className="summary-value text-danger">
-                    LKR {financial_summary.total_expenses.toLocaleString()}
-                  </div>
-                </div>
-              </Col>
-              <Col md={3} className="text-center mb-3">
-                <div className="summary-box">
-                  <div className="summary-label">Monthly Savings</div>
-                  <div className={`summary-value ${financial_summary.monthly_savings >= 0 ? 'text-success' : 'text-danger'}`}>
-                    LKR {financial_summary.monthly_savings.toLocaleString()}
-                  </div>
-                </div>
-              </Col>
-              <Col md={3} className="text-center mb-3">
-                <div className="summary-box">
-                  <div className="summary-label">Savings Rate</div>
-                  <div className={`summary-value ${financial_summary.savings_rate >= 0 ? 'text-success' : 'text-danger'}`}>
-                    {financial_summary.savings_rate}%
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-        {/* Risk Assessment */}
-        {risk_assessment && (
-          <Alert variant={risk_assessment.risk_level === 'High Risk' ? 'danger' : 'success'} className="mb-4">
-            <Alert.Heading>
-              {risk_assessment.risk_level === 'High Risk' ? '⚠️ High Financial Risk Detected' : '✅ Low Financial Risk'}
-            </Alert.Heading>
-            <p>Risk Probability: {risk_assessment.risk_probability}%</p>
-            {risk_assessment.recommendations && risk_assessment.recommendations.length > 0 && (
-              <div>
-                <strong>Recommendations:</strong>
-                <ul className="mb-0 mt-2">
-                  {risk_assessment.recommendations.map((rec, idx) => (
-                    <li key={idx}>
-                      <strong>{rec.category}:</strong> {rec.message}
-                      {rec.potential_savings > 0 && (
-                        <span className="text-success"> (Potential savings: LKR {rec.potential_savings.toLocaleString()})</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </Alert>
-        )}
-
-        {/* Expense Breakdown */}
-        <Card className="shadow-lg border-0 mb-4">
-          <Card.Header style={{ background: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)' }} className="text-white">
-            <div className="d-flex justify-content-between align-items-center">
-              <div>
-                <h4 className="mb-0">📊 Expense Breakdown</h4>
-                <small style={{ opacity: 0.85 }}>Where your money goes each month</small>
-              </div>
-              <div className="text-end">
-                <div style={{ fontSize: '0.8rem', opacity: 0.85 }}>Total Monthly</div>
-                <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>LKR {expense_breakdown.total_expenses?.toLocaleString()}</div>
-              </div>
-            </div>
-          </Card.Header>
-          <Card.Body className="p-4">
-            <Row>
-              <Col md={6}>
-                <h5 className="mb-3 fw-bold" style={{ color: '#4a5568' }}>💸 Monthly Expenses</h5>
-                {(() => {
-                  const icons = {
-                    accommodation: { icon: '🏠', color: '#6c63ff' },
-                    food: { icon: '🍽️', color: '#38b2ac' },
-                    transport: { icon: '🚌', color: '#ed8936' },
-                    education: { icon: '📚', color: '#4299e1' },
-                    entertainment: { icon: '🎉', color: '#ed64a6' },
-                    utilities: { icon: '💡', color: '#ecc94b' },
-                    healthcare: { icon: '🏥', color: '#fc8181' },
-                    other: { icon: '📦', color: '#a0aec0' },
-                    internet: { icon: '📶', color: '#667eea' },
-                    study_materials: { icon: '✏️', color: '#4299e1' },
-                  };
-                  const total = expense_breakdown.total_expenses || 1;
-                  return Object.entries(expense_breakdown)
-                    .filter(([k]) => k !== 'total_expenses' && expense_breakdown[k] > 0)
-                    .sort(([, a], [, b]) => b - a)
-                    .map(([category, amount]) => {
-                      const pct = ((amount / total) * 100).toFixed(1);
-                      const meta = icons[category] || { icon: '💰', color: '#718096' };
-                      const label = category.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-                      return (
-                        <div key={category} className="mb-3">
-                          <div className="d-flex justify-content-between align-items-center mb-1">
-                            <span style={{ fontWeight: 600, color: '#2d3748' }}>
-                              {meta.icon} {label}
-                            </span>
-                            <span style={{ fontWeight: 700, color: meta.color }}>
-                              LKR {amount.toLocaleString()}
-                              <span className="ms-2 text-muted fw-normal" style={{ fontSize: '0.8rem' }}>({pct}%)</span>
-                            </span>
-                          </div>
-                          <div style={{ background: '#edf2f7', borderRadius: '999px', height: '8px', overflow: 'hidden' }}>
-                            <div style={{
-                              width: `${Math.min(pct, 100)}%`,
-                              height: '100%',
-                              background: meta.color,
-                              borderRadius: '999px',
-                              transition: 'width 0.8s ease'
-                            }} />
-                          </div>
-                        </div>
-                      );
-                    });
-                })()}
-                <div className="d-flex justify-content-between align-items-center mt-4 pt-3"
-                  style={{ borderTop: '2px dashed #e2e8f0' }}>
-                  <span style={{ fontWeight: 700, fontSize: '1rem', color: '#2d3748' }}>TOTAL EXPENSES</span>
-                  <span style={{
-                    fontWeight: 800, fontSize: '1.2rem',
-                    background: 'linear-gradient(135deg,#667eea,#764ba2)',
-                    WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
-                  }}>
-                    LKR {expense_breakdown.total_expenses?.toLocaleString()}
-                  </span>
-                </div>
-              </Col>
-              <Col md={6}>
-                <h5 className="mb-3 fw-bold" style={{ color: '#4a5568' }}>🤖 Calculated Budgets</h5>
-                {calculated_budgets.food && (
-                  <div className="mb-3 p-3 rounded" style={{ background: '#f0fff4', border: '1px solid #9ae6b4' }}>
-                    <div className="d-flex justify-content-between align-items-center mb-1">
-                      <span><strong>🍽️ Food Budget:</strong></span>
-                      <span className="text-success fw-bold fs-6">
-                        LKR {calculated_budgets.food.monthly_total.toLocaleString()}
-                      </span>
-                    </div>
-                    <div className="d-flex justify-content-between">
-                      <small className="text-muted">Type: {calculated_budgets.food.food_type}</small>
-                      <small className="text-muted">Daily avg: LKR {calculated_budgets.food.daily_cost.toLocaleString()}</small>
-                    </div>
-                    {/* Grocery / Outside split */}
-                    {calculated_budgets.food.breakdown && (
-                      <div className="mt-2 ps-2 border-start border-success border-2">
-                        {calculated_budgets.food.breakdown.groceries !== undefined && (
-                          <small className="text-muted d-block">
-                            🛒 Grocery (cooking portion): <strong>LKR {Math.round(calculated_budgets.food.breakdown.groceries).toLocaleString()}</strong>
-                            {calculated_budgets.food.grocery_note && <span className="ms-1 text-secondary">({calculated_budgets.food.grocery_note})</span>}
-                          </small>
-                        )}
-                        {calculated_budgets.food.breakdown.outside_meals !== undefined && (
-                          <small className="text-muted d-block">
-                            🍜 Outside meals: <strong>LKR {Math.round(calculated_budgets.food.breakdown.outside_meals).toLocaleString()}</strong>
-                            {calculated_budgets.food.outside_note && <span className="ms-1 text-secondary">({calculated_budgets.food.outside_note})</span>}
-                          </small>
-                        )}
-                        {calculated_budgets.food.breakdown.daily_commute === undefined &&
-                          calculated_budgets.food.breakdown.estimate_based_on_income !== undefined && (
-                            <small className="text-muted d-block">
-                              📊 Estimated from income profile
-                            </small>
-                          )}
-                      </div>
-                    )}
-                  </div>
-                )}
-                {calculated_budgets.transport && (() => {
-                  const t = calculated_budgets.transport;
-                  const bd = t.breakdown || {};
-                  const totalMonthly = t.monthly_total || 0;
-                  return (
-                    <div className="mb-3 rounded overflow-hidden" style={{ border: '1.5px solid #bfdbfe' }}>
-
-                      {/* Header */}
-                      <div className="d-flex justify-content-between align-items-center px-3 py-2"
-                        style={{ background: 'linear-gradient(90deg,#1e40af 0%,#2563eb 100%)' }}>
-                        <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>
-                          🚌 Transport Budget
-                        </span>
-                        <span style={{ color: '#bfdbfe', fontWeight: 800, fontSize: '1.15rem' }}>
-                          LKR {totalMonthly.toLocaleString()}
-                          <span style={{ fontSize: '0.75rem', fontWeight: 400, marginLeft: 4 }}>/month</span>
-                        </span>
-                      </div>
-
-                      <div className="p-3" style={{ background: '#f8faff' }}>
-
-                        {/* Route cards */}
-                        <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
-                          Routes
-                        </div>
-                        <div className="d-flex flex-column gap-2 mb-3">
-
-                          {/* Route 1 — Campus commute */}
-                          <div className="rounded-3 p-2" style={{ background: '#eff6ff', border: '1px solid #93c5fd' }}>
-                            <div className="d-flex align-items-center justify-content-between">
-                              <div className="d-flex align-items-center gap-2">
-                                <div style={{
-                                  width: 32, height: 32, borderRadius: 8, background: '#dbeafe',
-                                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
-                                }}>🏫</div>
-                                <div>
-                                  <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1e40af' }}>
-                                    Accommodation → University
-                                  </div>
-                                  <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
-                                    <span className="badge" style={{ background: '#1d4ed8', color: '#fff', fontSize: '0.68rem' }}>
-                                      {t.accommodation_uni_method || t.transport_method}
-                                    </span>
-                                    {t.distance_uni_km > 0 && (
-                                      <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.distance_uni_km} km one-way</span>
-                                    )}
-                                    {t.daily_cost > 0 && (
-                                      <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
-                                        · LKR {t.daily_cost.toLocaleString()} / round-trip
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                              <div className="text-end ms-2" style={{ flexShrink: 0 }}>
-                                <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.commute_days_per_month} days/mo</div>
-                                {bd.daily_commute > 0 && (
-                                  <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1e40af' }}>
-                                    LKR {bd.daily_commute.toLocaleString()}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Route 2 — Home visits */}
-                          {t.home_accommodation_method && (
-                            <div className="rounded-3 p-2" style={{ background: '#f0fdf4', border: '1px solid #86efac' }}>
-                              <div className="d-flex align-items-center justify-content-between">
-                                <div className="d-flex align-items-center gap-2">
-                                  <div style={{
-                                    width: 32, height: 32, borderRadius: 8, background: '#dcfce7',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
-                                  }}>🏡</div>
-                                  <div>
-                                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#166534' }}>
-                                      Home → Accommodation
-                                    </div>
-                                    <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
-                                      <span className="badge" style={{ background: '#16a34a', color: '#fff', fontSize: '0.68rem' }}>
-                                        {t.home_accommodation_method}
-                                      </span>
-                                      {t.distance_home_km > 0 && (
-                                        <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.distance_home_km} km one-way</span>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="text-end ms-2" style={{ flexShrink: 0 }}>
-                                  <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.home_visit_frequency}</div>
-                                  {bd.home_visits > 0 ? (
-                                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#166534' }}>
-                                      LKR {bd.home_visits.toLocaleString()}
-                                    </div>
-                                  ) : (
-                                    <div style={{ fontSize: '0.72rem', color: '#6b7280', fontStyle: 'italic' }}>within campus cost</div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Route 3 — Work commute */}
-                          {t.has_work_commute && t.work_commute_method && (
-                            <div className="rounded-3 p-2" style={{ background: '#fffbeb', border: '1px solid #fde68a' }}>
-                              <div className="d-flex align-items-center justify-content-between">
-                                <div className="d-flex align-items-center gap-2">
-                                  <div style={{
-                                    width: 32, height: 32, borderRadius: 8, background: '#fef3c7',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
-                                  }}>💼</div>
-                                  <div>
-                                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#92400e' }}>
-                                      Accommodation → Work
-                                      <span className="ms-2 badge" style={{ background: '#d97706', color: '#fff', fontSize: '0.62rem' }}>
-                                        Part-time Job
-                                      </span>
-                                    </div>
-                                    <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
-                                      <span className="badge" style={{ background: '#f59e0b', color: '#fff', fontSize: '0.68rem' }}>
-                                        {t.work_commute_method}
-                                      </span>
-                                      {t.work_distance_km > 0 && (
-                                        <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.work_distance_km} km one-way</span>
-                                      )}
-                                      {t.work_round_trip_cost > 0 && (
-                                        <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
-                                          · LKR {t.work_round_trip_cost.toLocaleString()} / round-trip
-                                        </span>
-                                      )}
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="text-end ms-2" style={{ flexShrink: 0 }}>
-                                  <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.work_commute_days_per_month} days/mo</div>
-                                  {bd.work_commute > 0 && (
-                                    <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#d97706' }}>
-                                      LKR {bd.work_commute.toLocaleString()}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Misc / emergency row */}
-                        {bd.misc_trips > 0 && (
-                          <div className="d-flex align-items-center justify-content-between rounded-3 px-2 py-1 mb-3"
-                            style={{ background: '#f1f5f9', border: '1px dashed #cbd5e1' }}>
-                            <span style={{ fontSize: '0.78rem', color: '#475569' }}>
-                              🌧️ Emergency / incidental trips
-                              <span style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 4 }}>(rain, late nights, city runs)</span>
-                            </span>
-                            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#475569' }}>
-                              LKR {bd.misc_trips.toLocaleString()}
-                            </span>
-                          </div>
-                        )}
-
-                        {/* Total summary bar */}
-                        <div className="rounded-3 px-3 py-2 d-flex justify-content-between align-items-center"
-                          style={{ background: 'linear-gradient(90deg,#1e3a8a 0%,#1e40af 100%)' }}>
-                          <div>
-                            <div style={{ fontSize: '0.72rem', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                              Total Monthly Transport
-                            </div>
-                            <div style={{ fontSize: '0.72rem', color: '#bfdbfe' }}>
-                              {[
-                                bd.daily_commute > 0 && 'campus',
-                                bd.home_visits > 0 && 'home visits',
-                                bd.misc_trips > 0 && 'emergency',
-                                bd.work_commute > 0 && 'work',
-                              ].filter(Boolean).join(' + ')}
-                            </div>
-                          </div>
-                          <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#fff' }}>
-                            LKR {totalMonthly.toLocaleString()}
-                            <span style={{ fontSize: '0.72rem', fontWeight: 400, color: '#93c5fd', marginLeft: 4 }}>/mo</span>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
-                  );
-                })()}
-                {/* Show home_money contribution if present */}
-                {financial_summary.home_money > 0 && (
-                  <div className="alert alert-info py-2 px-3 mb-0" style={{ fontSize: '0.82rem' }}>
-                    💌 Includes LKR {financial_summary.home_money.toLocaleString()} family support
-                    {' '}(base: LKR {financial_summary.base_income.toLocaleString()} + home: LKR {financial_summary.home_money.toLocaleString()})
-                  </div>
-                )}
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
-        {/* 🆕 OPTIMAL BUDGET STRATEGY SECTION */}
-        {analysisResult.optimal_strategy && (
-          <Card className="shadow-lg border-0 mb-4 border-success border-3">
-            <Card.Header className="bg-gradient-success text-white">
-              <h4 className="mb-0">🎯 YOUR PERSONALIZED OPTIMAL BUDGET STRATEGY</h4>
-              <p className="mb-0 mt-2">AI-powered recommendations to maximize your savings</p>
-            </Card.Header>
-            <Card.Body className="p-4">
-              {/* Strategy Overview */}
-              <Row className="mb-4">
-                <Col md={4}>
-                  <div className="text-center p-3 bg-light rounded">
-                    <h6 className="text-muted">📊 Current Expenses</h6>
-                    <h4 className="text-danger mb-0">
-                      LKR {analysisResult.optimal_strategy.current_situation.total_expenses.toLocaleString()}
-                    </h4>
-                    <small className="text-muted">
-                      {analysisResult.optimal_strategy.current_situation.savings_rate}% savings now
-                    </small>
-                  </div>
-                </Col>
-                <Col md={4}>
-                  <div className="text-center p-3 bg-success text-white rounded">
-                    <h6>🎯 Optimised Target</h6>
-                    <h4 className="mb-0">
-                      LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
-                    </h4>
-                    <small>
-                      {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% savings rate
-                    </small>
-                    <div style={{ fontSize: '0.72rem', opacity: 0.85, marginTop: 3 }}>
-                      (what you could spend after optimising)
-                    </div>
-                  </div>
-                </Col>
-                <Col md={4}>
-                  {analysisResult.optimal_strategy.potential_improvement.extra_savings > 0 ? (
-                    <div className="text-center p-3 bg-warning rounded">
-                      <h6 className="text-dark">💰 Potential Improvement</h6>
-                      <h4 className="text-success mb-0">
-                        +LKR {analysisResult.optimal_strategy.potential_improvement.extra_savings.toLocaleString()}
-                      </h4>
-                      <small className="text-dark">Extra you could save/month</small>
-                      <div style={{ fontSize: '0.72rem', color: '#555', marginTop: 3 }}>
-                        Expense reduction: LKR {analysisResult.optimal_strategy.potential_improvement.expense_reduction.toLocaleString()}
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="text-center p-3 bg-info text-white rounded">
-                      <h6>✅ Already Optimised!</h6>
-                      <h5 className="mb-0">Great Budget</h5>
-                      <small>Your spending is well-controlled</small>
-                    </div>
-                  )}
-                </Col>
-              </Row>
-
-              {/* Optimal Alternatives */}
-              {analysisResult.optimal_strategy.optimal_alternatives &&
-                analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
-                  <div className="mb-4">
-                    <h5 className="mb-3">🔄 Smart Budget Alternatives</h5>
-                    {analysisResult.optimal_strategy.optimal_alternatives.map((alt, index) => (
-                      <Card key={index} className={`mb-3 border-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'}`}>
-                        <Card.Body>
-                          <Row>
-                            <Col md={12}>
-                              <div className="d-flex align-items-start mb-2">
-                                <span className={`badge bg-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'} me-2`}>
-                                  {alt.priority} Priority
-                                </span>
-                                <h6 className="mb-0">{alt.category}</h6>
-                              </div>
-                              <p className="mb-2">
-                                <strong>Current:</strong> {alt.current_choice}
-                              </p>
-                              <p className="mb-2 text-success">
-                                <strong>✨ Optimal:</strong> {alt.optimal_choice}
-                              </p>
-                              <p className="text-muted mb-3">
-                                <small><strong>Why?</strong> {alt.reasoning}</small>
-                              </p>
-
-                              {/* Action Steps */}
-                              {alt.action_steps && alt.action_steps.length > 0 && (
-                                <div>
-                                  <strong>Action Steps:</strong>
-                                  <ol className="mb-0 mt-2">
-                                    {alt.action_steps.map((step, idx) => (
-                                      <li key={idx}><small>{step}</small></li>
-                                    ))}
-                                  </ol>
-                                </div>
-                              )}
-
-                              {alt.note && (
-                                <p className="text-info mt-2 mb-0">
-                                  <small><strong>Note:</strong> {alt.note}</small>
-                                </p>
-                              )}
-                            </Col>
-                          </Row>
-                        </Card.Body>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-
-              {/* Maximum Savings Potential
-              {analysisResult.optimal_strategy.maximum_savings_potential > 0 && (
-                <Alert variant="success" className="mb-4">
-                  <h5>💰 Total Savings Potential: LKR {analysisResult.optimal_strategy.maximum_savings_potential.toLocaleString()}/month</h5>
-                  <p className="mb-0">By implementing all recommendations below, you could save this amount monthly!</p>
-                </Alert>
-              )} */}
-
-              {/* ── Warning — optimised target still exceeds income ── */}
-              {analysisResult.optimal_strategy.optimal_target.target_expenses > financial_summary.monthly_income && (
-                <div className="d-flex align-items-start gap-3 rounded-3 px-3 py-3 mb-3"
-                  style={{
-                    background: 'linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)',
-                    border: '1.5px solid #f59e42',
-                    boxShadow: '0 2px 8px rgba(245,158,66,0.13)'
-                  }}>
-                  <div style={{ fontSize: '1.6rem', lineHeight: 1, flexShrink: 0, marginTop: 2 }}>⚠️</div>
-                  <div>
-                    <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#92400e', marginBottom: 3 }}>
-                      Optimised Target Exceeds Your Monthly Income
-                    </div>
-                    <div style={{ fontSize: '0.82rem', color: '#78350f', lineHeight: 1.55 }}>
-                      Your optimised target of{' '}
-                      <strong style={{ color: '#b45309' }}>
-                        LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
-                      </strong>{' '}
-                      is greater than your monthly income of{' '}
-                      <strong style={{ color: '#b45309' }}>
-                        LKR {financial_summary.monthly_income.toLocaleString()}
-                      </strong>.
-                      Therefore, you need to follow the{' '}
-                      <strong>AI-Powered Optimization Strategy</strong>{' '}
-                      below to achieve a more optimised and realistic budget.
-                    </div>
-                    <button
-                      className="btn btn-sm mt-2"
-                      style={{
-                        background: '#f59e0b', color: '#fff', fontWeight: 700,
-                        fontSize: '0.78rem', border: 'none', borderRadius: 6,
-                        padding: '4px 14px'
-                      }}
-                      onClick={scrollToAISection}
-                    >
-                      Go to AI Strategy 🚀
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* ── AI strategy connector bridge ── */}
-              <div className="opt-ai-bridge">
-                <div className="opt-ai-bridge-left">
-                  <div className="opt-ai-bridge-icon">✨</div>
-                  <div>
-                    <div className="opt-ai-bridge-heading">Want a Deeper, Step-by-Step Action Plan?</div>
-                    <div className="opt-ai-bridge-sub">
-                      The <strong>AI Enhanced Strategy</strong> below will generate personalised guidance — exactly how to execute each step above based on your full profile.
-                    </div>
-                  </div>
-                </div>
-                <div className="opt-ai-bridge-arrow">
-                  <div className="opt-ai-bridge-arrow-line" />
-                  <div className="opt-ai-bridge-arrow-bounce">↓ Scroll down</div>
-                </div>
-              </div>
-
-            </Card.Body>
-          </Card>
-        )}
-
-        {/* ════════════════════════════════════════════════════════ */}
-        {/*   ✨ GEMINI / AI-Powered Optimization Strategy              */}
-        {/* ════════════════════════════════════════════════════════ */}
-        <div className="gemini-section mb-4" ref={aiSectionRef}>
-          {/* Header */}
-          <div className="gemini-header">
-            <div className="gemini-logo-wrap">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <defs>
-                  <linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#4285F4" />
-                    <stop offset="33%" stopColor="#EA4335" />
-                    <stop offset="66%" stopColor="#FBBC05" />
-                    <stop offset="100%" stopColor="#34A853" />
-                  </linearGradient>
-                </defs>
-                <path d="M14 3 L14 25 M3 14 L25 14 M6.5 6.5 L21.5 21.5 M21.5 6.5 L6.5 21.5"
-                  stroke="url(#gGrad)" strokeWidth="2.5" strokeLinecap="round" />
-              </svg>
-            </div>
-            <div>
-              <h4 className="gemini-title mb-0">
-                AI Powered Optimization Strategy
-                {aiProvider === 'Gemini' && ' ✨'}
-                {aiProvider === 'OpenAI' && ' 🚀'}
-              </h4>
-              <p className="gemini-subtitle mb-0">Personalized advice analysing your full financial profile</p>
-            </div>
-          </div>
-
-          {/* Loading state */}
-          {geminiLoading && (
-            <div className="gemini-loading">
-              <div className="gemini-loading-dots">
-                <span /><span /><span /><span />
-              </div>
-              <p className="gemini-loading-text">AI is analysing your budget profile…</p>
-            </div>
-          )}
-
-          {/* Initial state - attractive flow CTA */}
-          {!geminiInsight && !geminiLoading && !geminiError && (
-            <div className="ai-cta-zone">
-              {/* Title */}
-              <div className="ai-cta-title-row">
-                <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
-                  <defs>
-                    <linearGradient id="aiGrad2" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#4285F4" />
-                      <stop offset="50%" stopColor="#FBBC05" />
-                      <stop offset="100%" stopColor="#34A853" />
-                    </linearGradient>
-                  </defs>
-                  <path d="M14 3 L14 25 M3 14 L25 14 M6.5 6.5 L21.5 21.5 M21.5 6.5 L6.5 21.5"
-                    stroke="url(#aiGrad2)" strokeWidth="2.5" strokeLinecap="round" />
-                </svg>
-                <div>
-                  <h5 className="ai-cta-heading">Unlock Your Personalized Strategy</h5>
-                  <p className="ai-cta-sub">AI will analyse your full financial profile and craft a step-by-step enhancement plan</p>
-                </div>
-              </div>
-
-              {/* 3-step flow diagram */}
-              <div className="ai-flow-row">
-                <div className="ai-flow-node">
-                  <div className="ai-flow-icon">📊</div>
-                  <div className="ai-flow-label">Your Budget Data</div>
-                  <div className="ai-flow-desc">Income · Expenses · Goals</div>
-                </div>
-                <div className="ai-flow-connector">
-                  <div className="ai-flow-arrow-line" />
-                  <div className="ai-flow-arrow-head">▶</div>
-                </div>
-                <div className="ai-flow-node ai-flow-node--center">
-                  <div className="ai-flow-icon ai-flow-icon--glow">🤖</div>
-                  <div className="ai-flow-label">AI Deep Analysis</div>
-                  <div className="ai-flow-desc">Patterns · Risks · Opportunities</div>
-                </div>
-                <div className="ai-flow-connector">
-                  <div className="ai-flow-arrow-line" />
-                  <div className="ai-flow-arrow-head">▶</div>
-                </div>
-                <div className="ai-flow-node ai-flow-node--out">
-                  <div className="ai-flow-icon">🗺️</div>
-                  <div className="ai-flow-label">Strategy Roadmap</div>
-                  <div className="ai-flow-desc">Steps · Targets · Timeline</div>
-                </div>
-              </div>
-
-              {/* Feature pills */}
-              <div className="ai-features-row">
-                <div className="ai-feature-pill"><span>💰</span> Savings Opportunities</div>
-                <div className="ai-feature-pill"><span>📉</span> Risk Reduction Plan</div>
-                <div className="ai-feature-pill"><span>🎯</span> Action Steps</div>
-                <div className="ai-feature-pill"><span>🔮</span> Future Projections</div>
-                <div className="ai-feature-pill"><span>🏦</span> Investment Hints</div>
-              </div>
-
-              {/* Generate button */}
-              <div className="ai-cta-btn-wrap">
-                <button
-                  className="ai-generate-btn"
-                  onClick={() => fetchGeminiInsight(analysisResult)}
-                >
-                  <span className="ai-generate-btn-glow" />
-                  <span className="ai-generate-btn-text">✨ Generate AI Enhanced Strategy</span>
-                </button>
-                <p className="ai-cta-hint">Powered by {aiProvider ? `${aiProvider} AI` : 'Gemini / OpenAI'} · Usually takes 5-10 seconds</p>
-              </div>
-            </div>
-          )}
-
-          {/* Error / API key not set */}
-          {geminiError && !geminiLoading && (
-            <div className="gemini-error-box">
-              {(typeof geminiError === 'string' && (geminiError.includes('not configured') || geminiError.includes('GEMINI_API_KEY'))) ||
-                (typeof geminiError === 'object' && geminiError.message && geminiError.message.includes('not configured')) ? (
-                <>
-                  <div className="gemini-error-icon">🔑</div>
-                  <h5>Set Up AI Services (Free Options Available)</h5>
-                  <p>Add an AI API key to <code>backend/.env</code> to unlock this feature.</p>
-
-                  <div className="border rounded p-3 mb-3 bg-light">
-                    <strong>Option 1: Google Gemini (Recommended - FREE)</strong>
-                    <ol className="gemini-setup-steps mb-0 mt-2">
-                      <li>Visit <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">aistudio.google.com/apikey</a></li>
-                      <li>Sign in → Click <strong>"Create API key"</strong></li>
-                      <li>Add to <code>backend/.env</code>: <code>GEMINI_API_KEY=your_key</code></li>
-                    </ol>
-                    <p className="text-success small mb-0 mt-2">✅ 1,500 requests/day · No credit card needed</p>
-                  </div>
-
-                  <div className="border rounded p-3 bg-light">
-                    <strong>Option 2: OpenAI (Paid Backup)</strong>
-                    <ol className="gemini-setup-steps mb-0 mt-2">
-                      <li>Visit <a href="https://platform.openai.com/api-keys" target="_blank" rel="noreferrer">platform.openai.com/api-keys</a></li>
-                      <li>Create API key (requires payment method)</li>
-                      <li>Add to <code>backend/.env</code>: <code>OPENAI_API_KEY=your_key</code></li>
-                    </ol>
-                    <p className="text-info small mb-0 mt-2">💰 ~$0.0001 per request (gpt-4o-mini)</p>
-                  </div>
-
-                  <p className="text-muted small mb-0 mt-3">💡 Set both keys for automatic fallback when Gemini hits rate limits</p>
-                </>
-              ) : typeof geminiError === 'object' && geminiError.isRateLimit ? (
-                <>
-                  <div className="gemini-error-icon">⏰</div>
-                  <h5>Rate Limit Exceeded</h5>
-                  <p className="mb-3">{geminiError.message}</p>
-                  <Alert variant="info" className="mb-3">
-                    <strong>What happened?</strong><br />
-                    The Gemini API free tier has daily/per-minute request limits. Your quota has been temporarily exceeded.
-                  </Alert>
-                  <Alert variant="success" className="mb-3">
-                    <strong>✅ Good news:</strong> Your budget analysis is complete! The AI insights are just an extra bonus.
-                  </Alert>
-                  <div className="d-flex gap-2 justify-content-center">
-                    <Button
-                      size="sm"
-                      variant="primary"
-                      onClick={() => fetchGeminiInsight(analysisResult, true)}
-                    >
-                      🔄 Try Again
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline-secondary"
-                      onClick={() => setGeminiError(null)}
-                    >
-                      Dismiss
-                    </Button>
-                  </div>
-                  {geminiError.technical && (
-                    <details className="mt-3">
-                      <summary className="text-muted small" style={{ cursor: 'pointer' }}>Technical Details</summary>
-                      <pre className="text-muted small mt-2" style={{ fontSize: '10px', maxHeight: '100px', overflow: 'auto' }}>
-                        {geminiError.technical}
-                      </pre>
-                    </details>
-                  )}
-                </>
-              ) : (
-                <>
-                  <div className="gemini-error-icon">⚠️</div>
-                  <p>{typeof geminiError === 'string' ? geminiError : geminiError.message}</p>
-                  {(typeof geminiError === 'object' && geminiError.canRetry) && (
-                    <div className="d-flex gap-2 justify-content-center mt-3">
-                      <Button
-                        size="sm"
-                        variant="outline-primary"
-                        onClick={() => fetchGeminiInsight(analysisResult, true)}
-                      >
-                        🔄 Retry
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline-secondary"
-                        onClick={() => setGeminiError(null)}
-                      >
-                        Dismiss
-                      </Button>
-                    </div>
-                  )}
-                  {typeof geminiError === 'object' && geminiError.technical && (
-                    <details className="mt-3">
-                      <summary className="text-muted small" style={{ cursor: 'pointer' }}>Technical Details</summary>
-                      <pre className="text-muted small mt-2" style={{ fontSize: '10px', maxHeight: '100px', overflow: 'auto' }}>
-                        {geminiError.technical}
-                      </pre>
-                    </details>
-                  )}
-                </>
-              )}
-            </div>
-          )}
-
-          {/* AI Response */}
-          {(geminiInsight || displayedText) && !geminiLoading && (() => {
-            const rawText = isStreaming ? displayedText : geminiInsight;
-
-            // ── Try to parse structured STEP format ──────────────────
-            const isStructured = /STEP\s+\d+\s*:/i.test(rawText);
-
-            if (isStructured) {
-              // Parse GAP_SUMMARY
-              const gapMatch = rawText.match(/GAP_SUMMARY\s*:\s*(.+)/i);
-              const gapSummary = gapMatch ? sanitizeAiMoneyText(gapMatch[1].trim()) : null;
-
-              // Parse all STEP blocks
-              const stepBlocks = [];
-              const stepRegex = /STEP\s+(\d+)\s*:\s*([^\n]+)\nCATEGORY\s*:\s*([^\n]+)\nSAVE\s*:\s*([^\n]+)\nHOW\s*:\s*([^\n]+)\nTIMEFRAME\s*:\s*([^\n]+)(?:\nLINKS\s*:\s*([^\n]+))?/gi;
-              let m;
-              while ((m = stepRegex.exec(rawText)) !== null) {
-                const parsedLinks = parseStepLinks(m[7] || '');
-                stepBlocks.push({
-                  num: m[1],
-                  title: m[2].trim(),
-                  category: m[3].trim(),
-                  save: sanitizeAiMoneyText(m[4].trim()),
-                  how: m[5].trim(),
-                  timeframe: m[6].trim(),
-                  links: parsedLinks.length > 0 ? parsedLinks : getFallbackStepLinks({
-                    title: m[2].trim(),
-                    how: m[5].trim(),
-                  }),
-                });
-              }
-
-              const quickWinMatch = rawText.match(/QUICK_WIN\s*:\s*(.+)/i);
-              const motivationMatch = rawText.match(/MOTIVATION\s*:\s*(.+)/i);
-              const quickWin = quickWinMatch ? quickWinMatch[1].trim() : null;
-              const motivation = motivationMatch ? sanitizeAiMoneyText(motivationMatch[1].trim()) : null;
-
-              const catIcon = (cat) => {
-                const c = cat.toLowerCase();
-                if (c.includes('food')) return '🍱';
-                if (c.includes('trans')) return '🚌';
-                if (c.includes('accom')) return '🏠';
-                if (c.includes('internet') || c.includes('phone')) return '📶';
-                if (c.includes('util')) return '💡';
-                if (c.includes('study') || c.includes('material')) return '📚';
-                if (c.includes('entertain')) return '🎮';
-                if (c.includes('health')) return '🏥';
-                if (c.includes('income') || c.includes('earn')) return '�';
-                return '⚡';
-              };
-
-              const timeColor = (tf) => {
-                const t = tf.toLowerCase();
-                if (t.includes('this week') || t.includes('today') || t.includes('week 1')) return 'ai-tl-node--now';
-                if (t.includes('week 2') || t.includes('week 3')) return 'ai-tl-node--soon';
-                return 'ai-tl-node--later';
-              };
-
-              return (
-                <div className="ai-tl-wrap">
-                  {/* Header meta */}
-                  <div className="gemini-response-meta">
-                    <span className="gemini-badge">
-                      {aiProvider === 'OpenAI' ? '🚀' : '✨'} AI Step Plan
-                    </span>
-                    <span className="gemini-model-tag">
-                      {aiProvider === 'OpenAI' ? 'gpt-4o-mini' : aiProvider === 'Gemini' ? 'gemini-2.0-flash' : 'AI'}
-                    </span>
-                    <span className="ai-tl-gap-badge">
-                      {stepBlocks.length} steps to your target
-                    </span>
-                  </div>
-
-                  {/* Gap summary bar */}
-                  {gapSummary && (
-                    <div className="ai-tl-gap-summary">
-                      <span className="ai-tl-gap-icon">🎯</span>
-                      <span>{gapSummary}</span>
-                    </div>
-                  )}
-
-                  {/* Timeline steps */}
-                  <div className="ai-tl-body">
-                    <div className="ai-tl-spine" />
-                    {stepBlocks.map((step, idx) => (
-                      <div
-                        key={idx}
-                        className={`ai-tl-node ${timeColor(step.timeframe)}`}
-                        style={{ animationDelay: `${idx * 0.12}s` }}
-                      >
-                        {/* Left: number dot on spine */}
-                        <div className="ai-tl-dot">
-                          <span>{step.num}</span>
-                        </div>
-
-                        {/* Card */}
-                        <div className="ai-tl-card">
-                          <div className="ai-tl-card-header">
-                            <span className="ai-tl-cat-icon">{catIcon(step.category)}</span>
-                            <div className="ai-tl-card-titles">
-                              <div className="ai-tl-card-title">{step.title}</div>
-                              <div className="ai-tl-card-cat">{step.category}</div>
-                            </div>
-                            <div className="ai-tl-save-pill">
-                              <div className="ai-tl-save-amt">{step.save}</div>
-                              <div className="ai-tl-save-label">estimated reduction</div>
-                            </div>
-                          </div>
-                          <div className="ai-tl-card-how">
-                            <span className="ai-tl-how-label">How:</span> {step.how}
-                          </div>
-                          <div className="ai-tl-card-footer">
-                            <span className="ai-tl-timeframe-tag">🗓 {step.timeframe}</span>
-                            {step.links && step.links.length > 0 && (
-                              <div className="ai-tl-links">
-                                {step.links.map((link, linkIdx) => (
-                                  <a
-                                    key={`${link.url}-${linkIdx}`}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="ai-tl-link-chip"
-                                  >
-                                    🔗 {link.label}
-                                  </a>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-
-                    {/* Target reached node */}
-                    {!isStreaming && stepBlocks.length > 0 && (
-                      <div
-                        className="ai-tl-node ai-tl-node--target"
-                        style={{ animationDelay: `${stepBlocks.length * 0.12}s` }}
-                      >
-                        <div className="ai-tl-dot ai-tl-dot--target">✅</div>
-                        <div className="ai-tl-card ai-tl-card--target">
-                          <div className="ai-tl-target-title">🎯 Optimised Target Reached!</div>
-                          {analysisResult?.optimal_strategy?.optimal_target && (
-                              <div className="ai-tl-target-sub">
-                              LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
-                              · {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% target rate
-                            </div>
-                          )}
-                          {motivation && <div className="ai-tl-motivation">"{motivation}"</div>}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-
-
-                  {/* Quick Win banner */}
-                  {quickWin && !isStreaming && (
-                    <div className="ai-tl-quickwin">
-                      <span className="ai-tl-qw-icon">⚡</span>
-                      <div>
-                        <div className="ai-tl-qw-label">Do This TODAY — Quick Win</div>
-                        <div className="ai-tl-qw-text">{quickWin}</div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Footer */}
-                  <div className="gemini-footer-note">
-                    <span>💡 Generated by {aiProvider || 'AI'} · personalised to your profile</span>
-                    {!isStreaming && (
-                      <Button size="sm" variant="link" className="ms-3 p-0 gemini-retry-btn"
-                        onClick={() => fetchGeminiInsight(analysisResult, true)}>
-                        🔄 Regenerate
-                      </Button>
-                    )}
-                  </div>
-
-                  {isStreaming && <span className="streaming-cursor" style={{ margin: '12px 32px', display: 'block' }}>▊</span>}
-                </div>
-              );
-            }
-
-            // ── Fallback: plain text renderer ────────────────────────
-            return (
-              <div className="gemini-response">
-                <div className="gemini-response-meta">
-                  <span className="gemini-badge">
-                    {aiProvider === 'Gemini' && '✨'}
-                    {aiProvider === 'OpenAI' && '🚀'}
-                    {!aiProvider && '🤖'}
-                    {' '}AI Generated
-                  </span>
-                  <span className="gemini-model-tag">
-                    {aiProvider === 'Gemini' && 'gemini-2.0-flash'}
-                    {aiProvider === 'OpenAI' && 'gpt-4o-mini'}
-                    {!aiProvider && 'AI Model'}
-                  </span>
-                </div>
-                <div className="gemini-content">
-                  {rawText.split('\n').map((line, i) => {
-                    if (!line.trim()) return <div key={i} style={{ height: '10px' }} />;
-                    if (line.startsWith('**') && line.endsWith('**'))
-                      return <h5 key={i} className="gemini-section-head">{line.replace(/\*\*/g, '')}</h5>;
-                    if (line.includes('**')) {
-                      const parts = line.split(/\*\*(.*?)\*\*/g);
-                      return <p key={i} className="gemini-para">{parts.map((p, pi) => pi % 2 === 1 ? <strong key={pi}>{p}</strong> : p)}</p>;
-                    }
-                    if (line.trim().startsWith('- ') || line.trim().startsWith('• '))
-                      return <div key={i} className="gemini-bullet"><span className="gemini-bullet-dot">•</span><span>{line.replace(/^[-•]\s*/, '')}</span></div>;
-                    if (line.startsWith('#'))
-                      return <h5 key={i} className="gemini-section-head">{line.replace(/^#+\s*/, '')}</h5>;
-                    return <p key={i} className="gemini-para">{line}</p>;
-                  })}
-                  {isStreaming && <span className="streaming-cursor">▊</span>}
-                </div>
-                <div className="gemini-footer-note">
-                  <span>💡 This analysis was generated by {aiProvider || 'AI'} based on your specific financial data</span>
-                  {!isStreaming && (
-                    <Button size="sm" variant="link" className="ms-3 p-0 gemini-retry-btn"
-                      onClick={() => fetchGeminiInsight(analysisResult, true)}>🔄 Regenerate</Button>
-                  )}
-                </div>
-              </div>
-            );
-          })()}
-        </div>
-
-        {/* 💰 BUDGET TRANSFORMATION ANIMATION — shown only after AI strategy is generated */}
-        {showTransformation && analysisResult.optimal_strategy && (() => {
-          const inc = financial_summary.monthly_income || 0;
-
-          // Always use the same source as the top strategy section so both figures match.
-          const curExp  = analysisResult.optimal_strategy.current_situation?.total_expenses
-                          ?? financial_summary.total_expenses ?? 0;
-          const tgtExp  = analysisResult.optimal_strategy.optimal_target?.target_expenses
-                          ?? curExp;
-          const aiPlanTargetExp = Math.min(
-            tgtExp,
-            aiFinalBudgetNums?.total
-              ?? aiStrategyMeta?.real_target
-              ?? aiStrategyMeta?.income_ceiling
-              ?? tgtExp
-          );
-          const curSav  = Number.isFinite(inc - curExp) ? inc - curExp : (financial_summary.monthly_savings || 0);
-          const tgtSav  = Number.isFinite(inc - tgtExp) ? inc - tgtExp : curSav;
-          const aiPlanSav = Number.isFinite(inc - aiPlanTargetExp) ? inc - aiPlanTargetExp : tgtSav;
-          const extraSav = Math.max(aiPlanSav - curSav, 0);
-          const curRate = analysisResult.optimal_strategy.current_situation?.savings_rate || financial_summary.savings_rate || 0;
-          const tgtRate = analysisResult.optimal_strategy.optimal_target?.target_savings_rate ?? curRate;
-          const aiPlanRate = inc > 0
-            ? Math.round((aiPlanSav / inc) * 100)
-            : tgtRate;
-
-          return (
-            <div className="bta-wrap mb-4">
-
-              {/* Header */}
-              <div className="bta-header">
-                <span className="bta-header-icon">💰</span>
-                <div>
-                  <h4 className="bta-title">Budget Summary</h4>
-                  <p className="bta-subtitle">
-                    Your financial snapshot — current state, optimised target, and AI-powered strategy
-                  </p>
-                </div>
-              </div>
-
-              {/* 3-column detailed summary cards */}
-              <Row className="g-3 mb-4">
-
-                {/* Card 1: Current Expenses */}
-                <Col md={4}>
-                  <div style={{
-                    background: 'linear-gradient(145deg, #fff0f0, #ffe0e0)',
-                    border: '2px solid #f5c6c6',
-                    borderRadius: 16,
-                    padding: '20px',
-                    height: '100%',
-                    boxShadow: '0 4px 12px rgba(220,53,69,0.1)'
-                  }}>
-                    <div style={{ marginBottom: 16 }}>
-                      <span style={{
-                        background: '#dc3545', color: 'white',
-                        fontSize: '0.7rem', fontWeight: 700,
-                        padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
-                      }}>📊 BEFORE STRATEGY</span>
-                    </div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
-                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em', marginBottom: 2 }}>TOTAL EXPENSES</div>
-                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#dc3545', marginBottom: 14 }}>LKR {curExp.toLocaleString()}</div>
-                    <div style={{ background: 'rgba(255,255,255,0.75)', borderRadius: 10, padding: '12px 14px' }}>
-                      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
-                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#dc3545' }}>LKR {curSav.toLocaleString()}</div>
-                      <span style={{
-                        background: '#fffde7', color: '#666',
-                        fontSize: '0.73rem', fontWeight: 600,
-                        padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
-                      }}>{curRate}% savings rate</span>
-                    </div>
-                  </div>
-                </Col>
-
-                {/* Card 2: Optimised Target */}
-                <Col md={4}>
-                  <div style={{
-                    background: 'linear-gradient(145deg, #e8f5e9, #c8e6c9)',
-                    border: '2px solid #a5d6a7',
-                    borderRadius: 16,
-                    padding: '20px',
-                    height: '100%',
-                    boxShadow: '0 4px 12px rgba(40,167,69,0.12)'
-                  }}>
-                    <div style={{ marginBottom: 16 }}>
-                      <span style={{
-                        background: '#28a745', color: 'white',
-                        fontSize: '0.7rem', fontWeight: 700,
-                        padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
-                      }}>🎯 OPTIMISED TARGET</span>
-                    </div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
-                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>TARGET EXPENSES</div>
-                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#155724', marginBottom: 14 }}>LKR {tgtExp.toLocaleString()}</div>
-                    <div style={{ background: 'rgba(255,255,255,0.65)', borderRadius: 10, padding: '12px 14px' }}>
-                      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
-                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#155724' }}>LKR {tgtSav.toLocaleString()}</div>
-                      <span style={{
-                        background: '#fffde7', color: '#666',
-                        fontSize: '0.73rem', fontWeight: 600,
-                        padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
-                      }}>{tgtRate}% savings rate</span>
-                    </div>
-                  </div>
-                </Col>
-
-                {/* Card 3: AI Powered Optimization Strategy */}
-                <Col md={4}>
-                  <div style={{
-                    background: 'linear-gradient(145deg, #e3f2fd, #bbdefb)',
-                    border: '2px solid #90caf9',
-                    borderRadius: 16,
-                    padding: '20px',
-                    height: '100%',
-                    boxShadow: '0 4px 12px rgba(33,150,243,0.12)',
-                    display: 'flex', flexDirection: 'column'
-                  }}>
-                    <div style={{ marginBottom: 16 }}>
-                      <span style={{
-                        background: '#1565c0', color: 'white',
-                        fontSize: '0.7rem', fontWeight: 700,
-                        padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
-                      }}>🤖 AI POWERED STRATEGY</span>
-                    </div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
-                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
-                    <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>TARGET EXPENSES</div>
-                    <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#0d47a1', marginBottom: 14 }}>LKR {aiPlanTargetExp.toLocaleString()}</div>
-                    <div style={{ background: 'rgba(255,255,255,0.65)', borderRadius: 10, padding: '12px 14px' }}>
-                      <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
-                      <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0d47a1' }}>LKR {aiPlanSav.toLocaleString()}</div>
-                      <span style={{
-                        background: '#fffde7', color: '#666',
-                        fontSize: '0.73rem', fontWeight: 600,
-                        padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
-                      }}>{aiPlanRate}% savings rate</span>
-                    </div>
-                    {curExp - aiPlanTargetExp > 0 && (
-                      <div style={{
-                        marginTop: 12, background: '#e8f5e9',
-                        border: '1px solid #a5d6a7', borderRadius: 8,
-                        padding: '8px 12px', fontSize: '0.73rem', color: '#1b5e20', fontWeight: 600
-                      }}>
-                        📉 By reducing expenses by{' '}
-                        <span style={{ fontSize: '0.85rem' }}>LKR {(curExp - aiPlanTargetExp).toLocaleString()}</span>
-                        <div style={{ fontWeight: 400, fontSize: '0.68rem', color: '#2e7d32', marginTop: 3 }}>
-                          From LKR {curExp.toLocaleString()} → Target LKR {aiPlanTargetExp.toLocaleString()}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </Col>
-              </Row>
-
-              {/* Hero extra-savings banner */}
-              {extraSav > 0 && (
-                <div className="bta-hero-banner">
-                  <div className="bta-hero-text">
-                    <div className="bta-hero-caption">
-                      {aiStrategyMeta
-                        ? 'The AI strategy locks in an extra saving of'
-                        : 'With the AI strategy, you could save an extra'}
-                    </div>
-                    <div className="bta-hero-amount">LKR {extraSav.toLocaleString()}</div>
-                    {/* <div className="bta-hero-caption">
-                      per month — that's{' '}
-                      <strong style={{color:'#fefcbf'}}>LKR {(extraSav * 12).toLocaleString()}</strong>
-                      {' '}per year!{' '}
-                      {aiStrategyMeta
-                        ? '🤖 AI Confirmed 🎯'
-                        : '🎯'}
-                    </div> */}
-                    {aiStrategyMeta && (
-                      <div style={{marginTop:10, fontSize:'0.8rem', color:'rgba(255,255,255,0.75)'}}>
-                        Expenses LKR {aiPlanTargetExp.toLocaleString()} vs Income LKR {inc.toLocaleString()}
-                        {' '}— LKR {aiPlanSav.toLocaleString()} kept as buffer
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          );
-        })()}
-
-        {/* ── Reveal button — above action buttons ── */}
-        {geminiInsight && !geminiLoading && (
-          <div className="text-center mb-4">
-            {!showTransformation ? (
-              <button
-                className="bta-reveal-btn"
-                onClick={() => setShowTransformation(true)}
-              >
-                <span className="bta-reveal-btn-glow" />
-                <span className="bta-reveal-btn-icon">📊</span>
-                <span className="bta-reveal-btn-text">View AI-Confirmed Final Budget Summary</span>
-                <span className="bta-reveal-btn-arrow">↓</span>
-              </button>
-            ) : (
-              <button
-                className="bta-reveal-btn bta-reveal-btn--hide"
-                onClick={() => setShowTransformation(false)}
-              >
-                <span className="bta-reveal-btn-icon">📋</span>
-                <span className="bta-reveal-btn-text">Hide Budget Summary</span>
-                <span className="bta-reveal-btn-arrow">↑</span>
-              </button>
-            )}
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        <div className="text-center">
-          <Button variant="outline-primary" onClick={() => setCurrentStep(2)} className="me-2">
-            📝 Edit Profile
-          </Button>
-          <Button variant="primary" onClick={handlePrintReport}>
-            🖨️ Print Full Report
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  const handlePrintReport = () => {
-    if (!analysisResult) return;
-    const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment, recommendation } = analysisResult;
-    const strategy = analysisResult.optimal_strategy;
-    const date = new Date().toLocaleDateString('en-LK', { year: 'numeric', month: 'long', day: 'numeric' });
-
-    const catIcons = {
-      accommodation: '🏠', food: '🍽️', transport: '🚌', education: '📚',
-      entertainment: '🎉', utilities: '💡', healthcare: '🏥', internet: '📱', study_materials: '✏️', other: '📦'
-    };
-
-    const expRows = Object.entries(expense_breakdown)
-      .filter(([k, v]) => k !== 'total_expenses' && v > 0)
-      .sort(([, a], [, b]) => b - a)
-      .map(([k, v]) => {
-        const pct = ((v / expense_breakdown.total_expenses) * 100).toFixed(1);
-        const label = k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        return `<tr>
-          <td>${catIcons[k] || '💰'} ${label}</td>
-          <td style="text-align:right;font-weight:600">LKR ${v.toLocaleString()}</td>
-          <td style="text-align:right;color:#666">${pct}%</td>
-          <td style="width:140px;padding-left:8px">
-            <div style="background:#edf2f7;border-radius:6px;height:10px">
-              <div style="width:${Math.min(pct, 100)}%;height:100%;background:#667eea;border-radius:6px"></div>
-            </div>
-          </td>
-        </tr>`;
+ // Get current user from Redux store
+ const { currentUser } = useSelector((state) => state.user);
+
+ // Multi-step form state
+ const [currentStep, setCurrentStep] = useState(2);
+ const [loading, setLoading] = useState(false);
+ const [error, setError] = useState(null);
+ const [analysisResult, setAnalysisResult] = useState(null);
+
+ // Gemini AI Enhanced Strategy state
+ const [geminiInsight, setGeminiInsight] = useState(null);
+ const [aiStrategyMeta, setAiStrategyMeta] = useState(null); // AI-computed budget numbers
+ const [aiFinalBudgetNums, setAiFinalBudgetNums] = useState(null); // parsed numbers from FINAL_BUDGET: line
+ const [showTransformation, setShowTransformation] = useState(false); // revealed by button
+ const [displayedText, setDisplayedText] = useState(''); // For streaming effect
+ const [isStreaming, setIsStreaming] = useState(false);
+ const [geminiLoading, setGeminiLoading] = useState(false);
+ const [geminiError, setGeminiError] = useState(null);
+ const [aiProvider, setAiProvider] = useState(null); // Track which AI was used
+ const aiSectionRef = useRef(null); // Target for scroll-to-AI button
+
+ // Distance warning modal state
+ const [distanceWarning, setDistanceWarning] = useState({ show: false, pendingValue: '' });
+
+ // Form data state
+ const [formData, setFormData] = useState({
+ // Account Information
+ email: currentUser?.email || '',
+ password: '',
+ full_name: currentUser?.username || '',
+ phone: '',
+ university: 'SLIIT',
+
+ // Academic Profile
+ year_of_study: 'Second Year',
+ field_of_study: 'IT',
+ district: 'Colombo',
+
+ // Financial Basics
+ monthly_income: 30000,
+ home_money: 0, // Money received from family/home
+ accommodation_type: 'Rented Room',
+ rent: 10000,
+
+ // Food Preferences
+ food_type: 'Mixed',
+ meals_per_day: '3 meals',
+ diet_type: 'Non-Vegetarian',
+ cooking_frequency: 'Most days',
+ cooking_percentage: 60,
+
+ // Transport Details
+ distance_uni_accommodation: 5,
+ distance_home_uni: 80,
+ transport_method: 'Bus', // Accommodation → University (daily commute)
+ transport_method_home_accommodation: 'Bus', // Home → Accommodation (home visits)
+ days_per_week: '5 days',
+ home_visit_frequency: 'Monthly',
+ transport_method_home: 'Bus', // legacy — kept for backward compat
+
+ // Work Commute (optional)
+ has_work_commute: false,
+ distance_work: 10, // km from accommodation to work
+ work_transport_method: 'Bus',
+ work_days_per_week: '5 days',
+
+ // Additional Expenses
+ internet: 1500,
+ study_materials: 2000,
+ entertainment: 2000,
+ utilities: 1000,
+ healthcare: 1000,
+ other: 500
+ });
+
+ const backendUrl = 'http://127.0.0.1:5002';
+
+ const districts = [
+ 'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya',
+ 'Galle', 'Matara', 'Hambantota', 'Jaffna', 'Kurunegala', 'Anuradhapura',
+ 'Ratnapura', 'Batticaloa', 'Trincomalee', 'Badulla'
+ ];
+
+ const handleInputChange = (e) => {
+ const { name, value } = e.target;
+ setFormData(prev => ({
+ ...prev,
+ [name]: ['monthly_income', 'home_money', 'rent', 'distance_uni_accommodation', 'distance_home_uni',
+ 'cooking_percentage', 'internet', 'study_materials', 'entertainment',
+ 'utilities', 'healthcare', 'other'].includes(name)
+ ? (value === '' ? '' : (parseInt(value) || 0))
+ : value
+ }));
+ };
+
+ const parseStepLinks = (rawLinks) => {
+ if (!rawLinks || /^none$/i.test(rawLinks.trim())) return [];
+
+ const links = [];
+ const markdownRegex = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+ let match;
+
+ while ((match = markdownRegex.exec(rawLinks)) !== null) {
+ links.push({ label: match[1].trim(), url: match[2].trim() });
+ }
+
+ if (links.length === 0) {
+ const urlRegex = /(https?:\/\/[^\s|,]+)/g;
+ const urls = rawLinks.match(urlRegex) || [];
+ urls.forEach((url, index) => {
+ links.push({ label: `Resource ${index + 1}`, url: url.trim() });
+ });
+ }
+
+ return links.filter((link, index, arr) =>
+ link.url && arr.findIndex((item) => item.url === link.url) === index
+ );
+ };
+
+ const slugifyLocation = (value) => {
+ if (!value) return '';
+ return value
+ .toLowerCase()
+ .replace(/university of /g, '')
+ .replace(/[^a-z0-9\s-]/g, '')
+ .trim()
+ .replace(/\s+/g, '-');
+ };
+
+ const buildIkmanAccommodationLinks = () => {
+ const districtSlug = slugifyLocation(formData.district || 'colombo') || 'colombo';
+ const districtName = formData.district || 'Colombo';
+ const campusKeywords = [
+ formData.district,
+ 'boarding room',
+ 'annex',
+ 'rent',
+ ].filter(Boolean).join(' ');
+
+ return [
+ {
+ label: `ikman rooms in ${districtName}`,
+ url: `https://ikman.lk/en/ads/i/${districtSlug}/room-annex-rentals/other`,
+ },
+ {
+ label: `Search boarding in ${districtName}`,
+ url: `https://www.google.com/search?q=${encodeURIComponent(`site:ikman.lk ${campusKeywords}`)}`,
+ },
+ ];
+ };
+
+ const getFallbackStepLinks = (step) => {
+ const content = `${step.title} ${step.how}`.toLowerCase();
+ const fallbackLinks = [];
+
+ const isAccommodationStep =
+ step.category?.toLowerCase().includes('accommodation') ||
+ content.includes('rent') ||
+ content.includes('room') ||
+ content.includes('boarding') ||
+ content.includes('annex') ||
+ content.includes('hostel');
+
+ if (content.includes('cargills')) {
+ fallbackLinks.push({ label: 'Cargills Online', url: 'https://cargillsonline.com/' });
+ }
+ if (content.includes('keells')) {
+ fallbackLinks.push({ label: 'Keells Super', url: 'https://www.keellssuper.com/' });
+ }
+ if (isAccommodationStep) {
+ fallbackLinks.push(...buildIkmanAccommodationLinks());
+ }
+
+ return fallbackLinks.filter((link, index, arr) =>
+ link.url && arr.findIndex((item) => item.url === link.url) === index
+ );
+ };
+
+ const sanitizeAiMoneyText = (value) => {
+ if (!value) return value;
+ return value
+ .replace(/\/month\b/gi, '')
+ .replace(/\bper month\b/gi, '')
+ .replace(/\bmonthly savings?\b/gi, 'buffer')
+ .replace(/\bsaving\s+LKR/gi, 'buffer LKR')
+ .replace(/\s{2,}/g, ' ')
+ .trim();
+ };
+
+ // Gemini AI Enhanced Strategy 
+ const fetchGeminiInsight = async (result, isRetry = false) => {
+ setGeminiLoading(true);
+ setGeminiError(null);
+ if (!isRetry) {
+ setGeminiInsight(null);
+ setShowTransformation(false); // hide card when starting a fresh AI call
+ setAiFinalBudgetNums(null);
+ }
+ try {
+ const payload = {
+ financial_summary: result.financial_summary,
+ expense_breakdown: result.expense_breakdown,
+ risk_assessment: result.risk_assessment,
+ optimal_strategy: result.optimal_strategy,
+ student_profile: {
+ university: formData.university,
+ year_of_study: formData.year_of_study,
+ field_of_study: formData.field_of_study,
+ district: formData.district,
+ accommodation_type: formData.accommodation_type,
+ food_type: formData.food_type,
+ transport_method: formData.transport_method
+ }
+ };
+ const resp = await fetch(`${backendUrl}/api/budget/gemini-strategy`, {
+ method: 'POST',
+ headers: { 'Content-Type': 'application/json' },
+ body: JSON.stringify(payload)
+ });
+ const data = await resp.json();
+
+ if (resp.ok && data.success) {
+ const content = data.ai_strategy || data.gemini_strategy;
+ setGeminiInsight(content); // Store full text
+ setDisplayedText(''); // Reset displayed text
+ setIsStreaming(true); // Start streaming animation
+ setAiProvider(data.ai_provider || data.model_used || 'AI');
+ // Store the exact constraint numbers the AI strategy was built around
+ if (data.prompt_data) setAiStrategyMeta(data.prompt_data);
+ if (data.cached) {
+ console.log(` Using cached ${data.ai_provider} response`);
+ }
+ } else {
+ // Use user-friendly message if available
+ const errorMessage = data.user_message || data.error || 'Gemini AI temporarily unavailable';
+ setGeminiError({
+ message: errorMessage,
+ canRetry: data.retry_suggested || resp.status === 429,
+ technical: data.technical_details,
+ isRateLimit: resp.status === 429
+ });
+ }
+ } catch (e) {
+ setGeminiError({
+ message: 'Could not reach Gemini service. Please check your connection.',
+ canRetry: true,
+ technical: e.message,
+ isRateLimit: false
+ });
+ } finally {
+ setGeminiLoading(false);
+ }
+ };
+
+ const handleDistanceHomeChange = (e) => {
+ const val = e.target.value;
+ const num = parseInt(val) || 0;
+ if (num > 800) {
+ setDistanceWarning({ show: true, pendingValue: val === '' ? '' : num });
+ } else {
+ setFormData(prev => ({ ...prev, distance_home_uni: val === '' ? '' : num }));
+ }
+ };
+
+ const confirmDistanceWarning = () => {
+ setFormData(prev => ({ ...prev, distance_home_uni: distanceWarning.pendingValue }));
+ setDistanceWarning({ show: false, pendingValue: '' });
+ };
+
+ const cancelDistanceWarning = () => {
+ setDistanceWarning({ show: false, pendingValue: '' });
+ };
+
+ const nextStep = () => {
+ setCurrentStep(prev => Math.min(prev + 1, 7));
+ };
+
+ const prevStep = () => {
+ setCurrentStep(prev => Math.max(prev - 1, 2));
+ };
+
+ const scrollToAISection = () => {
+ if (aiSectionRef.current) {
+ aiSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+ }
+ };
+
+ // Parse FINAL_BUDGET numbers from AI response 
+ useEffect(() => {
+ if (!geminiInsight) { setAiFinalBudgetNums(null); return; }
+ const match = geminiInsight.match(/FINAL_BUDGET\s*:\s*(.+)/i);
+ if (!match) return;
+ const parseNum = (str) => {
+ if (!str) return null;
+ const n = parseFloat(str.replace(/[^0-9.]/g, ''));
+ return isNaN(n) ? null : n;
+ };
+ const items = match[1].split('|').map(s => {
+ const [label, ...rest] = s.split(':');
+ return { label: label.trim(), value: rest.join(':').trim() };
+ }).filter(x => x.label && x.value);
+ const totalItem = items.find(x => x.label.toUpperCase() === 'TOTAL');
+ const savingsItem = items.find(x => x.label.toUpperCase() === 'SAVINGS');
+ const catItems = items.filter(x =>
+ !['TOTAL','SAVINGS'].includes(x.label.toUpperCase()) &&
+ !x.label.toUpperCase().includes('FITS')
+ );
+ setAiFinalBudgetNums({
+ total: parseNum(totalItem?.value),
+ savings: parseNum(savingsItem?.value),
+ categories: catItems.map(c => ({ label: c.label, value: parseNum(c.value), raw: c.value })),
+ });
+ }, [geminiInsight]);
+
+ // Streaming Text Effect (like ChatGPT) 
+ useEffect(() => {
+ if (!isStreaming || !geminiInsight) return;
+
+ let currentIndex = 0;
+ const fullText = geminiInsight;
+ const charsPerFrame = 3; // Characters to add per interval (adjust speed)
+
+ const streamInterval = setInterval(() => {
+ if (currentIndex >= fullText.length) {
+ setIsStreaming(false);
+ clearInterval(streamInterval);
+ return;
+ }
+
+ currentIndex += charsPerFrame;
+ setDisplayedText(fullText.substring(0, Math.min(currentIndex, fullText.length)));
+ }, 30); // 30ms interval for smooth streaming
+
+ return () => clearInterval(streamInterval);
+ }, [isStreaming, geminiInsight]);
+
+ const submitAnalysis = async () => {
+ setLoading(true);
+ setError(null);
+
+ try {
+ // Include user information if logged in
+ const requestData = {
+ ...formData,
+ userId: currentUser?._id || null,
+ username: currentUser?.username || formData.full_name,
+ email: currentUser?.email || formData.email
+ };
+
+ // Step 1: Get ML analysis from Flask
+ const response = await fetch(`${backendUrl}/api/budget/complete-analysis`, {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json',
+ },
+ body: JSON.stringify(requestData)
+ });
+
+ if (response.ok) {
+ const result = await response.json();
+ setAnalysisResult(result);
+ // Don't automatically fetch AI insights - user must click button
+
+ // Step 2: Save to MongoDB directly via Node.js API (like SignUp does)
+ try {
+ const budgetSaveData = {
+ // User info
+ userId: currentUser?._id || null,
+ username: currentUser?.username || formData.full_name,
+ email: currentUser?.email || formData.email,
+
+ // Personal Information
+ monthly_income: formData.monthly_income,
+ year_of_study: formData.year_of_study,
+ field_of_study: formData.field_of_study,
+ university: formData.university,
+ district: formData.district,
+ accommodation_type: formData.accommodation_type,
+
+ // Budget Inputs
+ rent: formData.rent,
+ internet: formData.internet,
+ study_materials: formData.study_materials,
+ entertainment: formData.entertainment,
+ utilities: formData.utilities,
+ healthcare: formData.healthcare,
+ other: formData.other,
+
+ // Food Details
+ food_type: formData.food_type,
+ meals_per_day: formData.meals_per_day,
+ diet_type: formData.diet_type,
+ cooking_frequency: formData.cooking_frequency,
+ cooking_percentage: formData.cooking_percentage,
+
+ // Transport Details
+ distance_uni_accommodation: formData.distance_uni_accommodation,
+ distance_home_uni: formData.distance_home_uni,
+ transport_method: formData.transport_method,
+ transport_method_home_accommodation: formData.transport_method_home_accommodation,
+ transport_method_home: formData.transport_method_home_accommodation, // compat alias
+ days_per_week: formData.days_per_week,
+ home_visit_frequency: formData.home_visit_frequency,
+ // Work commute
+ has_work_commute: formData.has_work_commute,
+ distance_work: formData.distance_work,
+ work_transport_method: formData.work_transport_method,
+ work_days_per_week: formData.work_days_per_week,
+
+ // Calculated Budgets from Flask response
+ food_budget: result.calculated_budgets?.food || {},
+ transport_budget: result.calculated_budgets?.transport || {},
+
+ // ML Prediction Results
+ predicted_budget: result.ml_prediction?.predicted_budget || 0,
+ ml_confidence: (result.ml_prediction?.confidence || 0) * 100,
+ risk_level: result.risk_assessment?.risk_level || 'Medium Risk',
+ risk_probability: (result.risk_assessment?.risk_probability || 0) * 100,
+
+ // Financial Summary
+ total_expenses: result.financial_summary?.total_expenses || 0,
+ calculated_savings: result.financial_summary?.monthly_savings || 0,
+ savings_rate: result.financial_summary?.savings_rate || 0,
+
+ // Recommendations
+ recommendations: result.recommendation?.key_recommendations || [],
+ actionable_steps: result.recommendation?.action_steps || [],
+
+ // Expense Breakdown
+ expense_breakdown: result.expense_breakdown || {},
+
+ // Metadata
+ analysis_date: new Date().toISOString(),
+ status: 'active'
+ };
+
+ // Save to MongoDB via Node.js API - Same as SignUp
+ const nodeApiUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5010';
+ const saveResponse = await fetch(`${nodeApiUrl}/api/budget/save`, {
+ method: 'POST',
+ headers: {
+ 'Content-Type': 'application/json',
+ },
+ body: JSON.stringify(budgetSaveData)
+ });
+
+ if (saveResponse.ok) {
+ const saveResult = await saveResponse.json();
+ console.log(' Budget prediction saved to MongoDB:', saveResult.predictionId);
+ } else {
+ console.warn(' Failed to save to MongoDB, but showing results anyway');
+ }
+ } catch (saveError) {
+ console.warn(' MongoDB save error:', saveError.message);
+ // Continue anyway - user still gets analysis results
+ }
+
+ setCurrentStep(7); // Move to results step
+ } else {
+ const errorData = await response.json();
+ setError(errorData.error || 'Failed to analyze budget');
+ }
+ } catch (error) {
+ setError('Network error. Please check if the backend server is running on port 5002.');
+ } finally {
+ setLoading(false);
+ }
+ };
+
+ const renderStepIndicator = () => {
+ const steps = [
+ 'Academic', 'Financial', 'Food', 'Transport', 'Additional', 'Results'
+ ];
+
+ return (
+ <div className="step-indicator mb-4">
+ <ProgressBar now={((currentStep - 2) / 5) * 100} className="mb-3" />
+ <div className="d-flex justify-content-between">
+ {steps.map((step, index) => {
+ const stepNum = index + 2; // actual step state value
+ const displayNum = index + 1; // visible 1-6 label
+ const isCompleted = currentStep > stepNum;
+ const isActive = currentStep === stepNum;
+ const isClickable = isCompleted;
+ return (
+ <div
+ key={index}
+ className={`step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''} ${isClickable ? 'clickable' : ''}`}
+ onClick={() => isClickable && setCurrentStep(stepNum)}
+ title={isClickable ? `Go back to Step ${displayNum}: ${step}` : undefined}
+ >
+ <div className="step-number">
+ {isCompleted ? (
+ <span className="step-done">
+ <span className="step-check"></span>
+ <span className="step-num-badge">{displayNum}</span>
+ </span>
+ ) : (
+ displayNum
+ )}
+ </div>
+ <div className="step-label">
+ <span className="step-num-text">Step {displayNum}</span>
+ <span className="step-name-text">{step}</span>
+ </div>
+ </div>
+ );
+ })}
+ </div>
+ </div>
+ );
+ };
+
+ const renderStep2 = () => (
+ <Card className="shadow-lg border-0">
+ <Card.Header className="bg-gradient-primary text-white">
+ <h4 className="mb-0"> Step 1: Academic Profile</h4>
+ </Card.Header>
+ <Card.Body className="p-4">
+ <Form>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Year of Study *</strong></Form.Label>
+ <Form.Select name="year_of_study" value={formData.year_of_study} onChange={handleInputChange}>
+ <option value="First Year">First Year</option>
+ <option value="Second Year">Second Year</option>
+ <option value="Third Year">Third Year</option>
+ <option value="Fourth Year">Fourth Year</option>
+ </Form.Select>
+ </Form.Group>
+
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Field of Study *</strong></Form.Label>
+ <Form.Select name="field_of_study" value={formData.field_of_study} onChange={handleInputChange}>
+ <option value="Engineering">Engineering</option>
+ <option value="IT">IT/Computer Science</option>
+ <option value="Business">Business</option>
+ <option value="Medicine">Medicine</option>
+ <option value="Arts">Arts</option>
+ <option value="Science">Science</option>
+ <option value="Other">Other</option>
+ </Form.Select>
+ </Form.Group>
+
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Current District *</strong></Form.Label>
+ <Form.Select name="district" value={formData.district} onChange={handleInputChange}>
+ {districts.map(dist => (
+ <option key={dist} value={dist}>{dist}</option>
+ ))}
+ </Form.Select>
+ </Form.Group>
+ </Form>
+ </Card.Body>
+ </Card>
+ );
+
+ const renderStep3 = () => (
+ <Card className="shadow-lg border-0">
+ <Card.Header className="bg-gradient-primary text-white">
+ <h4 className="mb-0"> Step 2: Financial Basics</h4>
+ </Card.Header>
+ <Card.Body className="p-4">
+ <Form>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Monthly Income (LKR) *</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="monthly_income"
+ value={formData.monthly_income}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ required
+ />
+ <Form.Text className="text-muted">
+ Total money you receive monthly (allowance, scholarship, part-time job)
+ </Form.Text>
+ </Form.Group>
+
+ <Form.Group className="mb-3">
+ <Form.Label><strong> Money Received from Home / Family (LKR)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="home_money"
+ value={formData.home_money}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ placeholder="0"
+ />
+ <Form.Text className="text-muted">
+ Enter the monthly amount your family sends you (leave 0 if none).
+ This will be added to your effective income.
+ </Form.Text>
+ {formData.home_money > 0 && (
+ <div className="alert alert-info mt-2 py-1 px-3 mb-0" style={{ fontSize: '0.85rem' }}>
+ Effective total income: <strong>LKR {(Number(formData.monthly_income) + Number(formData.home_money)).toLocaleString()}</strong>/month
+ </div>
+ )}
+ </Form.Group>
+
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Accommodation Type *</strong></Form.Label>
+ <Form.Select name="accommodation_type" value={formData.accommodation_type} onChange={handleInputChange}>
+ <option value="University Hostel">University Hostel</option>
+ <option value="Rented Room">Rented Room/Apartment</option>
+ <option value="Living with Family">Living with Family (No rent)</option>
+ <option value="Boarding">Boarding House</option>
+ <option value="Other">Other</option>
+ </Form.Select>
+ </Form.Group>
+
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Monthly Rent (LKR) *</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="rent"
+ value={formData.rent}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ required
+ />
+ <Form.Text className="text-muted">
+ Enter 0 if living with family or accommodation is free
+ </Form.Text>
+ </Form.Group>
+ </Form>
+ </Card.Body>
+ </Card>
+ );
+
+ const renderStep4 = () => (
+ <Card className="shadow-lg border-0">
+ <Card.Header className="bg-gradient-primary text-white">
+ <h4 className="mb-0"> Step 3: Food Preferences</h4>
+ </Card.Header>
+ <Card.Body className="p-4">
+ <Form>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Food Type Preference *</strong></Form.Label>
+ <Form.Select name="food_type" value={formData.food_type} onChange={handleInputChange}>
+ <option value="Home Cooked">Home Cooked (I cook myself)</option>
+ <option value="Mixed">Mixed (Cook + Order/Eat out sometimes)</option>
+ <option value="Food Delivery">Food Delivery (Uber Eats, PickMe Food)</option>
+ <option value="Mostly Canteen/Restaurants">Mostly Canteen/Restaurants</option>
+ <option value="Full Meal Plan">Full Meal Plan (Hostel/Boarding included)</option>
+ </Form.Select>
+ </Form.Group>
+
+ {formData.food_type === 'Mixed' && (
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Cooking vs Ordering Split</strong></Form.Label>
+ <div className="d-flex align-items-center gap-3">
+ <span>Cook: {formData.cooking_percentage}%</span>
+ <Form.Range
+ name="cooking_percentage"
+ value={formData.cooking_percentage}
+ onChange={handleInputChange}
+ min="0"
+ max="100"
+ />
+ <span>Order: {100 - formData.cooking_percentage}%</span>
+ </div>
+ </Form.Group>
+ )}
+
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Meals Per Day *</strong></Form.Label>
+ <Form.Select name="meals_per_day" value={formData.meals_per_day} onChange={handleInputChange}>
+ <option value="2 meals">2 meals</option>
+ <option value="3 meals">3 meals</option>
+ <option value="3 meals + snacks">3 meals + snacks</option>
+ </Form.Select>
+ </Form.Group>
+
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Diet Type *</strong></Form.Label>
+ <Form.Select name="diet_type" value={formData.diet_type} onChange={handleInputChange}>
+ <option value="Vegetarian">Vegetarian</option>
+ <option value="Non-Vegetarian">Non-Vegetarian</option>
+ <option value="Vegan">Vegan</option>
+ </Form.Select>
+ </Form.Group>
+
+ {(formData.food_type === 'Home Cooked' || formData.food_type === 'Mixed') && (
+ <Form.Group className="mb-3">
+ <Form.Label><strong>How often do you cook?</strong></Form.Label>
+ <Form.Select name="cooking_frequency" value={formData.cooking_frequency} onChange={handleInputChange}>
+ <option value="Every day">Every day</option>
+ <option value="Most days">Most days</option>
+ <option value="Sometimes">Sometimes</option>
+ <option value="Rarely">Rarely</option>
+ <option value="Never">Never</option>
+ </Form.Select>
+ </Form.Group>
+ )}
+ </Form>
+ </Card.Body>
+ </Card>
+ );
+
+ const renderStep5 = () => (
+ <Card className="shadow-lg border-0">
+ <Card.Header className="bg-gradient-primary text-white">
+ <h4 className="mb-0"> Step 4: Transport Details</h4>
+ </Card.Header>
+ <Card.Body className="p-4">
+ <Form>
+ <Row>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Distance: University to Accommodation (km)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="distance_uni_accommodation"
+ value={formData.distance_uni_accommodation}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ />
+ </Form.Group>
+ </Col>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Distance: Home to University (km)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="distance_home_uni"
+ value={formData.distance_home_uni}
+ onChange={handleDistanceHomeChange}
+ onFocus={e => e.target.select()}
+ isInvalid={Number(formData.distance_home_uni) > 800}
+ />
+ </Form.Group>
+ </Col>
+ </Row>
+
+ {/* Route 1: Accommodation → University */}
+ <div className="p-3 mb-3 rounded" style={{ background: '#eff6ff', border: '1px solid #bfdbfe' }}>
+ <div className="mb-2" style={{ fontWeight: 700, color: '#1e40af', fontSize: '0.92rem' }}>
+ Route 1: Accommodation → University (Daily Commute)
+ </div>
+ <Form.Group className="mb-0">
+ <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport method you use every day</Form.Label>
+ <Form.Select name="transport_method" value={formData.transport_method} onChange={handleInputChange}>
+ <option value="Walking"> Walking</option>
+ <option value="Bicycle"> Bicycle</option>
+ <option value="Bus"> Bus (CTB / Private)</option>
+ <option value="Train"> Train</option>
+ <option value="Tuk-Tuk"> Tuk-Tuk / Three-Wheeler</option>
+ <option value="Ride-share"> Ride-share (Uber / PickMe)</option>
+ <option value="Personal Vehicle"> Personal Vehicle (Motorbike/Car)</option>
+ <option value="University Transport"> University Transport (Shuttle)</option>
+ <option value="Mixed"> Mixed (Bus + Tuk-Tuk)</option>
+ </Form.Select>
+ </Form.Group>
+ </div>
+
+ {/* Route 2: Home → Accommodation */}
+ <div className="p-3 mb-3 rounded" style={{ background: '#f0fff4', border: '1px solid #9ae6b4' }}>
+ <div className="mb-2" style={{ fontWeight: 700, color: '#276749', fontSize: '0.92rem' }}>
+ Route 2: Home → Accommodation (Home Visits)
+ </div>
+ <Row>
+ <Col md={6}>
+ <Form.Group className="mb-0">
+ <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>How often do you visit home?</Form.Label>
+ <Form.Select name="home_visit_frequency" value={formData.home_visit_frequency} onChange={handleInputChange}>
+ <option value="Daily">Daily (Commuter)</option>
+ <option value="Weekly">Weekly</option>
+ <option value="Bi-weekly">Bi-weekly (Every 2 weeks)</option>
+ <option value="Monthly">Monthly</option>
+ <option value="Once per semester">Once per semester</option>
+ <option value="Rarely/Never">Rarely / Never</option>
+ </Form.Select>
+ </Form.Group>
+ </Col>
+ <Col md={6}>
+ <Form.Group className="mb-0">
+ <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport method for this route</Form.Label>
+ <Form.Select name="transport_method_home_accommodation" value={formData.transport_method_home_accommodation} onChange={handleInputChange}>
+ <option value="Bus"> Bus (CTB / Private / Express)</option>
+ <option value="Train"> Train</option>
+ <option value="Personal Vehicle"> Personal Vehicle</option>
+ <option value="Ride-share"> Ride-share (Uber / PickMe)</option>
+ <option value="Tuk-Tuk"> Tuk-Tuk</option>
+ <option value="Mixed"> Mixed</option>
+ </Form.Select>
+ </Form.Group>
+ </Col>
+ </Row>
+ </div>
+
+ {/* Route 3: Work Commute (optional) */}
+ <div className="p-3 mb-3 rounded" style={{ background: '#fefce8', border: '1px solid #fde68a' }}>
+ <div className="d-flex align-items-center justify-content-between mb-2">
+ <div style={{ fontWeight: 700, color: '#92400e', fontSize: '0.92rem' }}>
+ Route 3: Accommodation → Work (Part-Time / Weekday Job)
+ </div>
+ <Form.Check
+ type="switch"
+ id="has_work_commute"
+ label={<span style={{ fontSize: '0.82rem', color: '#92400e' }}>I have a work commute</span>}
+ checked={formData.has_work_commute}
+ onChange={e => setFormData(prev => ({ ...prev, has_work_commute: e.target.checked }))}
+ />
+ </div>
+ {formData.has_work_commute && (
+ <Row className="g-2 mt-1">
+ <Col md={4}>
+ <Form.Group>
+ <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Distance to Work (km)</Form.Label>
+ <Form.Control
+ type="number"
+ name="distance_work"
+ value={formData.distance_work}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ min={0}
+ />
+ </Form.Group>
+ </Col>
+ <Col md={4}>
+ <Form.Group>
+ <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Transport to Work</Form.Label>
+ <Form.Select name="work_transport_method" value={formData.work_transport_method} onChange={handleInputChange}>
+ <option value="Walking"> Walking</option>
+ <option value="Bicycle"> Bicycle</option>
+ <option value="Bus"> Bus (CTB / Private)</option>
+ <option value="Train"> Train</option>
+ <option value="Tuk-Tuk"> Tuk-Tuk / Three-Wheeler</option>
+ <option value="Ride-share"> Ride-share (Uber / PickMe)</option>
+ <option value="Personal Vehicle"> Personal Vehicle</option>
+ <option value="Mixed"> Mixed</option>
+ </Form.Select>
+ </Form.Group>
+ </Col>
+ <Col md={4}>
+ <Form.Group>
+ <Form.Label className="text-muted" style={{ fontSize: '0.85rem' }}>Work Days per Week</Form.Label>
+ <Form.Select name="work_days_per_week" value={formData.work_days_per_week} onChange={handleInputChange}>
+ <option value="1 day">1 day</option>
+ <option value="2 days">2 days</option>
+ <option value="3 days">3 days</option>
+ <option value="4 days">4 days</option>
+ <option value="5 days">5 days</option>
+ <option value="6 days">6 days</option>
+ </Form.Select>
+ </Form.Group>
+ </Col>
+ </Row>
+ )}
+ </div>
+
+ {/* Days per week at uni */}
+ {(() => {
+ const workDays = formData.has_work_commute
+ ? parseInt(formData.work_days_per_week) || 0
+ : 0;
+ const maxUniDays = 7 - workDays;
+ const currentUniDays = parseInt(formData.days_per_week) || 5;
+ const isOverLimit = currentUniDays > maxUniDays;
+
+ // Auto-correct if current value exceeds the new max
+ if (isOverLimit && maxUniDays > 0) {
+ setFormData(prev => ({ ...prev, days_per_week: `${maxUniDays} ${maxUniDays === 1 ? 'day' : 'days'}` }));
+ }
+
+ const allOptions = [
+ { v: 1, l: '1 day' }, { v: 2, l: '2 days' }, { v: 3, l: '3 days' },
+ { v: 4, l: '4 days' }, { v: 5, l: '5 days' }, { v: 6, l: '6 days' },
+ { v: 7, l: '7 days' },
+ ];
+
+ return (
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Days per Week at University</strong></Form.Label>
+ <Form.Select
+ name="days_per_week"
+ value={formData.days_per_week}
+ onChange={handleInputChange}
+ isInvalid={isOverLimit}
+ style={isOverLimit ? { borderColor: '#dc3545' } : {}}
+ >
+ {allOptions
+ .filter(o => o.v <= maxUniDays)
+ .map(o => (
+ <option key={o.v} value={o.l}>{o.l}</option>
+ ))
+ }
+ </Form.Select>
+ {formData.has_work_commute && workDays > 0 && (
+ <div style={{
+ fontSize: '0.78rem', marginTop: 5, padding: '5px 10px', borderRadius: 6,
+ background: isOverLimit ? '#fef2f2' : '#fffbeb',
+ border: `1px solid ${isOverLimit ? '#fca5a5' : '#fde68a'}`,
+ color: isOverLimit ? '#b91c1c' : '#92400e'
+ }}>
+ {isOverLimit
+ ? ` Cannot select more than ${maxUniDays} university ${maxUniDays === 1 ? 'day' : 'days'} — your work commute already uses ${workDays} ${workDays === 1 ? 'day' : 'days'}/week.`
+ : `ℹ Work commute uses ${workDays} ${workDays === 1 ? 'day' : 'days'}/week — max ${maxUniDays} ${maxUniDays === 1 ? 'day' : 'days'} available for university.`
+ }
+ </div>
+ )}
+ </Form.Group>
+ );
+ })()}
+ </Form>
+ </Card.Body>
+ </Card>
+ );
+
+ const renderStep6 = () => (
+ <Card className="shadow-lg border-0">
+ <Card.Header className="bg-gradient-primary text-white">
+ <h4 className="mb-0"> Step 5: Additional Expenses (Optional)</h4>
+ </Card.Header>
+ <Card.Body className="p-4">
+ <Form>
+ <Row>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Internet & Mobile (LKR/month)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="internet"
+ value={formData.internet}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ />
+ </Form.Group>
+ </Col>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Study Materials (LKR/month)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="study_materials"
+ value={formData.study_materials}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ />
+ </Form.Group>
+ </Col>
+ </Row>
+
+ <Row>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Entertainment & Social (LKR/month)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="entertainment"
+ value={formData.entertainment}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ />
+ </Form.Group>
+ </Col>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Utilities (LKR/month)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="utilities"
+ value={formData.utilities}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ />
+ </Form.Group>
+ </Col>
+ </Row>
+
+ <Row>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Healthcare (LKR/month)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="healthcare"
+ value={formData.healthcare}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ />
+ </Form.Group>
+ </Col>
+ <Col md={6}>
+ <Form.Group className="mb-3">
+ <Form.Label><strong>Other Expenses (LKR/month)</strong></Form.Label>
+ <Form.Control
+ type="number"
+ name="other"
+ value={formData.other}
+ onChange={handleInputChange}
+ onFocus={e => e.target.select()}
+ />
+ </Form.Group>
+ </Col>
+ </Row>
+ </Form>
+ </Card.Body>
+ </Card>
+ );
+
+ const renderStep7 = () => {
+ if (!analysisResult) {
+ return (
+ <Card className="shadow-lg border-0">
+ <Card.Body className="p-5 text-center">
+ <h4>Ready to analyze your budget!</h4>
+ <p>Click "Analyze Budget" to get your personalized financial insights.</p>
+ </Card.Body>
+ </Card>
+ );
+ }
+
+ const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment } = analysisResult;
+
+ return (
+ <div>
+ {/* Financial Summary */}
+ <Card className="shadow-lg border-0 mb-4">
+ <Card.Header className="bg-gradient-primary text-white">
+ <h4 className="mb-0">Financial Summary</h4>
+ </Card.Header>
+ <Card.Body className="p-4">
+ <Row>
+ <Col md={3} className="text-center mb-3">
+ <div className="summary-box">
+ <div className="summary-label">Monthly Income</div>
+ <div className="summary-value text-primary">
+ LKR {financial_summary.monthly_income.toLocaleString()}
+ </div>
+ {financial_summary.home_money > 0 && (
+ <div style={{ fontSize: '0.72rem', color: '#777', marginTop: 2 }}>
+ Base: LKR {(financial_summary.base_income || 0).toLocaleString()} +
+ Family: LKR {financial_summary.home_money.toLocaleString()}
+ </div>
+ )}
+ </div>
+ </Col>
+ <Col md={3} className="text-center mb-3">
+ <div className="summary-box">
+ <div className="summary-label">Total Expenses</div>
+ <div className="summary-value text-danger">
+ LKR {financial_summary.total_expenses.toLocaleString()}
+ </div>
+ </div>
+ </Col>
+ <Col md={3} className="text-center mb-3">
+ <div className="summary-box">
+ <div className="summary-label">Monthly Savings</div>
+ <div className={`summary-value ${financial_summary.monthly_savings >= 0 ? 'text-success' : 'text-danger'}`}>
+ LKR {financial_summary.monthly_savings.toLocaleString()}
+ </div>
+ </div>
+ </Col>
+ <Col md={3} className="text-center mb-3">
+ <div className="summary-box">
+ <div className="summary-label">Savings Rate</div>
+ <div className={`summary-value ${financial_summary.savings_rate >= 0 ? 'text-success' : 'text-danger'}`}>
+ {financial_summary.savings_rate}%
+ </div>
+ </div>
+ </Col>
+ </Row>
+ </Card.Body>
+ </Card>
+
+ {/* Risk Assessment */}
+ {risk_assessment && (
+ <Alert variant={risk_assessment.risk_level === 'High Risk' ? 'danger' : 'success'} className="mb-4">
+ <Alert.Heading>
+ {risk_assessment.risk_level === 'High Risk' ? ' High Financial Risk Detected' : ' Low Financial Risk'}
+ </Alert.Heading>
+ <p>Risk Probability: {risk_assessment.risk_probability}%</p>
+ {risk_assessment.recommendations && risk_assessment.recommendations.length > 0 && (
+ <div>
+ <strong>Recommendations:</strong>
+ <ul className="mb-0 mt-2">
+ {risk_assessment.recommendations.map((rec, idx) => (
+ <li key={idx}>
+ <strong>{rec.category}:</strong> {rec.message}
+ {rec.potential_savings > 0 && (
+ <span className="text-success"> (Potential savings: LKR {rec.potential_savings.toLocaleString()})</span>
+ )}
+ </li>
+ ))}
+ </ul>
+ </div>
+ )}
+ </Alert>
+ )}
+
+ {/* Expense Breakdown */}
+ <Card className="shadow-lg border-0 mb-4">
+ <Card.Header style={{ background: 'linear-gradient(135deg,#667eea 0%,#764ba2 100%)' }} className="text-white">
+ <div className="d-flex justify-content-between align-items-center">
+ <div>
+ <h4 className="mb-0"> Expense Breakdown</h4>
+ <small style={{ opacity: 0.85 }}>Where your money goes each month</small>
+ </div>
+ <div className="text-end">
+ <div style={{ fontSize: '0.8rem', opacity: 0.85 }}>Total Monthly</div>
+ <div style={{ fontSize: '1.5rem', fontWeight: 700 }}>LKR {expense_breakdown.total_expenses?.toLocaleString()}</div>
+ </div>
+ </div>
+ </Card.Header>
+ <Card.Body className="p-4">
+ <Row>
+ <Col md={6}>
+ <h5 className="mb-3 fw-bold" style={{ color: '#4a5568' }}> Monthly Expenses</h5>
+ {(() => {
+ const icons = {
+ accommodation: { icon: '', color: '#6c63ff' },
+ food: { icon: '', color: '#38b2ac' },
+ transport: { icon: '', color: '#ed8936' },
+ education: { icon: '', color: '#4299e1' },
+ entertainment: { icon: '', color: '#ed64a6' },
+ utilities: { icon: '', color: '#ecc94b' },
+ healthcare: { icon: '', color: '#fc8181' },
+ other: { icon: '', color: '#a0aec0' },
+ internet: { icon: '', color: '#667eea' },
+ study_materials: { icon: '', color: '#4299e1' },
+ };
+ const total = expense_breakdown.total_expenses || 1;
+ return Object.entries(expense_breakdown)
+ .filter(([k]) => k !== 'total_expenses' && expense_breakdown[k] > 0)
+ .sort(([, a], [, b]) => b - a)
+ .map(([category, amount]) => {
+ const pct = ((amount / total) * 100).toFixed(1);
+ const meta = icons[category] || { icon: '', color: '#718096' };
+ const label = category.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+ return (
+ <div key={category} className="mb-3">
+ <div className="d-flex justify-content-between align-items-center mb-1">
+ <span style={{ fontWeight: 600, color: '#2d3748' }}>
+ {meta.icon} {label}
+ </span>
+ <span style={{ fontWeight: 700, color: meta.color }}>
+ LKR {amount.toLocaleString()}
+ <span className="ms-2 text-muted fw-normal" style={{ fontSize: '0.8rem' }}>({pct}%)</span>
+ </span>
+ </div>
+ <div style={{ background: '#edf2f7', borderRadius: '999px', height: '8px', overflow: 'hidden' }}>
+ <div style={{
+ width: `${Math.min(pct, 100)}%`,
+ height: '100%',
+ background: meta.color,
+ borderRadius: '999px',
+ transition: 'width 0.8s ease'
+ }} />
+ </div>
+ </div>
+ );
+ });
+ })()}
+ <div className="d-flex justify-content-between align-items-center mt-4 pt-3"
+ style={{ borderTop: '2px dashed #e2e8f0' }}>
+ <span style={{ fontWeight: 700, fontSize: '1rem', color: '#2d3748' }}>TOTAL EXPENSES</span>
+ <span style={{
+ fontWeight: 800, fontSize: '1.2rem',
+ background: 'linear-gradient(135deg,#667eea,#764ba2)',
+ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'
+ }}>
+ LKR {expense_breakdown.total_expenses?.toLocaleString()}
+ </span>
+ </div>
+ </Col>
+ <Col md={6}>
+ <h5 className="mb-3 fw-bold" style={{ color: '#4a5568' }}> Calculated Budgets</h5>
+ {calculated_budgets.food && (
+ <div className="mb-3 p-3 rounded" style={{ background: '#f0fff4', border: '1px solid #9ae6b4' }}>
+ <div className="d-flex justify-content-between align-items-center mb-1">
+ <span><strong> Food Budget:</strong></span>
+ <span className="text-success fw-bold fs-6">
+ LKR {calculated_budgets.food.monthly_total.toLocaleString()}
+ </span>
+ </div>
+ <div className="d-flex justify-content-between">
+ <small className="text-muted">Type: {calculated_budgets.food.food_type}</small>
+ <small className="text-muted">Daily avg: LKR {calculated_budgets.food.daily_cost.toLocaleString()}</small>
+ </div>
+ {/* Grocery / Outside split */}
+ {calculated_budgets.food.breakdown && (
+ <div className="mt-2 ps-2 border-start border-success border-2">
+ {calculated_budgets.food.breakdown.groceries !== undefined && (
+ <small className="text-muted d-block">
+ Grocery (cooking portion): <strong>LKR {Math.round(calculated_budgets.food.breakdown.groceries).toLocaleString()}</strong>
+ {calculated_budgets.food.grocery_note && <span className="ms-1 text-secondary">({calculated_budgets.food.grocery_note})</span>}
+ </small>
+ )}
+ {calculated_budgets.food.breakdown.outside_meals !== undefined && (
+ <small className="text-muted d-block">
+ Outside meals: <strong>LKR {Math.round(calculated_budgets.food.breakdown.outside_meals).toLocaleString()}</strong>
+ {calculated_budgets.food.outside_note && <span className="ms-1 text-secondary">({calculated_budgets.food.outside_note})</span>}
+ </small>
+ )}
+ {calculated_budgets.food.breakdown.daily_commute === undefined &&
+ calculated_budgets.food.breakdown.estimate_based_on_income !== undefined && (
+ <small className="text-muted d-block">
+ Estimated from income profile
+ </small>
+ )}
+ </div>
+ )}
+ </div>
+ )}
+ {calculated_budgets.transport && (() => {
+ const t = calculated_budgets.transport;
+ const bd = t.breakdown || {};
+ const totalMonthly = t.monthly_total || 0;
+ return (
+ <div className="mb-3 rounded overflow-hidden" style={{ border: '1.5px solid #bfdbfe' }}>
+
+ {/* Header */}
+ <div className="d-flex justify-content-between align-items-center px-3 py-2"
+ style={{ background: 'linear-gradient(90deg,#1e40af 0%,#2563eb 100%)' }}>
+ <span style={{ color: '#fff', fontWeight: 700, fontSize: '0.95rem' }}>
+ Transport Budget
+ </span>
+ <span style={{ color: '#bfdbfe', fontWeight: 800, fontSize: '1.15rem' }}>
+ LKR {totalMonthly.toLocaleString()}
+ <span style={{ fontSize: '0.75rem', fontWeight: 400, marginLeft: 4 }}>/month</span>
+ </span>
+ </div>
+
+ <div className="p-3" style={{ background: '#f8faff' }}>
+
+ {/* Route cards */}
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8 }}>
+ Routes
+ </div>
+ <div className="d-flex flex-column gap-2 mb-3">
+
+ {/* Route 1 — Campus commute */}
+ <div className="rounded-3 p-2" style={{ background: '#eff6ff', border: '1px solid #93c5fd' }}>
+ <div className="d-flex align-items-center justify-content-between">
+ <div className="d-flex align-items-center gap-2">
+ <div style={{
+ width: 32, height: 32, borderRadius: 8, background: '#dbeafe',
+ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
+ }}></div>
+ <div>
+ <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#1e40af' }}>
+ Accommodation → University
+ </div>
+ <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
+ <span className="badge" style={{ background: '#1d4ed8', color: '#fff', fontSize: '0.68rem' }}>
+ {t.accommodation_uni_method || t.transport_method}
+ </span>
+ {t.distance_uni_km > 0 && (
+ <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.distance_uni_km} km one-way</span>
+ )}
+ {t.daily_cost > 0 && (
+ <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+ · LKR {t.daily_cost.toLocaleString()} / round-trip
+ </span>
+ )}
+ </div>
+ </div>
+ </div>
+ <div className="text-end ms-2" style={{ flexShrink: 0 }}>
+ <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.commute_days_per_month} days/mo</div>
+ {bd.daily_commute > 0 && (
+ <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#1e40af' }}>
+ LKR {bd.daily_commute.toLocaleString()}
+ </div>
+ )}
+ </div>
+ </div>
+ </div>
+
+ {/* Route 2 — Home visits */}
+ {t.home_accommodation_method && (
+ <div className="rounded-3 p-2" style={{ background: '#f0fdf4', border: '1px solid #86efac' }}>
+ <div className="d-flex align-items-center justify-content-between">
+ <div className="d-flex align-items-center gap-2">
+ <div style={{
+ width: 32, height: 32, borderRadius: 8, background: '#dcfce7',
+ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
+ }}></div>
+ <div>
+ <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#166534' }}>
+ Home → Accommodation
+ </div>
+ <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
+ <span className="badge" style={{ background: '#16a34a', color: '#fff', fontSize: '0.68rem' }}>
+ {t.home_accommodation_method}
+ </span>
+ {t.distance_home_km > 0 && (
+ <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.distance_home_km} km one-way</span>
+ )}
+ </div>
+ </div>
+ </div>
+ <div className="text-end ms-2" style={{ flexShrink: 0 }}>
+ <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.home_visit_frequency}</div>
+ {bd.home_visits > 0 ? (
+ <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#166534' }}>
+ LKR {bd.home_visits.toLocaleString()}
+ </div>
+ ) : (
+ <div style={{ fontSize: '0.72rem', color: '#6b7280', fontStyle: 'italic' }}>within campus cost</div>
+ )}
+ </div>
+ </div>
+ </div>
+ )}
+
+ {/* Route 3 — Work commute */}
+ {t.has_work_commute && t.work_commute_method && (
+ <div className="rounded-3 p-2" style={{ background: '#fffbeb', border: '1px solid #fde68a' }}>
+ <div className="d-flex align-items-center justify-content-between">
+ <div className="d-flex align-items-center gap-2">
+ <div style={{
+ width: 32, height: 32, borderRadius: 8, background: '#fef3c7',
+ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', flexShrink: 0
+ }}></div>
+ <div>
+ <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#92400e' }}>
+ Accommodation → Work
+ <span className="ms-2 badge" style={{ background: '#d97706', color: '#fff', fontSize: '0.62rem' }}>
+ Part-time Job
+ </span>
+ </div>
+ <div className="d-flex align-items-center gap-1 mt-1 flex-wrap">
+ <span className="badge" style={{ background: '#f59e0b', color: '#fff', fontSize: '0.68rem' }}>
+ {t.work_commute_method}
+ </span>
+ {t.work_distance_km > 0 && (
+ <span style={{ fontSize: '0.72rem', color: '#64748b' }}>{t.work_distance_km} km one-way</span>
+ )}
+ {t.work_round_trip_cost > 0 && (
+ <span style={{ fontSize: '0.72rem', color: '#64748b' }}>
+ · LKR {t.work_round_trip_cost.toLocaleString()} / round-trip
+ </span>
+ )}
+ </div>
+ </div>
+ </div>
+ <div className="text-end ms-2" style={{ flexShrink: 0 }}>
+ <div style={{ fontSize: '0.72rem', color: '#6b7280' }}>{t.work_commute_days_per_month} days/mo</div>
+ {bd.work_commute > 0 && (
+ <div style={{ fontSize: '0.85rem', fontWeight: 800, color: '#d97706' }}>
+ LKR {bd.work_commute.toLocaleString()}
+ </div>
+ )}
+ </div>
+ </div>
+ </div>
+ )}
+ </div>
+
+ {/* Misc / emergency row */}
+ {bd.misc_trips > 0 && (
+ <div className="d-flex align-items-center justify-content-between rounded-3 px-2 py-1 mb-3"
+ style={{ background: '#f1f5f9', border: '1px dashed #cbd5e1' }}>
+ <span style={{ fontSize: '0.78rem', color: '#475569' }}>
+ Emergency / incidental trips
+ <span style={{ fontSize: '0.7rem', color: '#94a3b8', marginLeft: 4 }}>(rain, late nights, city runs)</span>
+ </span>
+ <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#475569' }}>
+ LKR {bd.misc_trips.toLocaleString()}
+ </span>
+ </div>
+ )}
+
+ {/* Total summary bar */}
+ <div className="rounded-3 px-3 py-2 d-flex justify-content-between align-items-center"
+ style={{ background: 'linear-gradient(90deg,#1e3a8a 0%,#1e40af 100%)' }}>
+ <div>
+ <div style={{ fontSize: '0.72rem', color: '#93c5fd', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+ Total Monthly Transport
+ </div>
+ <div style={{ fontSize: '0.72rem', color: '#bfdbfe' }}>
+ {[
+ bd.daily_commute > 0 && 'campus',
+ bd.home_visits > 0 && 'home visits',
+ bd.misc_trips > 0 && 'emergency',
+ bd.work_commute > 0 && 'work',
+ ].filter(Boolean).join(' + ')}
+ </div>
+ </div>
+ <div style={{ fontSize: '1.15rem', fontWeight: 900, color: '#fff' }}>
+ LKR {totalMonthly.toLocaleString()}
+ <span style={{ fontSize: '0.72rem', fontWeight: 400, color: '#93c5fd', marginLeft: 4 }}>/mo</span>
+ </div>
+ </div>
+
+ </div>
+ </div>
+ );
+ })()}
+ {/* Show home_money contribution if present */}
+ {financial_summary.home_money > 0 && (
+ <div className="alert alert-info py-2 px-3 mb-0" style={{ fontSize: '0.82rem' }}>
+ Includes LKR {financial_summary.home_money.toLocaleString()} family support
+ {' '}(base: LKR {financial_summary.base_income.toLocaleString()} + home: LKR {financial_summary.home_money.toLocaleString()})
+ </div>
+ )}
+ </Col>
+ </Row>
+ </Card.Body>
+ </Card>
+
+ {/* OPTIMAL BUDGET STRATEGY SECTION */}
+ {analysisResult.optimal_strategy && (
+ <Card className="shadow-lg border-0 mb-4">
+ <Card.Header className="bg-gradient-primary text-white">
+ <h4 className="mb-0">YOUR PERSONALIZED OPTIMAL BUDGET STRATEGY</h4>
+ <p className="mb-0 mt-2">AI-powered recommendations to maximize your savings</p>
+ </Card.Header>
+ <Card.Body className="p-4">
+ {/* Strategy Overview */}
+ <Row className="mb-4">
+ <Col md={4}>
+ <div className="text-center p-3 bg-light rounded">
+ <h6 className="text-muted"> Current Expenses</h6>
+ <h4 className="text-danger mb-0">
+ LKR {analysisResult.optimal_strategy.current_situation.total_expenses.toLocaleString()}
+ </h4>
+ <small className="text-muted">
+ {analysisResult.optimal_strategy.current_situation.savings_rate}% savings now
+ </small>
+ </div>
+ </Col>
+ <Col md={4}>
+ <div className="text-center p-3 bg-success text-white rounded">
+ <h6> Optimised Target</h6>
+ <h4 className="mb-0">
+ LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+ </h4>
+ <small>
+ {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% savings rate
+ </small>
+ <div style={{ fontSize: '0.72rem', opacity: 0.85, marginTop: 3 }}>
+ (what you could spend after optimising)
+ </div>
+ </div>
+ </Col>
+ <Col md={4}>
+ {analysisResult.optimal_strategy.potential_improvement.extra_savings > 0 ? (
+ <div className="text-center p-3 bg-warning rounded">
+ <h6 className="text-dark"> Potential Improvement</h6>
+ <h4 className="text-success mb-0">
+ +LKR {analysisResult.optimal_strategy.potential_improvement.extra_savings.toLocaleString()}
+ </h4>
+ <small className="text-dark">Extra you could save/month</small>
+ <div style={{ fontSize: '0.72rem', color: '#555', marginTop: 3 }}>
+ Expense reduction: LKR {analysisResult.optimal_strategy.potential_improvement.expense_reduction.toLocaleString()}
+ </div>
+ </div>
+ ) : (
+ <div className="text-center p-3 bg-info text-white rounded">
+ <h6> Already Optimised!</h6>
+ <h5 className="mb-0">Great Budget</h5>
+ <small>Your spending is well-controlled</small>
+ </div>
+ )}
+ </Col>
+ </Row>
+
+ {/* Optimal Alternatives */}
+ {analysisResult.optimal_strategy.optimal_alternatives &&
+ analysisResult.optimal_strategy.optimal_alternatives.length > 0 && (
+ <div className="mb-4">
+ <h5 className="mb-3"> Smart Budget Alternatives</h5>
+ {analysisResult.optimal_strategy.optimal_alternatives.map((alt, index) => (
+ <Card key={index} className={`mb-3 border-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'}`}>
+ <Card.Body>
+ <Row>
+ <Col md={12}>
+ <div className="d-flex align-items-start mb-2">
+ <span className={`badge bg-${alt.priority === 'High' ? 'danger' : alt.priority === 'Medium' ? 'warning' : 'info'} me-2`}>
+ {alt.priority} Priority
+ </span>
+ <h6 className="mb-0">{alt.category}</h6>
+ </div>
+ <p className="mb-2">
+ <strong>Current:</strong> {alt.current_choice}
+ </p>
+ <p className="mb-2 text-success">
+ <strong> Optimal:</strong> {alt.optimal_choice}
+ </p>
+ <p className="text-muted mb-3">
+ <small><strong>Why?</strong> {alt.reasoning}</small>
+ </p>
+
+ {/* Action Steps */}
+ {alt.action_steps && alt.action_steps.length > 0 && (
+ <div>
+ <strong>Action Steps:</strong>
+ <ol className="mb-0 mt-2">
+ {alt.action_steps.map((step, idx) => (
+ <li key={idx}><small>{step}</small></li>
+ ))}
+ </ol>
+ </div>
+ )}
+
+ {alt.note && (
+ <p className="text-info mt-2 mb-0">
+ <small><strong>Note:</strong> {alt.note}</small>
+ </p>
+ )}
+ </Col>
+ </Row>
+ </Card.Body>
+ </Card>
+ ))}
+ </div>
+ )}
+
+ {/* Maximum Savings Potential
+ {analysisResult.optimal_strategy.maximum_savings_potential > 0 && (
+ <Alert variant="success" className="mb-4">
+ <h5> Total Savings Potential: LKR {analysisResult.optimal_strategy.maximum_savings_potential.toLocaleString()}/month</h5>
+ <p className="mb-0">By implementing all recommendations below, you could save this amount monthly!</p>
+ </Alert>
+ )} */}
+
+ {/* Warning — optimised target still exceeds income */}
+ {analysisResult.optimal_strategy.optimal_target.target_expenses > financial_summary.monthly_income && (
+ <div className="d-flex align-items-start gap-3 rounded-3 px-3 py-3 mb-3"
+ style={{
+ background: 'linear-gradient(135deg,#fff7ed 0%,#fef3c7 100%)',
+ border: '1.5px solid #f59e42',
+ boxShadow: '0 2px 8px rgba(245,158,66,0.13)'
+ }}>
+ <div style={{ fontSize: '1.6rem', lineHeight: 1, flexShrink: 0, marginTop: 2 }}></div>
+ <div>
+ <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#92400e', marginBottom: 3 }}>
+ Optimised Target Exceeds Your Monthly Income
+ </div>
+ <div style={{ fontSize: '0.82rem', color: '#78350f', lineHeight: 1.55 }}>
+ Your optimised target of{' '}
+ <strong style={{ color: '#b45309' }}>
+ LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+ </strong>{' '}
+ is greater than your monthly income of{' '}
+ <strong style={{ color: '#b45309' }}>
+ LKR {financial_summary.monthly_income.toLocaleString()}
+ </strong>.
+ Therefore, you need to follow the{' '}
+ <strong>AI-Powered Optimization Strategy</strong>{' '}
+ below to achieve a more optimised and realistic budget.
+ </div>
+ <button
+ className="btn btn-sm mt-2"
+ style={{
+ background: '#f59e0b', color: '#fff', fontWeight: 700,
+ fontSize: '0.78rem', border: 'none', borderRadius: 6,
+ padding: '4px 14px'
+ }}
+ onClick={scrollToAISection}
+ >
+ Go to AI Strategy 
+ </button>
+ </div>
+ </div>
+ )}
+
+ </Card.Body>
+ </Card>
+ )}
+
+ {/* */}
+ {/* GEMINI / AI-Powered Optimization Strategy */}
+ {/* */}
+ <div className="gemini-section mb-4" ref={aiSectionRef}>
+ {/* Header */}
+ <div className="gemini-header">
+ <div className="gemini-logo-wrap">
+ <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+ <defs>
+ <linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="1">
+ <stop offset="0%" stopColor="#4285F4" />
+ <stop offset="33%" stopColor="#EA4335" />
+ <stop offset="66%" stopColor="#FBBC05" />
+ <stop offset="100%" stopColor="#34A853" />
+ </linearGradient>
+ </defs>
+ <path d="M14 3 L14 25 M3 14 L25 14 M6.5 6.5 L21.5 21.5 M21.5 6.5 L6.5 21.5"
+ stroke="url(#gGrad)" strokeWidth="2.5" strokeLinecap="round" />
+ </svg>
+ </div>
+ <div>
+ <h4 className="gemini-title mb-0">
+ AI Powered Optimization Strategy
+ {aiProvider === 'Gemini' && ' '}
+ {aiProvider === 'OpenAI' && ' '}
+ </h4>
+ <p className="gemini-subtitle mb-0">Personalized advice analysing your full financial profile</p>
+ </div>
+ </div>
+
+ {/* Loading state */}
+ {geminiLoading && (
+ <div className="gemini-loading">
+ <div className="gemini-loading-dots">
+ <span /><span /><span /><span />
+ </div>
+ <p className="gemini-loading-text">AI is analysing your budget profile…</p>
+ </div>
+ )}
+
+ {/* Initial state - generate CTA */}
+ {!geminiInsight && !geminiLoading && !geminiError && (
+ <div className="ai-cta-zone">
+ {/* Feature pills */}
+ <div className="ai-features-row">
+ <div className="ai-feature-pill"><span></span> Savings Opportunities</div>
+ <div className="ai-feature-pill"><span></span> Risk Reduction Plan</div>
+ <div className="ai-feature-pill"><span></span> Action Steps</div>
+ <div className="ai-feature-pill"><span></span> Future Projections</div>
+ <div className="ai-feature-pill"><span></span> Investment Hints</div>
+ </div>
+
+ {/* Generate button */}
+ <div className="ai-cta-btn-wrap">
+ <button
+ className="ai-generate-btn"
+ onClick={() => fetchGeminiInsight(analysisResult)}
+ >
+ <span className="ai-generate-btn-glow" />
+ <span className="ai-generate-btn-text"> Generate AI Enhanced Strategy</span>
+ </button>
+ <p className="ai-cta-hint">Powered by {aiProvider ? `${aiProvider} AI` : 'Gemini / OpenAI'} · Usually takes 5-10 seconds</p>
+ </div>
+ </div>
+ )}
+
+ {/* Error / API key not set */}
+ {geminiError && !geminiLoading && (
+ <div className="gemini-error-box">
+ {(typeof geminiError === 'string' && (geminiError.includes('not configured') || geminiError.includes('GEMINI_API_KEY'))) ||
+ (typeof geminiError === 'object' && geminiError.message && geminiError.message.includes('not configured')) ? (
+ <>
+ <div className="gemini-error-icon"></div>
+ <h5>Set Up AI Services (Free Options Available)</h5>
+ <p>Add an AI API key to <code>backend/.env</code> to unlock this feature.</p>
+
+ <div className="border rounded p-3 mb-3 bg-light">
+ <strong>Option 1: Google Gemini (Recommended - FREE)</strong>
+ <ol className="gemini-setup-steps mb-0 mt-2">
+ <li>Visit <a href="https://aistudio.google.com/apikey" target="_blank" rel="noreferrer">aistudio.google.com/apikey</a></li>
+ <li>Sign in → Click <strong>"Create API key"</strong></li>
+ <li>Add to <code>backend/.env</code>: <code>GEMINI_API_KEY=your_key</code></li>
+ </ol>
+ <p className="text-success small mb-0 mt-2"> 1,500 requests/day · No credit card needed</p>
+ </div>
+
+ <div className="border rounded p-3 bg-light">
+ <strong>Option 2: OpenAI (Paid Backup)</strong>
+ <ol className="gemini-setup-steps mb-0 mt-2">
+ <li>Visit <a href="https://platform.openai.com/api-keys" target="_blank" rel="noreferrer">platform.openai.com/api-keys</a></li>
+ <li>Create API key (requires payment method)</li>
+ <li>Add to <code>backend/.env</code>: <code>OPENAI_API_KEY=your_key</code></li>
+ </ol>
+ <p className="text-info small mb-0 mt-2"> ~$0.0001 per request (gpt-4o-mini)</p>
+ </div>
+
+ <p className="text-muted small mb-0 mt-3"> Set both keys for automatic fallback when Gemini hits rate limits</p>
+ </>
+ ) : typeof geminiError === 'object' && geminiError.isRateLimit ? (
+ <>
+ <div className="gemini-error-icon">⏰</div>
+ <h5>Rate Limit Exceeded</h5>
+ <p className="mb-3">{geminiError.message}</p>
+ <Alert variant="info" className="mb-3">
+ <strong>What happened?</strong><br />
+ The Gemini API free tier has daily/per-minute request limits. Your quota has been temporarily exceeded.
+ </Alert>
+ <Alert variant="success" className="mb-3">
+ <strong> Good news:</strong> Your budget analysis is complete! The AI insights are just an extra bonus.
+ </Alert>
+ <div className="d-flex gap-2 justify-content-center">
+ <Button
+ size="sm"
+ variant="primary"
+ onClick={() => fetchGeminiInsight(analysisResult, true)}
+ >
+ Try Again
+ </Button>
+ <Button
+ size="sm"
+ variant="outline-secondary"
+ onClick={() => setGeminiError(null)}
+ >
+ Dismiss
+ </Button>
+ </div>
+ {geminiError.technical && (
+ <details className="mt-3">
+ <summary className="text-muted small" style={{ cursor: 'pointer' }}>Technical Details</summary>
+ <pre className="text-muted small mt-2" style={{ fontSize: '10px', maxHeight: '100px', overflow: 'auto' }}>
+ {geminiError.technical}
+ </pre>
+ </details>
+ )}
+ </>
+ ) : (
+ <>
+ <div className="gemini-error-icon"></div>
+ <p>{typeof geminiError === 'string' ? geminiError : geminiError.message}</p>
+ {(typeof geminiError === 'object' && geminiError.canRetry) && (
+ <div className="d-flex gap-2 justify-content-center mt-3">
+ <Button
+ size="sm"
+ variant="outline-primary"
+ onClick={() => fetchGeminiInsight(analysisResult, true)}
+ >
+ Retry
+ </Button>
+ <Button
+ size="sm"
+ variant="outline-secondary"
+ onClick={() => setGeminiError(null)}
+ >
+ Dismiss
+ </Button>
+ </div>
+ )}
+ {typeof geminiError === 'object' && geminiError.technical && (
+ <details className="mt-3">
+ <summary className="text-muted small" style={{ cursor: 'pointer' }}>Technical Details</summary>
+ <pre className="text-muted small mt-2" style={{ fontSize: '10px', maxHeight: '100px', overflow: 'auto' }}>
+ {geminiError.technical}
+ </pre>
+ </details>
+ )}
+ </>
+ )}
+ </div>
+ )}
+
+ {/* AI Response */}
+ {(geminiInsight || displayedText) && !geminiLoading && (() => {
+ const rawText = isStreaming ? displayedText : geminiInsight;
+
+ // Try to parse structured STEP format 
+ const isStructured = /STEP\s+\d+\s*:/i.test(rawText);
+
+ if (isStructured) {
+ // Parse GAP_SUMMARY
+ const gapMatch = rawText.match(/GAP_SUMMARY\s*:\s*(.+)/i);
+ const gapSummary = gapMatch ? sanitizeAiMoneyText(gapMatch[1].trim()) : null;
+
+ // Parse all STEP blocks
+ const stepBlocks = [];
+ const stepRegex = /STEP\s+(\d+)\s*:\s*([^\n]+)\nCATEGORY\s*:\s*([^\n]+)\nSAVE\s*:\s*([^\n]+)\nHOW\s*:\s*([^\n]+)\nTIMEFRAME\s*:\s*([^\n]+)(?:\nLINKS\s*:\s*([^\n]+))?/gi;
+ let m;
+ while ((m = stepRegex.exec(rawText)) !== null) {
+ const parsedLinks = parseStepLinks(m[7] || '');
+ stepBlocks.push({
+ num: m[1],
+ title: m[2].trim(),
+ category: m[3].trim(),
+ save: sanitizeAiMoneyText(m[4].trim()),
+ how: m[5].trim(),
+ timeframe: m[6].trim(),
+ links: parsedLinks.length > 0 ? parsedLinks : getFallbackStepLinks({
+ title: m[2].trim(),
+ how: m[5].trim(),
+ }),
+ });
+ }
+
+ const quickWinMatch = rawText.match(/QUICK_WIN\s*:\s*(.+)/i);
+ const motivationMatch = rawText.match(/MOTIVATION\s*:\s*(.+)/i);
+ const quickWin = quickWinMatch ? quickWinMatch[1].trim() : null;
+ const motivation = motivationMatch ? sanitizeAiMoneyText(motivationMatch[1].trim()) : null;
+
+ const catIcon = (cat) => {
+ const c = cat.toLowerCase();
+ if (c.includes('food')) return '';
+ if (c.includes('trans')) return '';
+ if (c.includes('accom')) return '';
+ if (c.includes('internet') || c.includes('phone')) return '';
+ if (c.includes('util')) return '';
+ if (c.includes('study') || c.includes('material')) return '';
+ if (c.includes('entertain')) return '';
+ if (c.includes('health')) return '';
+ if (c.includes('income') || c.includes('earn')) return '';
+ return '';
+ };
+
+ const timeColor = (tf) => {
+ const t = tf.toLowerCase();
+ if (t.includes('this week') || t.includes('today') || t.includes('week 1')) return 'ai-tl-node--now';
+ if (t.includes('week 2') || t.includes('week 3')) return 'ai-tl-node--soon';
+ return 'ai-tl-node--later';
+ };
+
+ return (
+ <div className="ai-tl-wrap">
+ {/* Gap summary bar */}
+ {gapSummary && (
+ <div className="ai-tl-gap-summary">
+ <span className="ai-tl-gap-icon"></span>
+ <span>{gapSummary}</span>
+ </div>
+ )}
+
+ {/* Timeline steps */}
+ <div className="ai-tl-body">
+ <div className="ai-tl-spine" />
+ {stepBlocks.map((step, idx) => (
+ <div
+ key={idx}
+ className={`ai-tl-node ${timeColor(step.timeframe)}`}
+ style={{ animationDelay: `${idx * 0.12}s` }}
+ >
+ {/* Left: number dot on spine */}
+ <div className="ai-tl-dot">
+ <span>{step.num}</span>
+ </div>
+
+ {/* Card */}
+ <div className="ai-tl-card">
+ <div className="ai-tl-card-header">
+ <span className="ai-tl-cat-icon">{catIcon(step.category)}</span>
+ <div className="ai-tl-card-titles">
+ <div className="ai-tl-card-title">{step.title}</div>
+ <div className="ai-tl-card-cat">{step.category}</div>
+ </div>
+ <div className="ai-tl-save-pill">
+ <div className="ai-tl-save-amt">{step.save}</div>
+ <div className="ai-tl-save-label">estimated reduction</div>
+ </div>
+ </div>
+ <div className="ai-tl-card-how">
+ <span className="ai-tl-how-label">How:</span> {step.how}
+ </div>
+ <div className="ai-tl-card-footer">
+ <span className="ai-tl-timeframe-tag"> {step.timeframe}</span>
+ {step.links && step.links.length > 0 && (
+ <div className="ai-tl-links">
+ {step.links.map((link, linkIdx) => (
+ <a
+ key={`${link.url}-${linkIdx}`}
+ href={link.url}
+ target="_blank"
+ rel="noreferrer"
+ className="ai-tl-link-chip"
+ >
+ {link.label}
+ </a>
+ ))}
+ </div>
+ )}
+ </div>
+ </div>
+ </div>
+ ))}
+
+ {/* Target reached node */}
+ {!isStreaming && stepBlocks.length > 0 && (
+ <div
+ className="ai-tl-node ai-tl-node--target"
+ style={{ animationDelay: `${stepBlocks.length * 0.12}s` }}
+ >
+ <div className="ai-tl-dot ai-tl-dot--target"></div>
+ <div className="ai-tl-card ai-tl-card--target">
+ <div className="ai-tl-target-title"> Optimised Target Reached!</div>
+ {analysisResult?.optimal_strategy?.optimal_target && (
+ <div className="ai-tl-target-sub">
+ LKR {analysisResult.optimal_strategy.optimal_target.target_expenses.toLocaleString()}
+ · {analysisResult.optimal_strategy.optimal_target.target_savings_rate}% target rate
+ </div>
+ )}
+ {motivation && <div className="ai-tl-motivation">"{motivation}"</div>}
+ </div>
+ </div>
+ )}
+ </div>
+
+
+
+ {/* Quick Win banner */}
+ {quickWin && !isStreaming && (
+ <div className="ai-tl-quickwin">
+ <span className="ai-tl-qw-icon"></span>
+ <div>
+ <div className="ai-tl-qw-label">Do This TODAY — Quick Win</div>
+ <div className="ai-tl-qw-text">{quickWin}</div>
+ </div>
+ </div>
+ )}
+
+ {/* Footer */}
+ <div className="gemini-footer-note">
+ <span> Generated by {aiProvider || 'AI'} · personalised to your profile</span>
+ {!isStreaming && (
+ <Button size="sm" variant="link" className="ms-3 p-0 gemini-retry-btn"
+ onClick={() => fetchGeminiInsight(analysisResult, true)}>
+ Regenerate
+ </Button>
+ )}
+ </div>
+
+ {isStreaming && <span className="streaming-cursor" style={{ margin: '12px 32px', display: 'block' }}></span>}
+ </div>
+ );
+ }
+
+ // Fallback: plain text renderer 
+ return (
+ <div className="gemini-response">
+ <div className="gemini-response-meta">
+ <span className="gemini-badge">
+ {aiProvider === 'Gemini' && ''}
+ {aiProvider === 'OpenAI' && ''}
+ {!aiProvider && ''}
+ {' '}AI Generated
+ </span>
+ <span className="gemini-model-tag">
+ {aiProvider === 'Gemini' && 'gemini-2.0-flash'}
+ {aiProvider === 'OpenAI' && 'gpt-4o-mini'}
+ {!aiProvider && 'AI Model'}
+ </span>
+ </div>
+ <div className="gemini-content">
+ {rawText.split('\n').map((line, i) => {
+ if (!line.trim()) return <div key={i} style={{ height: '10px' }} />;
+ if (line.startsWith('**') && line.endsWith('**'))
+ return <h5 key={i} className="gemini-section-head">{line.replace(/\*\*/g, '')}</h5>;
+ if (line.includes('**')) {
+ const parts = line.split(/\*\*(.*?)\*\*/g);
+ return <p key={i} className="gemini-para">{parts.map((p, pi) => pi % 2 === 1 ? <strong key={pi}>{p}</strong> : p)}</p>;
+ }
+ if (line.trim().startsWith('- ') || line.trim().startsWith('• '))
+ return <div key={i} className="gemini-bullet"><span className="gemini-bullet-dot">•</span><span>{line.replace(/^[-•]\s*/, '')}</span></div>;
+ if (line.startsWith('#'))
+ return <h5 key={i} className="gemini-section-head">{line.replace(/^#+\s*/, '')}</h5>;
+ return <p key={i} className="gemini-para">{line}</p>;
+ })}
+ {isStreaming && <span className="streaming-cursor"></span>}
+ </div>
+ <div className="gemini-footer-note">
+ <span> This analysis was generated by {aiProvider || 'AI'} based on your specific financial data</span>
+ {!isStreaming && (
+ <Button size="sm" variant="link" className="ms-3 p-0 gemini-retry-btn"
+ onClick={() => fetchGeminiInsight(analysisResult, true)}> Regenerate</Button>
+ )}
+ </div>
+ </div>
+ );
+ })()}
+ </div>
+
+ {/* BUDGET TRANSFORMATION ANIMATION — shown only after AI strategy is generated */}
+ {showTransformation && analysisResult.optimal_strategy && (() => {
+ const inc = financial_summary.monthly_income || 0;
+
+ // Always use the same source as the top strategy section so both figures match.
+ const curExp = analysisResult.optimal_strategy.current_situation?.total_expenses
+ ?? financial_summary.total_expenses ?? 0;
+ const tgtExp = analysisResult.optimal_strategy.optimal_target?.target_expenses
+ ?? curExp;
+ const aiPlanTargetExp = Math.min(
+ tgtExp,
+ aiFinalBudgetNums?.total
+ ?? aiStrategyMeta?.real_target
+ ?? aiStrategyMeta?.income_ceiling
+ ?? tgtExp
+ );
+ const curSav = Number.isFinite(inc - curExp) ? inc - curExp : (financial_summary.monthly_savings || 0);
+ const tgtSav = Number.isFinite(inc - tgtExp) ? inc - tgtExp : curSav;
+ const aiPlanSav = Number.isFinite(inc - aiPlanTargetExp) ? inc - aiPlanTargetExp : tgtSav;
+ const extraSav = Math.max(aiPlanSav - curSav, 0);
+ const curRate = analysisResult.optimal_strategy.current_situation?.savings_rate || financial_summary.savings_rate || 0;
+ const tgtRate = analysisResult.optimal_strategy.optimal_target?.target_savings_rate ?? curRate;
+ const aiPlanRate = inc > 0
+ ? Math.round((aiPlanSav / inc) * 100)
+ : tgtRate;
+
+ return (
+ <div className="bta-wrap mb-4">
+
+ {/* Header */}
+ <div className="bta-header">
+ <span className="bta-header-icon"></span>
+ <div>
+ <h4 className="bta-title">Budget Summary</h4>
+ <p className="bta-subtitle">
+ Your financial snapshot — current state, optimised target, and AI-powered strategy
+ </p>
+ </div>
+ </div>
+
+ {/* 3-column detailed summary cards */}
+ <Row className="g-3 mb-4">
+
+ {/* Card 1: Current Expenses */}
+ <Col md={4}>
+ <div style={{
+ background: 'linear-gradient(145deg, #fff0f0, #ffe0e0)',
+ border: '2px solid #f5c6c6',
+ borderRadius: 16,
+ padding: '20px',
+ height: '100%',
+ boxShadow: '0 4px 12px rgba(220,53,69,0.1)'
+ }}>
+ <div style={{ marginBottom: 16 }}>
+ <span style={{
+ background: '#dc3545', color: 'white',
+ fontSize: '0.7rem', fontWeight: 700,
+ padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
+ }}> BEFORE STRATEGY</span>
+ </div>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
+ <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em', marginBottom: 2 }}>TOTAL EXPENSES</div>
+ <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#dc3545', marginBottom: 14 }}>LKR {curExp.toLocaleString()}</div>
+ <div style={{ background: 'rgba(255,255,255,0.75)', borderRadius: 10, padding: '12px 14px' }}>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#999', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
+ <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#dc3545' }}>LKR {curSav.toLocaleString()}</div>
+ <span style={{
+ background: '#fffde7', color: '#666',
+ fontSize: '0.73rem', fontWeight: 600,
+ padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
+ }}>{curRate}% savings rate</span>
+ </div>
+ </div>
+ </Col>
+
+ {/* Card 2: Optimised Target */}
+ <Col md={4}>
+ <div style={{
+ background: 'linear-gradient(145deg, #eef2ff, #e0e7ff)',
+ border: '2px solid #a5b4fc',
+ borderRadius: 16,
+ padding: '20px',
+ height: '100%',
+ boxShadow: '0 4px 12px rgba(102,126,234,0.15)'
+ }}>
+ <div style={{ marginBottom: 16 }}>
+ <span style={{
+ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white',
+ fontSize: '0.7rem', fontWeight: 700,
+ padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
+ }}>OPTIMISED TARGET</span>
+ </div>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
+ <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>TARGET EXPENSES</div>
+ <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#3730a3', marginBottom: 14 }}>LKR {tgtExp.toLocaleString()}</div>
+ <div style={{ background: 'rgba(255,255,255,0.65)', borderRadius: 10, padding: '12px 14px' }}>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
+ <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#3730a3' }}>LKR {tgtSav.toLocaleString()}</div>
+ <span style={{
+ background: '#fffde7', color: '#666',
+ fontSize: '0.73rem', fontWeight: 600,
+ padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
+ }}>{tgtRate}% savings rate</span>
+ </div>
+ </div>
+ </Col>
+
+ {/* Card 3: AI Powered Optimization Strategy */}
+ <Col md={4}>
+ <div style={{
+ background: 'linear-gradient(145deg, #e3f2fd, #bbdefb)',
+ border: '2px solid #90caf9',
+ borderRadius: 16,
+ padding: '20px',
+ height: '100%',
+ boxShadow: '0 4px 12px rgba(33,150,243,0.12)',
+ display: 'flex', flexDirection: 'column'
+ }}>
+ <div style={{ marginBottom: 16 }}>
+ <span style={{
+ background: '#1565c0', color: 'white',
+ fontSize: '0.7rem', fontWeight: 700,
+ padding: '4px 12px', borderRadius: 20, letterSpacing: '0.06em'
+ }}> AI POWERED STRATEGY</span>
+ </div>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>MONTHLY INCOME</div>
+ <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#2d2d2d', marginBottom: 14 }}>LKR {inc.toLocaleString()}</div>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em', marginBottom: 2 }}>TARGET EXPENSES</div>
+ <div style={{ fontSize: '1.55rem', fontWeight: 800, color: '#0d47a1', marginBottom: 14 }}>LKR {aiPlanTargetExp.toLocaleString()}</div>
+ <div style={{ background: 'rgba(255,255,255,0.65)', borderRadius: 10, padding: '12px 14px' }}>
+ <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#555', letterSpacing: '0.06em' }}>SAVINGS BUFFER</div>
+ <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0d47a1' }}>LKR {aiPlanSav.toLocaleString()}</div>
+ <span style={{
+ background: '#fffde7', color: '#666',
+ fontSize: '0.73rem', fontWeight: 600,
+ padding: '3px 10px', borderRadius: 14, marginTop: 6, display: 'inline-block'
+ }}>{aiPlanRate}% savings rate</span>
+ </div>
+ {curExp - aiPlanTargetExp > 0 && (
+ <div style={{
+ marginTop: 12, background: '#e8f5e9',
+ border: '1px solid #a5d6a7', borderRadius: 8,
+ padding: '8px 12px', fontSize: '0.73rem', color: '#1b5e20', fontWeight: 600
+ }}>
+ By reducing expenses by{' '}
+ <span style={{ fontSize: '0.85rem' }}>LKR {(curExp - aiPlanTargetExp).toLocaleString()}</span>
+ <div style={{ fontWeight: 400, fontSize: '0.68rem', color: '#2e7d32', marginTop: 3 }}>
+ From LKR {curExp.toLocaleString()} → Target LKR {aiPlanTargetExp.toLocaleString()}
+ </div>
+ </div>
+ )}
+ </div>
+ </Col>
+ </Row>
+
+ {/* Hero extra-savings banner */}
+ {extraSav > 0 && (
+ <div className="bta-hero-banner">
+ <div className="bta-hero-text">
+ <div className="bta-hero-caption">
+ {aiStrategyMeta
+ ? 'The AI strategy locks in an extra saving of'
+ : 'With the AI strategy, you could save an extra'}
+ </div>
+ <div className="bta-hero-amount">LKR {extraSav.toLocaleString()}</div>
+ {/* <div className="bta-hero-caption">
+ per month — that's{' '}
+ <strong style={{color:'#fefcbf'}}>LKR {(extraSav * 12).toLocaleString()}</strong>
+ {' '}per year!{' '}
+ {aiStrategyMeta
+ ? ' AI Confirmed '
+ : ''}
+ </div> */}
+ {aiStrategyMeta && (
+ <div style={{marginTop:10, fontSize:'0.8rem', color:'rgba(255,255,255,0.75)'}}>
+ Expenses LKR {aiPlanTargetExp.toLocaleString()} vs Income LKR {inc.toLocaleString()}
+ {' '}— LKR {aiPlanSav.toLocaleString()} kept as buffer
+ </div>
+ )}
+ </div>
+ </div>
+ )}
+ </div>
+ );
+ })()}
+
+ {/* Reveal button — above action buttons */}
+ {geminiInsight && !geminiLoading && (
+ <div className="text-center mb-4">
+ {!showTransformation ? (
+ <button
+ className="bta-reveal-btn"
+ onClick={() => setShowTransformation(true)}
+ >
+ <span className="bta-reveal-btn-glow" />
+ <span className="bta-reveal-btn-icon"></span>
+ <span className="bta-reveal-btn-text">View AI-Confirmed Final Budget Summary</span>
+ <span className="bta-reveal-btn-arrow">↓</span>
+ </button>
+ ) : (
+ <button
+ className="bta-reveal-btn bta-reveal-btn--hide"
+ onClick={() => setShowTransformation(false)}
+ >
+ <span className="bta-reveal-btn-icon"></span>
+ <span className="bta-reveal-btn-text">Hide Budget Summary</span>
+ <span className="bta-reveal-btn-arrow">↑</span>
+ </button>
+ )}
+ </div>
+ )}
+
+ {/* Action Buttons */}
+ <div className="text-center">
+ <Button variant="outline-primary" onClick={() => setCurrentStep(2)} className="me-2">
+ Edit Profile
+ </Button>
+ <Button variant="primary" onClick={handlePrintReport}>
+ Print Full Report
+ </Button>
+ </div>
+ </div>
+ );
+ };
+
+ const handlePrintReport = () => {
+ if (!analysisResult) return;
+ const { financial_summary, expense_breakdown, calculated_budgets, risk_assessment, recommendation } = analysisResult;
+ const strategy = analysisResult.optimal_strategy;
+ const date = new Date().toLocaleDateString('en-LK', { year: 'numeric', month: 'long', day: 'numeric' });
+
+ const catIcons = {
+ accommodation: '', food: '', transport: '', education: '',
+ entertainment: '', utilities: '', healthcare: '', internet: '', study_materials: '', other: ''
+ };
+
+ const expRows = Object.entries(expense_breakdown)
+ .filter(([k, v]) => k !== 'total_expenses' && v > 0)
+ .sort(([, a], [, b]) => b - a)
+ .map(([k, v]) => {
+ const pct = ((v / expense_breakdown.total_expenses) * 100).toFixed(1);
+ const label = k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+ return `<tr>
+ <td>${catIcons[k] || ''} ${label}</td>
+ <td style="text-align:right;font-weight:600">LKR ${v.toLocaleString()}</td>
+ <td style="text-align:right;color:#666">${pct}%</td>
+ <td style="width:140px;padding-left:8px">
+ <div style="background:#edf2f7;border-radius:6px;height:10px">
+ <div style="width:${Math.min(pct, 100)}%;height:100%;background:#667eea;border-radius:6px"></div>
+ </div>
+ </td>
+ </tr>`;
 			})
 			.join("");
 
@@ -2296,13 +2220,13 @@ const BudgetOptimizerNew = () => {
 		const altRows = (strategy?.optimal_alternatives || [])
 			.map(
 				(a) => `<tr>
-        <td>${a.category || ""}</td>
-        <td>${a.current_method || ""}</td>
-        <td>${a.alternative || a.recommendation || ""}</td>
-        <td style="color:#e53e3e;text-align:right">LKR ${(a.current_cost || 0).toLocaleString()}</td>
-        <td style="color:#28a745;text-align:right">LKR ${(a.optimised_cost || a.target_cost || 0).toLocaleString()}</td>
-        <td style="color:#28a745;font-weight:700;text-align:right">${a.savings_percentage || a.potential_savings_pct || ""}%</td>
-      </tr>`,
+ <td>${a.category || ""}</td>
+ <td>${a.current_method || ""}</td>
+ <td>${a.alternative || a.recommendation || ""}</td>
+ <td style="color:#e53e3e;text-align:right">LKR ${(a.current_cost || 0).toLocaleString()}</td>
+ <td style="color:#28a745;text-align:right">LKR ${(a.optimised_cost || a.target_cost || 0).toLocaleString()}</td>
+ <td style="color:#28a745;font-weight:700;text-align:right">${a.savings_percentage || a.potential_savings_pct || ""}%</td>
+ </tr>`,
 			)
 			.join("");
 
@@ -2319,260 +2243,260 @@ const BudgetOptimizerNew = () => {
 <meta charset="UTF-8"/>
 <title>Student Budget Report - ${formData.full_name || "Student"}</title>
 <style>
-  * { box-sizing: border-box; margin:0; padding:0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; color: #2d3748; background: #fff; font-size:13px; }
-  .page { max-width:900px; margin:0 auto; padding:30px 30px; }
-  /* Header */
-  .report-header { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white;
-    border-radius:12px; padding:28px 32px; margin-bottom:24px; }
-  .report-header h1 { font-size:22px; font-weight:800; margin-bottom:4px; }
-  .report-header .sub { opacity:0.88; font-size:13px; }
-  .report-header .meta { margin-top:14px; display:flex; gap:30px; flex-wrap:wrap; }
-  .report-header .meta span { font-size:12px; opacity:0.9; }
-  .report-header .meta strong { display:block; font-size:14px; opacity:1; }
-  /* Section */
-  .section { margin-bottom:24px; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden; }
-  .section-header { padding:12px 18px; font-weight:700; font-size:14px; color:white; }
-  .section-body { padding:18px; }
-  .green { background: linear-gradient(135deg,#38b2ac,#2c7a7b); }
-  .purple { background: linear-gradient(135deg,#667eea,#764ba2); }
-  .orange { background: linear-gradient(135deg,#ed8936,#c05621); }
-  .danger { background: linear-gradient(135deg,#fc8181,#c53030); }
-  .success-bg { background: linear-gradient(135deg,#68d391,#276749); }
-  /* Summary boxes */
-  .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-  .summary-box { border:1px solid #e2e8f0; border-radius:8px; padding:14px; text-align:center; }
-  .summary-box .label { font-size:11px; color:#718096; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
-  .summary-box .value { font-size:18px; font-weight:800; }
-  .blue { color:#667eea; } .red { color:#e53e3e; } .green-c { color:#28a745; }
-  /* Table */
-  table { width:100%; border-collapse:collapse; }
-  th { background:#f7fafc; font-size:11px; text-transform:uppercase; letter-spacing:.5px; 
-       color:#718096; padding:8px 10px; border-bottom:2px solid #e2e8f0; text-align:left; }
-  td { padding:8px 10px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
-  tr:last-child td { border-bottom:none; }
-  /* 2-col */
-  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-  .detail-box { background:#f7fafc; border-radius:8px; padding:14px; }
-  .detail-box h4 { font-size:13px; font-weight:700; margin-bottom:10px; }
-  .detail-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed #e2e8f0; font-size:12px; }
-  .detail-row:last-child { border-bottom:none; font-weight:700; font-size:13px; }
-  /* Strategy */
-  .strategy-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-bottom:16px; }
-  .strategy-box { border-radius:8px; padding:14px; text-align:center; }
-  .s-current { background:#fff5f5; border:1px solid #fed7d7; }
-  .s-target { background:#f0fff4; border:1px solid #9ae6b4; }
-  .s-improve { background:#fffbf0; border:1px solid #fbd38d; }
-  .strategy-box .s-label { font-size:11px; color:#718096; margin-bottom:4px; }
-  .strategy-box .s-value { font-size:20px; font-weight:800; }
-  /* Risk */
-  .risk-high { background:#fff5f5; border:2px solid #fc8181; border-radius:8px; padding:14px; }
-  .risk-low  { background:#f0fff4; border:2px solid #9ae6b4; border-radius:8px; padding:14px; }
-  /* Gemini */
-  .ai-box { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:16px; font-size:12px; line-height:1.7; }
-  /* Tip */
-  .alert-box { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:12px 14px; margin-bottom:12px; font-size:12px; }
-  /* Footer */
-  .footer { text-align:center; margin-top:30px; font-size:11px; color:#a0aec0; border-top:1px solid #e2e8f0; padding-top:14px; }
-  ul { padding-left:18px; }
-  li { margin-bottom:4px; }
-  @media print {
-    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .page { padding:10px 16px; }
-    .no-print { display:none !important; }
-  }
+ * { box-sizing: border-box; margin:0; padding:0; }
+ body { font-family: 'Segoe UI', Arial, sans-serif; color: #2d3748; background: #fff; font-size:13px; }
+ .page { max-width:900px; margin:0 auto; padding:30px 30px; }
+ /* Header */
+ .report-header { background: linear-gradient(135deg,#667eea 0%,#764ba2 100%); color:white;
+ border-radius:12px; padding:28px 32px; margin-bottom:24px; }
+ .report-header h1 { font-size:22px; font-weight:800; margin-bottom:4px; }
+ .report-header .sub { opacity:0.88; font-size:13px; }
+ .report-header .meta { margin-top:14px; display:flex; gap:30px; flex-wrap:wrap; }
+ .report-header .meta span { font-size:12px; opacity:0.9; }
+ .report-header .meta strong { display:block; font-size:14px; opacity:1; }
+ /* Section */
+ .section { margin-bottom:24px; border:1px solid #e2e8f0; border-radius:10px; overflow:hidden; }
+ .section-header { padding:12px 18px; font-weight:700; font-size:14px; color:white; }
+ .section-body { padding:18px; }
+ .green { background: linear-gradient(135deg,#38b2ac,#2c7a7b); }
+ .purple { background: linear-gradient(135deg,#667eea,#764ba2); }
+ .orange { background: linear-gradient(135deg,#ed8936,#c05621); }
+ .danger { background: linear-gradient(135deg,#fc8181,#c53030); }
+ .success-bg { background: linear-gradient(135deg,#68d391,#276749); }
+ /* Summary boxes */
+ .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+ .summary-box { border:1px solid #e2e8f0; border-radius:8px; padding:14px; text-align:center; }
+ .summary-box .label { font-size:11px; color:#718096; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+ .summary-box .value { font-size:18px; font-weight:800; }
+ .blue { color:#667eea; } .red { color:#e53e3e; } .green-c { color:#28a745; }
+ /* Table */
+ table { width:100%; border-collapse:collapse; }
+ th { background:#f7fafc; font-size:11px; text-transform:uppercase; letter-spacing:.5px; 
+ color:#718096; padding:8px 10px; border-bottom:2px solid #e2e8f0; text-align:left; }
+ td { padding:8px 10px; border-bottom:1px solid #f0f0f0; vertical-align:middle; }
+ tr:last-child td { border-bottom:none; }
+ /* 2-col */
+ .two-col { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+ .detail-box { background:#f7fafc; border-radius:8px; padding:14px; }
+ .detail-box h4 { font-size:13px; font-weight:700; margin-bottom:10px; }
+ .detail-row { display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed #e2e8f0; font-size:12px; }
+ .detail-row:last-child { border-bottom:none; font-weight:700; font-size:13px; }
+ /* Strategy */
+ .strategy-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-bottom:16px; }
+ .strategy-box { border-radius:8px; padding:14px; text-align:center; }
+ .s-current { background:#fff5f5; border:1px solid #fed7d7; }
+ .s-target { background:#f0fff4; border:1px solid #9ae6b4; }
+ .s-improve { background:#fffbf0; border:1px solid #fbd38d; }
+ .strategy-box .s-label { font-size:11px; color:#718096; margin-bottom:4px; }
+ .strategy-box .s-value { font-size:20px; font-weight:800; }
+ /* Risk */
+ .risk-high { background:#fff5f5; border:2px solid #fc8181; border-radius:8px; padding:14px; }
+ .risk-low { background:#f0fff4; border:2px solid #9ae6b4; border-radius:8px; padding:14px; }
+ /* Gemini */
+ .ai-box { background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:16px; font-size:12px; line-height:1.7; }
+ /* Tip */
+ .alert-box { background:#fffbeb; border:1px solid #fcd34d; border-radius:8px; padding:12px 14px; margin-bottom:12px; font-size:12px; }
+ /* Footer */
+ .footer { text-align:center; margin-top:30px; font-size:11px; color:#a0aec0; border-top:1px solid #e2e8f0; padding-top:14px; }
+ ul { padding-left:18px; }
+ li { margin-bottom:4px; }
+ @media print {
+ body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+ .page { padding:10px 16px; }
+ .no-print { display:none !important; }
+ }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <!-- HEADER -->
-  <div class="report-header">
-    <h1>🎓 Student Budget Analysis Report</h1>
-    <div class="sub">AI-Powered Financial Insights — UniFinder LK</div>
-    <div class="meta">
-      <div><span>Student</span><strong>${formData.full_name || "—"}</strong></div>
-      <div><span>University</span><strong>${formData.university || "—"}</strong></div>
-      <div><span>Year / Field</span><strong>${formData.year_of_study} · ${formData.field_of_study}</strong></div>
-      <div><span>District</span><strong>${formData.district}</strong></div>
-      <div><span>Report Date</span><strong>${date}</strong></div>
-      <div><span>Accuracy</span><strong>86.89% ML Model</strong></div>
-    </div>
-  </div>
+ <!-- HEADER -->
+ <div class="report-header">
+ <h1> Student Budget Analysis Report</h1>
+ <div class="sub">AI-Powered Financial Insights — UniFinder LK</div>
+ <div class="meta">
+ <div><span>Student</span><strong>${formData.full_name || "—"}</strong></div>
+ <div><span>University</span><strong>${formData.university || "—"}</strong></div>
+ <div><span>Year / Field</span><strong>${formData.year_of_study} · ${formData.field_of_study}</strong></div>
+ <div><span>District</span><strong>${formData.district}</strong></div>
+ <div><span>Report Date</span><strong>${date}</strong></div>
+ <div><span>Accuracy</span><strong>86.89% ML Model</strong></div>
+ </div>
+ </div>
 
-  <!-- FINANCIAL SUMMARY -->
-  <div class="section">
-    <div class="section-header green">💰 Financial Summary</div>
-    <div class="section-body">
-      <div class="summary-grid">
-        <div class="summary-box">
-          <div class="label">Monthly Income</div>
-          <div class="value blue">LKR ${financial_summary.monthly_income.toLocaleString()}</div>
-          ${financial_summary.home_money > 0 ? `<div style="font-size:11px;color:#888;margin-top:3px">Base: LKR ${(financial_summary.base_income || 0).toLocaleString()} + Family: LKR ${financial_summary.home_money.toLocaleString()}</div>` : ""}
-        </div>
-        <div class="summary-box">
-          <div class="label">Total Expenses</div>
-          <div class="value red">LKR ${financial_summary.total_expenses.toLocaleString()}</div>
-        </div>
-        <div class="summary-box">
-          <div class="label">Monthly Savings</div>
-          <div class="value ${financial_summary.monthly_savings >= 0 ? "green-c" : "red"}">LKR ${financial_summary.monthly_savings.toLocaleString()}</div>
-        </div>
-        <div class="summary-box">
-          <div class="label">Savings Rate</div>
-          <div class="value ${financial_summary.savings_rate >= 0 ? "green-c" : "red"}">${financial_summary.savings_rate}%</div>
-        </div>
-      </div>
-    </div>
-  </div>
+ <!-- FINANCIAL SUMMARY -->
+ <div class="section">
+ <div class="section-header green"> Financial Summary</div>
+ <div class="section-body">
+ <div class="summary-grid">
+ <div class="summary-box">
+ <div class="label">Monthly Income</div>
+ <div class="value blue">LKR ${financial_summary.monthly_income.toLocaleString()}</div>
+ ${financial_summary.home_money > 0 ? `<div style="font-size:11px;color:#888;margin-top:3px">Base: LKR ${(financial_summary.base_income || 0).toLocaleString()} + Family: LKR ${financial_summary.home_money.toLocaleString()}</div>` : ""}
+ </div>
+ <div class="summary-box">
+ <div class="label">Total Expenses</div>
+ <div class="value red">LKR ${financial_summary.total_expenses.toLocaleString()}</div>
+ </div>
+ <div class="summary-box">
+ <div class="label">Monthly Savings</div>
+ <div class="value ${financial_summary.monthly_savings >= 0 ? "green-c" : "red"}">LKR ${financial_summary.monthly_savings.toLocaleString()}</div>
+ </div>
+ <div class="summary-box">
+ <div class="label">Savings Rate</div>
+ <div class="value ${financial_summary.savings_rate >= 0 ? "green-c" : "red"}">${financial_summary.savings_rate}%</div>
+ </div>
+ </div>
+ </div>
+ </div>
 
-  <!-- EXPENSE BREAKDOWN -->
-  <div class="section">
-    <div class="section-header purple">📊 Expense Breakdown</div>
-    <div class="section-body">
-      <table>
-        <thead><tr><th>Category</th><th style="text-align:right">Amount</th><th style="text-align:right">Share</th><th>Distribution</th></tr></thead>
-        <tbody>${expRows}</tbody>
-        <tfoot>
-          <tr style="background:#f7fafc;font-weight:700;font-size:14px">
-            <td>TOTAL EXPENSES</td>
-            <td style="text-align:right;color:#667eea">LKR ${expense_breakdown.total_expenses.toLocaleString()}</td>
-            <td style="text-align:right">100%</td><td></td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  </div>
+ <!-- EXPENSE BREAKDOWN -->
+ <div class="section">
+ <div class="section-header purple"> Expense Breakdown</div>
+ <div class="section-body">
+ <table>
+ <thead><tr><th>Category</th><th style="text-align:right">Amount</th><th style="text-align:right">Share</th><th>Distribution</th></tr></thead>
+ <tbody>${expRows}</tbody>
+ <tfoot>
+ <tr style="background:#f7fafc;font-weight:700;font-size:14px">
+ <td>TOTAL EXPENSES</td>
+ <td style="text-align:right;color:#667eea">LKR ${expense_breakdown.total_expenses.toLocaleString()}</td>
+ <td style="text-align:right">100%</td><td></td>
+ </tr>
+ </tfoot>
+ </table>
+ </div>
+ </div>
 
-  <!-- AI CALCULATED BUDGETS -->
-  <div class="section">
-    <div class="section-header orange">🤖 AI-Calculated Budgets</div>
-    <div class="section-body">
-      <div class="two-col">
-        ${
+ <!-- AI CALCULATED BUDGETS -->
+ <div class="section">
+ <div class="section-header orange"> AI-Calculated Budgets</div>
+ <div class="section-body">
+ <div class="two-col">
+ ${
 					foodInfo ?
 						`<div class="detail-box">
-          <h4>🍽️ Food Budget — LKR ${foodInfo.monthly_total.toLocaleString()}/month</h4>
-          <div class="detail-row"><span>Food Type</span><span>${foodInfo.food_type}</span></div>
-          <div class="detail-row"><span>Daily Average</span><span>LKR ${foodInfo.daily_cost.toLocaleString()}</span></div>
-          ${foodInfo.breakdown?.groceries !== undefined ? `<div class="detail-row"><span>🛒 Groceries (cooking)</span><span>LKR ${Math.round(foodInfo.breakdown.groceries).toLocaleString()}</span></div>` : ""}
-          ${foodInfo.breakdown?.outside_meals !== undefined ? `<div class="detail-row"><span>🍜 Outside meals</span><span>LKR ${Math.round(foodInfo.breakdown.outside_meals).toLocaleString()}</span></div>` : ""}
-          <div class="detail-row"><span>Monthly Total</span><span>LKR ${foodInfo.monthly_total.toLocaleString()}</span></div>
-        </div>`
-					:	'<div class="detail-box"><h4>🍽️ Food Budget</h4><p style="color:#999">Not available</p></div>'
+ <h4> Food Budget — LKR ${foodInfo.monthly_total.toLocaleString()}/month</h4>
+ <div class="detail-row"><span>Food Type</span><span>${foodInfo.food_type}</span></div>
+ <div class="detail-row"><span>Daily Average</span><span>LKR ${foodInfo.daily_cost.toLocaleString()}</span></div>
+ ${foodInfo.breakdown?.groceries !== undefined ? `<div class="detail-row"><span> Groceries (cooking)</span><span>LKR ${Math.round(foodInfo.breakdown.groceries).toLocaleString()}</span></div>` : ""}
+ ${foodInfo.breakdown?.outside_meals !== undefined ? `<div class="detail-row"><span> Outside meals</span><span>LKR ${Math.round(foodInfo.breakdown.outside_meals).toLocaleString()}</span></div>` : ""}
+ <div class="detail-row"><span>Monthly Total</span><span>LKR ${foodInfo.monthly_total.toLocaleString()}</span></div>
+ </div>`
+					:	'<div class="detail-box"><h4> Food Budget</h4><p style="color:#999">Not available</p></div>'
 				}
-        ${
+ ${
 					transInfo ?
 						`<div class="detail-box">
-          <h4>🚌 Transport Budget — LKR ${transInfo.monthly_total.toLocaleString()}/month</h4>
-          <div class="detail-row"><span>Method</span><span>${transInfo.transport_method}</span></div>
-          <div class="detail-row"><span>Commute Days/Month</span><span>${transInfo.commute_days_per_month || "~22"}</span></div>
-          <div class="detail-row"><span>Round-trip Fare</span><span>LKR ${transInfo.daily_cost.toLocaleString()}</span></div>
-          ${transInfo.one_way_trip_cost > 0 ? `<div class="detail-row"><span>One-way Fare</span><span>LKR ${transInfo.one_way_trip_cost.toLocaleString()}</span></div>` : ""}
-          ${transInfo.breakdown?.daily_commute > 0 ? `<div class="detail-row"><span>🏫 Campus Commute</span><span>LKR ${transInfo.breakdown.daily_commute.toLocaleString()}</span></div>` : ""}
-          ${transInfo.breakdown?.misc_trips > 0 ? `<div class="detail-row"><span>🌧️ Emergency Trips</span><span>LKR ${transInfo.breakdown.misc_trips.toLocaleString()}</span></div>` : ""}
-          ${transInfo.breakdown?.home_visits > 0 ? `<div class="detail-row"><span>🏡 Home Visits</span><span>LKR ${transInfo.breakdown.home_visits.toLocaleString()}</span></div>` : ""}
-          <div class="detail-row"><span>Monthly Total</span><span>LKR ${transInfo.monthly_total.toLocaleString()}</span></div>
-        </div>`
-					:	'<div class="detail-box"><h4>🚌 Transport Budget</h4><p style="color:#999">Not available</p></div>'
+ <h4> Transport Budget — LKR ${transInfo.monthly_total.toLocaleString()}/month</h4>
+ <div class="detail-row"><span>Method</span><span>${transInfo.transport_method}</span></div>
+ <div class="detail-row"><span>Commute Days/Month</span><span>${transInfo.commute_days_per_month || "~22"}</span></div>
+ <div class="detail-row"><span>Round-trip Fare</span><span>LKR ${transInfo.daily_cost.toLocaleString()}</span></div>
+ ${transInfo.one_way_trip_cost > 0 ? `<div class="detail-row"><span>One-way Fare</span><span>LKR ${transInfo.one_way_trip_cost.toLocaleString()}</span></div>` : ""}
+ ${transInfo.breakdown?.daily_commute > 0 ? `<div class="detail-row"><span> Campus Commute</span><span>LKR ${transInfo.breakdown.daily_commute.toLocaleString()}</span></div>` : ""}
+ ${transInfo.breakdown?.misc_trips > 0 ? `<div class="detail-row"><span> Emergency Trips</span><span>LKR ${transInfo.breakdown.misc_trips.toLocaleString()}</span></div>` : ""}
+ ${transInfo.breakdown?.home_visits > 0 ? `<div class="detail-row"><span> Home Visits</span><span>LKR ${transInfo.breakdown.home_visits.toLocaleString()}</span></div>` : ""}
+ <div class="detail-row"><span>Monthly Total</span><span>LKR ${transInfo.monthly_total.toLocaleString()}</span></div>
+ </div>`
+					:	'<div class="detail-box"><h4> Transport Budget</h4><p style="color:#999">Not available</p></div>'
 				}
-      </div>
-    </div>
-  </div>
+ </div>
+ </div>
+ </div>
 
-  <!-- RISK ASSESSMENT -->
-  ${
+ <!-- RISK ASSESSMENT -->
+ ${
 		risk_assessment ?
 			`<div class="section">
-    <div class="section-header ${risk_assessment.risk_level === "High Risk" ? "danger" : "success-bg"}">${risk_assessment.risk_level === "High Risk" ? "⚠️" : "✅"} Risk Assessment — ${risk_assessment.risk_level}</div>
-    <div class="section-body">
-      <div class="${risk_assessment.risk_level === "High Risk" ? "risk-high" : "risk-low"}" style="margin-bottom:${riskRecs ? "14px" : "0"}">
-        <strong>Risk Probability: ${risk_assessment.risk_probability}%</strong>
-        <span style="margin-left:16px;font-size:12px;color:#555">${risk_assessment.risk_level === "High Risk" ? "Your current spending puts you at financial risk. Review the recommendations below." : "Your financial situation looks healthy. Keep maintaining good spending habits!"}</span>
-      </div>
-      ${riskRecs ? `<h5 style="font-size:13px;margin-bottom:8px;font-weight:700">📋 Risk Recommendations:</h5><ul>${riskRecs}</ul>` : ""}
-    </div>
-  </div>`
+ <div class="section-header ${risk_assessment.risk_level === "High Risk" ? "danger" : "success-bg"}">${risk_assessment.risk_level === "High Risk" ? "" : ""} Risk Assessment — ${risk_assessment.risk_level}</div>
+ <div class="section-body">
+ <div class="${risk_assessment.risk_level === "High Risk" ? "risk-high" : "risk-low"}" style="margin-bottom:${riskRecs ? "14px" : "0"}">
+ <strong>Risk Probability: ${risk_assessment.risk_probability}%</strong>
+ <span style="margin-left:16px;font-size:12px;color:#555">${risk_assessment.risk_level === "High Risk" ? "Your current spending puts you at financial risk. Review the recommendations below." : "Your financial situation looks healthy. Keep maintaining good spending habits!"}</span>
+ </div>
+ ${riskRecs ? `<h5 style="font-size:13px;margin-bottom:8px;font-weight:700"> Risk Recommendations:</h5><ul>${riskRecs}</ul>` : ""}
+ </div>
+ </div>`
 		:	""
 	}
 
-  <!-- OPTIMAL STRATEGY -->
-  ${
+ <!-- OPTIMAL STRATEGY -->
+ ${
 		strategy ?
 			`<div class="section">
-    <div class="section-header success-bg">🎯 Personalised Optimal Budget Strategy</div>
-    <div class="section-body">
-      <div class="strategy-grid" style="margin-bottom:18px">
-        <div class="strategy-box s-current">
-          <div class="s-label">📊 Current Expenses</div>
-          <div class="s-value red">LKR ${strategy.current_situation.total_expenses.toLocaleString()}</div>
-          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.current_situation.savings_rate}% savings now</div>
-        </div>
-        <div class="strategy-box s-target">
-          <div class="s-label">🎯 Optimised Target</div>
-          <div class="s-value green-c">LKR ${strategy.optimal_target.target_expenses.toLocaleString()}</div>
-          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.optimal_target.target_savings_rate}% savings rate</div>
-        </div>
-        <div class="strategy-box s-improve">
-          <div class="s-label">💰 Potential Saving</div>
-          <div class="s-value ${strategy.potential_improvement.extra_savings > 0 ? "green-c" : "blue"}">
-            ${strategy.potential_improvement.extra_savings > 0 ? "+LKR " + strategy.potential_improvement.extra_savings.toLocaleString() : "Already Optimised ✅"}
-          </div>
-          <div style="font-size:11px;color:#666;margin-top:4px">${strategy.potential_improvement.extra_savings > 0 ? "extra/month possible" : "Well done!"}</div>
-        </div>
-      </div>
-      ${
+ <div class="section-header success-bg"> Personalised Optimal Budget Strategy</div>
+ <div class="section-body">
+ <div class="strategy-grid" style="margin-bottom:18px">
+ <div class="strategy-box s-current">
+ <div class="s-label"> Current Expenses</div>
+ <div class="s-value red">LKR ${strategy.current_situation.total_expenses.toLocaleString()}</div>
+ <div style="font-size:11px;color:#666;margin-top:4px">${strategy.current_situation.savings_rate}% savings now</div>
+ </div>
+ <div class="strategy-box s-target">
+ <div class="s-label"> Optimised Target</div>
+ <div class="s-value green-c">LKR ${strategy.optimal_target.target_expenses.toLocaleString()}</div>
+ <div style="font-size:11px;color:#666;margin-top:4px">${strategy.optimal_target.target_savings_rate}% savings rate</div>
+ </div>
+ <div class="strategy-box s-improve">
+ <div class="s-label"> Potential Saving</div>
+ <div class="s-value ${strategy.potential_improvement.extra_savings > 0 ? "green-c" : "blue"}">
+ ${strategy.potential_improvement.extra_savings > 0 ? "+LKR " + strategy.potential_improvement.extra_savings.toLocaleString() : "Already Optimised "}
+ </div>
+ <div style="font-size:11px;color:#666;margin-top:4px">${strategy.potential_improvement.extra_savings > 0 ? "extra/month possible" : "Well done!"}</div>
+ </div>
+ </div>
+ ${
 				altRows ?
-					`<h5 style="font-size:13px;font-weight:700;margin-bottom:10px">🔄 Optimisation Alternatives:</h5>
-      <table>
-        <thead><tr><th>Category</th><th>Current</th><th>Alternative</th><th style="text-align:right">Current Cost</th><th style="text-align:right">Target Cost</th><th style="text-align:right">Savings</th></tr></thead>
-        <tbody>${altRows}</tbody>
-      </table>`
+					`<h5 style="font-size:13px;font-weight:700;margin-bottom:10px"> Optimisation Alternatives:</h5>
+ <table>
+ <thead><tr><th>Category</th><th>Current</th><th>Alternative</th><th style="text-align:right">Current Cost</th><th style="text-align:right">Target Cost</th><th style="text-align:right">Savings</th></tr></thead>
+ <tbody>${altRows}</tbody>
+ </table>`
 				:	""
 			}
-    </div>
-  </div>`
+ </div>
+ </div>`
 		:	""
 	}
 
-  <!-- RECOMMENDATIONS -->
-  ${
+ <!-- RECOMMENDATIONS -->
+ ${
 		recommendation ?
 			`<div class="section">
-    <div class="section-header purple">💡 Personalised Recommendations</div>
-    <div class="section-body">
-      ${recommendation.primary_advice ? `<div class="alert-box" style="margin-bottom:14px"><strong>📌 Primary Advice:</strong> ${recommendation.primary_advice}</div>` : ""}
-      ${actionSteps ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:8px">✅ Action Steps:</h5><ul>${actionSteps}</ul>` : ""}
-    </div>
-  </div>`
+ <div class="section-header purple"> Personalised Recommendations</div>
+ <div class="section-body">
+ ${recommendation.primary_advice ? `<div class="alert-box" style="margin-bottom:14px"><strong> Primary Advice:</strong> ${recommendation.primary_advice}</div>` : ""}
+ ${actionSteps ? `<h5 style="font-size:13px;font-weight:700;margin-bottom:8px"> Action Steps:</h5><ul>${actionSteps}</ul>` : ""}
+ </div>
+ </div>`
 		:	""
 	}
 
-  <!-- STUDENT PROFILE SUMMARY -->
-  <div class="section">
-    <div class="section-header" style="background:linear-gradient(135deg,#a0aec0,#718096)">👤 Student Profile</div>
-    <div class="section-body">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px">
-        <div><span style="color:#718096">University:</span> <strong>${formData.university}</strong></div>
-        <div><span style="color:#718096">Year:</span> <strong>${formData.year_of_study}</strong></div>
-        <div><span style="color:#718096">Field:</span> <strong>${formData.field_of_study}</strong></div>
-        <div><span style="color:#718096">District:</span> <strong>${formData.district}</strong></div>
-        <div><span style="color:#718096">Accommodation:</span> <strong>${formData.accommodation_type}</strong></div>
-        <div><span style="color:#718096">Transport:</span> <strong>${formData.transport_method}</strong></div>
-        <div><span style="color:#718096">Distance to Uni:</span> <strong>${formData.distance_uni_accommodation} km</strong></div>
-        <div><span style="color:#718096">Distance Home:</span> <strong>${formData.distance_home_uni} km</strong></div>
-        <div><span style="color:#718096">Home Visits:</span> <strong>${formData.home_visit_frequency}</strong></div>
-        <div><span style="color:#718096">Food Type:</span> <strong>${formData.food_type}</strong></div>
-        <div><span style="color:#718096">Diet:</span> <strong>${formData.diet_type}</strong></div>
-        <div><span style="color:#718096">Meals/Day:</span> <strong>${formData.meals_per_day}</strong></div>
-      </div>
-    </div>
-  </div>
+ <!-- STUDENT PROFILE SUMMARY -->
+ <div class="section">
+ <div class="section-header" style="background:linear-gradient(135deg,#a0aec0,#718096)"> Student Profile</div>
+ <div class="section-body">
+ <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;font-size:12px">
+ <div><span style="color:#718096">University:</span> <strong>${formData.university}</strong></div>
+ <div><span style="color:#718096">Year:</span> <strong>${formData.year_of_study}</strong></div>
+ <div><span style="color:#718096">Field:</span> <strong>${formData.field_of_study}</strong></div>
+ <div><span style="color:#718096">District:</span> <strong>${formData.district}</strong></div>
+ <div><span style="color:#718096">Accommodation:</span> <strong>${formData.accommodation_type}</strong></div>
+ <div><span style="color:#718096">Transport:</span> <strong>${formData.transport_method}</strong></div>
+ <div><span style="color:#718096">Distance to Uni:</span> <strong>${formData.distance_uni_accommodation} km</strong></div>
+ <div><span style="color:#718096">Distance Home:</span> <strong>${formData.distance_home_uni} km</strong></div>
+ <div><span style="color:#718096">Home Visits:</span> <strong>${formData.home_visit_frequency}</strong></div>
+ <div><span style="color:#718096">Food Type:</span> <strong>${formData.food_type}</strong></div>
+ <div><span style="color:#718096">Diet:</span> <strong>${formData.diet_type}</strong></div>
+ <div><span style="color:#718096">Meals/Day:</span> <strong>${formData.meals_per_day}</strong></div>
+ </div>
+ </div>
+ </div>
 
-  <div class="footer">
-    <p>Generated by <strong>UniFinder LK — AI Student Budget Optimizer</strong> &nbsp;|&nbsp; ${date} &nbsp;|&nbsp; Model Accuracy: 86.89%</p>
-    <p style="margin-top:4px">This report is for financial guidance purposes only. Actual costs may vary.</p>
-  </div>
+ <div class="footer">
+ <p>Generated by <strong>UniFinder LK — AI Student Budget Optimizer</strong> &nbsp;|&nbsp; ${date} &nbsp;|&nbsp; Model Accuracy: 86.89%</p>
+ <p style="margin-top:4px">This report is for financial guidance purposes only. Actual costs may vary.</p>
+ </div>
 
 </div>
 <script>window.onload = () => window.print();</script>
@@ -2605,7 +2529,7 @@ const BudgetOptimizerNew = () => {
 								<Spinner animation='border' size='sm' className='me-2' />
 								Analyzing...
 							</>
-						:	"🔍 Analyze Budget"}
+						:	" Analyze Budget"}
 					</Button>
 				}
 			</div>
@@ -2614,26 +2538,37 @@ const BudgetOptimizerNew = () => {
 
 	return (
 		<div className='budget-optimizer-new-page'>
-			<Container className='my-5'>
-				{/* Header */}
-				<Row className='mb-5'>
-					<Col>
-						<div className='text-center'>
-							<h1 className='mb-3 display-4 gradient-text'>🤖💰 AI-Powered Student Budget Optimizer</h1>
-							<p className='lead text-muted'>
-								Complete your profile in 6 simple steps to get personalized budget insights
-							</p>
-						</div>
-					</Col>
-				</Row>
+			{/* Hero Header */}
+			<div className='relative pt-24 pb-32 overflow-hidden border-b border-indigo-800/50 bg-gradient-to-br from-indigo-900 via-violet-800 to-indigo-900'>
+				<div className='absolute top-0 right-0 w-[500px] h-[500px] bg-violet-500/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen' />
+				<div className='absolute bottom-0 left-10 w-[400px] h-[400px] bg-indigo-500/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen' />
+				<div className='relative z-10 max-w-6xl px-6 mx-auto'>
+					<div className='inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-bold tracking-widest uppercase rounded-full bg-white/10 text-violet-50 border border-violet-400/40'>
+						<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='1.8' viewBox='0 0 24 24'>
+							<path strokeLinecap='round' strokeLinejoin='round' d='M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z' />
+						</svg>
+						<span>AI Budget Optimizer</span>
+					</div>
+					<h1 className='text-4xl font-extrabold tracking-tight text-white sm:text-5xl'>
+						AI-Powered Student <br />
+						<span className='text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-cyan-300'>
+							Budget Optimizer
+						</span>
+					</h1>
+					<p className='max-w-lg mt-3 text-lg leading-relaxed text-violet-50/90'>
+						Complete your profile in 6 simple steps to get personalized budget insights
+					</p>
+				</div>
+			</div>
 
+			<Container className='relative z-20 pb-10' style={{ marginTop: '-5rem' }}>
 				{/* Step Indicator */}
 				{renderStepIndicator()}
 
 				{/* Error Display */}
 				{error && (
 					<Alert variant='danger' onClose={() => setError(null)} dismissible>
-						<Alert.Heading>❌ Error</Alert.Heading>
+						<Alert.Heading> Error</Alert.Heading>
 						{error}
 					</Alert>
 				)}
@@ -2657,25 +2592,25 @@ const BudgetOptimizerNew = () => {
 					<Col>
 						<Card className='border-0 bg-light'>
 							<Card.Body className='p-4'>
-								<h4 className='mb-4 text-center'>🇱🇰 Sri Lanka-Specific Features</h4>
+								<h4 className='mb-4 text-center'> Sri Lanka-Specific Features</h4>
 								<Row>
 									<Col md={3} className='mb-3 text-center'>
-										<div className='mb-2 feature-icon'>💰</div>
+										<div className='mb-2 feature-icon'></div>
 										<h6>LKR Currency</h6>
 										<small className='text-muted'>Local currency calculations</small>
 									</Col>
 									<Col md={3} className='mb-3 text-center'>
-										<div className='mb-2 feature-icon'>🏙️</div>
+										<div className='mb-2 feature-icon'></div>
 										<h6>District Pricing</h6>
 										<small className='text-muted'>25 districts covered</small>
 									</Col>
 									<Col md={3} className='mb-3 text-center'>
-										<div className='mb-2 feature-icon'>🎓</div>
+										<div className='mb-2 feature-icon'></div>
 										<h6>Real Student Data</h6>
 										<small className='text-muted'>1,020 student responses</small>
 									</Col>
 									<Col md={3} className='mb-3 text-center'>
-										<div className='mb-2 feature-icon'>📈</div>
+										<div className='mb-2 feature-icon'></div>
 										<h6>86.89% Accuracy</h6>
 										<small className='text-muted'>AI-powered predictions</small>
 									</Col>
@@ -2690,7 +2625,7 @@ const BudgetOptimizerNew = () => {
 			<Modal show={distanceWarning.show} onHide={cancelDistanceWarning} centered>
 				<Modal.Header closeButton className='pb-0 border-0'>
 					<Modal.Title className='gap-2 d-flex align-items-center'>
-						<span style={{ fontSize: "1.5rem" }}>⚠️</span>
+						<span style={{ fontSize: "1.5rem" }}></span>
 						<span>Unusual Distance Detected</span>
 					</Modal.Title>
 				</Modal.Header>
@@ -2711,10 +2646,10 @@ const BudgetOptimizerNew = () => {
 				</Modal.Body>
 				<Modal.Footer className='border-0'>
 					<Button variant='outline-secondary' onClick={cancelDistanceWarning}>
-						✏️ Correct it
+						 Correct it
 					</Button>
 					<Button variant='warning' onClick={confirmDistanceWarning}>
-						✅ Yes, it's correct
+						 Yes, it's correct
 					</Button>
 				</Modal.Footer>
 			</Modal>
