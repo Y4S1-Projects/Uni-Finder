@@ -3,6 +3,11 @@
  * Displays match score or readiness score with visual indicator
  */
 import React from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { useCountUp } from "../../hooks/useCountUp";
+
+const MotionDiv = motion?.div || "div";
 
 export function getScoreColor(score) {
   if (score >= 0.7) return "text-purple-600";
@@ -17,6 +22,26 @@ export function getScoreBgColor(score) {
 }
 
 export function ScoreCircle({ score, label, size = "normal" }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  const targetPercent = Number((score * 100).toFixed(0));
+  const { value } = useCountUp(targetPercent, 1000, isVisible);
+
+  useEffect(() => {
+    if (!ref.current) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   const colorClass = getScoreColor(score);
   const sizeClasses = {
     large: "text-3xl",
@@ -30,9 +55,9 @@ export function ScoreCircle({ score, label, size = "normal" }) {
   };
 
   return (
-    <div className="text-right">
+    <div ref={ref} className="text-right">
       <div className={`font-bold ${sizeClasses[size]} ${colorClass}`}>
-        {(score * 100).toFixed(0)}%
+        {value}%
       </div>
       <div className={`${labelSizeClasses[size]} text-gray-500`}>{label}</div>
     </div>
@@ -40,6 +65,26 @@ export function ScoreCircle({ score, label, size = "normal" }) {
 }
 
 export function ScoreCard({ score, label, variant = "blue" }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  const targetPercent = Number((score * 100).toFixed(0));
+  const { value } = useCountUp(targetPercent, 1000, isVisible);
+
+  useEffect(() => {
+    if (!ref.current) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   const variants = {
     blue: "bg-gradient-to-br from-purple-50 to-blue-50 text-purple-700 border-2 border-purple-200",
     green:
@@ -50,24 +95,46 @@ export function ScoreCard({ score, label, variant = "blue" }) {
 
   return (
     <div
+      ref={ref}
       className={`flex-1 p-5 rounded-xl text-center shadow-md hover:shadow-lg transition-all duration-300 ${
         variants[variant] || variants.blue
       }`}
     >
-      <div className="text-4xl font-bold">{(score * 100).toFixed(0)}%</div>
+      <div className="text-4xl font-bold">{value}%</div>
       <div className="text-xs font-semibold text-gray-600 mt-1">{label}</div>
     </div>
   );
 }
 
 export function ProgressBar({ score, height = "h-2" }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+  const targetPercent = Number((score * 100).toFixed(0));
+  useCountUp(targetPercent, 1000, isVisible, 0);
   const bgColorClass = getScoreBgColor(score);
 
+  useEffect(() => {
+    if (!ref.current) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={`bg-gray-200 rounded-full ${height} overflow-hidden`}>
-      <div
-        className={`${height} ${bgColorClass} rounded-full transition-all duration-500`}
-        style={{ width: `${score * 100}%` }}
+    <div ref={ref} className={`bg-gray-200 rounded-full ${height} overflow-hidden w-full block`}>
+      <MotionDiv
+        className={`${height} ${bgColorClass} rounded-full`}
+        initial={{ width: 0 }}
+        animate={isVisible ? { width: `${targetPercent}%` } : { width: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
       />
     </div>
   );

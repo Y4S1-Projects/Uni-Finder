@@ -2,7 +2,7 @@
  * AI Explanation Component
  * Displays the AI-generated career explanation with markdown formatting
  */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { HiSparkles } from "react-icons/hi2";
 import {
   FaRobot,
@@ -12,6 +12,7 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import { BiTargetLock } from "react-icons/bi";
+import { useTypingEffect } from "../../hooks/useTypingEffect";
 
 function formatExplanation(text) {
   if (!text) return "";
@@ -25,37 +26,53 @@ function formatExplanation(text) {
 }
 
 export function AIExplanation({ explanation }) {
-  const [displayedText, setDisplayedText] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [dots, setDots] = useState(1);
   const explanationRef = useRef(null);
+  const hasStartedRef = useRef(false);
 
-  // Start typing animation when explanation is available
   useEffect(() => {
-    if (!explanation) return;
+    if (!explanationRef.current || hasStartedRef.current) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        hasStartedRef.current = true;
+        setIsVisible(true);
+        observer.disconnect();
+      },
+      { threshold: 0.25 },
+    );
+    observer.observe(explanationRef.current);
+    return () => observer.disconnect();
+  }, []);
 
-    setDisplayedText("");
-    setIsTyping(true);
-    let currentIndex = 0;
+  const { displayedText, isTyping } = useTypingEffect(
+    explanation || "",
+    20,
+    isVisible,
+  );
 
-    const intervalId = setInterval(() => {
-      if (currentIndex < explanation.length) {
-        setDisplayedText(explanation.substring(0, currentIndex + 1));
-        currentIndex++;
-      } else {
-        setIsTyping(false);
-        clearInterval(intervalId);
-      }
-    }, 15); // Adjust speed here (lower = faster)
+  useEffect(() => {
+    if (!isTyping) return undefined;
+    const id = setInterval(() => {
+      setDots((prev) => (prev >= 3 ? 1 : prev + 1));
+    }, 300);
+    return () => clearInterval(id);
+  }, [isTyping]);
 
-    return () => clearInterval(intervalId);
-  }, [explanation]);
+  const dotsText = useMemo(() => {
+    if (!isTyping) return "";
+    return ".".repeat(dots);
+  }, [dots, isTyping]);
 
   if (!explanation) return null;
 
   return (
     <div
       ref={explanationRef}
-      className="relative overflow-hidden rounded-3xl shadow-2xl transform transition-all duration-700"
+      className={`relative overflow-hidden rounded-3xl shadow-2xl transform transition-all duration-700 ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+      }`}
       style={{
         background:
           "linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)",
@@ -114,17 +131,16 @@ export function AIExplanation({ explanation }) {
 
           {/* Status badge */}
           <div
-            className="px-4 py-2 rounded-full text-white text-sm font-bold shadow-lg flex items-center gap-2"
-            style={{
-              background: isTyping
-                ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-                : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-            }}
+            className={`px-4 py-2 rounded-full text-white text-sm font-bold shadow-lg flex items-center justify-center gap-2 transition-all duration-300 min-w-[140px] ${
+              isTyping
+                ? "bg-gradient-to-br from-purple-600 to-indigo-600"
+                : "bg-gradient-to-br from-purple-600 to-indigo-600 scale-[1.02] animate-fadeIn"
+            }`}
           >
             {isTyping ? (
               <>
                 <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                Analyzing
+                <span>Analyzing<span className="inline-block w-4 text-left">{dotsText}</span></span>
               </>
             ) : (
               <>
@@ -182,8 +198,7 @@ export function AIExplanation({ explanation }) {
           ></div>
 
           <div
-            className="text-gray-800 leading-relaxed whitespace-pre-wrap relative z-10"
-            style={{ fontSize: "15px", lineHeight: "1.8" }}
+            className="text-gray-800 whitespace-pre-wrap relative z-10 text-[15px] leading-8"
             dangerouslySetInnerHTML={{
               __html: formatExplanation(displayedText),
             }}

@@ -3,7 +3,11 @@
  * Displays skills as colored tags
  */
 import React from "react";
+import { motion } from "framer-motion";
 import { FaCheckCircle, FaBookOpen } from "react-icons/fa";
+
+const MotionDiv = motion?.div || "div";
+const MotionSpan = motion?.span || "span";
 
 const SKILL_STYLES = {
   matched: {
@@ -50,6 +54,19 @@ export function SkillTagList({
 
   if (!skills || skills.length === 0) return null;
 
+  const container = {
+    animate: {
+      transition: {
+        staggerChildren: 0.05
+      }
+    }
+  };
+
+  const child = {
+    initial: { opacity: 0, y: 10 },
+    animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] } }
+  };
+
   return (
     <div>
       {showLabel && (
@@ -57,21 +74,28 @@ export function SkillTagList({
           <style.icon /> {style.label} ({skills.length})
         </div>
       )}
-      <div className={`flex flex-wrap ${size === "large" ? "gap-2" : "gap-1"}`}>
+      <MotionDiv 
+        className={`flex flex-wrap ${size === "large" ? "gap-2" : "gap-1"}`}
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        variants={container}
+      >
         {skills.slice(0, maxDisplay).map((skill, index) => (
-          <SkillTag
-            key={typeof skill === "object" ? skill.id : skill || index}
-            skill={skill}
-            variant={variant}
-            size={size}
-          />
+          <MotionDiv key={typeof skill === "object" ? skill.id : skill || index} variants={child}>
+            <SkillTag
+              skill={skill}
+              variant={variant}
+              size={size}
+            />
+          </MotionDiv>
         ))}
         {skills.length > maxDisplay && (
-          <span className="text-xs text-gray-500">
+          <MotionSpan variants={child} className="text-xs text-gray-500 self-center">
             +{skills.length - maxDisplay} more
-          </span>
+          </MotionSpan>
         )}
-      </div>
+      </MotionDiv>
     </div>
   );
 }
