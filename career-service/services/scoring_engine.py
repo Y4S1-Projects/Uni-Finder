@@ -237,6 +237,7 @@ SENIORITY_LEVEL_NAMES = {
 # User experience → ideal seniority level range [min, max]
 EXPERIENCE_TO_LEVEL_RANGE = {
     "student": (1, 2),   # intern, junior
+    "0":       (1, 2),   # frontend sends "0" for student/no experience
     "0-1":     (1, 2),   # intern, junior
     "1-3":     (2, 3),   # junior, mid
     "3-5":     (3, 4),   # mid, senior
@@ -469,9 +470,9 @@ def classify_user_level(
     goal = (career_goal or "").lower()
 
     # Strong entry-level signals
-    if exp in ("student", "0-1"):
+    if exp in ("student", "0", "0-1"):
         is_entry = True
-        target = 1 if exp == "student" else 2
+        target = 1 if exp in ("student", "0") else 2
     elif status == "student":
         is_entry = True
         target = 1
@@ -604,23 +605,69 @@ def compute_current_status_fit_score(
     return max(0.1, 1.0 - distance * 0.25)
 
 
-def compute_education_fit_score(education_level: Optional[str]) -> float:
+def compute_education_fit_score(
+    education_level: Optional[str],
+    role_id: Optional[str] = None,
+) -> float:
     """
-    Soft education signal.  Not a hard gate.
+    Education fit score, now aware of role seniority.
+    
+    For senior+ roles (seniority >= 4), lower education levels get penalized.
+    For entry/mid roles, education is a softer signal.
     """
     if not education_level:
         return 0.6
 
-    scoring = {
-        "masters": 0.95,
-        "phd":     0.95,
-        "bachelors": 0.85,
-        "degree":    0.85,
-        "hnd":       0.70,
-        "diploma":   0.65,
-        "al":        0.50,
+    # Education → numeric level for comparison
+    edu_levels = {
+        "al":        1,
+        "diploma":   2,
+        "hnd":       3,
+        "bachelors": 4,
+        "degree":    4,
+        "masters":   5,
+        "phd":       6,
     }
-    return scoring.get(education_level.lower(), 0.55)
+    
+    edu_num = edu_levels.get(education_level.lower(), 3)  # default to hnd-equivalent
+    
+    # If no role context, return simple score
+    if not role_id:
+        scoring = {
+            "masters": 0.95, "phd": 0.95, "bachelors": 0.85, "degree": 0.85,
+            "hnd": 0.70, "diploma": 0.65, "al": 0.50,
+        }
+        return scoring.get(education_level.lower(), 0.55)
+    
+    # Role-aware education scoring
+    _ensure_cache()
+    role_level = _cache.role_seniority.get(role_id, 3)
+    
+    # Derive minimum education expectation from seniority
+    # intern/junior: diploma+, mid: bachelors+, senior+: bachelors/masters+
+    min_edu_by_seniority = {
+        1: 1,  # intern: any education
+        2: 2,  # junior: diploma+
+        3: 3,  # mid: hnd+
+        4: 4,  # senior: bachelors+
+        5: 4,  # staff: bachelors+
+        6: 5,  # lead/principal: masters+
+    }
+    
+    min_edu = min_edu_by_seniority.get(role_level, 3)
+    
+    if edu_num >= min_edu:
+        # Meets or exceeds requirement
+        return min(1.0, 0.80 + (edu_num - min_edu) * 0.05)
+    else:
+        # Below requirement — gap-based penalty
+        gap = min_edu - edu_num
+        if gap == 1:
+            return 0.55  # slightly below
+        elif gap == 2:
+            return 0.35  # significantly below
+        else:
+            return 0.20  # severely below
 
 
 def compute_career_goal_fit_score(
@@ -973,8 +1020,8 @@ def score_role_for_user(
     # ── 5. Current status fit ──
     breakdown.current_status_fit_score = compute_current_status_fit_score(role_id, current_status)
 
-    # ── 6. Education fit ──
-    breakdown.education_fit_score = compute_education_fit_score(education_level)
+    # ── 6. Education fit (now role-seniority-aware) ──
+    breakdown.education_fit_score = compute_education_fit_score(education_level, role_id)
 
     # ── 7. Career goal fit ──
     breakdown.career_goal_fit_score = compute_career_goal_fit_score(role_id, career_goal, experience_level)

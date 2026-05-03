@@ -10,14 +10,14 @@ import { useCountUp } from "../../hooks/useCountUp";
 const MotionDiv = motion?.div || "div";
 
 export function getScoreColor(score) {
-  if (score >= 0.7) return "text-purple-600";
-  if (score >= 0.4) return "text-indigo-600";
+  if (score >= 0.7) return "text-indigo-600";
+  if (score >= 0.4) return "text-indigo-500";
   return "text-gray-600";
 }
 
 export function getScoreBgColor(score) {
-  if (score >= 0.7) return "bg-gradient-to-r from-purple-500 to-blue-500";
-  if (score >= 0.4) return "bg-gradient-to-r from-indigo-400 to-blue-400";
+  if (score >= 0.7) return "bg-indigo-600";
+  if (score >= 0.4) return "bg-indigo-500";
   return "bg-gray-400";
 }
 
@@ -86,11 +86,11 @@ export function ScoreCard({ score, label, variant = "blue" }) {
   }, []);
 
   const variants = {
-    blue: "bg-gradient-to-br from-purple-50 to-blue-50 text-purple-700 border-2 border-purple-200",
+    blue: "bg-indigo-50 text-indigo-700 border border-indigo-200",
     green:
-      "bg-gradient-to-br from-indigo-50 to-blue-50 text-indigo-700 border-2 border-indigo-200",
+      "bg-teal-50 text-teal-700 border border-teal-200",
     purple:
-      "bg-gradient-to-br from-purple-50 to-violet-50 text-purple-700 border-2 border-purple-200",
+      "bg-indigo-50 text-indigo-700 border border-indigo-200",
   };
 
   return (

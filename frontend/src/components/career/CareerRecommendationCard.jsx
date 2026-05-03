@@ -41,10 +41,13 @@ export function CareerRecommendationCard({
     });
   };
 
+  // Use weighted readiness from scoring engine (top-level), fall back to legacy skill_gap
   const readinessPercent =
-    skill_gap && skill_gap.readiness_score !== undefined
-      ? parseInt((skill_gap.readiness_score * 100).toFixed(0), 10)
-      : 0;
+    recommendation.readiness_score !== undefined
+      ? parseInt((recommendation.readiness_score * 100).toFixed(0), 10)
+      : skill_gap && skill_gap.readiness_score !== undefined
+        ? parseInt((skill_gap.readiness_score * 100).toFixed(0), 10)
+        : 0;
 
   const matchPercent =
     match_score !== undefined ? parseInt((match_score * 100).toFixed(0), 10) : 0;
@@ -73,10 +76,10 @@ export function CareerRecommendationCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-      className={`p-6 mb-6 rounded-2xl relative transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-[3px] hover:shadow-md hover:scale-[1.01] shadow-sm border ${
+      className={`p-6 mb-6 rounded-2xl relative transition-all duration-[250ms] ease-[cubic-bezier(0.4,0,0.2,1)] hover:-translate-y-[3px] hover:shadow-lg hover:scale-[1.01] shadow-md border ${
         isBestMatch
-          ? "bg-gradient-to-br from-[#f8f9ff] to-[#f3f5ff] border-[#e2e8f0]"
-          : "bg-[#f8fbff] border-[#eaf2ff]" 
+          ? "bg-white border-indigo-200 ring-2 ring-indigo-50"
+          : "bg-white border-gray-200" 
       }`}
     >
       <style>
@@ -92,7 +95,7 @@ export function CareerRecommendationCard({
       </style>
       {/* Best Match Badge */}
       {isBestMatch && (
-        <div className="absolute -top-3 right-6 bg-[#b68bf5] text-white px-4 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 uppercase tracking-wide animate-softPulse">
+        <div className="absolute -top-3 right-6 bg-indigo-600 text-white px-4 py-1 rounded-full text-[11px] font-bold shadow-sm flex items-center gap-1.5 uppercase tracking-wide animate-softPulse">
           <FaStar className="text-[10px]" /> BEST MATCH
         </div>
       )}
@@ -100,18 +103,18 @@ export function CareerRecommendationCard({
       {/* Header: Title, Domain, Scores */}
       <div className="flex justify-between items-start mb-4">
         <div>
-          <h4 className="text-xl font-bold text-[#4338ca] mb-2 leading-tight">
+          <h4 className="text-xl font-bold text-gray-900 mb-2 leading-tight">
             {rank}. {role_title || role_id}
           </h4>
           <div className="inline-flex">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#6b21a8] bg-[#f3e8ff] px-2.5 py-1 rounded-md">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-md">
               {domain?.replace(/_/g, " ")}
             </span>
           </div>
         </div>
 
         <div className="text-right shrink-0">
-          <div className="text-2xl font-bold text-[#4338ca]">
+          <div className="text-2xl font-bold text-indigo-600">
             {animatedMatch}%
           </div>
           <div className="text-[11px] text-gray-500 font-semibold uppercase tracking-wider">
@@ -123,7 +126,7 @@ export function CareerRecommendationCard({
       {/* Progress Bar */}
       <div className="w-full mb-6 bg-gray-200 rounded-full h-1.5 overflow-hidden">
         <MotionDiv
-          className="h-full bg-blue-500 rounded-full"
+          className="h-full bg-indigo-600 rounded-full"
           initial={{ width: 0 }}
           whileInView={{ width: `${matchPercent}%` }}
           viewport={{ once: true }}
@@ -133,9 +136,9 @@ export function CareerRecommendationCard({
 
       {/* Next Step Box */}
       {next_role && (
-        <div className="bg-[#fcfaff] rounded-xl p-4 mb-6 flex justify-between items-center border border-[#f3e8ff]">
+        <div className="bg-gray-50 rounded-xl p-4 mb-6 flex justify-between items-center border border-gray-100">
           <div>
-            <div className="flex items-center gap-1.5 text-xs text-[#6b21a8] font-bold mb-1">
+            <div className="flex items-center gap-1.5 text-xs text-indigo-700 font-bold mb-1">
               <FaRocket className="text-sm" /> Next Step:
             </div>
             <div className="text-sm text-[#4b5563] ml-5">
@@ -144,7 +147,7 @@ export function CareerRecommendationCard({
           </div>
           <button
             onClick={viewCareerLadder}
-            className="text-white text-xs font-bold px-4 py-2 rounded-xl border border-transparent transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+            className="text-white text-xs font-bold px-4 py-2 rounded-xl border border-transparent transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
           >
             View Path
           </button>
@@ -158,7 +161,7 @@ export function CareerRecommendationCard({
           <div className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-1">
             Readiness
           </div>
-          <div className="text-xl font-bold text-[#6b21a8]">
+          <div className="text-xl font-bold text-indigo-600">
             {animatedReadiness}%
           </div>
         </div>
@@ -166,8 +169,8 @@ export function CareerRecommendationCard({
         {/* Skills You Have */}
         <div className="flex-1">
           <div className="flex items-center gap-1.5 mb-2.5">
-            <FaCheckCircle className="text-[#9333ea] text-sm" />
-            <span className="text-xs font-bold text-[#7e22ce]">
+            <FaCheckCircle className="text-indigo-600 text-sm" />
+            <span className="text-xs font-bold text-indigo-700">
               Skills You Have ({skill_gap?.matched_skills?.length || 0})
             </span>
           </div>
@@ -182,13 +185,13 @@ export function CareerRecommendationCard({
               <MotionSpan
                 variants={staggerChild}
                 key={s.id || s}
-                className="text-[11px] font-medium bg-[#f3e8ff] border border-[#e9d5ff] text-[#7e22ce] px-2.5 py-1 rounded-full whitespace-nowrap"
+                className="text-[11px] font-medium bg-indigo-50 border border-indigo-100 text-indigo-700 px-2.5 py-1 rounded-full whitespace-nowrap"
               >
                 {s.name || s.id || s}
               </MotionSpan>
             ))}
             {skill_gap?.matched_skills?.length > 5 && (
-              <MotionSpan variants={staggerChild} className="text-[11px] font-medium text-[#7e22ce] px-1 py-1 rounded-full whitespace-nowrap self-center">
+              <MotionSpan variants={staggerChild} className="text-[11px] font-medium text-indigo-700 px-1 py-1 rounded-full whitespace-nowrap self-center">
                 +{skill_gap.matched_skills.length - 5} more
               </MotionSpan>
             )}
@@ -232,7 +235,7 @@ export function CareerRecommendationCard({
       <div>
         <button
           onClick={() => onViewDetails(recommendation)}
-          className="text-white text-xs font-bold px-5 py-2.5 rounded-xl border border-transparent transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 inline-flex bg-gradient-to-r from-purple-600 to-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
+          className="text-white text-xs font-bold px-5 py-2.5 rounded-xl border border-transparent transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2 inline-flex bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/30"
         >
           <FaEye className="text-sm" /> View Details & AI Explanation
         </button>

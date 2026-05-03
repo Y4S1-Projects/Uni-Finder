@@ -128,7 +128,7 @@ export default function CareerLadderPage() {
 	}
 
 	return (
-		<div className='min-h-screen pt-0 overflow-x-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 text-slate-900'>
+		<div className='min-h-screen pt-0 overflow-x-hidden bg-white text-slate-900'>
 			<div className='relative z-10 p-0 m-0'>
 				{/* 🚀 AI-Powered Ecosystem Header */}
 				<header className='sticky top-[64px] z-40 bg-white/80 backdrop-blur-2xl border-b border-slate-200 shadow-sm mt-[64px]'>
@@ -136,22 +136,12 @@ export default function CareerLadderPage() {
 						<div className='flex flex-col items-center justify-center gap-1 text-center lg:items-start lg:text-left group'>
 							<div className='flex items-center gap-3'>
 								<div
-									className='p-2.5 rounded-xl shadow-lg relative transform transition-transform group-hover:rotate-12'
-									style={{
-										background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-									}}>
+									className='p-2.5 rounded-xl shadow-lg relative transform transition-transform group-hover:rotate-12 bg-indigo-600'>
 									<div className='absolute inset-0 rounded-full bg-blue-500/20 blur-xl' />
 									<FaProjectDiagram className='relative text-2xl text-white' />
 								</div>
 
-								<h1
-									className='text-3xl font-bold tracking-tight md:text-4xl'
-									style={{
-										background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-										WebkitBackgroundClip: "text",
-										WebkitTextFillColor: "transparent",
-										backgroundClip: "text",
-									}}>
+								<h1 className='text-3xl font-bold tracking-tight md:text-4xl text-gray-900'>
 									Career Ladder
 								</h1>
 							</div>
@@ -208,26 +198,26 @@ export default function CareerLadderPage() {
 
 function LoadingSpinner() {
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-purple-50'>
+		<div className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50'>
 			<div className='relative flex items-center justify-center'>
 				{/* Decorative outer rings */}
 				<div
 					className='absolute inset-0 border-4 border-indigo-100 rounded-full animate-ping'
 					style={{ animationDuration: "3s" }}></div>
 				<div
-					className='absolute inset-[-10px] border-2 border-purple-100 rounded-full animate-ping'
+					className='absolute inset-[-10px] border-2 border-blue-100 rounded-full animate-ping'
 					style={{ animationDuration: "2s", animationDelay: "0.5s" }}></div>
 
 				{/* Main spinning element */}
-				<div className='w-24 h-24 border-[5px] border-purple-100 border-t-purple-600 rounded-full animate-spin shadow-lg relative z-10'></div>
+				<div className='w-24 h-24 border-[5px] border-indigo-100 border-t-indigo-600 rounded-full animate-spin shadow-lg relative z-10'></div>
 
 				{/* Center Icon */}
 				<div className='absolute inset-0 z-20 flex items-center justify-center'>
-					<FaProjectDiagram className='text-3xl text-purple-600 animate-pulse' />
+					<FaProjectDiagram className='text-3xl text-indigo-600 animate-pulse' />
 				</div>
 			</div>
 
-			<h3 className='mt-8 text-2xl font-bold text-transparent bg-gradient-to-r from-purple-700 to-indigo-700 bg-clip-text'>
+			<h3 className='mt-8 text-2xl font-bold text-indigo-900'>
 				Mapping Career Ecosystem...
 			</h3>
 			<p className='mt-2 font-medium tracking-wide text-gray-500'>Analyzing skill vectors & generating pathways</p>
