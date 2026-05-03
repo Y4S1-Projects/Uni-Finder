@@ -2614,19 +2614,30 @@ const BudgetOptimizerNew = () => {
 
 	return (
 		<div className='budget-optimizer-new-page'>
-			<Container className='my-5'>
-				{/* Header */}
-				<Row className='mb-5'>
-					<Col>
-						<div className='text-center'>
-							<h1 className='mb-3 display-4 gradient-text'>🤖💰 AI-Powered Student Budget Optimizer</h1>
-							<p className='lead text-muted'>
-								Complete your profile in 6 simple steps to get personalized budget insights
-							</p>
-						</div>
-					</Col>
-				</Row>
+			{/* Hero Header */}
+			<div className='relative pt-24 pb-32 overflow-hidden border-b border-indigo-800/50 bg-gradient-to-br from-indigo-900 via-violet-800 to-indigo-900'>
+				<div className='absolute top-0 right-0 w-[500px] h-[500px] bg-violet-500/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen' />
+				<div className='absolute bottom-0 left-10 w-[400px] h-[400px] bg-indigo-500/20 rounded-full blur-[100px] pointer-events-none mix-blend-screen' />
+				<div className='relative z-10 max-w-6xl px-6 mx-auto'>
+					<div className='inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-bold tracking-widest uppercase rounded-full bg-white/10 text-violet-50 border border-violet-400/40'>
+						<svg className='w-4 h-4' fill='none' stroke='currentColor' strokeWidth='1.8' viewBox='0 0 24 24'>
+							<path strokeLinecap='round' strokeLinejoin='round' d='M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z' />
+						</svg>
+						<span>AI Budget Optimizer</span>
+					</div>
+					<h1 className='text-4xl font-extrabold tracking-tight text-white sm:text-5xl'>
+						AI-Powered Student <br />
+						<span className='text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-cyan-300'>
+							Budget Optimizer
+						</span>
+					</h1>
+					<p className='max-w-lg mt-3 text-lg leading-relaxed text-violet-50/90'>
+						Complete your profile in 6 simple steps to get personalized budget insights
+					</p>
+				</div>
+			</div>
 
+			<Container className='relative z-20 pb-10' style={{ marginTop: '-5rem' }}>
 				{/* Step Indicator */}
 				{renderStepIndicator()}
 
