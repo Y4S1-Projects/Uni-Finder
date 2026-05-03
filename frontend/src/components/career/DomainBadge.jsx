@@ -6,19 +6,19 @@ import React from "react";
 
 const DOMAIN_CLASSES = {
   SOFTWARE_ENGINEERING:
-    "bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 border border-purple-300",
-  DATA: "bg-gradient-to-r from-indigo-100 to-blue-100 text-indigo-700 border border-indigo-300",
+    "bg-indigo-50 text-indigo-700 border border-indigo-200",
+  DATA: "bg-indigo-50 text-indigo-700 border border-indigo-200",
   AI_ML:
-    "bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-700 border border-purple-300",
+    "bg-indigo-50 text-indigo-700 border border-indigo-200",
   DEVOPS:
-    "bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 border border-blue-300",
-  QA: "bg-gradient-to-r from-slate-100 to-gray-100 text-slate-700 border border-slate-300",
+    "bg-indigo-50 text-indigo-700 border border-indigo-200",
+  QA: "bg-gray-50 text-gray-700 border border-gray-200",
   MOBILE:
-    "bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-700 border border-indigo-300",
+    "bg-indigo-50 text-indigo-700 border border-indigo-200",
   UI_UX:
-    "bg-gradient-to-r from-purple-100 to-violet-100 text-purple-700 border border-purple-300",
+    "bg-indigo-50 text-indigo-700 border border-indigo-200",
   default:
-    "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-600 border border-gray-300",
+    "bg-gray-50 text-gray-700 border border-gray-200",
 };
 
 export function DomainBadge({ domain, size = "small" }) {

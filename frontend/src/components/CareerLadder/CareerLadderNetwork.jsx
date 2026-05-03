@@ -19,32 +19,22 @@ import { FaStar, FaLock, FaCheckCircle, FaBolt } from "react-icons/fa";
 function CustomRoleNode({ data }) {
 	const { level, isCurrent, isAchievable, isLocked, roleTitle, expRange, readiness, onNodeClick } = data;
 
-	let bgClass = "border-2 hover:shadow-xl hover:scale-[1.02]";
-	let nodeStyle = {
-		background: "linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)",
-		borderColor: "rgba(102, 126, 234, 0.3)",
-	};
-	let titleClass = "text-gray-800";
+	let bgClass = "bg-white border border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-0.5";
+	let titleClass = "text-gray-900";
 	let subTextClass = "text-gray-600";
-	let glowClass = "";
 
 	if (isCurrent) {
 		bgClass =
-			"bg-white border-2 border-indigo-400 shadow-[0_0_25px_rgba(99,102,241,0.3)] scale-105 z-50 ring-4 ring-indigo-500/10";
+			"bg-indigo-50 border-indigo-500 shadow-md scale-105 z-50 ring-4 ring-indigo-500/5";
 		titleClass = "text-indigo-900";
 		subTextClass = "text-indigo-700";
-		glowClass =
-			"after:content-[''] after:absolute after:-inset-1 after:bg-indigo-500/10 after:blur-xl after:rounded-3xl after:-z-10";
-		nodeStyle = {}; // reset style
 	} else if (isLocked) {
-		bgClass = "bg-slate-50 border-2 border-slate-200 opacity-60 grayscale-[0.3]";
-		nodeStyle = {}; // reset style
+		bgClass = "bg-gray-50 border border-gray-200 opacity-60 grayscale-[0.3]";
 	}
 
 	return (
 		<div
-			className={`relative rounded-3xl p-6 w-[280px] transition-all duration-300 select-none group cursor-pointer ${bgClass} ${glowClass}`}
-			style={nodeStyle}
+			className={`relative rounded-3xl p-6 w-[280px] transition-all duration-200 select-none group cursor-pointer ${bgClass}`}
 			onClick={() => onNodeClick(data.rawLevel)}>
 			<Handle
 				type='target'
@@ -54,8 +44,8 @@ function CustomRoleNode({ data }) {
 
 			<div className='flex items-start justify-between mb-4'>
 				<div
-					className={`text-xs px-2 py-1 rounded-full font-semibold ${
-						isCurrent ? "bg-indigo-50 border border-indigo-200 text-indigo-700" : "bg-purple-100 text-purple-700"
+					className={`text-[10px] px-2 py-1 rounded-full font-bold tracking-wider ${
+						isCurrent ? "bg-indigo-100 text-indigo-700 border border-indigo-200" : "bg-gray-100 text-gray-600 border border-gray-200"
 					}`}>
 					TIER {level}
 				</div>
@@ -79,8 +69,8 @@ function CustomRoleNode({ data }) {
 			</h3>
 
 			<div
-				className={`inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider py-1 px-3 rounded-md mb-4 ${isCurrent ? "bg-indigo-50" : "bg-slate-100"} ${subTextClass}`}>
-				<FaBolt className={`${isCurrent ? "text-indigo-500" : "text-blue-500"} text-[10px]`} />
+				className={`inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider py-1 px-3 rounded-md mb-4 ${isCurrent ? "bg-indigo-100/50" : "bg-gray-100"} ${subTextClass}`}>
+				<FaBolt className={`${isCurrent ? "text-indigo-600" : "text-gray-400"} text-[10px]`} />
 				{expRange}
 			</div>
 
@@ -90,9 +80,9 @@ function CustomRoleNode({ data }) {
 						<span>Progression Index</span>
 						<span className={isLocked ? "text-slate-400" : "text-blue-600"}>{Math.round(readiness * 100)}%</span>
 					</div>
-					<div className='w-full h-1.5 bg-slate-100 rounded-full overflow-hidden shadow-inner border border-slate-200'>
+					<div className='w-full h-1.5 bg-gray-100 rounded-full overflow-hidden border border-gray-200'>
 						<div
-							className={`h-full rounded-full transition-all duration-1000 ${isAchievable ? "bg-gradient-to-r from-blue-500 via-indigo-500 to-cyan-400" : "bg-slate-300"}`}
+							className={`h-full rounded-full transition-all duration-1000 ${isAchievable ? "bg-indigo-600" : "bg-gray-300"}`}
 							style={{ width: `${readiness * 100}%` }}
 						/>
 					</div>
@@ -152,18 +142,15 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 				data: {
 					label: (
 						<div
-							className='p-6 text-left text-white transition-all shadow-xl pointer-events-none select-none rounded-xl hover:shadow-2xl'
-							style={{
-								background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-							}}>
+							className='p-6 text-left transition-all duration-300 shadow-lg pointer-events-none select-none rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-700 text-white hover:scale-[1.02]'
+						>
 							<div className='flex items-center gap-2 mb-3'>
-								<span className='px-3 py-1 text-xs font-bold rounded-full bg-white/20'>TIER 1</span>
-								<span className='px-3 py-1 text-xs font-bold tracking-tight text-gray-900 uppercase bg-yellow-400 rounded-full'>
+								<span className='px-3 py-1 text-[10px] font-black tracking-tight text-indigo-900 uppercase bg-white rounded-full'>
 									DOMAIN
 								</span>
 							</div>
 
-							<h3 className='mb-1 text-xl font-bold capitalize'>{domain.replace(/_/g, " ")}</h3>
+							<h3 className='mb-1 text-xl font-bold capitalize text-white/95'>{domain.replace(/_/g, " ")}</h3>
 							<p className='text-sm text-white/80'>
 								{progression.total_levels_in_domain || eligible_levels?.length || 0} career levels
 							</p>
@@ -188,7 +175,7 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 					target: `node-${domain}-${mainSequence[0].level}-${mainSequence[0].role_id}`,
 					type: "smoothstep",
 					animated: true,
-					style: { stroke: "#8b5cf6", strokeWidth: 3, strokeDasharray: "5,5" },
+					style: { stroke: "#d1d5db", strokeWidth: 3, strokeDasharray: "5,5" },
 				});
 			}
 
@@ -216,17 +203,23 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 						onNodeClick: () => {
 							const nextRole = index < mainSequence.length - 1 ? mainSequence[index + 1] : null;
 							const recommendationObj = {
+								...level, // Spread enriched data from backend (scores, breakdown, clusters)
 								role_id: level.role_id,
-								role_title: level.role_title,
+								role_title: level.role_title || level.role || "Unknown Role",
 								domain: domain,
-								match_score: level.match_score || level.readiness_score || 0, // Use match_score from backend
 								next_role: nextRole?.role_id,
 								next_role_title: nextRole?.role_title,
 								skill_gap: {
-									matched_skills: level.matched_skills || [],
-									missing_skills: level.missing_skills || [],
-									readiness_score: level.readiness_score || 0,
+									matched_skills: level.matched_skills ?? [],
+									missing_skills: level.missing_skills ?? [],
+									readiness_score: level.readiness_score ?? 0,
 								},
+								// Ensure top-level scores are mapped correctly for the modal
+								match_score: level.match_score ?? level.readiness_score ?? 0,
+								readiness_score: level.readiness_score ?? 0,
+								confidence_score: level.confidence_score ?? 1.0,
+								description: level.description ?? level.explanation ?? "",
+								experience_range: level.experience_range ?? "",
 							};
 							// Pass the formatted object to fetchJobDetail to show the CareerDetailModal
 							fetchJobDetail(recommendationObj, userSkills);
@@ -242,7 +235,7 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 						target: nodeId,
 						type: "smoothstep",
 						animated: true,
-						style: { stroke: "rgba(99, 102, 241, 0.4)", strokeWidth: 4 },
+						style: { stroke: "#6366f1", strokeWidth: 4 },
 						markerEnd: {
 							type: MarkerType.ArrowClosed,
 							color: "#6366f1",
@@ -297,13 +290,13 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 							type: "smoothstep",
 							animated: false,
 							style: {
-								stroke: "rgba(245, 158, 11, 0.3)",
+								stroke: "#d1d5db",
 								strokeWidth: 3,
 								strokeDasharray: "8,8",
 							},
 							markerEnd: {
 								type: MarkerType.ArrowClosed,
-								color: "#f59e0b",
+								color: "#d1d5db",
 							},
 						});
 					}
@@ -316,7 +309,7 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 	}, [allProgressions, fetchJobDetail, setEdges, setNodes, userSkills]);
 
 	return (
-		<div className='relative w-full h-[calc(100vh-140px)] min-h-[600px] bg-slate-50 overflow-hidden'>
+		<div className='relative w-full h-[calc(100vh-140px)] min-h-[600px] bg-white overflow-hidden'>
 			<ReactFlow
 				nodes={nodes}
 				edges={edges}
@@ -334,16 +327,16 @@ export default function CareerLadderNetwork({ allProgressions, userSkills, userP
 				minZoom={0.1}
 				maxZoom={1.5}
 				defaultEdgeOptions={{ zIndex: 0 }}>
-				<Background color='#cbd5e1' gap={40} size={1.5} />
-				<Controls className='bg-white border-slate-200 !shadow-lg fill-slate-700' />
+				<Background color='#e2e8f0' gap={40} size={1} />
+				<Controls className='bg-white border-gray-200 !shadow-lg fill-gray-600' />
 				<MiniMap
 					nodeColor={(n) => {
 						if (n.data?.isCurrent) return "#3b82f6";
 						if (n.data?.isAchievable) return "#cbd5e1";
 						return "#f1f5f9";
 					}}
-					maskColor='rgba(248, 250, 252, 0.7)'
-					className='!bg-white/80 !backdrop-blur-xl !rounded-3xl !border !border-slate-200 !shadow-xl !bottom-8 !right-8'
+					maskColor='rgba(255, 255, 255, 0.7)'
+					className='!bg-white/80 !backdrop-blur-xl !rounded-3xl !border !border-gray-200 !shadow-xl !bottom-8 !right-8'
 				/>
 			</ReactFlow>
 

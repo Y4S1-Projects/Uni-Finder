@@ -63,24 +63,18 @@ export default function CareerLadder() {
 	];
 
 	return (
-		<div
-			className='relative min-h-screen px-4 py-16 overflow-hidden'
-			style={{
-				background: "linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)",
-			}}>
+		<div className='relative min-h-screen px-4 py-16 overflow-hidden bg-white'>
 			{/* Animated Background Elements */}
 			<div className='absolute inset-0 overflow-hidden pointer-events-none'>
 				<div
-					className='absolute rounded-full w-96 h-96 blur-3xl opacity-20 animate-pulse'
+					className='absolute rounded-full w-96 h-96 blur-3xl opacity-10 animate-pulse bg-indigo-100'
 					style={{
-						background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
 						top: "10%",
 						left: "10%",
 					}}></div>
 				<div
-					className='absolute rounded-full w-96 h-96 blur-3xl opacity-20 animate-pulse'
+					className='absolute rounded-full w-96 h-96 blur-3xl opacity-10 animate-pulse bg-blue-100'
 					style={{
-						background: "linear-gradient(135deg, #764ba2 0%, #667eea 100%)",
 						bottom: "10%",
 						right: "10%",
 						animationDelay: "1s",
@@ -108,24 +102,14 @@ export default function CareerLadder() {
 				<div className='relative mb-16 text-center animate-fade-in'>
 					{/* Decorative gradient behind header */}
 					<div
-						className='absolute top-0 w-full h-32 transform -translate-x-1/2 left-1/2 blur-2xl opacity-20 -z-10'
-						style={{
-							background: "linear-gradient(90deg, transparent, #667eea, #764ba2, transparent)",
-						}}></div>
+						className='absolute top-0 w-full h-32 transform -translate-x-1/2 left-1/2 blur-2xl opacity-10 -z-10 bg-indigo-100'
+					></div>
 					<div className='inline-block mb-6 cursor-default pointer-events-none'>
-						<div
-							className='px-6 py-2 text-sm font-semibold text-white rounded-full shadow-lg'
-							style={{
-								background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-							}}>
+						<div className='px-6 py-2 text-sm font-semibold text-white rounded-full shadow-lg bg-indigo-600'>
 							🎯 Career Progression Path
 						</div>
 					</div>
-					<h1
-						className='mb-4 text-5xl font-extrabold text-transparent md:text-6xl bg-clip-text'
-						style={{
-							backgroundImage: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-						}}>
+					<h1 className='mb-4 text-5xl font-extrabold text-gray-900 md:text-6xl'>
 						Your Career Ladder
 					</h1>
 					<p className='max-w-2xl mx-auto text-xl text-gray-600'>
@@ -136,17 +120,9 @@ export default function CareerLadder() {
 				{/* Ladder Container */}
 				<div className='relative'>
 					{/* Gradient glow behind ladder rail */}
-					<div
-						className='absolute w-8 h-full transform -translate-x-1/2 left-1/2 blur-xl opacity-30'
-						style={{
-							background: "linear-gradient(to bottom, #667eea, #764ba2, transparent)",
-						}}></div>
+					<div className='absolute w-8 h-full transform -translate-x-1/2 left-1/2 blur-xl opacity-10 bg-indigo-200'></div>
 					{/* Vertical Line (Ladder Rail) - Enhanced */}
-					<div
-						className='absolute left-1/2 transform -translate-x-1/2 w-1.5 h-full rounded-full shadow-lg'
-						style={{
-							background: "linear-gradient(to bottom, #667eea, #764ba2, rgba(118, 75, 162, 0.3))",
-						}}></div>
+					<div className='absolute left-1/2 transform -translate-x-1/2 w-1.5 h-full rounded-full bg-gray-200'></div>
 
 					{/* Career Steps */}
 					<div className='space-y-8'>
@@ -164,11 +140,7 @@ export default function CareerLadder() {
 
 				{/* Achievement Badge - Enhanced */}
 				<div className='mt-16 text-center animate-scale-in'>
-					<div
-						className='inline-flex items-center gap-3 px-8 py-4 text-white transition-all duration-300 shadow-2xl rounded-2xl hover:shadow-3xl hover:scale-105'
-						style={{
-							background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-						}}>
+					<div className='inline-flex items-center gap-3 px-8 py-4 text-white transition-all duration-300 shadow-xl rounded-2xl bg-indigo-600 hover:shadow-2xl hover:scale-105'>
 						<FaTrophy className='text-2xl text-yellow-300' />
 						<div className='text-left'>
 							<div className='text-lg font-bold'>Keep Climbing!</div>
@@ -185,56 +157,20 @@ export default function CareerLadder() {
 						style={{
 							background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
 						}}></div>
-					<div
-						className='relative p-6 overflow-hidden transition-all duration-300 shadow-lg bg-white/80 backdrop-blur-sm rounded-xl hover:shadow-xl group'
-						style={{
-							border: "2px solid transparent",
-							backgroundImage: "linear-gradient(white, white), linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-							backgroundOrigin: "border-box",
-							backgroundClip: "padding-box, border-box",
-						}}>
-						<div
-							className='absolute top-0 right-0 w-20 h-20 transition-opacity duration-300 rounded-full opacity-0 blur-2xl group-hover:opacity-30'
-							style={{
-								background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-							}}></div>
-						<div className='mb-2 text-3xl font-bold' style={{ color: "#667eea" }}>
+					<div className='relative p-6 overflow-hidden transition-all duration-300 border border-gray-200 shadow-lg bg-white rounded-xl hover:shadow-xl group'>
+						<div className='mb-2 text-3xl font-bold text-indigo-600'>
 							5
 						</div>
 						<div className='font-medium text-gray-600'>Career Levels</div>
 					</div>
-					<div
-						className='relative p-6 overflow-hidden transition-all duration-300 shadow-lg bg-white/80 backdrop-blur-sm rounded-xl hover:shadow-xl group'
-						style={{
-							border: "2px solid transparent",
-							backgroundImage: "linear-gradient(white, white), linear-gradient(135deg, #764ba2 0%, #667eea 100%)",
-							backgroundOrigin: "border-box",
-							backgroundClip: "padding-box, border-box",
-						}}>
-						<div
-							className='absolute top-0 right-0 w-20 h-20 transition-opacity duration-300 rounded-full opacity-0 blur-2xl group-hover:opacity-30'
-							style={{
-								background: "linear-gradient(135deg, #764ba2 0%, #667eea 100%)",
-							}}></div>
-						<div className='mb-2 text-3xl font-bold' style={{ color: "#764ba2" }}>
+					<div className='relative p-6 overflow-hidden transition-all duration-300 border border-gray-200 shadow-lg bg-white rounded-xl hover:shadow-xl group'>
+						<div className='mb-2 text-3xl font-bold text-indigo-700'>
 							2/5
 						</div>
 						<div className='font-medium text-gray-600'>Progress Made</div>
 					</div>
-					<div
-						className='relative p-6 overflow-hidden transition-all duration-300 shadow-lg bg-white/80 backdrop-blur-sm rounded-xl hover:shadow-xl group'
-						style={{
-							border: "2px solid transparent",
-							backgroundImage: "linear-gradient(white, white), linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-							backgroundOrigin: "border-box",
-							backgroundClip: "padding-box, border-box",
-						}}>
-						<div
-							className='absolute top-0 right-0 w-20 h-20 transition-opacity duration-300 rounded-full opacity-0 blur-2xl group-hover:opacity-30'
-							style={{
-								background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-							}}></div>
-						<div className='mb-2 text-3xl font-bold' style={{ color: "#667eea" }}>
+					<div className='relative p-6 overflow-hidden transition-all duration-300 border border-gray-200 shadow-lg bg-white rounded-xl hover:shadow-xl group'>
+						<div className='mb-2 text-3xl font-bold text-indigo-600'>
 							10+
 						</div>
 						<div className='font-medium text-gray-600'>Years to Goal</div>
@@ -280,39 +216,39 @@ function CareerStep({ step, index, isActive, onClick }) {
 		switch (step.status) {
 			case "current":
 				return {
-					gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-					border: "#667eea",
-					text: "text-white",
-					icon: <FaRocket className='text-2xl animate-bounce' />,
-					iconBg: "rgba(255, 255, 255, 0.25)",
-					glow: "0 10px 40px rgba(102, 126, 234, 0.4)",
+					bg: "bg-indigo-50",
+					border: "border-indigo-300",
+					text: "text-indigo-900",
+					icon: <FaRocket className='text-2xl text-indigo-600 animate-bounce' />,
+					iconBg: "bg-indigo-100",
+					shadow: "shadow-lg shadow-indigo-500/10",
 				};
 			case "next":
 				return {
-					gradient: "linear-gradient(135deg, #764ba2 0%, #667eea 100%)",
-					border: "#764ba2",
-					text: "text-white",
-					icon: <FaCheckCircle className='text-2xl' />,
-					iconBg: "rgba(255, 255, 255, 0.25)",
-					glow: "0 10px 40px rgba(118, 75, 162, 0.4)",
+					bg: "bg-white",
+					border: "border-indigo-200",
+					text: "text-indigo-900",
+					icon: <FaCheckCircle className='text-2xl text-indigo-500' />,
+					iconBg: "bg-indigo-50",
+					shadow: "shadow-md shadow-indigo-500/5",
 				};
 			case "locked":
 				return {
-					gradient: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
-					border: "#e5e7eb",
-					text: "text-gray-700",
-					icon: <FaLock className='text-2xl text-gray-400' />,
-					iconBg: "#f3f4f6",
-					glow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+					bg: "bg-gray-50",
+					border: "border-gray-200",
+					text: "text-gray-400",
+					icon: <FaLock className='text-2xl text-gray-300' />,
+					iconBg: "bg-gray-100",
+					shadow: "shadow-sm",
 				};
 			default:
 				return {
-					gradient: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)",
-					border: "#e5e7eb",
+					bg: "bg-white",
+					border: "border-gray-200",
 					text: "text-gray-700",
-					icon: <FaCheckCircle className='text-2xl text-gray-400' />,
-					iconBg: "#f3f4f6",
-					glow: "0 4px 15px rgba(0, 0, 0, 0.1)",
+					icon: <FaCheckCircle className='text-2xl text-gray-300' />,
+					iconBg: "bg-gray-50",
+					shadow: "shadow-sm",
 				};
 		}
 	};
@@ -331,65 +267,42 @@ function CareerStep({ step, index, isActive, onClick }) {
 			{/* Step Card */}
 			<div className={`flex ${isLeft ? "justify-start" : "justify-end"}`} onClick={onClick}>
 				<div
-					className='w-5/12 p-8 transition-all duration-500 transform cursor-pointer rounded-3xl hover:scale-105 backdrop-blur-sm'
-					style={{
-						background: styles.gradient,
-						border: `2px solid ${styles.border}`,
-						boxShadow: styles.glow,
-					}}>
+					className={`w-5/12 p-8 transition-all duration-500 transform cursor-pointer rounded-3xl hover:scale-105 backdrop-blur-sm border-2 ${styles.bg} ${styles.border} ${styles.shadow}`}
+				>
 					{/* Level Badge */}
 					<div className='flex items-center justify-between mb-4'>
 						<div
-							className='px-4 py-2 text-xs font-bold rounded-full shadow-md backdrop-blur-md'
-							style={{
-								background: step.status === "locked" ? "#f3f4f6" : "rgba(255, 255, 255, 0.3)",
-								color: step.status === "locked" ? "#6b7280" : "white",
-							}}>
+							className={`px-4 py-2 text-[10px] font-bold rounded-full shadow-sm border ${
+								step.status === "locked" ? "bg-gray-100 text-gray-500 border-gray-200" : "bg-indigo-100 text-indigo-700 border-indigo-200"
+							}`}>
 							{step.level}
 						</div>
-						<div
-							className='flex items-center justify-center rounded-full shadow-lg w-14 h-14'
-							style={{
-								background: styles.iconBg,
-							}}>
+						<div className={`flex items-center justify-center rounded-full shadow-md w-14 h-14 ${styles.iconBg}`}>
 							{styles.icon}
 						</div>
 					</div>
 
-					{/* Title */}
-					<h3 className={`text-2xl font-extrabold mb-4 ${step.status === "locked" ? "text-gray-800" : "text-white"}`}>
+					<h3 className={`text-2xl font-black mb-4 ${step.status === "locked" ? "text-gray-300" : "text-gray-900"}`}>
 						{step.title}
 					</h3>
 
 					{/* Details */}
-					<div className={`space-y-3 text-sm ${step.status === "locked" ? "text-gray-600" : "text-white/95"}`}>
-						<div
-							className='flex items-center gap-3 p-2 rounded-lg'
-							style={{
-								background: step.status === "locked" ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.1)",
-							}}>
+					<div className="space-y-3 text-sm">
+						<div className={`flex items-center gap-3 p-2 rounded-lg ${step.status === "locked" ? "bg-gray-200/50" : "bg-indigo-100/50"}`}>
 							<span className='font-bold'>💼</span>
 							<div>
 								<span className='font-semibold'>Skills: </span>
 								<span>{step.skillsRequired} required</span>
 							</div>
 						</div>
-						<div
-							className='flex items-center gap-3 p-2 rounded-lg'
-							style={{
-								background: step.status === "locked" ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.1)",
-							}}>
+						<div className={`flex items-center gap-3 p-2 rounded-lg ${step.status === "locked" ? "bg-gray-200/50" : "bg-indigo-100/50"}`}>
 							<span className='font-bold'>⏱️</span>
 							<div>
 								<span className='font-semibold'>Experience: </span>
 								<span>{step.yearsRequired}</span>
 							</div>
 						</div>
-						<div
-							className='flex items-center gap-3 p-2 rounded-lg'
-							style={{
-								background: step.status === "locked" ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.1)",
-							}}>
+						<div className={`flex items-center gap-3 p-2 rounded-lg ${step.status === "locked" ? "bg-gray-200/50" : "bg-indigo-100/50"}`}>
 							<span className='font-bold'>💰</span>
 							<div>
 								<span className='font-semibold'>Salary: </span>
@@ -398,15 +311,14 @@ function CareerStep({ step, index, isActive, onClick }) {
 						</div>
 					</div>
 
-					{/* Status Indicator */}
 					{step.status === "current" && (
-						<div className='px-4 py-2 mt-5 text-center shadow-lg bg-white/25 backdrop-blur-md rounded-xl'>
-							<span className='text-sm font-extrabold tracking-wide text-white'>✨ YOU ARE HERE</span>
+						<div className='px-4 py-2 mt-5 text-center shadow-md bg-indigo-100 border border-indigo-200 rounded-xl'>
+							<span className='text-xs font-black tracking-widest text-indigo-700 uppercase'>✨ YOU ARE HERE</span>
 						</div>
 					)}
 					{step.status === "next" && (
-						<div className='px-4 py-2 mt-5 text-center shadow-lg bg-white/25 backdrop-blur-md rounded-xl'>
-							<span className='text-sm font-extrabold tracking-wide text-white'>🎯 NEXT MILESTONE</span>
+						<div className='px-4 py-2 mt-5 text-center shadow-md bg-yellow-100 border border-yellow-200 rounded-xl'>
+							<span className='text-xs font-black tracking-widest text-yellow-700 uppercase'>🎯 NEXT MILESTONE</span>
 						</div>
 					)}
 				</div>
@@ -414,23 +326,18 @@ function CareerStep({ step, index, isActive, onClick }) {
 
 			{/* Connecting Node - Enhanced */}
 			<div
-				className='absolute z-10 w-8 h-8 transform -translate-x-1/2 -translate-y-1/2 border-4 border-white rounded-full shadow-2xl top-1/2 left-1/2'
-				style={{
-					background: step.status === "locked" ? "#d1d5db" : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-					animation: step.status !== "locked" ? "pulse 2s ease-in-out infinite" : "none",
-				}}></div>
+				className={`absolute z-10 w-8 h-8 transform -translate-x-1/2 -translate-y-1/2 border-4 border-white rounded-full shadow-xl top-1/2 left-1/2 ${
+					step.status === "locked" ? "bg-gray-300" : "bg-indigo-600 animate-pulse"
+				}`}></div>
 
 			{/* Ladder Rung (Horizontal Line) - Enhanced */}
 			<div
 				className={`absolute top-1/2 ${
 					isLeft ? "left-1/2 ml-4" : "right-1/2 mr-4"
-				} w-20 h-1.5 rounded-full shadow-md transform -translate-y-1/2`}
-				style={{
-					background:
-						step.status === "locked" ?
-							"linear-gradient(to right, #d1d5db, transparent)"
-						:	"linear-gradient(to right, #667eea, transparent)",
-				}}></div>
+				} w-20 h-1.5 rounded-full shadow-sm transform -translate-y-1/2 ${
+					step.status === "locked" ? "bg-gray-200" : "bg-indigo-200"
+				}`}
+			></div>
 		</div>
 	);
 }
