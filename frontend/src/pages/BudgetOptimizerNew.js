@@ -79,7 +79,7 @@ const BudgetOptimizerNew = () => {
  other: 500
  });
 
- const backendUrl = 'http://127.0.0.1:5002';
+  const backendUrl = process.env.REACT_APP_BUDGET_SERVICE_URL || 'http://127.0.0.1:5002';
 
  const districts = [
  'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya',
