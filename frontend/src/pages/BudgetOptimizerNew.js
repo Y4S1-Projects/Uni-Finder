@@ -53,7 +53,7 @@ const BudgetOptimizerNew = () => {
  meals_per_day: '3 meals',
  diet_type: 'Non-Vegetarian',
  cooking_frequency: 'Most days',
- cooking_percentage: 60,
+ cooking_percentage: 7,
 
  // Transport Details
  distance_uni_accommodation: 5,

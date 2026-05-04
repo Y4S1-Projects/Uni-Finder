@@ -567,10 +567,10 @@ class MLBudgetPredictor:
                 'reasoning': f'Increasing home cooking from {cooking_pct}% to 72% is the single biggest budget lever for students.',
                 'estimated_savings': round(current_food * 0.18, 2),
                 'action_steps': [
-                    f'Increase cooking by just 2-3 extra meals/week',
-                    'Learn 3-4 quick Sri Lankan recipes (dhal curry, egg fried rice, pasta)',
-                    'Share cooking duties with a housemate to cut prep time',
-                    'Buy groceries at pola (Sunday market) for 20-30% cheaper produce'
+                    f'Increase home cooking by 2–3 meals per week to reduce food expenses and improve nutrition',
+                    'Learn a few quick and affordable Sri Lankan recipes (e.g., dhal curry, egg fried rice, pasta)',
+                    'Share cooking responsibilities with a housemate through mutual agreement to save time and effort',
+                    'Purchase groceries from local markets (e.g., pola) where fresh produce is often 20–30% cheaper'
                 ],
                 'priority': 'Medium'
             })
