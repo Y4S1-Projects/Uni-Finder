@@ -53,7 +53,7 @@ const BudgetOptimizerNew = () => {
  meals_per_day: '3 meals',
  diet_type: 'Non-Vegetarian',
  cooking_frequency: 'Most days',
- cooking_percentage: 60,
+ cooking_percentage: 7,
 
  // Transport Details
  distance_uni_accommodation: 5,
@@ -79,7 +79,7 @@ const BudgetOptimizerNew = () => {
  other: 500
  });
 
- const backendUrl = 'http://127.0.0.1:5002';
+  const backendUrl = process.env.REACT_APP_BUDGET_SERVICE_URL || 'http://127.0.0.1:5002';
 
  const districts = [
  'Colombo', 'Gampaha', 'Kalutara', 'Kandy', 'Matale', 'Nuwara Eliya',
