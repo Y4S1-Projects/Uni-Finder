@@ -36,16 +36,13 @@ const CATEGORY_MAP = {
   communication: { group: "Soft Skills", sub: "Communication" },
   leadership: { group: "Soft Skills", sub: "Leadership" },
   project_mgmt: { group: "Soft Skills", sub: "Project Management" },
-  business: { group: "Soft Skills", sub: "Business Analysis" },
-  // Certifications
-  certification: { group: "Certifications", sub: "Industry Certifications" },
+  business: { group: "Soft Skills", sub: "Project Management" },
 };
 
-const GROUP_ORDER = ["Technical Skills", "Soft Skills", "Certifications"];
+const GROUP_ORDER = ["Technical Skills", "Soft Skills"];
 const GROUP_ICONS = {
   "Technical Skills": "💻",
   "Soft Skills": "🤝",
-  Certifications: "🏆",
 };
 
 // Popular skills (top-50 most common in job postings)
@@ -107,7 +104,6 @@ const QUICK_FILTERS = [
   { label: "All", filter: () => true },
   { label: "Technical", filter: (s) => s.type === "technical" },
   { label: "Soft Skills", filter: (s) => s.type === "soft" },
-  { label: "Certifications", filter: (s) => s.type === "credential" },
   { label: "Popular", filter: (s) => POPULAR_IDS.has(s.skill_id) },
 ];
 
@@ -159,7 +155,12 @@ export default function SkillSelector({
   // ── Normalized skills list (cached once) ──────────────────────────────
   const normalized = useMemo(() => {
     return skillsList
-      .filter((s) => (s.category || "other") !== "game_dev")
+      .filter(
+        (s) =>
+          (s.category || "other") !== "game_dev" &&
+          s.category !== "certification" &&
+          s.type !== "credential",
+      )
       .map((s) => ({
         id: String(s.skill_id),
         label: s.name,
